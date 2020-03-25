@@ -6,7 +6,7 @@ from setuptools import find_packages, setup
 
 def get_version():
     text = Path(__file__).parent.joinpath("markdown_it", "__init__.py").read_text()
-    match = re.compile(r"^__version__\s*\=\s*([^\s]+)", re.M).search(text)
+    match = re.compile(r"^__version__\s*\=\s*[\"\']([^\s\'\"]+)", re.M).search(text)
     return match.group(1)
 
 
