@@ -111,7 +111,7 @@ class MarkdownIt:
 
         return self
 
-    def enable(self, names: Union[str, List[str]], ignoreInvalid: bool):
+    def enable(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
         """ chainable
         MarkdownIt.enable(list, ignoreInvalid)
         - list (String|Array): rule name or list of rule names to enable
@@ -133,18 +133,16 @@ class MarkdownIt:
             names = [names]
 
         for chain in ["core", "block", "inline"]:
-            result = result.append(self[chain].ruler.enable(names, True))
-
-        result = result.append(self.inline.ruler2.enable(names, True))
+            result.extend(self[chain].ruler.enable(names, True))
+        result.extend(self.inline.ruler2.enable(names, True))
 
         missed = [name for name in names if name not in result]
         if missed and not ignoreInvalid:
             raise ValueError(f"MarkdownIt. Failed to enable unknown rule(s): {missed}")
-        return self
 
         return self
 
-    def disable(self, names: Union[str, List[str]], ignoreInvalid: bool):
+    def disable(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
         """ chainable
         MarkdownIt.disable(list, ignoreInvalid)
         - names (String|Array): rule name or list of rule names to disable.
@@ -158,9 +156,8 @@ class MarkdownIt:
             names = [names]
 
         for chain in ["core", "block", "inline"]:
-            result = result.append(self[chain].ruler.disable(names, True))
-
-        result = result.append(self.inline.ruler2.disable(names, True))
+            result.extend(self[chain].ruler.disable(names, True))
+        result.extend(self.inline.ruler2.disable(names, True))
 
         missed = [name for name in names if name not in result]
         if missed and not ignoreInvalid:
