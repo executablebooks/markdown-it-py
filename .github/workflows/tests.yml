@@ -42,8 +42,9 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
       - name: Build package
-
         run: |
           pip install wheel
           python setup.py sdist bdist_wheel
