@@ -1,11 +1,18 @@
 # from importlib import import_module
-
+from pathlib import Path
+import re
 from setuptools import find_packages, setup
+
+
+def get_version():
+    text = Path(__file__).parent.joinpath("markdown_it", "__init__.py").read_text()
+    match = re.compile(r"^__version__\s*\=\s*([^\s]+)", re.M).search(text)
+    return match.group(1)
 
 
 setup(
     name="markdown-it-py",
-    version="0.1.0",  # import_module("markdown_it").__version__,  TODO fix this
+    version=get_version(),  # import_module("markdown_it").__version__,  TODO fix this
     description="PYthon port of mardown-it. Markdown parser, done right.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
