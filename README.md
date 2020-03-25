@@ -1,6 +1,12 @@
 # markdown-it-py
 
-![Python package](https://github.com/ExecutableBookProject/markdown-it-py/workflows/Python%20package/badge.svg)
+![Github-DI][github-ci]
+[![Code style: black][black-badge]][black-link]
+
+[github-ci]: https://github.com/ExecutableBookProject/markdown-it-py/workflows/Python%20package/badge.svg
+[black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
+[black-link]: https://github.com/ambv/black
+
 
 This is a Python port of [markdown-it](https://github.com/markdown-it/markdown-it),
 and some of its associated plugins.
