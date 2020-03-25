@@ -10,7 +10,7 @@
 
 This is a Python port of [markdown-it](https://github.com/markdown-it/markdown-it),
 and some of its associated plugins.
-It is still under development, so should be used with caution.
+It is still under development, so for now should be used with caution.
 
 Details of the port can be found in `markdown_it/port.yaml` and in `port.yaml`
 within the extension folders. But the driving design philosiphy has been to change as little of the
@@ -45,7 +45,7 @@ Type Ctrl-D to complete input, or Ctrl-C to exit.
 
 ## Benchmarking
 
-markdown-it=py is the fastest **CommonMark** comliant parser written in python!
+markdown-it=py is the fastest _**CommonMark compliant**_ parser written in python!
 
 ```console
 $ markdown-it-bench -n 30
