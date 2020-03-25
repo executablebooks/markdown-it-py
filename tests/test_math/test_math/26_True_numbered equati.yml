@@ -1,0 +1,30 @@
+- attrs: null
+  block: true
+  children: null
+  content: 'code
+
+    '
+  hidden: false
+  info: ''
+  level: 0
+  map:
+  - 0
+  - 3
+  markup: '```'
+  meta: null
+  nesting: 0
+  tag: code
+  type: fence
+- attrs: null
+  block: true
+  children: null
+  content: a+b
+  hidden: false
+  info: '1'
+  level: 0
+  map: null
+  markup: $$
+  meta: null
+  nesting: 0
+  tag: math
+  type: math_block_eqno

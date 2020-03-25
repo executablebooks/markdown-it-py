@@ -1,0 +1,17 @@
+- attrs: null
+  block: true
+  children: null
+  content: "\\\\begin{pmatrix}x_2 \\\\\\\\ y_2 \\\\end{pmatrix} = \n\\\\begin{pmatrix}\
+    \ A & B \\\\\\\\ C & D \\\\end{pmatrix}\\\\cdot\n\\\\begin{pmatrix} x_1 \\\\\\\
+    \\ y_1 \\\\end{pmatrix}"
+  hidden: false
+  info: "\\\\begin{pmatrix}x_2 \\\\\\\\ y_2 \\\\end{pmatrix} = \n\\\\begin{pmatrix}\
+    \ A & B \\\\\\\\ C & D \\\\end{pmatrix}\\\\cdot\n\\\\begin{pmatrix} x_1 \\\\\\\
+    \\ y_1 \\\\end{pmatrix}"
+  level: 0
+  map: null
+  markup: $$
+  meta: null
+  nesting: 0
+  tag: math
+  type: math_block

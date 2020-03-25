@@ -1,0 +1,157 @@
+- attrs: null
+  block: true
+  children: null
+  content: '
+
+    a=1
+
+    b=2
+
+    '
+  hidden: false
+  info: abc
+  level: 0
+  map: null
+  markup: $$
+  meta: null
+  nesting: 0
+  tag: math
+  type: math_block_eqno
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map:
+  - 5
+  - 6
+  markup: '-'
+  meta: null
+  nesting: 1
+  tag: ul
+  type: bullet_list_open
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 5
+  - 6
+  markup: '-'
+  meta: null
+  nesting: 1
+  tag: li
+  type: list_item_open
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 2
+  map:
+  - 5
+  - 6
+  markup: ''
+  meta: null
+  nesting: 1
+  tag: p
+  type: paragraph_open
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: 'ab '
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  - attrs: null
+    block: false
+    children: null
+    content: c=1
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_inline
+  - attrs: null
+    block: false
+    children: null
+    content: ' d'
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  content: ab $c=1$ d
+  hidden: false
+  info: ''
+  level: 3
+  map:
+  - 5
+  - 6
+  markup: ''
+  meta: null
+  nesting: 0
+  tag: ''
+  type: inline
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 2
+  map: null
+  markup: ''
+  meta: null
+  nesting: -1
+  tag: p
+  type: paragraph_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 1
+  map: null
+  markup: '-'
+  meta: null
+  nesting: -1
+  tag: li
+  type: list_item_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map: null
+  markup: '-'
+  meta: null
+  nesting: -1
+  tag: ul
+  type: bullet_list_close

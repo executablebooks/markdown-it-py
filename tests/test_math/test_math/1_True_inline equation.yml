@@ -1,0 +1,28 @@
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: \\varphi
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_inline
+  content: $\\varphi$
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 0
+  - 1
+  markup: ''
+  meta: null
+  nesting: 0
+  tag: ''
+  type: inline

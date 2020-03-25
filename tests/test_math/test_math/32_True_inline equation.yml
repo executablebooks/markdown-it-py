@@ -1,0 +1,162 @@
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map:
+  - 0
+  - 3
+  markup: '>'
+  meta: null
+  nesting: 1
+  tag: blockquote
+  type: blockquote_open
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 0
+  - 3
+  markup: ''
+  meta: null
+  nesting: 1
+  tag: p
+  type: paragraph_open
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: 'see '
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  - attrs: null
+    block: false
+    children: null
+    content: a = b + c
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_inline
+  - attrs: null
+    block: false
+    children: null
+    content: ''
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: br
+    type: softbreak
+  - attrs: null
+    block: false
+    children: null
+    content: c^2=a^2+b^2
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_inline
+  - attrs: null
+    block: false
+    children: null
+    content: ' (2)'
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  - attrs: null
+    block: false
+    children: null
+    content: ''
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: br
+    type: softbreak
+  - attrs: null
+    block: false
+    children: null
+    content: c^2=a^2+b^2
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_inline
+  content: "see $a = b + c$ \n$c^2=a^2+b^2$ (2) \n$c^2=a^2+b^2$"
+  hidden: false
+  info: ''
+  level: 2
+  map:
+  - 0
+  - 3
+  markup: ''
+  meta: null
+  nesting: 0
+  tag: ''
+  type: inline
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 1
+  map: null
+  markup: ''
+  meta: null
+  nesting: -1
+  tag: p
+  type: paragraph_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map: null
+  markup: '>'
+  meta: null
+  nesting: -1
+  tag: blockquote
+  type: blockquote_close

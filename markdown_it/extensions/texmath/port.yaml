@@ -1,0 +1,4 @@
+- package: markdown-it-texmath
+  commit: 78c548829ce2ef85c73dc71e680d01e5ae41ffbf
+  date: Oct 4, 2019
+  version: 0.6

@@ -1,0 +1,41 @@
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: x
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_single
+  - attrs: null
+    block: false
+    children: null
+    content: ' $'
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  content: $x$ $
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 0
+  - 1
+  markup: ''
+  meta: null
+  nesting: 0
+  tag: ''
+  type: inline

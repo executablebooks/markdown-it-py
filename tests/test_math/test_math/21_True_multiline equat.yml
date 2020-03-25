@@ -1,0 +1,13 @@
+- attrs: null
+  block: true
+  children: null
+  content: "\\\\begin{matrix}\n f & = & 2 + x + 3 \\\\ \n & = & 5 + x \n\\\\end{matrix}"
+  hidden: false
+  info: "\\\\begin{matrix}\n f & = & 2 + x + 3 \\\\ \n & = & 5 + x \n\\\\end{matrix}"
+  level: 0
+  map: null
+  markup: $$
+  meta: null
+  nesting: 0
+  tag: math
+  type: math_block

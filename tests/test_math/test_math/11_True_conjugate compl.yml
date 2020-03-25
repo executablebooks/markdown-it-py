@@ -1,0 +1,54 @@
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: a^\*b
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_inline
+  - attrs: null
+    block: false
+    children: null
+    content: ' with '
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  - attrs: null
+    block: false
+    children: null
+    content: a^\*
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_inline
+  content: $a^\*b$ with $a^\*$
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 0
+  - 1
+  markup: ''
+  meta: null
+  nesting: 0
+  tag: ''
+  type: inline

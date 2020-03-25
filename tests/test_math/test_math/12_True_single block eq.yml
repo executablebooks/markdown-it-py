@@ -1,0 +1,13 @@
+- attrs: null
+  block: true
+  children: null
+  content: e_\\alpha
+  hidden: false
+  info: e_\\alpha
+  level: 0
+  map: null
+  markup: $$
+  meta: null
+  nesting: 0
+  tag: math
+  type: math_block

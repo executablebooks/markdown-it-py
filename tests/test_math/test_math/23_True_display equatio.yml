@@ -1,0 +1,13 @@
+- attrs: null
+  block: true
+  children: null
+  content: f(x) = x^2 - 1
+  hidden: false
+  info: '1'
+  level: 0
+  map: null
+  markup: $$
+  meta: null
+  nesting: 0
+  tag: math
+  type: math_block_eqno

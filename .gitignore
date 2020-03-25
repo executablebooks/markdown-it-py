@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+benchmark/extra/
+node_modules/
+coverage/
+demo/
+apidoc/
+*.log
+__pycache__/
+.ropeproject/
+*.egg-info/

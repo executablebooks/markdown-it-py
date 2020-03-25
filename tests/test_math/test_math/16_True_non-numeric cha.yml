@@ -1,0 +1,136 @@
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: a
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  - attrs: null
+    block: false
+    children: null
+    content: 1+1=2
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_inline
+  - attrs: null
+    block: false
+    children: null
+    content: ''
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: br
+    type: softbreak
+  - attrs: null
+    block: false
+    children: null
+    content: 1+1=2
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_inline
+  - attrs: null
+    block: false
+    children: null
+    content: b
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  - attrs: null
+    block: false
+    children: null
+    content: ''
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: br
+    type: softbreak
+  - attrs: null
+    block: false
+    children: null
+    content: c
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  - attrs: null
+    block: false
+    children: null
+    content: x
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: $
+    meta: null
+    nesting: 0
+    tag: math
+    type: math_single
+  - attrs: null
+    block: false
+    children: null
+    content: d
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: null
+    nesting: 0
+    tag: ''
+    type: text
+  content: 'a$1+1=2$
+
+    $1+1=2$b
+
+    c$x$d'
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 0
+  - 3
+  markup: ''
+  meta: null
+  nesting: 0
+  tag: ''
+  type: inline

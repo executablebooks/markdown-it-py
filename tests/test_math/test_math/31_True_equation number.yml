@@ -1,0 +1,17 @@
+- attrs: null
+  block: true
+  children: null
+  content: '{\\bold e}(\\varphi) = \\begin{pmatrix}
+
+    \\cos\\varphi\\\\\\sin\\varphi
+
+    \\end{pmatrix}'
+  hidden: false
+  info: '3'
+  level: 0
+  map: null
+  markup: $$
+  meta: null
+  nesting: 0
+  tag: math
+  type: math_block_eqno
