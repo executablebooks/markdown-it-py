@@ -1,2 +1,4 @@
 include LICENSE
+include setup.py
+include README.md
 include markdown_it/cli/spec.md
