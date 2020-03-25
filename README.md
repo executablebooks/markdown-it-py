@@ -1,5 +1,7 @@
 # markdown-it-py
 
+![Python package](https://github.com/ExecutableBookProject/markdown-it-py/workflows/Python%20package/badge.svg)
+
 This is a Python port of [markdown-it](https://github.com/markdown-it/markdown-it),
 and some of its associated plugins.
 It is still under development, so should be used with caution.
