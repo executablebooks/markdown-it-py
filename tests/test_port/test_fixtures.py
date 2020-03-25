@@ -12,7 +12,7 @@ FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures")
     "line,title,input,expected", read_fixture_file(FIXTURE_PATH.joinpath("tables.md"))
 )
 def test_title(line, title, input, expected):
-    md = MarkdownIt("working")
+    md = MarkdownIt().enable("table")
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
 
@@ -38,5 +38,15 @@ def test_fatal(line, title, input, expected):
         # TODO fix
         pytest.skip("url escaping")
     md = MarkdownIt("commonmark")
+    text = md.render(input)
+    assert text.rstrip() == expected.rstrip()
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("strikethrough.md")),
+)
+def test_strikethrough(line, title, input, expected):
+    md = MarkdownIt().enable("strikethrough")
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()

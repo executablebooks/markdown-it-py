@@ -118,7 +118,7 @@ From CommonMark test suite, replacing `**` with our marker:
 .
 a~~"foo"~~
 .
-<p>a~~“foo”~~</p>
+<p>a~~&quot;foo&quot;~~</p>
 .
 
 Coverage: single tilde

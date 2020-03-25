@@ -13,7 +13,7 @@ _rules = [
     ["newline", rules_inline.newline],
     ["escape", rules_inline.escape],
     ["backticks", rules_inline.backtick],
-    #   [ 'strikethrough',   require('./rules_inline/strikethrough').tokenize ],
+    ["strikethrough", rules_inline.strikethrough.tokenize],
     ["emphasis", rules_inline.emphasis.tokenize],
     ["link", rules_inline.link],
     ["image", rules_inline.image],
@@ -24,7 +24,7 @@ _rules = [
 
 _rules2 = [
     ["balance_pairs", rules_inline.link_pairs],
-    #   [ 'strikethrough',   require('./rules_inline/strikethrough').postProcess ],
+    ["strikethrough", rules_inline.strikethrough.postProcess],
     ["emphasis", rules_inline.emphasis.postProcess],
     ["text_collapse", rules_inline.text_collapse],
 ]
