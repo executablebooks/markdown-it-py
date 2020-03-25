@@ -3,7 +3,7 @@
 set -e
 
 REPO="https://github.com/commonmark/CommonMark.git"
-VERSION="0.28"
+VERSION="0.29"
 
 function main {
     echo "Cloning from repo: $REPO..."

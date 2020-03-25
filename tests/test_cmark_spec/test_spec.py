@@ -19,34 +19,25 @@ def test_file(file_regression):
 
 @pytest.mark.parametrize("entry", json.loads(TESTS_INPUT.read_text()))
 def test_spec(entry):
-
-    if entry["example"] in [315, 318, 612]:
-        # these tests are compliant with markdown-it demo, but not here
-        pytest.skip("code span spacing")
-    if entry["example"] in [273]:
-        # markdown it markdown-it only support 4 levels of list items
-        pytest.skip("list level > 4")
-    if entry["example"] in [274]:
-        # these tests are compliant with markdown-it demo, but not with cmark
-        pytest.skip("max indentation for list reached")
+    if entry["example"] in [108, 334]:
+        # TODO ``` ``` -> <code> </code> not <code></code>
+        pytest.skip("empty code span spacing")
     if entry["example"] in [
-        167,
-        297,
-        299,
-        300,
-        301,
-        303,
+        171,
+        306,
+        308,
         309,
         310,
-        311,
-        464,
-        474,
-        477,
-        480,
-        544,
-        547,
-        548,
-        574,
+        318,
+        319,
+        320,
+        499,
+        502,
+        505,
+        569,
+        572,
+        573,
+        599,
     ]:
         # TODO fix url escaping
         pytest.skip("url escaping")
@@ -54,8 +45,8 @@ def test_spec(entry):
     output = md.render(entry["markdown"])
     expected = entry["html"]
 
-    if entry["example"] in [181, 202, 203]:
-        # this doesn't have any bearing in the output
+    if entry["example"] in [187, 209, 210]:
+        # this doesn't have any bearing on the output
         output = output.replace(
             "<blockquote></blockquote>", "<blockquote>\n</blockquote>"
         )
