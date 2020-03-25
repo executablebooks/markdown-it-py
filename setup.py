@@ -5,7 +5,7 @@ from setuptools import find_packages, setup
 
 setup(
     name="markdown-it-py",
-    version=import_module("markdown_it").__version__,
+    version="0.1.0",  # import_module("markdown_it").__version__,  TODO fix this
     description="PYthon port of mardown-it. Markdown parser, done right.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
