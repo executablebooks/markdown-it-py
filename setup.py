@@ -1,11 +1,11 @@
 # from importlib import import_module
-from pathlib import Path
+from os import path
 import re
 from setuptools import find_packages, setup
 
 
 def get_version():
-    text = Path(__file__).parent.joinpath("markdown_it", "__init__.py").read_text()
+    text = open(path.join(path.dirname(__file__), "markdown_it", "__init__.py")).read()
     match = re.compile(r"^__version__\s*\=\s*[\"\']([^\s\'\"]+)", re.M).search(text)
     return match.group(1)
 
