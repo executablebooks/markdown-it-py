@@ -7,7 +7,10 @@ and some of its associated plugins.
 It is still under development, so should be used with caution.
 
 Details of the port can be found in `markdown_it/port.yaml` and in `port.yaml`
-within the extension folders. Basic usage:
+within the extension folders. But the driving design philosiphy has been to change as little of the
+fundamental code structure (file names, function name, etc) as possible.
+
+Basic usage:
 
 
 ```python
