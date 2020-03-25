@@ -53,7 +53,7 @@ Test document: spec.md
 Test iterations: 30
 Running 7 test(s) ...
 =====================
-mistune          (0.8.4): 3.62 s
+[mistune         (0.8.4): 3.62 s]*
 markdown-it-py   (0.1.0): 9.03 s
 mistletoe        (0.10.0): 9.89 s
 commonmark-py    (0.9.1): 20.82 s
@@ -62,7 +62,7 @@ pymarkdown:extra (3.2.1): 41.86 s
 panflute         (1.12.5): 35.02 s
 ```
 
-Note `mistune` is not CommonMark compliant, which is what allows for its
+\*Note `mistune` is not CommonMark compliant, which is what allows for its
 faster parsing, at the expense of issues, for example, with nested inline parsing.
 See [mistletoes's explanation](https://github.com/miyuchina/mistletoe#performance)
 for further details.
