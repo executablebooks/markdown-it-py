@@ -6,7 +6,12 @@ if __name__ == "__main__":
     from markdown_it.extensions.myst_role import myst_role_plugin
     from markdown_it.doc_renderer import DocRenderer
 
-    md = MarkdownIt().use(front_matter_plugin).use(myst_block_plugin).use(myst_role_plugin)
+    md = (
+        MarkdownIt()
+        .use(front_matter_plugin)
+        .use(myst_block_plugin)
+        .use(myst_role_plugin)
+    )
     tokens = md.parse(
         """\
     ---

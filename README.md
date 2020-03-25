@@ -25,7 +25,7 @@ $ markdown-it
 markdown-it-py [version 0.1.0] (interactive)
 Type Ctrl-D to complete input, or Ctrl-C to exit.
 >>> > **hallo** there!
-... 
+...
 <blockquote>
 <p><strong>hallo</strong> there!</p>
 </blockquote>
