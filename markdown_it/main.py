@@ -1,7 +1,8 @@
-from typing import Callable, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 
 from . import helpers, presets  # noqa F401
 from .common import utils  # noqa F401
+from .token import Token
 from .parser_core import ParserCore  # noqa F401
 from .parser_block import ParserBlock  # noqa F401
 from .parser_inline import ParserInline  # noqa F401
@@ -104,13 +105,22 @@ class MarkdownIt:
 
         return self
 
-    def enable(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
-        """ chainable
-        MarkdownIt.enable(list, ignoreInvalid)
-        - list (String|Array): rule name or list of rule names to enable
-        - ignoreInvalid (Boolean): set `true` to ignore errors when rule not found.
+    def get_active_rules(self) -> Dict[str, List[str]]:
+        """Return the names of all active rules."""
+        return {
+            chain: self[chain].ruler.get_active_rules()
+            for chain in ["core", "block", "inline"]
+        }
 
-        Enable list or rules. It will automatically find appropriate components,
+    def enable(
+        self, names: Union[str, List[str]], ignoreInvalid: bool = False
+    ) -> "MarkdownIt":
+        """Enable list or rules. (chainable)
+
+        :param names: rule name or list of rule names to enable.
+        :param ignoreInvalid: set `true` to ignore errors when rule not found.
+
+        It will automatically find appropriate components,
         containing rules with given names. If rule not found, and `ignoreInvalid`
         not set - throws exception.
 
@@ -135,13 +145,14 @@ class MarkdownIt:
 
         return self
 
-    def disable(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
-        """ chainable
-        MarkdownIt.disable(list, ignoreInvalid)
-        - names (String|Array): rule name or list of rule names to disable.
-        - ignoreInvalid (Boolean): set `true` to ignore errors when rule not found.
+    def disable(
+        self, names: Union[str, List[str]], ignoreInvalid: bool = False
+    ) -> "MarkdownIt":
+        """The same as [[MarkdownIt.enable]], but turn specified rules off. (chainable)
 
-        The same as [[MarkdownIt.enable]], but turn specified rules off.
+        :param names: rule name or list of rule names to disable.
+        :param ignoreInvalid: set `true` to ignore errors when rule not found.
+
         """
         result = []
 
@@ -157,88 +168,94 @@ class MarkdownIt:
             raise ValueError(f"MarkdownIt. Failed to disable unknown rule(s): {missed}")
         return self
 
-    def add_render_rule(self, name, function, fmt="html"):
+    def add_render_rule(self, name: str, function: Callable, fmt="html"):
+        """Add a rule for rendering a particular Token type.
+
+        Only applied when ``renderer.__output__ == fmt``
+        """
         if self.renderer.__output__ == fmt:
             self.renderer.rules[name] = function
 
-    def use(self, plugin: Callable, *params):
-        """ chainable
+    def use(self, plugin: Callable, *params) -> "MarkdownIt":
+        """Load specified plugin with given params into current parser instance. (chainable)
 
-        Load specified plugin with given params into current parser instance.
         It's just a sugar to call `plugin(md, params)` with curring.
 
-        ##### Example
+        Example::
 
-        ```python
-        def func(tokens, idx):
-            tokens[idx].content = tokens[idx].content.replace('foo', 'bar')
-        md = MarkdownIt().use(plugin, 'foo_replace', 'text', func)
-        ```
+            def func(tokens, idx):
+                tokens[idx].content = tokens[idx].content.replace('foo', 'bar')
+            md = MarkdownIt().use(plugin, 'foo_replace', 'text', func)
+
         """
         plugin(self, *params)
         return self
 
-    def parse(self, src: str, env: Optional[dict] = None):
-        """ internal
-        MarkdownIt.parse(src, env) -> Array
-        - src (String): source string
-        - env (Object): environment sandbox
+    def parse(self, src: str, env: Optional[AttrDict] = None) -> List[Token]:
+        """Parse the source string to a token stream
+
+        :param src: source string
+        :param env: environment sandbox
 
         Parse input string and returns list of block tokens (special token type
-        "inline" will contain list of inline tokens). You should not call this
-        method directly, until you write custom renderer (for example, to produce
-        AST).
+        "inline" will contain list of inline tokens).
 
         `env` is used to pass data between "distributed" rules and return additional
         metadata like reference info, needed for the renderer. It also can be used to
         inject data in specific cases. Usually, you will be ok to pass `{}`,
         and then pass updated object to renderer.
         """
-        env = AttrDict(env or {})
+        env = AttrDict() if env is None else env
+        if not isinstance(env, AttrDict):
+            raise TypeError(f"Input data should be an AttrDict, not {type(env)}")
         if not isinstance(src, str):
-            raise TypeError("Input data should be a string")
+            raise TypeError(f"Input data should be a string, not {type(src)}")
         state = StateCore(src, self, env)
         self.core.process(state)
         return state.tokens
 
-    def render(self, src: str, env: Optional[dict] = None):
-        """
-        MarkdownIt.render(src [, env]) -> String
-        - src (String): source string
-        - env (Object): environment sandbox
+    def render(self, src: str, env: Optional[AttrDict] = None) -> Any:
+        """Render markdown string into html. It does all magic for you :).
 
-        Render markdown string into html. It does all magic for you :).
+        :param src: source string
+        :param env: environment sandbox
+        :returns: The output of the loaded renderer
 
         `env` can be used to inject additional metadata (`{}` by default).
         But you will not need it with high probability. See also comment
         in [[MarkdownIt.parse]].
         """
-        env = AttrDict(env or {})
+        env = env or AttrDict()
         return self.renderer.render(self.parse(src, env), self.options, env)
 
-    def parseInline(self, src: str, env: Optional[dict] = None):
-        """ internal
-        MarkdownIt.parseInline(src, env) -> Array
-        - src (String): source string
-        - env (Object): environment sandbox
+    def parseInline(self, src: str, env: Optional[AttrDict] = None) -> List[Token]:
+        """The same as [[MarkdownIt.parse]] but skip all block rules.
 
-        The same as [[MarkdownIt.parse]] but skip all block rules. It returns the
+        :param src: source string
+        :param env: environment sandbox
+
+        It returns the
         block tokens list with the single `inline` element, containing parsed inline
         tokens in `children` property. Also updates `env` object.
         """
+        env = AttrDict() if env is None else env
+        if not isinstance(env, AttrDict):
+            raise TypeError(f"Input data should be an AttrDict, not {type(env)}")
+        if not isinstance(src, str):
+            raise TypeError(f"Input data should be a string, not {type(src)}")
         state = self.core.State(src, self, env)
         state.inlineMode = True
         self.core.process(state)
         return state.tokens
 
-    def renderInline(self, src: str, env: Optional[dict] = None):
-        """
-        MarkdownIt.renderInline(src [, env]) -> String
-        - src (String): source string
-        - env (Object): environment sandbox
+    def renderInline(self, src: str, env: Optional[AttrDict] = None) -> Any:
+        """Similar to [[MarkdownIt.render]] but for single paragraph content.
+
+        :param src: source string
+        :param env: environment sandbox
 
         Similar to [[MarkdownIt.render]] but for single paragraph content. Result
         will NOT be wrapped into `<p>` tags.
         """
-        env = AttrDict(env or {})
+        env = AttrDict() if env is None else env
         return self.renderer.render(self.parseInline(src, env), self.options, env)
