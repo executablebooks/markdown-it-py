@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
 import attr
 
@@ -95,3 +95,57 @@ class Token:
         return attr.asdict(
             self, recurse=children, filter=filter, dict_factory=dict_factory
         )
+
+
+@attr.s(slots=True)
+class NestedTokens:
+    """A class that closely resembles a Token,
+    but for a an opening/closing Token pair, and their containing children.
+    """
+
+    opening: Token = attr.ib()
+    closing: Optional[Token] = attr.ib()
+    children: List[Union[Token, "NestedTokens"]] = attr.ib(factory=list)
+
+    def __getattr__(self, name):
+        return getattr(self.opening, name)
+
+    def attrGet(self, name: str) -> str:
+        """ Get the value of attribute `name`, or null if it does not exist."""
+        return self.opening.attrGet(name)
+
+
+def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
+    """Convert the token stream to a list of tokens and nested tokens.
+
+    ``NestedTokens`` contain the open and close tokens and a list of children
+    of all tokens in between (recursively nested)
+    """
+    output = []
+
+    tokens = list(reversed(tokens))
+    while tokens:
+        token = tokens.pop()
+
+        if token.nesting == 0:
+            output.append(token)
+            if token.children:
+                token.children = nest_tokens(token.children)
+            continue
+
+        assert token.nesting == 1, token.nesting
+
+        nested_tokens = [token]
+        nesting = 1
+        while tokens and nesting != 0:
+            token = tokens.pop()
+            nested_tokens.append(token)
+            nesting += token.nesting
+        if nesting != 0:
+            raise ValueError(f"unclosed tokens starting {nested_tokens[0]}")
+
+        child = NestedTokens(nested_tokens[0], nested_tokens[-1])
+        output.append(child)
+        child.children = nest_tokens(nested_tokens[1:-1])
+
+    return output

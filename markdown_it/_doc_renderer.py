@@ -1,8 +1,8 @@
+"""NOTE: this will eventually be moved out of core"""
 from contextlib import contextmanager
 import json
-from typing import List, Optional, Union
+from typing import List
 
-import attr
 import yaml
 
 from docutils import nodes
@@ -17,54 +17,7 @@ from docutils.parsers.rst import Parser as RSTParser
 # from docutils.statemachine import StringList
 from docutils.utils import new_document, Reporter  # noqa
 
-from markdown_it.token import Token
-
-
-@attr.s(slots=True)
-class NestedTokens:
-    opening: Token = attr.ib()
-    closing: Optional[Token] = attr.ib()
-    children: List[Union[Token, "NestedTokens"]] = attr.ib(factory=list)
-
-    def __getattr__(self, name):
-        return getattr(self.opening, name)
-
-    def attrGet(self, name: str) -> str:
-        """ Get the value of attribute `name`, or null if it does not exist."""
-        return self.opening.attrGet(name)
-
-
-def get_nested(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
-    """
-    """
-    output = []
-
-    tokens = list(reversed(tokens))
-    while tokens:
-        token = tokens.pop()
-
-        if token.nesting == 0:
-            output.append(token)
-            if token.children:
-                token.children = get_nested(token.children)
-            continue
-
-        assert token.nesting == 1, token.nesting
-
-        nested_tokens = [token]
-        nesting = 1
-        while tokens and nesting != 0:
-            token = tokens.pop()
-            nested_tokens.append(token)
-            nesting += token.nesting
-        if nesting != 0:
-            raise ValueError(f"unclosed tokens starting {nested_tokens[0]}")
-
-        child = NestedTokens(nested_tokens[0], nested_tokens[-1])
-        output.append(child)
-        child.children = get_nested(nested_tokens[1:-1])
-
-    return output
+from markdown_it.token import Token, nest_tokens
 
 
 def make_document(source_path="notset") -> nodes.document:
@@ -90,7 +43,7 @@ class DocRenderer:
         self._level_to_elem = {0: self.document}
 
     def run_render(self, tokens: List[Token]):
-        tokens = get_nested(tokens)
+        tokens = nest_tokens(tokens)
         for i, token in enumerate(tokens):
             if f"render_{token.type}" in self.rules:
                 self.rules[f"render_{token.type}"](self, token)
@@ -265,7 +218,7 @@ class DocRenderer:
         self.current_node = section
 
     def render_link_open(self, token):
-        # TODO I think this may be already handled?
+        # TODO I think this is maybe already handled at this point?
         # refuri = escape_url(token.target)
         refuri = target = token.attrGet("href")
         ref_node = nodes.reference(target, target, refuri=refuri)
@@ -337,6 +290,25 @@ class DocRenderer:
         node = nodes.literal(content, content)
         self.add_line_and_source_path(node, token)
         self.current_node.append(node)
+
+    # def render_table_open(self, token):
+    #     # print(token)
+    #     # raise
+
+    #     table = nodes.table()
+    #     table["classes"] += ["colwidths-auto"]
+    #     self.add_line_and_source_path(table, token)
+
+    #     thead = nodes.thead()
+    #     # TODO there can never be more than one header row (at least in mardown-it)
+    #     header = token.children[0].children[0]
+    #     for hrow in header.children:
+    #         nodes.t
+    #         style = hrow.attrGet("style")
+
+    #     tgroup = nodes.tgroup(cols)
+    #     table += tgroup
+    #     tgroup += thead
 
 
 def dict_to_docinfo(data):
