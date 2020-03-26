@@ -111,9 +111,9 @@ class MockState:
         # so that the nested parse does not effect the current renderer,
         # but we use the same env, so that link references, etc
         # are added to the global parse.
-        from .renderer import DocRenderer
+        from .doc_renderer import DocutilsRenderer
 
-        nested_renderer = DocRenderer(
+        nested_renderer = DocutilsRenderer(
             self._renderer.md, document=self.document, current_node=paragraph
         )
         nested_renderer.run_render(tokens, self._renderer.env, ouput_footnotes=False)

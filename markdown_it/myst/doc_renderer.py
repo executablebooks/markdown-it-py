@@ -1,7 +1,10 @@
 """NOTE: this will eventually be moved out of core"""
 from contextlib import contextmanager
+import inspect
 import json
+from os.path import splitext
 from typing import List, Optional
+from urllib.parse import urlparse
 
 import yaml
 
@@ -36,7 +39,7 @@ def make_document(source_path="notset") -> nodes.document:
     return new_document(source_path, settings=settings)
 
 
-class DocRenderer:
+class DocutilsRenderer:
     __output__ = "docutils"
 
     def __init__(
@@ -50,7 +53,7 @@ class DocRenderer:
         self.options = options or {}
         self.rules = {
             k: v
-            for k, v in self.__class__.__dict__.items()
+            for k, v in inspect.getmembers(self, predicate=inspect.ismethod)
             if k.startswith("render_") and k != "render_children"
         }
         self.document = document or make_document()
@@ -93,7 +96,7 @@ class DocRenderer:
         for i, token in enumerate(tokens):
             # skip hidden?
             if f"render_{token.type}" in self.rules:
-                self.rules[f"render_{token.type}"](self, token)
+                self.rules[f"render_{token.type}"](token)
             else:
                 print(f"no render method for: {token.type}")
 
@@ -148,7 +151,7 @@ class DocRenderer:
         for i, token in enumerate(tokens):
             # skip hidden?
             if f"render_{token.type}" in self.rules:
-                self.rules[f"render_{token.type}"](self, token)
+                self.rules[f"render_{token.type}"](token)
             else:
                 print(f"no render method for: {token.type}")
 
@@ -165,7 +168,7 @@ class DocRenderer:
     def render_children(self, token):
         for i, child in enumerate(token.children or []):
             if f"render_{child.type}" in self.rules:
-                self.rules[f"render_{child.type}"](self, child)
+                self.rules[f"render_{child.type}"](child)
             else:
                 print(f"no render method for: {child.type}")
 
@@ -330,10 +333,57 @@ class DocRenderer:
         self.current_node = section
 
     def render_link_open(self, token):
-        # TODO I think this is maybe already handled at this point?
-        # refuri = escape_url(token.target)
-        # TODO identify cross-references
-        refuri = target = token.attrGet("href")
+        if token.markup == "autolink":
+            return self.render_autolink(token)
+
+        ref_node = nodes.reference()
+        self.add_line_and_source_path(ref_node, token)
+        # Check destination is supported for cross-linking and remove extension
+        # TODO escape urls?
+        destination = token.attrGet("href")
+        title = token.attrGet("title")
+        _, ext = splitext(destination)
+        # TODO check for other supported extensions, such as those specified in
+        # the Sphinx conf.py file but how to access this information?
+        # TODO this should probably only remove the extension for local paths,
+        # i.e. not uri's starting with http or other external prefix.
+
+        # if ext.replace('.', '') in self.supported:
+        #     destination = destination.replace(ext, '')
+        ref_node["refuri"] = destination
+        print(token)
+        if title:
+            ref_node["title"] = title
+        next_node = ref_node
+
+        url_check = urlparse(destination)
+        # If there's not a url scheme (e.g. 'https' for 'https:...' links),
+        # or there is a scheme but it's not in the list of known_url_schemes,
+        # then assume it's a cross-reference
+        known_url_schemes = self.config.get("known_url_schemes", None)
+        if known_url_schemes:
+            scheme_known = url_check.scheme in known_url_schemes
+        else:
+            scheme_known = bool(url_check.scheme)
+
+        if not url_check.fragment and not scheme_known:
+            self.handle_cross_reference(token, destination)
+        else:
+            self.current_node.append(next_node)
+            with self.current_node_context(ref_node):
+                self.render_children(token)
+
+    def handle_cross_reference(self, token, destination):
+        # TODO use the docutils error reporting mechanisms, rather than raising
+        if not self.config.get("ignore_missing_refs", False):
+            raise NotImplementedError(
+                "reference not found in current document: {} (lines: {})".format(
+                    destination, token.map
+                )
+            )
+
+    def render_autolink(self, token):
+        refuri = target = escapeHtml(token.attrGet("href"))
         ref_node = nodes.reference(target, target, refuri=refuri)
         self.add_line_and_source_path(ref_node, token)
         self.current_node.append(ref_node)

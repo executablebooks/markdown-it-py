@@ -5,7 +5,7 @@ from markdown_it.extensions.myst_blocks import myst_block_plugin
 from markdown_it.extensions.myst_role import myst_role_plugin
 from markdown_it.extensions.texmath import texmath_plugin
 from markdown_it.extensions.footnote import footnote_plugin
-from markdown_it.myst.renderer import DocRenderer
+from markdown_it.myst.sphinx_renderer import SphinxRenderer
 
 md = (
     MarkdownIt()
@@ -52,7 +52,7 @@ abc
 
 [a][b]
 
-[b]: s
+[b]: s "a"
 
 <div>A</div>
 
@@ -88,11 +88,13 @@ my title
 [^dfg]
 [^dfg]: xyc
 ````
+[dvs]: a
+[dvs]
 """,
     env=env,
 )
 
-doc = DocRenderer(md)
+doc = SphinxRenderer(md)
 doc.run_render(tokens, env)
 print(len(env["foot_refs"]))
 print(doc.document.pformat())
