@@ -187,14 +187,24 @@ def reference(state: StateBlock, startLine, _endLine, silent):
     if "references" not in state.env:
         state.env["references"] = {}
 
+    state.line = startLine + lines + 1
+
     if label not in state.env["references"]:
-        # TODO here (as is expected) references that have been previously defined
-        # are ignored. But we should add a record of these (plus line numbers) to the
-        # env, so that renderers may report warnings for these ignored references
-        # rather than 'failing silently'
-        state.env["references"][label] = AttrDict({"title": title, "href": href})
+        state.env["references"][label] = AttrDict(
+            {"title": title, "href": href, "map": [startLine, state.line]}
+        )
+    else:
+        state.env.setdefault("duplicate_refs", []).append(
+            AttrDict(
+                {
+                    "title": title,
+                    "href": href,
+                    "label": label,
+                    "map": [startLine, state.line],
+                }
+            )
+        )
 
     state.parentType = oldParentType
 
-    state.line = startLine + lines + 1
     return True
