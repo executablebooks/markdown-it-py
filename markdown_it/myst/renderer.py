@@ -11,6 +11,7 @@ from docutils.frontend import OptionParser
 from docutils.languages import get_language
 from docutils.parsers.rst import directives, Directive, DirectiveError, roles
 from docutils.parsers.rst import Parser as RSTParser
+from docutils.parsers.rst.directives.misc import Include
 from docutils.statemachine import StringList
 from docutils.utils import new_document, Reporter
 
@@ -19,7 +20,13 @@ from markdown_it.token import Token, nest_tokens
 from markdown_it.utils import AttrDict
 from markdown_it.common.utils import escapeHtml
 
-from .mocking import MockInliner, MockState, MockStateMachine, MockingError
+from .mocking import (
+    MockInliner,
+    MockState,
+    MockStateMachine,
+    MockingError,
+    MockIncludeDirective,
+)
 from .parse_directives import parse_directive_text, DirectiveParsingError
 
 
@@ -55,7 +62,7 @@ class DocRenderer:
         self.config = {}
         self._level_to_elem = {0: self.document}
 
-    def run_render(self, tokens: List[Token], env: AttrDict):
+    def run_render(self, tokens: List[Token], env: AttrDict, ouput_footnotes=True):
         """Run the render on a token stream.
 
         :param tokens: the token stream
@@ -65,20 +72,15 @@ class DocRenderer:
         self.env = env
 
         # propagate line number down to inline elements
-        last_map = None
         for token in tokens:
-            if token.map:
-                last_map = token.map
-            elif last_map:
-                token.meta["parent_line"] = last_map[0]
             for child in token.children or []:
-                child.meta["parent_line"] = last_map[0]
+                child.map = token.map
 
         # nest tokens
         tokens = nest_tokens(tokens)
 
         # move footnote definitions to env
-        self.env["foot_refs"] = []
+        self.env.setdefault("foot_refs", [])
         new_tokens = []
         for token in tokens:
             if token.type == "footnote_reference_open":
@@ -97,6 +99,9 @@ class DocRenderer:
 
         # TODO log warning for duplicate references
 
+        if not ouput_footnotes:
+            return self.document
+
         # add footnotes
         referenced = {
             v["label"] for v in self.env.get("footnotes", {}).get("list", {}).values()
@@ -110,6 +115,42 @@ class DocRenderer:
             self.render_footnote_reference_open(footref)
 
         return self.document
+
+    def nested_render_text(self, text: str, lineno: int):
+        """Render unparsed text."""
+
+        # parse without front matter
+        with self.md.reset_rules():
+            self.md.disable("front_matter", True)
+            tokens = self.md.parse(text, self.env)
+
+        # set correct line numbers
+        for token in tokens:
+            if token.map:
+                token.map = [token.map[0] + lineno, token.map[1] + lineno]
+                for child in token.children or []:
+                    child.map = token.map
+
+        # nest tokens
+        tokens = nest_tokens(tokens)
+
+        # move footnote definitions to env
+        self.env.setdefault("foot_refs", [])
+        new_tokens = []
+        for token in tokens:
+            if token.type == "footnote_reference_open":
+                self.env["foot_refs"].append(token)
+            else:
+                new_tokens.append(token)
+        tokens = new_tokens
+
+        # render
+        for i, token in enumerate(tokens):
+            # skip hidden?
+            if f"render_{token.type}" in self.rules:
+                self.rules[f"render_{token.type}"](self, token)
+            else:
+                print(f"no render method for: {token.type}")
 
     @contextmanager
     def current_node_context(self, node, append: bool = False):
@@ -127,17 +168,6 @@ class DocRenderer:
                 self.rules[f"render_{child.type}"](self, child)
             else:
                 print(f"no render method for: {child.type}")
-
-    def nested_render_text(self, text: str, lineno: int):
-        """Render unparsed text."""
-        with self.md.reset_rules():
-            self.md.disable("front_matter", True)
-            tokens = self.md.parse(text, self.env)
-        for token in tokens:
-            if token.map:
-                token.map = [token.map[0] + lineno, token.map[1] + lineno]
-        # TODO propagate line numbers to children (make separate function)
-        self.run_render(tokens, self.env)
 
     def add_line_and_source_path(self, node, token):
         """Copy the line number and document source path to the docutils node."""
@@ -432,7 +462,7 @@ class DocRenderer:
         name = token.meta["name"]
         text = escapeHtml(token.content)  # TODO check this
         rawsource = f":{name}:`{token.content}`"
-        lineno = token.meta.get("parent_line", 0)
+        lineno = token.map[0] if token.map else 0
         role_func, messages = roles.role(
             name, self.language_module, lineno, self.reporter
         )
@@ -485,20 +515,19 @@ class DocRenderer:
             return
 
         # initialise directive
-        # TODO Include
-        # if issubclass(directive_class, Include):
-        #     directive_instance = MockIncludeDirective(
-        #         self,
-        #         name=name,
-        #         klass=directive_class,
-        #         arguments=arguments,
-        #         options=options,
-        #         body=body_lines,
-        #         token=token,
-        #     )
+        if issubclass(directive_class, Include):
+            directive_instance = MockIncludeDirective(
+                self,
+                name=name,
+                klass=directive_class,
+                arguments=arguments,
+                options=options,
+                body=body_lines,
+                token=token,
+            )
         else:
             state_machine = MockStateMachine(self, position)
-            state = MockState(self, state_machine, position, token=token)
+            state = MockState(self, state_machine, position)
             directive_instance = directive_class(
                 name=name,
                 # the list of positional arguments

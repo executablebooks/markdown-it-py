@@ -85,11 +85,14 @@ asdas asdasda
 my title
 ```{contents} abc
 ```
+[^dfg]
+[^dfg]: xyc
 ````
 """,
     env=env,
 )
-print(env)
+
 doc = DocRenderer(md)
 doc.run_render(tokens, env)
+print(len(env["foot_refs"]))
 print(doc.document.pformat())
