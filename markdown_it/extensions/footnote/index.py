@@ -366,8 +366,8 @@ def render_footnote_caption(self, tokens, idx, options, env):
 
 
 def render_footnote_ref(self, tokens, idx, options, env):
-    ident = self.rules["footnote_anchor_name"](self, tokens, idx, options, env)
-    caption = self.rules["footnote_caption"](self, tokens, idx, options, env)
+    ident = self.rules["footnote_anchor_name"](tokens, idx, options, env)
+    caption = self.rules["footnote_caption"](tokens, idx, options, env)
     refid = ident
 
     if tokens[idx].meta.get("subId", -1) > 0:
@@ -401,7 +401,7 @@ def render_footnote_block_close(self, tokens, idx, options, env):
 
 
 def render_footnote_open(self, tokens, idx, options, env):
-    ident = self.rules["footnote_anchor_name"](self, tokens, idx, options, env)
+    ident = self.rules["footnote_anchor_name"](tokens, idx, options, env)
 
     if tokens[idx].meta.get("subId", -1) > 0:
         ident += ":" + tokens[idx].meta["subId"]
@@ -414,7 +414,7 @@ def render_footnote_close(self, tokens, idx, options, env):
 
 
 def render_footnote_anchor(self, tokens, idx, options, env):
-    ident = self.rules["footnote_anchor_name"](self, tokens, idx, options, env)
+    ident = self.rules["footnote_anchor_name"](tokens, idx, options, env)
 
     if tokens[idx].meta["subId"] > 0:
         ident += ":" + str(tokens[idx].meta["subId"])

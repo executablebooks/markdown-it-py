@@ -187,7 +187,7 @@ class MarkdownIt:
         Only applied when ``renderer.__output__ == fmt``
         """
         if self.renderer.__output__ == fmt:
-            self.renderer.rules[name] = function
+            self.renderer.rules[name] = function.__get__(self.renderer)
 
     def use(self, plugin: Callable, *params) -> "MarkdownIt":
         """Load specified plugin with given params into current parser instance. (chainable)

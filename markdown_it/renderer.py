@@ -5,7 +5,7 @@ Generates HTML from parsed token stream. Each instance has independent
 copy of rules. Those can be rewritten with ease. Also, you can add new
 rules if you create plugin and adds new token types.
 """
-
+import inspect
 from typing import List
 
 from .common.utils import unescapeAll, escapeHtml
@@ -49,7 +49,7 @@ class RendererHTML:
     def __init__(self):
         self.rules = {
             k: v
-            for k, v in self.__class__.__dict__.items()
+            for k, v in inspect.getmembers(self, predicate=inspect.ismethod)
             if not (k.startswith("render") or k.startswith("_"))
         }
 
@@ -68,7 +68,7 @@ class RendererHTML:
             if token.type == "inline":
                 result += self.renderInline(token.children, options, env)
             elif token.type in self.rules:
-                result += self.rules[token.type](self, tokens, i, options, env)
+                result += self.rules[token.type](tokens, i, options, env)
             else:
                 result += self.renderToken(tokens, i, options, env)
 
@@ -85,7 +85,7 @@ class RendererHTML:
 
         for i, token in enumerate(tokens):
             if token.type in self.rules:
-                result += self.rules[token.type](self, tokens, i, options, env)
+                result += self.rules[token.type](tokens, i, options, env)
             else:
                 result += self.renderToken(tokens, i, options, env)
 
