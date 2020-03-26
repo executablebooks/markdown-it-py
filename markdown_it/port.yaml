@@ -12,6 +12,10 @@
       because in python you can't do e.g. `for {i=1;i<x;i++} {}`
     - Use python version of `charCodeAt`
     - |
+      Use python's built-in `html.escape` and `urlparse.quote` methods, as a replacement for
+      the JS dependencies [mdurl](https://www.npmjs.com/package/mdurl)
+      and [punycode](https://www.npmjs.com/package/punycode)
+    - |
       Remove indirect references within `MarkdownIt`;
 
         self.validateLink = validateLink
