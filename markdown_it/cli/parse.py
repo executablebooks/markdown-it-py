@@ -40,7 +40,7 @@ def interactive():
     Python REPL style.
     """
     _import_readline()
-    _print_heading()
+    print_heading()
     contents = []
     more = False
     while True:
@@ -73,7 +73,7 @@ def _import_readline():
         print("[warning] readline library not available.")
 
 
-def _print_heading():
+def print_heading():
     print("{} (interactive)".format(version_str))
     print("Type Ctrl-D to complete input, or Ctrl-C to exit.")
 

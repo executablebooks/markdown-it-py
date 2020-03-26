@@ -1,8 +1,8 @@
 # markdown-it-py
 
 ![Github-DI][github-ci]
-[![PyPI][pypi-badge]][pypi-link]
 [![Coverage Status][cov-badge]][cov-link]
+[![PyPI][pypi-badge]][pypi-link]
 [![Code style: black][black-badge]][black-link]
 
 [github-ci]: https://github.com/ExecutableBookProject/markdown-it-py/workflows/Python%20package/badge.svg
