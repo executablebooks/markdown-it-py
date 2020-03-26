@@ -7,6 +7,7 @@ def test_load_presets():
         "block": ["paragraph"],
         "core": ["normalize", "block", "inline"],
         "inline": ["text"],
+        "inline2": ["balance_pairs", "text_collapse"],
     }
     md = MarkdownIt("commonmark")
     assert md.get_active_rules() == {
@@ -35,6 +36,7 @@ def test_load_presets():
             "html_inline",
             "entity",
         ],
+        "inline2": ["balance_pairs", "emphasis", "text_collapse"],
     }
 
 
@@ -44,12 +46,14 @@ def test_enable():
         "block": ["heading", "paragraph"],
         "core": ["normalize", "block", "inline"],
         "inline": ["text"],
+        "inline2": ["balance_pairs", "text_collapse"],
     }
     md.enable(["backticks", "autolink"])
     assert md.get_active_rules() == {
         "block": ["heading", "paragraph"],
         "core": ["normalize", "block", "inline"],
         "inline": ["text", "backticks", "autolink"],
+        "inline2": ["balance_pairs", "text_collapse"],
     }
 
 
@@ -59,10 +63,30 @@ def test_disable():
         "block": ["paragraph"],
         "core": ["normalize", "block"],
         "inline": ["text"],
+        "inline2": ["balance_pairs", "text_collapse"],
     }
     md.disable(["text"])
     assert md.get_active_rules() == {
         "block": ["paragraph"],
         "core": ["normalize", "block"],
         "inline": [],
+        "inline2": ["balance_pairs", "text_collapse"],
+    }
+
+
+def test_reset():
+    md = MarkdownIt("zero")
+    with md.reset_rules():
+        md.disable("inline")
+        assert md.get_active_rules() == {
+            "block": ["paragraph"],
+            "core": ["normalize", "block"],
+            "inline": ["text"],
+            "inline2": ["balance_pairs", "text_collapse"],
+        }
+    assert md.get_active_rules() == {
+        "block": ["paragraph"],
+        "core": ["normalize", "block", "inline"],
+        "inline": ["text"],
+        "inline2": ["balance_pairs", "text_collapse"],
     }
