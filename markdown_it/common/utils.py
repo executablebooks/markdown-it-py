@@ -1,9 +1,11 @@
-"""Utilities
+"""Utilities for parsing source text
 """
 import html
 import re
 
 from .entities import entities
+
+# from .normalize_url import unescape_string
 
 
 def charCodeAt(src: str, pos: int):
@@ -117,7 +119,7 @@ def replaceEntityPattern(match, name):
     """
     ::
         In [2]: from markdown_it import MarkdownIt
-           ...: md = MarkdownIt("working")
+           ...: md = MarkdownIt()
            ...: md.render("![](https://www.google.com)")
         Out[2]: '<p><img src="https%3A//www.google.com" alt=""></p>\n'
     """
@@ -134,11 +136,10 @@ def replaceEntityPattern(match, name):
     return match
 
 
-# function replaceEntities(string) {
-#   if (string.indexOf('&') < 0) { return string; }
-
+# def replaceEntities(string):
+#   if (string.indexOf('&') < 0):
+#       return string
 #   return string.replace(ENTITY_RE, replaceEntityPattern)
-# }
 
 
 def unescapeMd(string: str):
@@ -148,23 +149,7 @@ def unescapeMd(string: str):
 
 
 def unescapeAll(string: str):
-    if "\\" in string and "&" in string:
-        return string
-
-    # TODO here we use the built-in python method
-    # check this is ok?
-    return html.escape(string).replace("&#x27;", "'")
-
-    def func(match):
-        # TODO how to get escaped?
-        escaped = False
-        entity = match.group()
-        if escaped:
-            return escaped
-        return replaceEntityPattern(match, entity)
-
-    string, _ = UNESCAPE_ALL_RE.subn(func, string)
-    return string
+    return html.unescape(string)
 
 
 # //////////////////////////////////////////////////////////////////////////////
@@ -341,30 +326,3 @@ def normalizeReference(string: str) -> str:
     # most notably, `__proto__`)
     #
     return string.lower().upper()
-
-
-#########################################################################
-
-# Re-export libraries commonly used in both markdown-it and its plugins,
-# so plugins won't have to depend on them explicitly, which reduces their
-# bundled size (e.g. a browser build).
-#
-# exports.lib                 = {}
-# exports.lib.mdurl           = require('mdurl')
-# exports.lib.ucmicro         = require('uc.micro')
-
-# exports.assign              = assign
-# exports.has                 = has
-# exports.unescapeMd          = unescapeMd
-# exports.unescapeAll         = unescapeAll
-# exports.isValidEntityCode   = isValidEntityCode
-# exports.fromCodePoint       = fromCodePoint
-# // exports.replaceEntities     = replaceEntities
-# exports.escapeHtml          = escapeHtml
-# exports.arrayReplaceAt      = arrayReplaceAt
-# exports.isSpace             = isSpace
-# exports.isWhiteSpace        = isWhiteSpace
-# exports.isMdAsciiPunct      = isMdAsciiPunct
-# exports.isPunctChar         = isPunctChar
-# exports.escapeRE            = escapeRE
-# exports.normalizeReference  = normalizeReference

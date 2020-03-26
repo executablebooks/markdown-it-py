@@ -23,24 +23,16 @@ def test_spec(entry):
         # TODO ``` ``` -> <code> </code> not <code></code>
         pytest.skip("empty code span spacing")
     if entry["example"] in [
-        171,
-        306,
-        308,
-        309,
-        310,
-        318,
-        319,
-        320,
-        499,
-        502,
-        505,
-        569,
-        572,
-        573,
-        599,
+        171,  # [foo]: /url\\bar\\*baz \"foo\\\"bar\\baz\"\n\n[foo]\n
+        306,  # <http://example.com?find=\\*>\n
+        # 308,  # [foo](/bar\\* \"ti\\*tle\")\n
+        309,  # [foo]\n\n[foo]: /bar\\* \"ti\\*tle\"\n
+        310,  # ``` foo\\+bar\nfoo\n```\n
+        502,  # [link](/url \"title \\\"&quot;\")\n
+        599,  # <http://example.com/\\[\\>\n
     ]:
-        # TODO fix url escaping
-        pytest.skip("url escaping")
+        # TODO fix url backslash escaping
+        pytest.skip("url backslash escaping")
     md = MarkdownIt("commonmark")
     output = md.render(entry["markdown"])
     expected = entry["html"]

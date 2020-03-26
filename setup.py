@@ -13,7 +13,7 @@ def get_version():
 setup(
     name="markdown-it-py",
     version=get_version(),  # import_module("markdown_it").__version__,  TODO fix this
-    description="PYthon port of mardown-it. Markdown parser, done right.",
+    description="Python port of markdown-it. Markdown parser, done right!",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/ExecutableBookProject/markdown-it-py",

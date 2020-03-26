@@ -1,6 +1,7 @@
 import logging
 
 from ..common.utils import isSpace, normalizeReference, charCodeAt
+from ..common.normalize_url import normalizeLink, validateLink
 from ..utils import AttrDict
 from .state_block import StateBlock
 
@@ -114,8 +115,8 @@ def reference(state: StateBlock, startLine, _endLine, silent):
     if not res.ok:
         return False
 
-    href = state.md.normalizeLink(res.str)
-    if not state.md.validateLink(href):
+    href = normalizeLink(res.str)
+    if not validateLink(href):
         return False
 
     pos = res.pos

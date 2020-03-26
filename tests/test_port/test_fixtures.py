@@ -22,7 +22,7 @@ def test_title(line, title, input, expected):
     read_fixture_file(FIXTURE_PATH.joinpath("commonmark_extras.md")),
 )
 def test_commonmark_extras(line, title, input, expected):
-    if line in [54, 74, 88, 183]:
+    if line in [54, 74, 88]:
         # TODO fix
         pytest.skip("url escaping")
     md = MarkdownIt("commonmark")

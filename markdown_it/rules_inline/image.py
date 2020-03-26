@@ -1,7 +1,8 @@
 # Process ![image](<src> "title")
 
 from .state_inline import StateInline
-from ..common.utils import isSpace, charCodeAt, normalizeReference
+from ..common.utils import isSpace, charCodeAt, normalizeReference, validateLink
+from ..common.normalize_url import normalizeLink
 
 
 def image(state: StateInline, silent: bool):
@@ -50,8 +51,8 @@ def image(state: StateInline, silent: bool):
         start = pos
         res = state.md.helpers.parseLinkDestination(state.src, pos, state.posMax)
         if res.ok:
-            href = state.md.normalizeLink(res.str)
-            if state.md.validateLink(href):
+            href = normalizeLink(res.str)
+            if validateLink(href):
                 pos = res.pos
             else:
                 href = ""

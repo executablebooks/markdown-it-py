@@ -1,9 +1,14 @@
 import html
 import re
+from typing import Callable
 from urllib.parse import urlparse, urlunparse, quote, unquote  # noqa: F401
 
-# TODO
-# replaced: parsed = mdurl.parse(url, True)
+# TODO below we port the use of the JS packages:
+# var mdurl        = require('mdurl')
+# var punycode     = require('punycode')
+
+# e.g. mdurl: parsed = mdurl.parse(url, True)
+#
 # but need to check these fixes from https://www.npmjs.com/package/mdurl:
 #
 # Parse url string. Similar to node's url.parse,
@@ -56,7 +61,15 @@ RECODE_HOSTNAME_FOR = ("http", "https", "mailto")
 
 
 def normalizeLink(url):
+    """Normalize destination URLs in links::
 
+        [label]:   destination   'title'
+                ^^^^^^^^^^^
+    """
+    url_unescaped = unescape_string(url)
+    return normalize_uri(url_unescaped)
+
+    # markdown-it code:
     # parsed = urlparse(url)
 
     # if parsed.hostname:
@@ -71,13 +84,18 @@ def normalizeLink(url):
     #             parsed.hostname = punycode.toASCII(parsed.hostname)
     #         except Exception:
     #             pass
-    # quote(urlunparse(parsed))
-    return normalize_uri(unescape_string(url))
+    # return quote(urlunparse(parsed))
 
 
 def normalizeLinkText(title):
-    """Normalize autolinks """
+    """Normalize autolink content::
 
+        <destination>
+         ~~~~~~~~~~~
+    """
+    return unquote(unescape_string(title))
+
+    # markdown-it code:
     # parsed = urlparse(url)
 
     # if parsed.hostname:
@@ -92,24 +110,26 @@ def normalizeLinkText(title):
     #             parsed.hostname = punycode.toUnicode(parsed.hostname)
     #         except Exception:
     #             pass
-    return unquote(unescape_string(title))  # unquote(urlunparse(parsed))
+    # return unquote(urlunparse(parsed))
 
-
-################################################################################
-#
-# This validator can prohibit more than really needed to prevent XSS. It's a
-# tradeoff to keep code simple and to be secure by default.
-#
-# If you need different setup - override validator method as you wish. Or
-# replace it with dummy function and use external sanitizer.
-#
 
 BAD_PROTO_RE = re.compile(r"^(vbscript|javascript|file|data):")
 GOOD_DATA_RE = re.compile(r"^data:image\/(gif|png|jpeg|webp);")
 
 
-def validateLink(url: str):
-    """url should be normalized at this point, and existing entities are decoded."""
+def validateLink(url: str, validator: Callable = None):
+    """Validate URL link is allowed in output.
+
+    This validator can prohibit more than really needed to prevent XSS.
+    It's a tradeoff to keep code simple and to be secure by default.
+
+    If you need different setup - override validator method as you wish.
+    Or replace it with dummy function and use external sanitizer.
+
+    Note: url should be normalized at this point, and existing entities decoded.
+    """
+    if validator is not None:
+        return validator(url)
     url = url.strip().lower()
     return (
         (True if GOOD_DATA_RE.search(url) else False)

@@ -1,7 +1,6 @@
 from typing import Callable, List, Optional, Union
 
 from . import helpers, presets  # noqa F401
-from .normalize_url import normalizeLink, normalizeLinkText, validateLink
 from .common import utils  # noqa F401
 from .parser_core import ParserCore  # noqa F401
 from .parser_block import ParserBlock  # noqa F401
@@ -10,16 +9,12 @@ from .rules_core.state_core import StateCore
 from .renderer import RendererHTML
 from .utils import AttrDict
 
-# var LinkifyIt    = require('linkify-it')
-# var mdurl        = require('mdurl')
-# var punycode     = require('punycode')
 
 config = AttrDict(
     {
         "default": presets.default.presets,
         "zero": presets.zero.presets,
         "commonmark": presets.commonmark.presets,
-        "working": presets.working.presets,
     }
 )
 
@@ -46,11 +41,9 @@ class MarkdownIt:
         self.block = ParserBlock()
         self.core = ParserCore()
         self.renderer = RendererHTML() if renderer is None else renderer
+        # var LinkifyIt    = require('linkify-it')
         # self.linkify = LinkifyIt()  # TODO maybe see https://github.com/Suor/autolink
 
-        self.validateLink = validateLink
-        self.normalizeLink = normalizeLink
-        self.normalizeLinkText = normalizeLinkText
         self.utils = utils
         self.helpers = helpers
         self.options = {}
