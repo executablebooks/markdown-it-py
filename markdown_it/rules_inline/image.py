@@ -1,8 +1,8 @@
 # Process ![image](<src> "title")
 
 from .state_inline import StateInline
-from ..common.utils import isSpace, charCodeAt, normalizeReference, validateLink
-from ..common.normalize_url import normalizeLink
+from ..common.utils import isSpace, charCodeAt, normalizeReference
+from ..common.normalize_url import normalizeLink, validateLink
 
 
 def image(state: StateInline, silent: bool):

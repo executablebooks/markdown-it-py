@@ -25,7 +25,7 @@ def test_spec(entry):
     if entry["example"] in [
         171,  # [foo]: /url\\bar\\*baz \"foo\\\"bar\\baz\"\n\n[foo]\n
         306,  # <http://example.com?find=\\*>\n
-        # 308,  # [foo](/bar\\* \"ti\\*tle\")\n
+        308,  # [foo](/bar\\* \"ti\\*tle\")\n
         309,  # [foo]\n\n[foo]: /bar\\* \"ti\\*tle\"\n
         310,  # ``` foo\\+bar\nfoo\n```\n
         502,  # [link](/url \"title \\\"&quot;\")\n
