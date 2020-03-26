@@ -75,7 +75,6 @@ def isValidEntityCode(c):
     # never used
     if c >= 0xFDD0 and c <= 0xFDEF:
         return False
-    # TODO what is this syntax?
     if ((c & 0xFFFF) == 0xFFFF) or ((c & 0xFFFF) == 0xFFFE):
         return False
     # control codes
@@ -97,7 +96,6 @@ def fromCodePoint(c):
 
     if c > 0xFFFF:
         c -= 0x10000
-        # TODO what is this syntax?
         surrogate1 = 0xD800 + (c >> 10)
         surrogate2 = 0xDC00 + (c & 0x3FF)
 

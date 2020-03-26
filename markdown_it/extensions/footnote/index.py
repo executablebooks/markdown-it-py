@@ -68,11 +68,16 @@ def footnote_def(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if "footnotes" not in state.env:
         state.env["footnotes"] = {}
     if "refs" not in state.env["footnotes"]:
+        # TODO here (as is expected) previously defined footnotes are ignored
+        # we should though add a record of these (plus line numbers) to the env
+        # so that renderers may report warnings for these ignored footnotes
+        # rather than 'failing silently'
         state.env["footnotes"]["refs"] = {}
     label = state.src[start + 2 : pos - 2]
     state.env["footnotes"]["refs"][":" + label] = -1
 
     token = Token("footnote_reference_open", "", 1)
+    # TODO add record of line numbers to footnote definitions
     token.meta = {"label": label}
     token.level = state.level
     state.level += 1
@@ -238,7 +243,10 @@ def footnote_ref(state: StateInline, silent: bool):
 
 
 def footnote_tail(state: StateBlock, *args, **kwargs):
-    """Move footnote tokens to end of token stream"""
+    """Post-processing step, to move footnote tokens to end of the token stream.
+
+    Also removes un-referenced tokens.
+    """
 
     insideRef = False
     refTokens = {}
@@ -269,6 +277,8 @@ def footnote_tail(state: StateBlock, *args, **kwargs):
 
         tok_filter.append((not insideRef))
 
+    # TODO store a record of un-referenced footnotes,
+    # so they may be reported by the renderer
     state.tokens = [t for t, f in zip(state.tokens, tok_filter) if f]
 
     if "list" not in state.env.get("footnotes", {}):
@@ -281,6 +291,8 @@ def footnote_tail(state: StateBlock, *args, **kwargs):
     for i, foot_note in foot_list.items():
         token = Token("footnote_open", "", 1)
         token.meta = {"id": i, "label": foot_note.get("label", None)}
+        # TODO propagate line positions of original foot note
+        # (but don't store in token.map, because this is used for scroll syncing)
         state.tokens.append(token)
 
         if "tokens" in foot_note:

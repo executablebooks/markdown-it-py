@@ -23,7 +23,7 @@ def test_title(line, title, input, expected):
 )
 def test_commonmark_extras(line, title, input, expected):
     if line in [54, 74, 88]:
-        # TODO fix
+        # TODO fix failing url escaping tests
         pytest.skip("url escaping")
     md = MarkdownIt("commonmark")
     text = md.render(input)
@@ -35,7 +35,7 @@ def test_commonmark_extras(line, title, input, expected):
 )
 def test_fatal(line, title, input, expected):
     if line in [1, 17, 25]:
-        # TODO fix
+        # TODO fix failing url escaping tests
         pytest.skip("url escaping")
     md = MarkdownIt("commonmark")
     text = md.render(input)

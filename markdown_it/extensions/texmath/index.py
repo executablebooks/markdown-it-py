@@ -123,7 +123,7 @@ def dollar_post(string, end):
 
 def render(tex, displayMode, macros):
     return tex
-    # TODO better render
+    # TODO better HTML renderer port for math
     # try:
     #     res = katex.renderToString(tex,{throwOnError:False,displayMode,macros})
     # except:

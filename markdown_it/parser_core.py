@@ -10,7 +10,7 @@ from .ruler import Ruler
 from .rules_core.state_core import StateCore
 from .rules_core import normalize, block, inline
 
-# TODO
+# TODO linkify, replacements, smartquotes
 _rules = [
     ["normalize", normalize],
     ["block", block],

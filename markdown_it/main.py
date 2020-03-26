@@ -56,7 +56,7 @@ class MarkdownIt:
             "inline": self.inline,
             "block": self.block,
             "core": self.core,
-            # "renderer": self.renderer,  # TODO
+            "renderer": self.renderer,
         }[name]
 
     def set(self, options):

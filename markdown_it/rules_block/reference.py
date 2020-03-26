@@ -188,6 +188,10 @@ def reference(state: StateBlock, startLine, _endLine, silent):
         state.env["references"] = {}
 
     if label not in state.env["references"]:
+        # TODO here (as is expected) references that have been previously defined
+        # are ignored. But we should add a record of these (plus line numbers) to the
+        # env, so that renderers may report warnings for these ignored references
+        # rather than 'failing silently'
         state.env["references"][label] = AttrDict({"title": title, "href": href})
 
     state.parentType = oldParentType

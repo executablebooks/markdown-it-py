@@ -20,7 +20,7 @@ def test_file(file_regression):
 @pytest.mark.parametrize("entry", json.loads(TESTS_INPUT.read_text()))
 def test_spec(entry):
     if entry["example"] in [108, 334]:
-        # TODO ``` ``` -> <code> </code> not <code></code>
+        # TODO fix failing empty code span tests ``` ``` -> <code> </code> not <code></code>
         pytest.skip("empty code span spacing")
     if entry["example"] in [
         171,  # [foo]: /url\\bar\\*baz \"foo\\\"bar\\baz\"\n\n[foo]\n

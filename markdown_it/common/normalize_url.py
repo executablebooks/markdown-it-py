@@ -6,7 +6,7 @@ from urllib.parse import urlparse, urlunparse, quote, unquote  # noqa: F401
 # TODO below we port the use of the JS packages:
 # var mdurl        = require('mdurl')
 # var punycode     = require('punycode')
-
+#
 # e.g. mdurl: parsed = mdurl.parse(url, True)
 #
 # but need to check these fixes from https://www.npmjs.com/package/mdurl:
@@ -69,9 +69,12 @@ def normalizeLink(url):
     url_unescaped = unescape_string(url)
     return normalize_uri(url_unescaped)
 
-    # markdown-it code:
-    # parsed = urlparse(url)
+    # TODO the selective encoding below should probably be done here,
+    # something like:
+    # url_check = urllib.parse.urlparse(destination)
+    # if url_check.scheme in RECODE_HOSTNAME_FOR: ...
 
+    # parsed = urlparse(url)
     # if parsed.hostname:
     #     # Encode hostnames in urls like:
     #     # `http:#host/`, `https:#host/`, `mailto:user@host`, `#host/`
@@ -95,9 +98,12 @@ def normalizeLinkText(title):
     """
     return unquote(unescape_string(title))
 
-    # markdown-it code:
-    # parsed = urlparse(url)
+    # TODO the selective encoding below should probably be done here,
+    # something like:
+    # url_check = urllib.parse.urlparse(destination)
+    # if url_check.scheme in RECODE_HOSTNAME_FOR: ...
 
+    # parsed = urlparse(url)
     # if parsed.hostname:
     #     # Encode hostnames in urls like:
     #     # `http:#host/`, `https:#host/`, `mailto:user@host`, `#host/`

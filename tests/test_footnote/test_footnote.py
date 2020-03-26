@@ -12,7 +12,6 @@ def test_footnote_def():
 
     md = MarkdownIt()
     src = r"[^a]: xyz"
-    # TODO what happens with duplicates?
     tokens = []
     state = StateBlock(src, md, {}, tokens)
     index.footnote_def(state, 0, 1, False)
