@@ -20,7 +20,7 @@ Block Break Too Few Markers:
 <p>++</p>
 .
 
-Terminates other blocks:
+Block Break terminates other blocks:
 .
 a
 +++
@@ -50,7 +50,7 @@ Target:
 .
 
 
-Terminates other blocks:
+Target terminates other blocks:
 .
 a
 (a)=
@@ -67,4 +67,30 @@ a
 <p>c</p>
 </blockquote>
 <div class=" admonition myst-target">target = <code>a</code></div>
+.
+
+Comment:
+.
+% abc
+.
+<!--- abc --->
+.
+
+Comment terminates other blocks:
+.
+a
+% abc
+- b
+% abc
+> c
+% abc
+.
+<p>a</p>
+<!--- abc ---><ul>
+<li>b</li>
+</ul>
+<!--- abc ---><blockquote>
+<p>c</p>
+</blockquote>
+<!--- abc --->
 .

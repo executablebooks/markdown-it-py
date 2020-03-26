@@ -2,7 +2,7 @@ import re
 
 from markdown_it import MarkdownIt
 from markdown_it.rules_inline import StateInline
-from markdown_it.common.utils import charCodeAt
+from markdown_it.common.utils import charCodeAt, escapeHtml
 
 
 PATTERN = re.compile(r"^\{([a-zA-Z\_\-\+\:]{1,36})\}(`+)(?!`)(.+?)(?<!`)\2(?!`)")
@@ -37,4 +37,8 @@ def myst_role(state: StateInline, silent: bool):
 def render_myst_role(self, tokens, idx, options, env):
     token = tokens[idx]
     name = token.meta.get("name", "unknown")
-    return '<code class="sphinx-role">' f"{{{name}}}[{token.content}]" "</code>"
+    return (
+        '<code class="sphinx-role">'
+        f"{{{name}}}[{escapeHtml(token.content)}]"
+        "</code>"
+    )
