@@ -58,7 +58,7 @@ Type Ctrl-D to complete input, or Ctrl-C to exit.
 
 ## Benchmarking
 
-markdown-it=py is the fastest _**CommonMark compliant**_ parser written in python!
+markdown-it-py is the fastest _**CommonMark compliant**_ parser written in python!
 
 ```console
 $ markdown-it-bench -n 30
