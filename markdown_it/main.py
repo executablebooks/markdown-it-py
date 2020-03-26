@@ -26,12 +26,12 @@ class MarkdownIt:
         self,
         presetName: Union[str, AttrDict] = "commonmark",
         options=None,
-        renderer=None,
+        renderer_cls=RendererHTML,
     ):
-        """Main class
+        """Main parser class
 
         :param presetName: name of configuration to load or a pre-defined one
-        :param options: [description], defaults to None
+        :param options: specific options to load
         """
         options = options or {}
         if not options:
@@ -42,7 +42,7 @@ class MarkdownIt:
         self.inline = ParserInline()
         self.block = ParserBlock()
         self.core = ParserCore()
-        self.renderer = RendererHTML() if renderer is None else renderer
+        self.renderer = renderer_cls(self)
         # var LinkifyIt    = require('linkify-it')
         # self.linkify = LinkifyIt()  # TODO maybe see https://github.com/Suor/autolink
 
