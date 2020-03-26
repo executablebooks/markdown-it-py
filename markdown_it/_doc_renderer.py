@@ -1,6 +1,7 @@
 """NOTE: this will eventually be moved out of core"""
 from contextlib import contextmanager
 import json
+import sys
 from typing import List
 
 import yaml
@@ -8,16 +9,19 @@ import yaml
 from docutils import nodes
 from docutils.frontend import OptionParser
 
-# from docutils.languages import get_language
-# from docutils.parsers.rst import directives, Directive, DirectiveError, roles
+from docutils.languages import get_language
+from docutils.parsers.rst import roles  # directives, Directive, DirectiveError, roles
 from docutils.parsers.rst import Parser as RSTParser
 
 # from docutils.parsers.rst.directives.misc import Include
-# from docutils.parsers.rst.states import RSTStateMachine, Body, Inliner
+from docutils.parsers.rst.states import Inliner  # RSTStateMachine, Body
+
 # from docutils.statemachine import StringList
-from docutils.utils import new_document, Reporter  # noqa
+from docutils.utils import new_document, Reporter
 
 from markdown_it.token import Token, nest_tokens
+from markdown_it.utils import AttrDict
+from markdown_it.common.utils import escapeHtml
 
 
 def make_document(source_path="notset") -> nodes.document:
@@ -31,20 +35,41 @@ class DocRenderer:
 
     def __init__(self, options=None, env=None):
         self.options = options or {}
-        self.env = env or {}
+        self.env = env or AttrDict()
         self.rules = {
             k: v
             for k, v in self.__class__.__dict__.items()
             if k.startswith("render_") and k != "render_children"
         }
         self.document = make_document()
+        self.reporter = self.document.reporter  # type: Reporter
         self.current_node = self.document
+        self.language_module = self.document.settings.language_code  # type: str
+        get_language(self.language_module)
+        # TODO merge these with self.env?
         self.config = {}
         self._level_to_elem = {0: self.document}
 
-    def run_render(self, tokens: List[Token]):
+    def run_render(self, tokens: List[Token], env: AttrDict):
+        """Run the render on a token stream.
+
+        :param tokens: the token stream
+        :param env: the environment sandbox associated with the tokens,
+            containing additional metadata like reference info
+        """
+        self.env = env
+        last_map = None
+        # propagate line number down to inline elements
+        for token in tokens:
+            if token.map:
+                last_map = token.map
+            elif last_map:
+                token.meta["parent_line"] = last_map[0]
+            for child in token.children or []:
+                child.meta["parent_line"] = last_map[0]
         tokens = nest_tokens(tokens)
         for i, token in enumerate(tokens):
+            # skip hidden?
             if f"render_{token.type}" in self.rules:
                 self.rules[f"render_{token.type}"](self, token)
             else:
@@ -113,7 +138,7 @@ class DocRenderer:
 
         return result
 
-    # ### render methods for tokens
+    # ### render methods for commonmark tokens
 
     def render_paragraph_open(self, token):
         para = nodes.paragraph("")
@@ -129,6 +154,12 @@ class DocRenderer:
 
     def render_bullet_list_open(self, token):
         list_node = nodes.bullet_list()
+        self.add_line_and_source_path(list_node, token)
+        with self.current_node_context(list_node, append=True):
+            self.render_children(token)
+
+    def render_ordered_list_open(self, token):
+        list_node = nodes.enumerated_list()
         self.add_line_and_source_path(list_node, token)
         with self.current_node_context(list_node, append=True):
             self.render_children(token)
@@ -220,6 +251,7 @@ class DocRenderer:
     def render_link_open(self, token):
         # TODO I think this is maybe already handled at this point?
         # refuri = escape_url(token.target)
+        # TODO identify cross-references
         refuri = target = token.attrGet("href")
         ref_node = nodes.reference(target, target, refuri=refuri)
         self.add_line_and_source_path(ref_node, token)
@@ -239,6 +271,8 @@ class DocRenderer:
         img_node["alt"] = self.renderInlineAsText(token.children)
 
         self.current_node.append(img_node)
+
+    # ### render methods for plugin tokens
 
     def render_front_matter(self, token):
         """Pass document front matter data
@@ -267,6 +301,45 @@ class DocRenderer:
         docinfo = dict_to_docinfo(data)
         self.current_node.append(docinfo)
 
+    def render_math_inline(self, token):
+        content = token.content
+        node = nodes.math(content, content)
+        self.add_line_and_source_path(node, token)
+        self.current_node.append(node)
+
+    def render_math_block(self, token):
+        content = token.content
+        node = nodes.math_block(content, content, nowrap=False, number=None)
+        self.add_line_and_source_path(node, token)
+        self.current_node.append(node)
+
+    def render_footnote_ref(self, token):
+        """Footnote references are added as auto-numbered,
+        .i.e. `[^a]` is read as rST `[#a]_`
+        """
+        # TODO we now also have ^[a] the inline version (currently disabled)
+        # that would be rendered here
+        target = token.meta["label"]
+        refnode = nodes.footnote_reference("[^{}]".format(target))
+        self.add_line_and_source_path(refnode, token)
+        refnode["auto"] = 1
+        refnode["refname"] = target
+        # refnode += nodes.Text(token.target)
+        self.document.note_autofootnote_ref(refnode)
+        self.document.note_footnote_ref(refnode)
+        self.current_node.append(refnode)
+
+    def render_footnote_reference_open(self, token):
+        target = token.meta["label"]
+        footnote = nodes.footnote()
+        self.add_line_and_source_path(footnote, token)
+        footnote["names"].append(target)
+        footnote["auto"] = 1
+        self.document.note_autofootnote(footnote)
+        self.document.note_explicit_target(footnote, footnote)
+        with self.current_node_context(footnote, append=True):
+            self.render_children(token)
+
     def render_myst_block_break(self, token):
         block_break = nodes.comment(token.content, token.content)
         block_break["classes"] += ["block_break"]
@@ -282,14 +355,33 @@ class DocRenderer:
         self.document.note_explicit_target(target, self.current_node)
         self.current_node.append(target)
 
-    def render_myst_role(self, token):
+    def render_myst_line_comment(self, token):
+        self.current_node.append(nodes.comment(token.content, token.content))
 
+    def render_myst_role(self, token):
         name = token.meta["name"]
-        # TODO representing as literal for place-holder
-        content = f":{name}:`{token.content}`"
-        node = nodes.literal(content, content)
-        self.add_line_and_source_path(node, token)
-        self.current_node.append(node)
+        text = escapeHtml(token.content)  # TODO check this
+        rawsource = f":{name}:`{token.content}`"
+        lineno = token.meta.get("parent_line", 0)
+        role_func, messages = roles.role(
+            name, self.language_module, lineno, self.reporter
+        )
+        inliner = MockInliner(self, lineno)
+        if role_func:
+            nodes, messages2 = role_func(name, rawsource, text, lineno, inliner)
+            # return nodes, messages + messages2
+            self.current_node += nodes
+        else:
+            message = self.reporter.error(
+                'Unknown interpreted text role "{}".'.format(name), line=lineno
+            )
+            problematic = inliner.problematic(text, rawsource, message)
+            self.current_node += problematic
+
+        # # TODO representing as literal for place-holder
+        # node = nodes.literal(rawsource, rawsource)
+        # self.add_line_and_source_path(node, token)
+        # self.current_node.append(node)
 
     # def render_table_open(self, token):
     #     # print(token)
@@ -326,3 +418,48 @@ def dict_to_docinfo(data):
         field_node += nodes.field_body(value, nodes.Text(value, value))
         docinfo += field_node
     return docinfo
+
+
+class MockingError(Exception):
+    """An exception to signal an error during mocking of docutils components."""
+
+
+class MockInliner:
+    """A mock version of `docutils.parsers.rst.states.Inliner`.
+
+    This is parsed to role functions.
+    """
+
+    def __init__(self, renderer: DocRenderer, lineno: int):
+        self._renderer = renderer
+        self.document = renderer.document
+        self.reporter = renderer.document.reporter
+        if not hasattr(self.reporter, "get_source_and_line"):
+            # TODO this is called by some roles,
+            # but I can't see how that would work in RST?
+            self.reporter.get_source_and_line = lambda l: (self.document["source"], l)
+        self.parent = renderer.current_node
+        self.language = renderer.language_module
+        self.rfc_url = "rfc%d.html"
+
+    def problematic(self, text: str, rawsource: str, message: nodes.system_message):
+        msgid = self.document.set_id(message, self.parent)
+        problematic = nodes.problematic(rawsource, rawsource, refid=msgid)
+        prbid = self.document.set_id(problematic)
+        message.add_backref(prbid)
+        return problematic
+
+    # TODO add parse method
+
+    def __getattr__(self, name):
+        """This method is only be called if the attribute requested has not
+        been defined. Defined attributes will not be overridden.
+        """
+        # TODO use document.reporter mechanism?
+        if hasattr(Inliner, name):
+            msg = "{cls} has not yet implemented attribute '{name}'".format(
+                cls=type(self).__name__, name=name
+            )
+            raise MockingError(msg).with_traceback(sys.exc_info()[2])
+        msg = "{cls} has no attribute {name}".format(cls=type(self).__name__, name=name)
+        raise MockingError(msg).with_traceback(sys.exc_info()[2])
