@@ -34,12 +34,13 @@ def convert_file(filename):
         sys.exit('Cannot open file "{}".'.format(filename))
 
 
-def interactive():
+def interactive(import_readline=False):
     """
     Parse user input, dump to stdout, rinse and repeat.
     Python REPL style.
     """
-    _import_readline()
+    if import_readline:
+        _import_readline()
     print_heading()
     contents = []
     more = False
