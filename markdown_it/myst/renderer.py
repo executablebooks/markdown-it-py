@@ -1,8 +1,7 @@
 """NOTE: this will eventually be moved out of core"""
 from contextlib import contextmanager
 import json
-import sys
-from typing import List
+from typing import List, Optional
 
 import yaml
 
@@ -10,18 +9,18 @@ from docutils import nodes
 from docutils.frontend import OptionParser
 
 from docutils.languages import get_language
-from docutils.parsers.rst import roles  # directives, Directive, DirectiveError, roles
+from docutils.parsers.rst import directives, Directive, DirectiveError, roles
 from docutils.parsers.rst import Parser as RSTParser
-
-# from docutils.parsers.rst.directives.misc import Include
-from docutils.parsers.rst.states import Inliner  # RSTStateMachine, Body
-
-# from docutils.statemachine import StringList
+from docutils.statemachine import StringList
 from docutils.utils import new_document, Reporter
 
+from markdown_it import MarkdownIt
 from markdown_it.token import Token, nest_tokens
 from markdown_it.utils import AttrDict
 from markdown_it.common.utils import escapeHtml
+
+from .mocking import MockInliner, MockState, MockStateMachine, MockingError
+from .parse_directives import parse_directive_text, DirectiveParsingError
 
 
 def make_document(source_path="notset") -> nodes.document:
@@ -33,17 +32,23 @@ def make_document(source_path="notset") -> nodes.document:
 class DocRenderer:
     __output__ = "docutils"
 
-    def __init__(self, options=None, env=None):
+    def __init__(
+        self,
+        md: MarkdownIt,
+        options=None,
+        document: Optional[nodes.document] = None,
+        current_node: Optional[nodes.Element] = None,
+    ):
+        self.md = md
         self.options = options or {}
-        self.env = env or AttrDict()
         self.rules = {
             k: v
             for k, v in self.__class__.__dict__.items()
             if k.startswith("render_") and k != "render_children"
         }
-        self.document = make_document()
+        self.document = document or make_document()
         self.reporter = self.document.reporter  # type: Reporter
-        self.current_node = self.document
+        self.current_node = current_node or self.document
         self.language_module = self.document.settings.language_code  # type: str
         get_language(self.language_module)
         # TODO merge these with self.env?
@@ -58,8 +63,9 @@ class DocRenderer:
             containing additional metadata like reference info
         """
         self.env = env
-        last_map = None
+
         # propagate line number down to inline elements
+        last_map = None
         for token in tokens:
             if token.map:
                 last_map = token.map
@@ -67,13 +73,43 @@ class DocRenderer:
                 token.meta["parent_line"] = last_map[0]
             for child in token.children or []:
                 child.meta["parent_line"] = last_map[0]
+
+        # nest tokens
         tokens = nest_tokens(tokens)
+
+        # move footnote definitions to env
+        self.env["foot_refs"] = []
+        new_tokens = []
+        for token in tokens:
+            if token.type == "footnote_reference_open":
+                self.env["foot_refs"].append(token)
+            else:
+                new_tokens.append(token)
+        tokens = new_tokens
+
+        # render
         for i, token in enumerate(tokens):
             # skip hidden?
             if f"render_{token.type}" in self.rules:
                 self.rules[f"render_{token.type}"](self, token)
             else:
                 print(f"no render method for: {token.type}")
+
+        # TODO log warning for duplicate references
+
+        # add footnotes
+        referenced = {
+            v["label"] for v in self.env.get("footnotes", {}).get("list", {}).values()
+        }
+        # only output referenced
+        foot_refs = [f for f in self.env["foot_refs"] if f.meta["label"] in referenced]
+
+        if foot_refs:
+            self.current_node.append(nodes.transition())
+        for footref in foot_refs:  # TODO sort by referenced
+            self.render_footnote_reference_open(footref)
+
+        return self.document
 
     @contextmanager
     def current_node_context(self, node, append: bool = False):
@@ -91,6 +127,17 @@ class DocRenderer:
                 self.rules[f"render_{child.type}"](self, child)
             else:
                 print(f"no render method for: {child.type}")
+
+    def nested_render_text(self, text: str, lineno: int):
+        """Render unparsed text."""
+        with self.md.reset_rules():
+            self.md.disable("front_matter", True)
+            tokens = self.md.parse(text, self.env)
+        for token in tokens:
+            if token.map:
+                token.map = [token.map[0] + lineno, token.map[1] + lineno]
+        # TODO propagate line numbers to children (make separate function)
+        self.run_render(tokens, self.env)
 
     def add_line_and_source_path(self, node, token):
         """Copy the line number and document source path to the docutils node."""
@@ -203,7 +250,11 @@ class DocRenderer:
 
     def render_fence(self, token):
         text = token.content
-        language = token.info.split()[0]
+        language = token.info.split()[0] if token.info else ""
+
+        if language.startswith("{") and language.endswith("}"):
+            return self.render_directive(token)
+
         if not language:
             try:
                 sphinx_env = self.document.settings.env
@@ -301,6 +352,25 @@ class DocRenderer:
         docinfo = dict_to_docinfo(data)
         self.current_node.append(docinfo)
 
+    # def render_table_open(self, token):
+    #     # print(token)
+    #     # raise
+
+    #     table = nodes.table()
+    #     table["classes"] += ["colwidths-auto"]
+    #     self.add_line_and_source_path(table, token)
+
+    #     thead = nodes.thead()
+    #     # TODO there can never be more than one header row (at least in mardown-it)
+    #     header = token.children[0].children[0]
+    #     for hrow in header.children:
+    #         nodes.t
+    #         style = hrow.attrGet("style")
+
+    #     tgroup = nodes.tgroup(cols)
+    #     table += tgroup
+    #     tgroup += thead
+
     def render_math_inline(self, token):
         content = token.content
         node = nodes.math(content, content)
@@ -378,29 +448,104 @@ class DocRenderer:
             problematic = inliner.problematic(text, rawsource, message)
             self.current_node += problematic
 
-        # # TODO representing as literal for place-holder
-        # node = nodes.literal(rawsource, rawsource)
-        # self.add_line_and_source_path(node, token)
-        # self.current_node.append(node)
+    def render_directive(self, token: Token):
+        """Render special fenced code blocks as directives."""
+        first_line = token.info.split(maxsplit=1)
+        name = first_line[0][1:-1]
+        arguments = "" if len(first_line) == 1 else first_line[1]
+        # TODO directive name white/black lists
+        content = token.content
+        position = token.map[0]
+        self.document.current_line = position
 
-    # def render_table_open(self, token):
-    #     # print(token)
-    #     # raise
+        # get directive class
+        directive_class, messages = directives.directive(
+            name, self.language_module, self.document
+        )  # type: (Directive, list)
+        if not directive_class:
+            error = self.reporter.error(
+                "Unknown directive type '{}'\n".format(name),
+                # nodes.literal_block(content, content),
+                line=position,
+            )
+            self.current_node += [error] + messages
+            return
 
-    #     table = nodes.table()
-    #     table["classes"] += ["colwidths-auto"]
-    #     self.add_line_and_source_path(table, token)
+        try:
+            arguments, options, body_lines = parse_directive_text(
+                directive_class, arguments, content
+            )
+        except DirectiveParsingError as error:
+            error = self.reporter.error(
+                "Directive '{}':\n{}".format(name, error),
+                nodes.literal_block(content, content),
+                line=position,
+            )
+            self.current_node += [error]
+            return
 
-    #     thead = nodes.thead()
-    #     # TODO there can never be more than one header row (at least in mardown-it)
-    #     header = token.children[0].children[0]
-    #     for hrow in header.children:
-    #         nodes.t
-    #         style = hrow.attrGet("style")
+        # initialise directive
+        # TODO Include
+        # if issubclass(directive_class, Include):
+        #     directive_instance = MockIncludeDirective(
+        #         self,
+        #         name=name,
+        #         klass=directive_class,
+        #         arguments=arguments,
+        #         options=options,
+        #         body=body_lines,
+        #         token=token,
+        #     )
+        else:
+            state_machine = MockStateMachine(self, position)
+            state = MockState(self, state_machine, position, token=token)
+            directive_instance = directive_class(
+                name=name,
+                # the list of positional arguments
+                arguments=arguments,
+                # a dictionary mapping option names to values
+                options=options,
+                # the directive content line by line
+                content=StringList(body_lines, self.document["source"]),
+                # the absolute line number of the first line of the directive
+                lineno=position,
+                # the line offset of the first line of the content
+                content_offset=0,  # TODO get content offset from `parse_directive_text`
+                # a string containing the entire directive
+                block_text="\n".join(body_lines),
+                state=state,
+                state_machine=state_machine,
+            )
 
-    #     tgroup = nodes.tgroup(cols)
-    #     table += tgroup
-    #     tgroup += thead
+        # run directive
+        try:
+            result = directive_instance.run()
+        except DirectiveError as error:
+            msg_node = self.reporter.system_message(
+                error.level, error.msg, line=position
+            )
+            msg_node += nodes.literal_block(content, content)
+            result = [msg_node]
+        except MockingError as exc:
+            error = self.reporter.error(
+                "Directive '{}' cannot be mocked:\n{}: {}".format(
+                    name, exc.__class__.__name__, exc
+                ),
+                nodes.literal_block(content, content),
+                line=position,
+            )
+            self.current_node += [error]
+            return
+        assert isinstance(
+            result, list
+        ), 'Directive "{}" must return a list of nodes.'.format(name)
+        for i in range(len(result)):
+            assert isinstance(
+                result[i], nodes.Node
+            ), 'Directive "{}" returned non-Node object (index {}): {}'.format(
+                name, i, result[i]
+            )
+        self.current_node += result
 
 
 def dict_to_docinfo(data):
@@ -418,48 +563,3 @@ def dict_to_docinfo(data):
         field_node += nodes.field_body(value, nodes.Text(value, value))
         docinfo += field_node
     return docinfo
-
-
-class MockingError(Exception):
-    """An exception to signal an error during mocking of docutils components."""
-
-
-class MockInliner:
-    """A mock version of `docutils.parsers.rst.states.Inliner`.
-
-    This is parsed to role functions.
-    """
-
-    def __init__(self, renderer: DocRenderer, lineno: int):
-        self._renderer = renderer
-        self.document = renderer.document
-        self.reporter = renderer.document.reporter
-        if not hasattr(self.reporter, "get_source_and_line"):
-            # TODO this is called by some roles,
-            # but I can't see how that would work in RST?
-            self.reporter.get_source_and_line = lambda l: (self.document["source"], l)
-        self.parent = renderer.current_node
-        self.language = renderer.language_module
-        self.rfc_url = "rfc%d.html"
-
-    def problematic(self, text: str, rawsource: str, message: nodes.system_message):
-        msgid = self.document.set_id(message, self.parent)
-        problematic = nodes.problematic(rawsource, rawsource, refid=msgid)
-        prbid = self.document.set_id(problematic)
-        message.add_backref(prbid)
-        return problematic
-
-    # TODO add parse method
-
-    def __getattr__(self, name):
-        """This method is only be called if the attribute requested has not
-        been defined. Defined attributes will not be overridden.
-        """
-        # TODO use document.reporter mechanism?
-        if hasattr(Inliner, name):
-            msg = "{cls} has not yet implemented attribute '{name}'".format(
-                cls=type(self).__name__, name=name
-            )
-            raise MockingError(msg).with_traceback(sys.exc_info()[2])
-        msg = "{cls} has no attribute {name}".format(cls=type(self).__name__, name=name)
-        raise MockingError(msg).with_traceback(sys.exc_info()[2])

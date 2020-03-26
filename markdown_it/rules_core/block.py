@@ -9,6 +9,6 @@ def block(state: StateCore):
         token.content = state.src
         token.map = [0, 1]
         token.children = []
-        state.tokens.push(token)
+        state.tokens.append(token)
     else:
         state.md.block.parse(state.src, state.md, state.env, state.tokens)

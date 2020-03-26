@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from typing import Any, Callable, Dict, List, Optional, Union
 
 from . import helpers, presets  # noqa F401
@@ -107,10 +108,12 @@ class MarkdownIt:
 
     def get_active_rules(self) -> Dict[str, List[str]]:
         """Return the names of all active rules."""
-        return {
+        rules = {
             chain: self[chain].ruler.get_active_rules()
             for chain in ["core", "block", "inline"]
         }
+        rules["inline2"] = self.inline.ruler2.get_active_rules()
+        return rules
 
     def enable(
         self, names: Union[str, List[str]], ignoreInvalid: bool = False
@@ -167,6 +170,15 @@ class MarkdownIt:
         if missed and not ignoreInvalid:
             raise ValueError(f"MarkdownIt. Failed to disable unknown rule(s): {missed}")
         return self
+
+    @contextmanager
+    def reset_rules(self):
+        chain_rules = self.get_active_rules()
+        yield
+        for chain, rules in chain_rules.items():
+            if chain != "inline2":
+                self[chain].ruler.enableOnly(rules)
+        self.inline.ruler2.enableOnly(chain_rules["inline2"])
 
     def add_render_rule(self, name: str, function: Callable, fmt="html"):
         """Add a rule for rendering a particular Token type.
@@ -243,7 +255,7 @@ class MarkdownIt:
             raise TypeError(f"Input data should be an AttrDict, not {type(env)}")
         if not isinstance(src, str):
             raise TypeError(f"Input data should be a string, not {type(src)}")
-        state = self.core.State(src, self, env)
+        state = StateCore(src, self, env)
         state.inlineMode = True
         self.core.process(state)
         return state.tokens

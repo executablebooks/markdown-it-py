@@ -5,7 +5,7 @@ from markdown_it.extensions.myst_blocks import myst_block_plugin
 from markdown_it.extensions.myst_role import myst_role_plugin
 from markdown_it.extensions.texmath import texmath_plugin
 from markdown_it.extensions.footnote import footnote_plugin
-from markdown_it._doc_renderer import DocRenderer
+from markdown_it.myst.renderer import DocRenderer
 
 md = (
     MarkdownIt()
@@ -80,10 +80,16 @@ asdas asdasda
 [^foot]
 
 1. 345
+
+````{note}
+my title
+```{contents} abc
+```
+````
 """,
     env=env,
 )
-
-doc = DocRenderer()
+print(env)
+doc = DocRenderer(md)
 doc.run_render(tokens, env)
 print(doc.document.pformat())
