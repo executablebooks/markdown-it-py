@@ -14,7 +14,7 @@ def test_token():
         "content": "",
         "markup": "",
         "info": "",
-        "meta": None,
+        "meta": {},
         "block": False,
         "hidden": False,
     }

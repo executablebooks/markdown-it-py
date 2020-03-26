@@ -10,7 +10,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: ''
     type: text
@@ -23,7 +23,7 @@
     level: 0
     map: null
     markup: $
-    meta: null
+    meta: {}
     nesting: 0
     tag: math
     type: math_inline
@@ -36,7 +36,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: br
     type: softbreak
@@ -49,7 +49,7 @@
     level: 0
     map: null
     markup: $
-    meta: null
+    meta: {}
     nesting: 0
     tag: math
     type: math_inline
@@ -62,7 +62,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: ''
     type: text
@@ -75,7 +75,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: br
     type: softbreak
@@ -88,7 +88,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: ''
     type: text
@@ -101,7 +101,7 @@
     level: 0
     map: null
     markup: $
-    meta: null
+    meta: {}
     nesting: 0
     tag: math
     type: math_single
@@ -114,7 +114,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: ''
     type: text
@@ -130,7 +130,7 @@
   - 0
   - 3
   markup: ''
-  meta: null
+  meta: {}
   nesting: 0
   tag: ''
   type: inline

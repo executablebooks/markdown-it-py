@@ -9,7 +9,7 @@
   - 0
   - 5
   markup: '>'
-  meta: null
+  meta: {}
   nesting: 1
   tag: blockquote
   type: blockquote_open
@@ -24,7 +24,7 @@
   - 0
   - 1
   markup: ''
-  meta: null
+  meta: {}
   nesting: 1
   tag: p
   type: paragraph_open
@@ -40,7 +40,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: ''
     type: text
@@ -52,7 +52,7 @@
   - 0
   - 1
   markup: ''
-  meta: null
+  meta: {}
   nesting: 0
   tag: ''
   type: inline
@@ -65,7 +65,7 @@
   level: 1
   map: null
   markup: ''
-  meta: null
+  meta: {}
   nesting: -1
   tag: p
   type: paragraph_close
@@ -78,7 +78,7 @@
   level: 1
   map: null
   markup: $$
-  meta: null
+  meta: {}
   nesting: 0
   tag: math
   type: math_block_eqno
@@ -93,7 +93,7 @@
   - 4
   - 5
   markup: ''
-  meta: null
+  meta: {}
   nesting: 1
   tag: p
   type: paragraph_open
@@ -109,7 +109,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: ''
     type: text
@@ -121,7 +121,7 @@
   - 4
   - 5
   markup: ''
-  meta: null
+  meta: {}
   nesting: 0
   tag: ''
   type: inline
@@ -134,7 +134,7 @@
   level: 1
   map: null
   markup: ''
-  meta: null
+  meta: {}
   nesting: -1
   tag: p
   type: paragraph_close
@@ -147,7 +147,7 @@
   level: 0
   map: null
   markup: '>'
-  meta: null
+  meta: {}
   nesting: -1
   tag: blockquote
   type: blockquote_close

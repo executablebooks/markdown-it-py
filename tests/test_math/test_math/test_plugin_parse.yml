@@ -13,7 +13,7 @@
   level: 0
   map: null
   markup: $$
-  meta: null
+  meta: {}
   nesting: 0
   tag: math
   type: math_block_eqno
@@ -28,7 +28,7 @@
   - 5
   - 6
   markup: '-'
-  meta: null
+  meta: {}
   nesting: 1
   tag: ul
   type: bullet_list_open
@@ -43,7 +43,7 @@
   - 5
   - 6
   markup: '-'
-  meta: null
+  meta: {}
   nesting: 1
   tag: li
   type: list_item_open
@@ -58,7 +58,7 @@
   - 5
   - 6
   markup: ''
-  meta: null
+  meta: {}
   nesting: 1
   tag: p
   type: paragraph_open
@@ -74,7 +74,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: ''
     type: text
@@ -87,7 +87,7 @@
     level: 0
     map: null
     markup: $
-    meta: null
+    meta: {}
     nesting: 0
     tag: math
     type: math_inline
@@ -100,7 +100,7 @@
     level: 0
     map: null
     markup: ''
-    meta: null
+    meta: {}
     nesting: 0
     tag: ''
     type: text
@@ -112,7 +112,7 @@
   - 5
   - 6
   markup: ''
-  meta: null
+  meta: {}
   nesting: 0
   tag: ''
   type: inline
@@ -125,7 +125,7 @@
   level: 2
   map: null
   markup: ''
-  meta: null
+  meta: {}
   nesting: -1
   tag: p
   type: paragraph_close
@@ -138,7 +138,7 @@
   level: 1
   map: null
   markup: '-'
-  meta: null
+  meta: {}
   nesting: -1
   tag: li
   type: list_item_close
@@ -151,7 +151,7 @@
   level: 0
   map: null
   markup: '-'
-  meta: null
+  meta: {}
   nesting: -1
   tag: ul
   type: bullet_list_close

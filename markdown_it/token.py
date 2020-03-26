@@ -30,7 +30,7 @@ class Token:
     # fence infostring
     info: str = attr.ib(default="")
     # A place for plugins to store an arbitrary data
-    meta: Optional[dict] = attr.ib(default=None)
+    meta: dict = attr.ib(factory=dict)
     # True for block-level tokens, false for inline tokens.
     # Used in renderer to calculate line breaks
     block: bool = attr.ib(default=False)

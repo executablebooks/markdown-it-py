@@ -11,7 +11,7 @@
   level: 0
   map: null
   markup: $$
-  meta: null
+  meta: {}
   nesting: 0
   tag: math
   type: math_block_eqno

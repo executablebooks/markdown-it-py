@@ -31,7 +31,7 @@ def test_inline_func():
         "content": "a=1",
         "markup": "$",
         "info": "",
-        "meta": None,
+        "meta": {},
         "block": False,
         "hidden": False,
     }
@@ -56,7 +56,7 @@ def test_block_func():
         "content": "\\na=1\\n\\nc\\nb=2",
         "markup": "$$",
         "info": "abc",
-        "meta": None,
+        "meta": {},
         "block": True,
         "hidden": False,
     }

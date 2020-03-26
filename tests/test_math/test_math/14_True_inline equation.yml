@@ -10,7 +10,7 @@
     level: 0
     map: null
     markup: $
-    meta: null
+    meta: {}
     nesting: 0
     tag: math
     type: math_inline
@@ -22,7 +22,7 @@
   - 0
   - 1
   markup: ''
-  meta: null
+  meta: {}
   nesting: 0
   tag: ''
   type: inline
@@ -35,7 +35,7 @@
   level: 0
   map: null
   markup: ''
-  meta: null
+  meta: {}
   nesting: -1
   tag: p
   type: paragraph_close
