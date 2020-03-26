@@ -1,0 +1,3 @@
+[run]
+omit =
+    markdown_it/doc_renderer.py

@@ -2,11 +2,14 @@
 
 ![Github-DI][github-ci]
 [![PyPI][pypi-badge]][pypi-link]
+[![Coverage Status][cov-badge]][cov-link]
 [![Code style: black][black-badge]][black-link]
 
 [github-ci]: https://github.com/ExecutableBookProject/markdown-it-py/workflows/Python%20package/badge.svg
 [pypi-badge]: https://img.shields.io/pypi/v/markdown-it-py.svg
 [pypi-link]: https://pypi.org/project/markdown-it-py
+[cov-badge]: https://coveralls.io/repos/github/ExecutableBookProject/markdown-it-py/badge.svg?branch=master
+[cov-link]: https://coveralls.io/github/ExecutableBookProject/markdown-it-py?branch=master
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/ambv/black
 

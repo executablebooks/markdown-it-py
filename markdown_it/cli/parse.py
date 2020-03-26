@@ -14,6 +14,7 @@ def main(args=None):
         convert(namespace.filenames)
     else:
         interactive()
+    return True
 
 
 def convert(filenames):
