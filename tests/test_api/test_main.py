@@ -1,4 +1,5 @@
 from markdown_it import MarkdownIt
+from markdown_it.token import Token
 
 
 def test_load_presets():
@@ -90,3 +91,92 @@ def test_reset():
         "inline": ["text"],
         "inline2": ["balance_pairs", "text_collapse"],
     }
+
+
+def test_parseInline():
+    md = MarkdownIt()
+    tokens = md.parseInline("abc\n\n> xyz")
+    assert tokens == [
+        Token(
+            type="inline",
+            tag="",
+            nesting=0,
+            attrs=None,
+            map=[0, 1],
+            level=0,
+            children=[
+                Token(
+                    type="text",
+                    tag="",
+                    nesting=0,
+                    attrs=None,
+                    map=None,
+                    level=0,
+                    children=None,
+                    content="abc",
+                    markup="",
+                    info="",
+                    meta={},
+                    block=False,
+                    hidden=False,
+                ),
+                Token(
+                    type="softbreak",
+                    tag="br",
+                    nesting=0,
+                    attrs=None,
+                    map=None,
+                    level=0,
+                    children=None,
+                    content="",
+                    markup="",
+                    info="",
+                    meta={},
+                    block=False,
+                    hidden=False,
+                ),
+                Token(
+                    type="softbreak",
+                    tag="br",
+                    nesting=0,
+                    attrs=None,
+                    map=None,
+                    level=0,
+                    children=None,
+                    content="",
+                    markup="",
+                    info="",
+                    meta={},
+                    block=False,
+                    hidden=False,
+                ),
+                Token(
+                    type="text",
+                    tag="",
+                    nesting=0,
+                    attrs=None,
+                    map=None,
+                    level=0,
+                    children=None,
+                    content="> xyz",
+                    markup="",
+                    info="",
+                    meta={},
+                    block=False,
+                    hidden=False,
+                ),
+            ],
+            content="abc\n\n> xyz",
+            markup="",
+            info="",
+            meta={},
+            block=False,
+            hidden=False,
+        )
+    ]
+
+
+def test_renderInline():
+    md = MarkdownIt("zero")
+    tokens = md.renderInline("abc\n\n*xyz*")
+    assert tokens == "abc\n\n*xyz*"
