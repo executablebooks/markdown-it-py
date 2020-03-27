@@ -35,24 +35,28 @@ def texmath_plugin(md: MarkdownIt, **options):
             md.add_render_rule(rule_block["name"], render_math_block)
 
 
-def applyRule(rule, string: str, beg, inBlockquote):
+def applyRule(rule, string: str, begin, inBlockquote):
 
-    pre = string.startswith(rule["tag"], beg) and (
-        rule["pre"](string, beg) if "pre" in rule else True
-    )
+    if not (
+        string.startswith(rule["tag"], begin)
+        and (rule["pre"](string, begin) if "pre" in rule else True)
+    ):
+        return False
 
-    match = rule["rex"].search(string, beg) if pre else False
-    post = True
-    if match:
-        lastIndex = match.end() - 1
-        if "post" in rule:
-            post = (
-                rule["post"](string, lastIndex)  # valid post-condition
-                # remove evil blockquote bug (https:#github.com/goessner/mdmath/issues/50)
-                and (not inBlockquote or "\n" not in match.group(1))
-            )
+    match = rule["rex"].match(string[begin:])  # type: re.Match
 
-    return post and match
+    if not match or match.start() != 0:
+        return False
+
+    lastIndex = match.end() + begin - 1
+    if "post" in rule:
+        if not (
+            rule["post"](string, lastIndex)  # valid post-condition
+            # remove evil blockquote bug (https:#github.com/goessner/mdmath/issues/50)
+            and (not inBlockquote or "\n" not in match.group(1))
+        ):
+            return False
+    return match
 
 
 def make_inline_func(rule):
@@ -64,7 +68,7 @@ def make_inline_func(rule):
                 token.content = res[1]  # group 1 from regex ..
                 token.markup = rule["tag"]
 
-            state.pos = res.end()
+            state.pos += res.end()
 
         return bool(res)
 
@@ -73,12 +77,8 @@ def make_inline_func(rule):
 
 def make_block_func(rule):
     def _func(state, begLine, endLine, silent):
-        res = applyRule(
-            rule,
-            state.src,
-            state.bMarks[begLine] + state.tShift[begLine],
-            state.parentType == "blockquote",
-        )
+        begin = state.bMarks[begLine] + state.tShift[begLine]
+        res = applyRule(rule, state.src, begin, state.parentType == "blockquote")
         if res:
             if not silent:
                 token = state.push(rule["name"], "math", 0)
@@ -88,7 +88,7 @@ def make_block_func(rule):
                 token.markup = rule["tag"]
 
             line = begLine
-            endpos = res.end() - 1
+            endpos = begin + res.end() - 1
 
             while line < endLine:
                 if endpos >= state.bMarks[line] and endpos <= state.eMarks[line]:
@@ -97,7 +97,7 @@ def make_block_func(rule):
                     break
                 line += 1
 
-            state.pos = res.end()
+            state.pos = begin + res.end()
 
         return bool(res)
 
@@ -146,7 +146,7 @@ rules = AttrDict(
             "inline": [
                 {
                     "name": "math_inline",
-                    "rex": re.compile(r"\\\((.+?)\\\)"),
+                    "rex": re.compile(r"^\\\((.+?)\\\)"),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "\\(",
                 }
@@ -155,15 +155,15 @@ rules = AttrDict(
                 {
                     "name": "math_block_eqno",
                     "rex": re.compile(
-                        r"\\\[(((?!\\\]|\\\[)[\s\S])+?)\\\]\s*?\(([^)$\r\n]+?)\)", re.M
+                        r"^\\\[(((?!\\\]|\\\[)[\s\S])+?)\\\]\s*?\(([^)$\r\n]+?)\)", re.M
                     ),
                     "tmpl": '<section class="eqno"><eqn>{0}</eqn><span>({1})</span></section>',
                     "tag": "\\[",
                 },
                 {
                     "name": "math_block",
-                    "rex": re.compile(r"\\\[([\s\S]+?)\\\]", re.M),
-                    "tmpl": "<section><eqn>{0}</eqn></section>",
+                    "rex": re.compile(r"^\\\[([\s\S]+?)\\\]", re.M),
+                    "tmpl": "<section>\n<eqn>{0}</eqn>\n</section>\n",
                     "tag": "\\[",
                 },
             ],
@@ -172,7 +172,7 @@ rules = AttrDict(
             "inline": [
                 {
                     "name": "math_inline",
-                    "rex": re.compile(r"\$`(.+?)`\$"),
+                    "rex": re.compile(r"^\$`(.+?)`\$"),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "$`",
                 }
@@ -181,15 +181,15 @@ rules = AttrDict(
                 {
                     "name": "math_block_eqno",
                     "rex": re.compile(
-                        r"`{3}math\s+?([^`]+?)\s+?`{3}\s*?\(([^)$\r\n]+?)\)", re.M
+                        r"^`{3}math\s+?([^`]+?)\s+?`{3}\s*?\(([^)$\r\n]+?)\)", re.M
                     ),
-                    "tmpl": '<section class="eqno"><eqn>{0}</eqn><span>({1})</span></section>',
+                    "tmpl": '<section class="eqno">\n<eqn>{0}</eqn><span>({1})</span>\n</section>\n',  # noqa: E501
                     "tag": "```math",
                 },
                 {
                     "name": "math_block",
-                    "rex": re.compile(r"`{3}math\s+?([^`]+?)\s+?`{3}", re.M),
-                    "tmpl": "<section><eqn>{0}</eqn></section>",
+                    "rex": re.compile(r"^`{3}math\s+?([^`]+?)\s+?`{3}", re.M),
+                    "tmpl": "<section>\n<eqn>{0}</eqn>\n</section>\n",
                     "tag": "```math",
                 },
             ],
@@ -198,13 +198,13 @@ rules = AttrDict(
             "inline": [
                 {
                     "name": "math_inline",
-                    "rex": re.compile(r"`{2}([^`]+?)`{2}"),
+                    "rex": re.compile(r"^`{2}([^`]+?)`{2}"),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "``",
                 },
                 {
                     "name": "math_inline",
-                    "rex": re.compile(r"\$(\S[^$\r\n]*?[^\s\\]{1}?)\$"),
+                    "rex": re.compile(r"^\$(\S[^$\r\n]*?[^\s\\]{1}?)\$"),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "$",
                     "pre": dollar_pre,
@@ -212,7 +212,7 @@ rules = AttrDict(
                 },
                 {
                     "name": "math_single",
-                    "rex": re.compile(r"\$([^$\s\\]{1}?)\$"),
+                    "rex": re.compile(r"^\$([^$\s\\]{1}?)\$"),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "$",
                     "pre": dollar_pre,
@@ -223,14 +223,14 @@ rules = AttrDict(
                 {
                     "name": "math_block_eqno",
                     "rex": re.compile(
-                        r"`{3}math\s+?([^`]+?)\s+?`{3}\s*?\(([^)$\r\n]+?)\)", re.M
+                        r"^`{3}math\s+?([^`]+?)\s+?`{3}\s*?\(([^)$\r\n]+?)\)", re.M
                     ),
                     "tmpl": '<section class="eqno"><eqn>{0}</eqn><span>({1})</span></section>',
                     "tag": "```math",
                 },
                 {
                     "name": "math_block",
-                    "rex": re.compile(r"`{3}math\s+?([^`]+?)\s+?`{3}", re.M),
+                    "rex": re.compile(r"^`{3}math\s+?([^`]+?)\s+?`{3}", re.M),
                     "tmpl": "<section><eqn>{0}</eqn></section>",
                     "tag": "```math",
                 },
@@ -240,7 +240,7 @@ rules = AttrDict(
             "inline": [
                 {
                     "name": "math_inline",
-                    "rex": re.compile(r"\${2}([^$\r\n]*?)\${2}"),
+                    "rex": re.compile(r"^\${2}([^$\r\n]*?)\${2}"),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "$$",
                 }
@@ -248,13 +248,15 @@ rules = AttrDict(
             "block": [
                 {
                     "name": "math_block_eqno",
-                    "rex": re.compile(r"\${2}([^$]*?)\${2}\s*?\(([^)$\r\n]+?)\)", re.M),
+                    "rex": re.compile(
+                        r"^\${2}([^$]*?)\${2}\s*?\(([^)$\r\n]+?)\)", re.M
+                    ),
                     "tmpl": '<section class="eqno"><eqn>{0}</eqn><span>({1})</span></section>',
                     "tag": "$$",
                 },
                 {
                     "name": "math_block",
-                    "rex": re.compile(r"\${2}([^$]*?)\${2}", re.M),
+                    "rex": re.compile(r"^\${2}([^$]*?)\${2}", re.M),
                     "tmpl": "<section><eqn>{0}</eqn></section>",
                     "tag": "$$",
                 },
@@ -264,7 +266,7 @@ rules = AttrDict(
             "inline": [
                 {
                     "name": "math_inline",
-                    "rex": re.compile(r"\$(\S[^$\r\n]*?[^\s\\]{1}?)\$"),
+                    "rex": re.compile(r"^\$(\S[^$\r\n]*?[^\s\\]{1}?)\$"),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "$",
                     "pre": dollar_pre,
@@ -272,7 +274,7 @@ rules = AttrDict(
                 },
                 {
                     "name": "math_single",
-                    "rex": re.compile(r"\$([^$\s\\]{1}?)\$"),
+                    "rex": re.compile(r"^\$([^$\s\\]{1}?)\$"),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "$",
                     "pre": dollar_pre,
@@ -282,13 +284,15 @@ rules = AttrDict(
             "block": [
                 {
                     "name": "math_block_eqno",
-                    "rex": re.compile(r"\${2}([^$]*?)\${2}\s*?\(([^)$\r\n]+?)\)", re.M),
+                    "rex": re.compile(
+                        r"^\${2}([^$]*?)\${2}\s*?\(([^)$\r\n]+?)\)", re.M
+                    ),
                     "tmpl": '<section class="eqno">\n<eqn>{0}</eqn><span>({1})</span>\n</section>\n',  # noqa: E501
                     "tag": "$$",
                 },
                 {
                     "name": "math_block",
-                    "rex": re.compile(r"\${2}([^$]*?)\${2}", re.M),
+                    "rex": re.compile(r"^\${2}([^$]*?)\${2}", re.M),
                     "tmpl": "<section>\n<eqn>{0}</eqn>\n</section>\n",
                     "tag": "$$",
                 },
