@@ -91,7 +91,7 @@ def run_all(package_names, path, num_parses):
     print(prompt)
     print("=" * len(prompt))
     max_len = max(len(p) for p in package_names)
-    text = text = path.read_text()
+    text = path.read_text()
     for package_name in package_names:
         print(package_name + " " * (max_len - len(package_name)), end=" ")
         func_name = re.sub(r"[\.\-\:]", "_", package_name.lower())

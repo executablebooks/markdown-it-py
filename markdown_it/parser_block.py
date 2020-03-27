@@ -74,7 +74,7 @@ class ParserBlock:
             # - update `state.tokens`
             # - return True
             for rule in rules:
-                if rule(state, line, endLine, silent):
+                if rule(state, line, endLine, False):
                     break
 
             # set state.tight if we had an empty line before current tag
