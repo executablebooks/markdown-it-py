@@ -5,7 +5,7 @@ from markdown_it.rules_block import StateBlock
 from markdown_it.common.utils import charCodeAt, isSpace, escapeHtml
 
 
-TARGET_PATTERN = re.compile(r"^\(([a-zA-Z0-9\_\-\+\:]{1,36})\)\=\s*$")
+TARGET_PATTERN = re.compile(r"^\(([a-zA-Z0-9\|\@\<\>\*\.\/\_\-\+\:]{1,36})\)\=\s*$")
 
 
 def myst_block_plugin(md: MarkdownIt):
