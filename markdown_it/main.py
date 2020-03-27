@@ -189,7 +189,7 @@ class MarkdownIt:
         if self.renderer.__output__ == fmt:
             self.renderer.rules[name] = function.__get__(self.renderer)
 
-    def use(self, plugin: Callable, *params) -> "MarkdownIt":
+    def use(self, plugin: Callable, *params, **options) -> "MarkdownIt":
         """Load specified plugin with given params into current parser instance. (chainable)
 
         It's just a sugar to call `plugin(md, params)` with curring.
@@ -201,7 +201,7 @@ class MarkdownIt:
             md = MarkdownIt().use(plugin, 'foo_replace', 'text', func)
 
         """
-        plugin(self, *params)
+        plugin(self, *params, **options)
         return self
 
     def parse(self, src: str, env: Optional[AttrDict] = None) -> List[Token]:

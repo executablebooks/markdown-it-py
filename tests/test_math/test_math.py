@@ -110,6 +110,12 @@ def test_plugin_render():
     )
 
 
+def test_plugin_render_with_brackets():
+    md = MarkdownIt().use(texmath_plugin, delimiters="brackets")
+    text = md.render(r"\[a=1\]")
+    assert text == ("<section><eqn>a=1</eqn></section>")
+
+
 @pytest.mark.parametrize(
     "index,comment,src,valid",
     [
