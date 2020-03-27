@@ -53,6 +53,9 @@ class MarkdownIt:
         if options:
             self.set(options)
 
+    def __repr__(self):
+        return f"{self.__class__.__module__}.{self.__class__.__name__}()"
+
     def __getitem__(self, name):
         return {
             "inline": self.inline,

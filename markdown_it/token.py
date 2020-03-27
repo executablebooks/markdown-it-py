@@ -79,6 +79,10 @@ class Token:
         else:
             self.attrs[idx][1] = self.attrs[idx][1] + " " + value
 
+    def copy(self):
+        """Return a shallow copy of the instance."""
+        return attr.evolve(self)
+
     def as_dict(self, children=True, filter=None, dict_factory=dict):
         """Return the token as a dict.
 
@@ -128,6 +132,7 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
         token = tokens.pop()
 
         if token.nesting == 0:
+            token = token.copy()
             output.append(token)
             if token.children:
                 token.children = nest_tokens(token.children)
