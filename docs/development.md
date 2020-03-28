@@ -18,9 +18,6 @@ Before continuing, make sure you've read:
     block and inline rules are usually faster.
   - Sometimes, it's enough to only modify the renderer, for example, to add
     header IDs or `target="_blank"` for the links.
-  - Plugins should not require the `markdown-it` package as dependency in `package.json`.
-    If you need access to internals, those are available via a parser instance,
-    passed on plugin load. See properties of main class and nested objects.
 2. Search existing
    [plugins](https://www.npmjs.org/browse/keyword/markdown-it-plugin)
    or [rules](https://github.com/markdown-it/markdown-it/tree/master/lib),
@@ -32,14 +29,6 @@ Before continuing, make sure you've read:
      "how to learn programming" are not accepted.
    - Don't ask us to break [CommonMark](http://commonmark.org/) specification.
      Such things should be discussed first on [CommonMark forum](http://talk.commonmark.org/).
-
-
-## Notes for NPM packages
-
-To simplify search:
-
-- add to `package.json` keywords `markdown-it` and `markdown-it-plugin` for plugins.
-- add keyword `markdown-it` for any other related packages.
 
 
 ## FAQ
