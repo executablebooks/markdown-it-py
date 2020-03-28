@@ -1,7 +1,7 @@
 # fences (``` lang, ~~~ lang)
 import logging
 
-from ..common.utils import charCodeAt
+from ..common.utils import charCodeAt, stripEscape
 from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
@@ -97,7 +97,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool):
     state.line = nextLine + (1 if haveEndMarker else 0)
 
     token = state.push("fence", "code", 0)
-    token.info = params
+    token.info = stripEscape(params)
     token.content = state.getLines(startLine + 1, nextLine, length, True)
     token.markup = markup
     token.map = [startLine, state.line]

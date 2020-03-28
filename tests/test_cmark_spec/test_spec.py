@@ -19,24 +19,15 @@ def test_file(file_regression):
 
 @pytest.mark.parametrize("entry", json.loads(TESTS_INPUT.read_text()))
 def test_spec(entry):
-    if entry["example"] in [108, 334]:
-        # TODO fix failing empty code span tests ``` ``` -> <code> </code> not <code></code>
-        pytest.skip("empty code span spacing")
-    if entry["example"] in [
-        171,  # [foo]: /url\\bar\\*baz \"foo\\\"bar\\baz\"\n\n[foo]\n
-        308,  # [foo](/bar\\* \"ti\\*tle\")\n
-        309,  # [foo]\n\n[foo]: /bar\\* \"ti\\*tle\"\n
-        310,  # ``` foo\\+bar\nfoo\n```\n
-        502,  # [link](/url \"title \\\"&quot;\")\n
-        599,  # <http://example.com/\\[\\>\n
-    ]:
-        # TODO fix url backslash escaping
-        pytest.skip("url backslash escaping")
+    if entry["example"] == 599:
+        # TODO fix Backslash-escapes do not work inside autolinks
+        pytest.skip("autolinks backslash escape")
     md = MarkdownIt("commonmark")
     output = md.render(entry["markdown"])
     expected = entry["html"]
 
     if entry["example"] == 593:
+        # this doesn't have any bearing on the output
         output = output.replace("mailto", "MAILTO")
     if entry["example"] in [187, 209, 210]:
         # this doesn't have any bearing on the output

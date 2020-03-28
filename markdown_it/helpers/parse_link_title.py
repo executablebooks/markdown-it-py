@@ -1,7 +1,6 @@
 """Parse link title
 """
-
-from ..common.utils import unescapeAll, charCodeAt
+from ..common.utils import unescapeAll, charCodeAt, stripEscape
 
 
 class _Result:
@@ -12,6 +11,9 @@ class _Result:
         self.pos = 0
         self.lines = 0
         self.str = ""
+
+    def __str__(self):
+        return self.str
 
 
 def parseLinkTitle(string, pos, maximum):
@@ -37,9 +39,11 @@ def parseLinkTitle(string, pos, maximum):
     while pos < maximum:
         code = charCodeAt(string, pos)
         if code == marker:
+            title = string[start + 1 : pos]
+            title = unescapeAll(stripEscape(title))
             result.pos = pos + 1
             result.lines = lines
-            result.str = unescapeAll(string[start + 1 : pos])
+            result.str = title
             result.ok = True
             return result
         elif code == 0x0A:

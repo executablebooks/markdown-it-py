@@ -3,6 +3,8 @@ import re
 from typing import Callable
 from urllib.parse import urlparse, urlunparse, quote, unquote  # noqa: F401
 
+from .utils import ESCAPABLE
+
 # TODO below we port the use of the JS packages:
 # var mdurl        = require('mdurl')
 # var punycode     = require('punycode')
@@ -30,9 +32,10 @@ from urllib.parse import urlparse, urlunparse, quote, unquote  # noqa: F401
 #  ################# Copied from Commonmark.py #################
 
 ENTITY = "&(?:#x[a-f0-9]{1,6}|#[0-9]{1,7}|[a-z][a-z0-9]{1,31});"
-ESCAPABLE = "[!\"#$%&'()*+,./:;<=>?@[\\\\\\]^_`{|}~-]"
 reBackslashOrAmp = re.compile(r"[\\&]")
-reEntityOrEscapedChar = re.compile("\\\\" + ESCAPABLE + "|" + ENTITY, re.IGNORECASE)
+reEntityOrEscapedChar = re.compile(
+    "\\\\" + "[" + ESCAPABLE + "]|" + ENTITY, re.IGNORECASE
+)
 
 
 def unescape_char(s):
@@ -112,13 +115,14 @@ def unescape_unquote(x):
     return unquote(unescape_string(x))
 
 
-def normalizeLinkText(title):
+def normalizeLinkText(link):
     """Normalize autolink content::
 
         <destination>
          ~~~~~~~~~~~
     """
-    (scheme, netloc, path, params, query, fragment) = urlparse(title)
+    (scheme, netloc, path, params, query, fragment) = urlparse(link)
+    print((scheme, netloc, path, params, query, fragment))
     if scheme in RECODE_HOSTNAME_FOR:
         url = urlunparse(
             (
@@ -131,7 +135,7 @@ def normalizeLinkText(title):
             )
         )
     else:
-        url = unescape_unquote(title)
+        url = unescape_unquote(link)
     return url
 
     # TODO the selective encoding below should probably be done here,
