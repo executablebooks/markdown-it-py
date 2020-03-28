@@ -60,14 +60,32 @@ def normalize_uri(uri):
 RECODE_HOSTNAME_FOR = ("http", "https", "mailto")
 
 
+def unescape_normalize_uri(x):
+    return normalize_uri(unescape_string(x))
+
+
 def normalizeLink(url):
     """Normalize destination URLs in links::
 
         [label]:   destination   'title'
                 ^^^^^^^^^^^
     """
-    url_unescaped = unescape_string(url)
-    return normalize_uri(url_unescaped)
+    (scheme, netloc, path, params, query, fragment) = urlparse(url)
+    if scheme in RECODE_HOSTNAME_FOR:
+        url = urlunparse(
+            (
+                scheme,
+                unescape_normalize_uri(netloc),
+                unescape_normalize_uri(path),
+                unescape_normalize_uri(params),
+                normalize_uri(query),
+                unescape_normalize_uri(fragment),
+            )
+        )
+    else:
+        url = unescape_normalize_uri(url)
+
+    return url
 
     # TODO the selective encoding below should probably be done here,
     # something like:
@@ -90,13 +108,31 @@ def normalizeLink(url):
     # return quote(urlunparse(parsed))
 
 
+def unescape_unquote(x):
+    return unquote(unescape_string(x))
+
+
 def normalizeLinkText(title):
     """Normalize autolink content::
 
         <destination>
          ~~~~~~~~~~~
     """
-    return unquote(unescape_string(title))
+    (scheme, netloc, path, params, query, fragment) = urlparse(title)
+    if scheme in RECODE_HOSTNAME_FOR:
+        url = urlunparse(
+            (
+                scheme,
+                unescape_unquote(netloc),
+                unquote(path),
+                unescape_unquote(params),
+                unquote(query),
+                unescape_unquote(fragment),
+            )
+        )
+    else:
+        url = unescape_unquote(title)
+    return url
 
     # TODO the selective encoding below should probably be done here,
     # something like:
