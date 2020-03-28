@@ -202,5 +202,116 @@ nested_tokens[0]
 
 ## Renderers
 
+<!-- #region -->
+After the token stream is generated, it's passed to a [renderer](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/renderer.py).
+It then plays all the tokens, passing each to a rule with the same name as token type.
 
-Todo ...
+Renderer rules are located in `md.renderer.rules` and are simple functions
+with the same signature:
+
+```python
+def function(renderer, tokens, idx, options, env):
+  return htmlResult
+```
+<!-- #endregion -->
+
+You can inject render methods into the instantiated render class.
+
+```python
+md = MarkdownIt("commonmark")
+
+def render_em_open(self, tokens, idx, options, env):
+    return '<em class="myclass">'
+
+md.add_render_rule("em_open", render_em_open)
+md.render("*a*")
+```
+
+This is a slight change to the JS version, where the renderer argument is at the end.
+Also `add_render_rule` method is specific to Python, rather than adding directly to the `md.renderer.rules`, this ensures the method is bound to the renderer.
+
+
+You can also subclass a render and add the method there:
+
+```python
+from markdown_it.renderer import RendererHTML
+
+class MyRenderer(RendererHTML):
+    def em_open(self, tokens, idx, options, env):
+        return '<em class="myclass">'
+
+md = MarkdownIt("commonmark", renderer_cls=MyRenderer)
+md.render("*a*")
+```
+
+Plugins can support multiple render types, using the `__ouput__` attribute (this is currently a Python only feature).
+
+```python
+from markdown_it.renderer import RendererHTML
+
+class MyRenderer1(RendererHTML):
+    __output__ = "html1"
+
+class MyRenderer2(RendererHTML):
+    __output__ = "html2"
+
+def plugin(md):
+    def render_em_open1(self, tokens, idx, options, env):
+        return '<em class="myclass1">'
+    def render_em_open2(self, tokens, idx, options, env):
+        return '<em class="myclass2">'
+    md.add_render_rule("em_open", render_em_open1, fmt="html1")
+    md.add_render_rule("em_open", render_em_open2, fmt="html2")
+
+md = MarkdownIt("commonmark", renderer_cls=MyRenderer1).use(plugin)
+print(md.render("*a*"))
+
+md = MarkdownIt("commonmark", renderer_cls=MyRenderer2).use(plugin)
+print(md.render("*a*"))
+```
+
+Here's a more concrete example; let's replace images with vimeo links to player's iframe:
+
+```python
+import re
+from markdown_it import MarkdownIt
+
+vimeoRE = re.compile(r'^https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)')
+
+def render_vimeo(self, tokens, idx, options, env):
+    token = tokens[idx]
+    aIndex = token.attrIndex('src')
+    if (vimeoRE.match(token.attrs[aIndex][1])):
+
+        ident = vimeoRE.match(token.attrs[aIndex][1])[2]
+
+        return ('<div class="embed-responsive embed-responsive-16by9">\n' +
+               '  <iframe class="embed-responsive-item" src="//player.vimeo.com/video/' +
+                ident + '"></iframe>\n' +
+               '</div>\n')
+    return self.image(tokens, idx, options, env)
+
+md = MarkdownIt("commonmark")
+md.add_render_rule("image", render_vimeo)
+print(md.render("![](https://www.vimeo.com/123)"))
+```
+
+Here is another example, how to add `target="_blank"` to all links:
+
+```python
+from markdown_it import MarkdownIt
+
+def render_blank_link(self, tokens, idx, options, env):
+    aIndex = tokens[idx].attrIndex('target')
+    if (aIndex < 0):
+        tokens[idx].attrPush(['target', '_blank']) # add new attribute
+    else:
+        tokens[idx].attrs[aIndex][1] = '_blank'  # replace value of existing attr
+
+    # pass token to default renderer.
+    return self.renderToken(tokens, idx, options, env)
+
+md = MarkdownIt("commonmark")
+md.add_render_rule("link_open", render_blank_link)
+print(md.render("[a]\n\n[a]: b"))
+```

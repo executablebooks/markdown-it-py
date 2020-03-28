@@ -50,7 +50,7 @@ The difference is simple:
 - There are special token objects, "inline containers", having nested tokens.
   sequences with inline markup (bold, italic, text, ...).
 
-See [token class](https://github.com/markdown-it/markdown-it/blob/master/lib/token.js)
+See [token class](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/token.py)
 for details about each token content.
 
 In total, a token stream is:
@@ -68,8 +68,8 @@ to an AST.
 
 More details about tokens:
 
-- [Renderer source](https://github.com/markdown-it/markdown-it/blob/master/lib/renderer.js)
-- [Token source](https://github.com/markdown-it/markdown-it/blob/master/lib/token.js)
+- [Renderer source](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/renderer.py)
+- [Token source](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/token.py)
 - [Live demo](https://markdown-it.github.io/) - type your text and click `debug` tab.
 
 
@@ -95,90 +95,67 @@ and tried to do something yourself. We never reject with help to real developers
 
 ## Renderer
 
-After token stream is generated, it's passed to a [renderer](https://github.com/markdown-it/markdown-it/blob/master/lib/renderer.js).
+After the token stream is generated, it's passed to a [renderer](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/renderer.py).
 It then plays all the tokens, passing each to a rule with the same name as token type.
 
 Renderer rules are located in `md.renderer.rules[name]` and are simple functions
 with the same signature:
 
-```js
-function (tokens, idx, options, env, renderer) {
-  //...
-  return htmlResult;
-}
+```python
+def function(renderer, tokens, idx, options, env):
+  return htmlResult
 ```
 
 In many cases that allows easy output change even without parser intrusion.
 For example, let's replace images with vimeo links to player's iframe:
 
-```js
-var md = require('markdown-it')();
+```python
+import re
+md = MarkdownIt("commonmark")
 
-var defaultRender = md.renderer.rules.image,
-    vimeoRE       = /^https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/;
+vimeoRE = re.compile(r'^https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)')
 
-md.renderer.rules.image = function (tokens, idx, options, env, self) {
-  var token = tokens[idx],
-      aIndex = token.attrIndex('src');
+def render_vimeo(self, tokens, idx, options, env):
+    token = tokens[idx]
+    aIndex = token.attrIndex('src')
+    if (vimeoRE.match(token.attrs[aIndex][1])):
 
-  if (vimeoRE.test(token.attrs[aIndex][1])) {
+        ident = vimeoRE.match(token.attrs[aIndex][1])[2]
 
-    var id = token.attrs[aIndex][1].match(vimeoRE)[2];
+        return ('<div class="embed-responsive embed-responsive-16by9">\n' +
+               '  <iframe class="embed-responsive-item" src="//player.vimeo.com/video/' +
+                ident + '"></iframe>\n' +
+               '</div>\n')
+    return self.image(tokens, idx, options, env)
 
-    return '<div class="embed-responsive embed-responsive-16by9">\n' +
-           '  <iframe class="embed-responsive-item" src="//player.vimeo.com/video/' + id + '"></iframe>\n' +
-           '</div>\n';
-  }
-
-  // pass token to default renderer.
-  return defaultRender(tokens, idx, options, env, self);
-};
+md = MarkdownIt("commonmark")
+md.add_render_rule("image", render_vimeo)
+print(md.render("![](https://www.vimeo.com/123)"))
 ```
 
 Here is another example, how to add `target="_blank"` to all links:
 
-```js
-// Remember old renderer, if overridden, or proxy to default renderer
-var defaultRender = md.renderer.rules.link_open || function(tokens, idx, options, env, self) {
-  return self.renderToken(tokens, idx, options);
-};
+```python
+from markdown_it import MarkdownIt
 
-md.renderer.rules.link_open = function (tokens, idx, options, env, self) {
-  // If you are sure other plugins can't add `target` - drop check below
-  var aIndex = tokens[idx].attrIndex('target');
+def render_blank_link(self, tokens, idx, options, env):
+    aIndex = tokens[idx].attrIndex('target')
+    if (aIndex < 0):
+        tokens[idx].attrPush(['target', '_blank']) # add new attribute
+    else:
+        tokens[idx].attrs[aIndex][1] = '_blank'  # replace value of existing attr
 
-  if (aIndex < 0) {
-    tokens[idx].attrPush(['target', '_blank']); // add new attribute
-  } else {
-    tokens[idx].attrs[aIndex][1] = '_blank';    // replace value of existing attr
-  }
+    # pass token to default renderer.
+    return self.renderToken(tokens, idx, options, env)
 
-  // pass token to default renderer.
-  return defaultRender(tokens, idx, options, env, self);
-};
+md = MarkdownIt("commonmark")
+md.add_render_rule("link_open", render_blank_link)
+print(md.render("[a]\n\n[a]: b"))
 ```
 
 Note, if you need to add attributes, you can do things without renderer override.
 For example, you can update tokens in `core` chain. That is slower, than direct
-renderer override, but can be more simple. Let's use
-[markdown-for-inline](https://github.com/markdown-it/markdown-it-for-inline) plugin
-to do the same thing as in previous example:
-
-```js
-var iterator = require('markdown-it-for-inline');
-
-var md = require('markdown-it')()
-            .use(iterator, 'url_new_win', 'link_open', function (tokens, idx) {
-              var aIndex = tokens[idx].attrIndex('target');
-
-              if (aIndex < 0) {
-                tokens[idx].attrPush(['target', '_blank']);
-              } else {
-                tokens[idx].attrs[aIndex][1] = '_blank';
-              }
-            });
-```
-
+renderer override, but can be more simple.
 
 You also can write your own renderer to generate other formats than HTML, such as
 JSON/XML... You can even use it to generate AST.
@@ -194,9 +171,9 @@ This was mentioned in [Data flow](#data-flow), but let's repeat sequence again:
 
 And somewhere between you can apply additional transformations :) . Full content
 of each chain can be seen on the top of
-[parser_core.js](https://github.com/markdown-it/markdown-it/blob/master/lib/parser_core.js),
-[parser_block.js](https://github.com/markdown-it/markdown-it/blob/master/lib/parser_block.js) and
-[parser_inline.js](https://github.com/markdown-it/markdown-it/blob/master/lib/parser_inline.js)
+[parser_core.py](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/parser_core.py),
+[parser_block.py](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/parser_block.py) and
+[parser_inline.py](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/parser_inline.py)
 files.
 
-Also you can change output directly in [renderer](https://github.com/markdown-it/markdown-it/blob/master/lib/renderer.js) for many simple cases.
+Also you can change output directly in [renderer](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/renderer.py) for many simple cases.
