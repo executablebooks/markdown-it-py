@@ -2,6 +2,41 @@ from markdown_it import MarkdownIt
 from markdown_it.token import Token
 
 
+def test_get_rules():
+    md = MarkdownIt("zero")
+    # print(md.get_all_rules())
+    assert md.get_all_rules() == {
+        "core": ["normalize", "block", "inline"],
+        "block": [
+            "table",
+            "code",
+            "fence",
+            "blockquote",
+            "hr",
+            "list",
+            "reference",
+            "heading",
+            "lheading",
+            "html_block",
+            "paragraph",
+        ],
+        "inline": [
+            "text",
+            "newline",
+            "escape",
+            "backticks",
+            "strikethrough",
+            "emphasis",
+            "link",
+            "image",
+            "autolink",
+            "html_inline",
+            "entity",
+        ],
+        "inline2": ["balance_pairs", "strikethrough", "emphasis", "text_collapse"],
+    }
+
+
 def test_load_presets():
     md = MarkdownIt("zero")
     assert md.get_active_rules() == {
