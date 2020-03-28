@@ -65,23 +65,14 @@ def footnote_def(state: StateBlock, startLine: int, endLine: int, silent: bool):
         return True
     pos += 1
 
-    if "footnotes" not in state.env:
-        state.env["footnotes"] = {}
-    if "refs" not in state.env["footnotes"]:
-        # TODO here (as is expected) previously defined footnotes are ignored
-        # we should though add a record of these (plus line numbers) to the env
-        # so that renderers may report warnings for these ignored footnotes
-        # rather than 'failing silently'
-        state.env["footnotes"]["refs"] = {}
     label = state.src[start + 2 : pos - 2]
-    state.env["footnotes"]["refs"][":" + label] = -1
+    state.env.setdefault("footnotes", {}).setdefault("refs", {})[":" + label] = -1
 
-    token = Token("footnote_reference_open", "", 1)
-    # TODO add record of line numbers to footnote definitions
-    token.meta = {"label": label}
-    token.level = state.level
+    open_token = Token("footnote_reference_open", "", 1)
+    open_token.meta = {"label": label}
+    open_token.level = state.level
     state.level += 1
-    state.tokens.append(token)
+    state.tokens.append(open_token)
 
     oldBMark = state.bMarks[startLine]
     oldTShift = state.tShift[startLine]
@@ -127,6 +118,8 @@ def footnote_def(state: StateBlock, startLine: int, endLine: int, silent: bool):
     state.sCount[startLine] = oldSCount
     state.bMarks[startLine] = oldBMark
 
+    open_token.map = [startLine, state.line]
+
     token = Token("footnote_reference_close", "", -1)
     state.level -= 1
     token.level = state.level
@@ -159,11 +152,8 @@ def footnote_inline(state: StateInline, silent: bool):
     # so all that's left to do is to call tokenizer.
     #
     if not silent:
-        if "footnotes" not in state.env:
-            state.env["footnotes"] = {}
-        if "list" not in state.env["footnotes"]:
-            state.env["footnotes"]["list"] = {}
-        footnoteId = len(state.env["footnotes"]["list"])
+        refs = state.env.setdefault("footnotes", {}).setdefault("list", {})
+        footnoteId = len(refs)
 
         tokens = []
         state.md.inline.parse(
@@ -173,10 +163,7 @@ def footnote_inline(state: StateInline, silent: bool):
         token = state.push("footnote_ref", "", 0)
         token.meta = {"id": footnoteId}
 
-        state.env["footnotes"]["list"][footnoteId] = {
-            "content": state.src[labelStart:labelEnd],
-            "tokens": tokens,
-        }
+        refs[footnoteId] = {"content": state.src[labelStart:labelEnd], "tokens": tokens}
 
     state.pos = labelEnd + 1
     state.posMax = maximum

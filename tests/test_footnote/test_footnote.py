@@ -21,7 +21,7 @@ def test_footnote_def():
             "tag": "",
             "nesting": 1,
             "attrs": None,
-            "map": None,
+            "map": [0, 1],
             "level": 0,
             "children": None,
             "content": "",
