@@ -6,12 +6,12 @@ separated\
 by\
 newlines
 
-this  
-should  
-be  
-separated  
-by  
-newlines  
+this
+should
+be
+separated
+by
+newlines
 too
 
 this
@@ -21,4 +21,3 @@ be
 separated
 by
 newlines
-

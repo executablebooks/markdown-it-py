@@ -1,5 +1,6 @@
 # markdown-it design principles
 
+
 ## Data flow
 
 Input data is parsed via nested chains of rules. There are 3 nested chains -

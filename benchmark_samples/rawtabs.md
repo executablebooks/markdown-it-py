@@ -15,4 +15,3 @@ this is a test for tab expansion, be careful not to replace them with spaces
 a lot of                                                spaces in between here
 
 a lot of												tabs in between here
-

@@ -29,4 +29,3 @@ blah blah
 <![CDATA[
   [[[[[[[[[[[... *cdata section - this should not be parsed* ...]]]]]]]]]]]
 ]]>
-

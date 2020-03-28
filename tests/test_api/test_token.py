@@ -29,6 +29,11 @@ def test_token():
     assert token.attrIndex("j") == -1
 
 
+def test_serialization():
+    token = Token("name", "tag", 0, children=[Token("other", "tag2", 0)])
+    assert token == Token.from_dict(token.as_dict())
+
+
 def test_nest_tokens():
     tokens = nest_tokens(
         [

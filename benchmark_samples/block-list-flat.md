@@ -32,7 +32,7 @@ of a list item
 
     this part is inside the list
 
-   this part is just a paragraph  
+   this part is just a paragraph
 
 
  1. test

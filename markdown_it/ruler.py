@@ -204,6 +204,10 @@ class Ruler:
         # Chain can be empty, if rules disabled. But we still have to return Array.
         return self.__cache__.get(chainName, []) or []
 
+    def get_all_rules(self) -> List[str]:
+        """Return all available rule names."""
+        return [r.name for r in self.__rules__]
+
     def get_active_rules(self) -> List[str]:
         """Return the active rule names."""
         return [r.name for r in self.__rules__ if r.enabled]

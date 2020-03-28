@@ -100,6 +100,13 @@ class Token:
             self, recurse=children, filter=filter, dict_factory=dict_factory
         )
 
+    @classmethod
+    def from_dict(cls, dct):
+        token = cls(**dct)
+        if token.children:
+            token.children = [cls.from_dict(c) for c in token.children]
+        return token
+
 
 @attr.s(slots=True)
 class NestedTokens:

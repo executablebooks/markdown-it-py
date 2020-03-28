@@ -12,46 +12,37 @@ from .renderer import RendererHTML
 from .utils import AttrDict
 
 
-config = AttrDict(
+_PRESETS = AttrDict(
     {
-        "default": presets.default.presets,
-        "zero": presets.zero.presets,
-        "commonmark": presets.commonmark.presets,
+        "default": presets.default.make(),
+        "zero": presets.zero.make(),
+        "commonmark": presets.commonmark.make(),
     }
 )
 
 
 class MarkdownIt:
     def __init__(
-        self,
-        presetName: Union[str, AttrDict] = "commonmark",
-        options=None,
-        renderer_cls=RendererHTML,
+        self, config: Union[str, AttrDict] = "commonmark", renderer_cls=RendererHTML
     ):
         """Main parser class
 
-        :param presetName: name of configuration to load or a pre-defined one
-        :param options: specific options to load
+        :param config: name of configuration to load or a pre-defined dictionary
+        :param renderer_cls: the class to load as the renderer:
+            ``self.renderer = renderer_cls(self)
         """
-        options = options or {}
-        if not options:
-            if not isinstance(presetName, str):
-                options = presetName or {}
-                presetName = "default"
-
         self.inline = ParserInline()
         self.block = ParserBlock()
         self.core = ParserCore()
         self.renderer = renderer_cls(self)
-        # var LinkifyIt    = require('linkify-it')
-        # self.linkify = LinkifyIt()  # TODO maybe see https://github.com/Suor/autolink
 
         self.utils = utils
         self.helpers = helpers
         self.options = {}
-        self.configure(presetName)
-        if options:
-            self.set(options)
+        self.configure(config)
+
+        # var LinkifyIt    = require('linkify-it')
+        # self.linkify = LinkifyIt()  # TODO maybe see https://github.com/Suor/autolink
 
     def __repr__(self):
         return f"{self.__class__.__module__}.{self.__class__.__name__}()"
@@ -86,7 +77,7 @@ class MarkdownIt:
         """
         if isinstance(presets, str):
             presetName = presets
-            presets = config.get(presetName, None)
+            presets = _PRESETS.get(presetName, None)
             if not presets:
                 raise KeyError(
                     'Wrong `markdown-it` preset "' + presetName + '", check name'
@@ -108,6 +99,15 @@ class MarkdownIt:
                     self[name].ruler2.enableOnly(rules2)
 
         return self
+
+    def get_all_rules(self) -> Dict[str, List[str]]:
+        """Return the names of all active rules."""
+        rules = {
+            chain: self[chain].ruler.get_all_rules()
+            for chain in ["core", "block", "inline"]
+        }
+        rules["inline2"] = self.inline.ruler2.get_all_rules()
+        return rules
 
     def get_active_rules(self) -> Dict[str, List[str]]:
         """Return the names of all active rules."""
