@@ -264,8 +264,6 @@ def footnote_tail(state: StateBlock, *args, **kwargs):
 
         tok_filter.append((not insideRef))
 
-    # TODO store a record of un-referenced footnotes,
-    # so they may be reported by the renderer
     state.tokens = [t for t, f in zip(state.tokens, tok_filter) if f]
 
     if "list" not in state.env.get("footnotes", {}):
