@@ -189,7 +189,7 @@ CommonMark spec and reference implementations.
 
 [CommonMark spec]: http://spec.commonmark.org/
 [markdown-it]: https://github.com/markdown-it/markdown-it
-[markdown-it-readme]: https://github.com/markdown-it/markdown-it/README.md
+[markdown-it-readme]: https://github.com/markdown-it/markdown-it/blob/master/README.md
 [security-doc]: https://github.com/ExecutableBookProject/markdown-it-py/tree/master/docs/security.md
 [Using the api]: https://github.com/ExecutableBookProject/markdown-it-py/tree/master/docs/Using_the_api.md
 [Development info]: https://github.com/ExecutableBookProject/markdown-it-py/tree/master/docs/development.md
