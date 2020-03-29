@@ -81,7 +81,7 @@ def make_front_matter_rule():
                 continue
 
             pos = start + 1
-            while pos <= maximum:
+            while pos < maximum:
                 if marker_str[(pos - start) % marker_len] != state.src[pos]:
                     break
                 pos += 1
@@ -115,12 +115,12 @@ def make_front_matter_rule():
             state.bMarks[startLine + 1] : state.eMarks[nextLine - 1]
         ]
         token.block = True
-        token.map = [startLine, pos]
         token.meta = state.src[start_content : start - 1]
 
         state.parentType = old_parent
         state.lineMax = old_line_max
         state.line = nextLine + (1 if auto_closed else 0)
+        token.map = [startLine, state.line - 1]
 
         return True
 
