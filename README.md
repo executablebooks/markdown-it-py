@@ -3,6 +3,7 @@
 [![Github-DI][github-ci]][github-link]
 [![Coverage Status][cov-badge]][cov-link]
 [![PyPI][pypi-badge]][pypi-link]
+[![Conda][conda-badge]][conda-link]
 [![Code style: black][black-badge]][black-link]
 
 > Markdown parser done right. Fast and easy to extend.
@@ -47,6 +48,12 @@ It is very simple to write complimentary extensions for both language implementa
 
 
 ## Install
+
+```bash
+conda install -c conda-forge markdown-it-py
+```
+
+or
 
 ```bash
 pip install markdown-it-py
@@ -182,6 +189,8 @@ CommonMark spec and reference implementations.
 [github-link]: https://github.com/ExecutableBookProject/markdown-it-py
 [pypi-badge]: https://img.shields.io/pypi/v/markdown-it-py.svg
 [pypi-link]: https://pypi.org/project/markdown-it-py
+[conda-badge]: https://anaconda.org/conda-forge/markdown-it-py/badges/version.svg
+[conda-link]: https://anaconda.org/conda-forge/markdown-it-py
 [cov-badge]: https://coveralls.io/repos/github/ExecutableBookProject/markdown-it-py/badge.svg?branch=master
 [cov-link]: https://coveralls.io/github/ExecutableBookProject/markdown-it-py?branch=master
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
