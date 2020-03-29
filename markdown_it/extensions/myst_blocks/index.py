@@ -82,11 +82,11 @@ def block_break(state: StateBlock, startLine: int, endLine: int, silent: bool):
     cnt = 1
     while pos < maximum:
         ch = charCodeAt(state.src, pos)
-        pos += 1
         if ch != marker and not isSpace(ch):
             break
         if ch == marker:
             cnt += 1
+        pos += 1
 
     if cnt < 3:
         return False
@@ -98,9 +98,9 @@ def block_break(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     token = state.push("myst_block_break", "hr", 0)
     token.attrSet("class", "myst-block")
-    token.content = state.src[pos - 1 : maximum].strip()
+    token.content = state.src[pos:maximum].strip()
     token.map = [startLine, state.line]
-    token.markup = chr(marker) * (cnt + 1)
+    token.markup = chr(marker) * cnt
 
     return True
 

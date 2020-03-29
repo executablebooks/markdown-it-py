@@ -29,7 +29,7 @@ def test_token():
             tag="",
             nesting=0,
             attrs=None,
-            map=[0, 2],
+            map=[0, 3],
             level=0,
             children=None,
             content="a: 1",

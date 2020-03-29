@@ -120,7 +120,7 @@ def make_front_matter_rule():
         state.parentType = old_parent
         state.lineMax = old_line_max
         state.line = nextLine + (1 if auto_closed else 0)
-        token.map = [startLine, state.line - 1]
+        token.map = [startLine, state.line]
 
         return True
 
