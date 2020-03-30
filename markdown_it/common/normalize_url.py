@@ -122,7 +122,6 @@ def normalizeLinkText(link):
          ~~~~~~~~~~~
     """
     (scheme, netloc, path, params, query, fragment) = urlparse(link)
-    print((scheme, netloc, path, params, query, fragment))
     if scheme in RECODE_HOSTNAME_FOR:
         url = urlunparse(
             (
