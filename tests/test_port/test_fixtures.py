@@ -23,8 +23,22 @@ def test_title(line, title, input, expected):
 )
 def test_commonmark_extras(line, title, input, expected):
     if line in [74, 88]:
-        # TODO fix failing url escaping tests
-        pytest.skip("url escaping")
+        # TODO fix failing escaping tests
+        # probably requires a fix of common.utils.stripEscape
+        pytest.skip("escaping entities in link titles / fence.info")
+    md = MarkdownIt("commonmark")
+    md.options["langPrefix"] = ""
+    text = md.render(input)
+    if text.rstrip() != expected.rstrip():
+        print(text)
+    assert text.rstrip() == expected.rstrip()
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("normalize.md")),
+)
+def test_normalize_url(line, title, input, expected):
     md = MarkdownIt("commonmark")
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
@@ -34,11 +48,13 @@ def test_commonmark_extras(line, title, input, expected):
     "line,title,input,expected", read_fixture_file(FIXTURE_PATH.joinpath("fatal.md"))
 )
 def test_fatal(line, title, input, expected):
-    if line in [1, 17, 25]:
+    if line in [1, 25]:
         # TODO fix failing url escaping tests
-        pytest.skip("url escaping")
+        pytest.skip("url normalisation")
     md = MarkdownIt("commonmark")
     text = md.render(input)
+    if text.rstrip() != expected.rstrip():
+        print(text)
     assert text.rstrip() == expected.rstrip()
 
 
