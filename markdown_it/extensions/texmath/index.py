@@ -146,7 +146,7 @@ rules = AttrDict(
             "inline": [
                 {
                     "name": "math_inline",
-                    "rex": re.compile(r"^\\\((.+?)\\\)"),
+                    "rex": re.compile(r"^\\\((.+?)\\\)", re.DOTALL),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "\\(",
                 }
@@ -266,7 +266,7 @@ rules = AttrDict(
             "inline": [
                 {
                     "name": "math_inline",
-                    "rex": re.compile(r"^\$(\S[^$\r\n]*?[^\s\\]{1}?)\$"),
+                    "rex": re.compile(r"^\$(\S[^$]*?[^\s\\]{1}?)\$"),
                     "tmpl": "<eq>{0}</eq>",
                     "tag": "$",
                     "pre": dollar_pre,

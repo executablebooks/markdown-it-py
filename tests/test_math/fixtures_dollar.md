@@ -82,6 +82,25 @@ $a^\*b$ with $a^\*$
 <p><eq>a^\*b</eq> with <eq>a^\*</eq></p>
 .
 
+Inline multi-line (valid=True)
+.
+a $a
+\not=1$ b
+.
+<p>a <eq>a
+\not=1</eq> b</p>
+.
+
+Inline multi-line with newline (valid=False)
+.
+a $a
+
+\not=1$ b
+.
+<p>a $a</p>
+<p>\not=1$ b</p>
+.
+
 single block equation, greek index (valid=True)
 .
 $$e_\\alpha$$
@@ -416,13 +435,4 @@ $x $
 <p>$ $
 $ x$
 $x $</p>
-.
-
-line break in inline equation is not allowed. (valid=False)
-.
-$1+1=
-2$
-.
-<p>$1+1=
-2$</p>
 .
