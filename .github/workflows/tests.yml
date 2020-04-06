@@ -30,16 +30,17 @@ jobs:
     - name: Pre-commit checks
       run: |
         pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
-    - name: Test with pytest
+    - name: Run pytest
       run: |
-        pip install pytest
-        pytest --cov=markdown_it --cov-report=
-    - name: Upload to coveralls
-      run: |
-        pip install coveralls
-        coveralls
-      env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_KEY }}
+        pytest --cov=markdown_it --cov-report=xml --cov-report=term-missing
+    - name: Upload to Codecov
+      if: matrix.python-version == 3.7 && github.repository == 'ExecutableBookProject/markdown-it-py'
+      uses: codecov/codecov-action@v1
+      with:
+        name: markdown-it-py-pytests-py3.7
+        flags: pytests
+        file: ./coverage.xml
+        fail_ci_if_error: true
 
   publish:
 
