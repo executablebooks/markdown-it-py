@@ -1,7 +1,7 @@
 # markdown-it-py
 
 [![Github-DI][github-ci]][github-link]
-[![Coverage Status][cov-badge]][cov-link]
+[![Coverage Status][codecov-badge]][codecov-link]
 [![PyPI][pypi-badge]][pypi-link]
 [![Conda][conda-badge]][conda-link]
 [![Code style: black][black-badge]][black-link]
@@ -191,8 +191,8 @@ CommonMark spec and reference implementations.
 [pypi-link]: https://pypi.org/project/markdown-it-py
 [conda-badge]: https://anaconda.org/conda-forge/markdown-it-py/badges/version.svg
 [conda-link]: https://anaconda.org/conda-forge/markdown-it-py
-[cov-badge]: https://coveralls.io/repos/github/ExecutableBookProject/markdown-it-py/badge.svg?branch=master
-[cov-link]: https://coveralls.io/github/ExecutableBookProject/markdown-it-py?branch=master
+[codecov-badge]: https://codecov.io/gh/ExecutableBookProject/markdown-it-py/branch/master/graph/badge.svg
+[codecov-link]: https://codecov.io/gh/ExecutableBookProject/markdown-it-py
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/ambv/black
 

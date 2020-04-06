@@ -4,13 +4,28 @@
 name: Python package
 
 on: [push, pull_request]
-  # push:
-  #   branches: [ master ]
-  # pull_request:
-  #   branches: [ master ]
 
 jobs:
-  build:
+
+  pre-commit:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .[code_style]
+    - name: Run pre-commit
+      run: |
+        pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+
+  tests:
 
     runs-on: ubuntu-latest
     strategy:
@@ -26,25 +41,23 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install .[code_style,testing]
-    - name: Pre-commit checks
+        pip install .[testing]
+    - name: Run pytest
       run: |
-        pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
-    - name: Test with pytest
-      run: |
-        pip install pytest
-        pytest --cov=markdown_it --cov-report=
-    - name: Upload to coveralls
-      run: |
-        pip install coveralls
-        coveralls
-      env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_KEY }}
+        pytest --cov=markdown_it --cov-report=xml --cov-report=term-missing
+    - name: Upload to Codecov
+      if: matrix.python-version == 3.7 && github.repository == 'ExecutableBookProject/markdown-it-py'
+      uses: codecov/codecov-action@v1
+      with:
+        name: markdown-it-py-pytests-py3.7
+        flags: pytests
+        file: ./coverage.xml
+        fail_ci_if_error: true
 
   publish:
 
     name: Publish to PyPi
-    needs: build
+    needs: [pre-commit, tests]
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
     runs-on: ubuntu-latest
     steps:
