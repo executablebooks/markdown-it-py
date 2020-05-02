@@ -28,6 +28,9 @@ ENVIRONMENTS = [
     "Bmatrix",
     "vmatrix",
     "Vmatrix",
+    # eqnarray is another math environment, it is not part of amsmath,
+    # and note that it is better to use align or equation+split instead
+    "eqnarray",
 ]
 # other "non-top-level" environments:
 
@@ -39,9 +42,6 @@ ENVIRONMENTS = [
 # 3.7 variants gathered, aligned,and alignedat are provided
 # whose total width is the actual width of the contents;
 # thus they can be used as a component in a containing expression
-
-# eqnarray is another math environment, but is not part of amsmath,
-# and it is better to use align or equation+split instead
 
 RE_OPEN = re.compile(r"\\begin\{(" + "|".join(ENVIRONMENTS) + r")([\*]?)\}")
 
