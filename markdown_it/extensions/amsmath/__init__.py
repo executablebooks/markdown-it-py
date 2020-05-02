@@ -1,4 +1,4 @@
-"""An extension to capture ams math environments."""
+"""An extension to capture amsmath latex environments."""
 import re
 
 from markdown_it import MarkdownIt
@@ -20,6 +20,14 @@ ENVIRONMENTS = [
     "alignat",
     # stretches the space betweenthe equation columns to the maximum possible width
     "flalign",
+    # 4.1 The pmatrix, bmatrix, Bmatrix, vmatrix and Vmatrix have (respectively)
+    # (),[],{},||,and ‖‖ delimiters built in.
+    "matrix",
+    "pmatrix",
+    "bmatrix",
+    "Bmatrix",
+    "vmatrix",
+    "Vmatrix",
 ]
 # other "non-top-level" environments:
 
