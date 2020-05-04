@@ -4,7 +4,7 @@ Before continuing, make sure you've read:
 
 1. [README](https://github.com/markdown-it/markdown-it#markdown-it)
 2. [API documentation](https://markdown-it.github.io/markdown-it/)
-3. [Architecture description](architecture.md)
+3. [Architecture description](architecture)
 
 
 ## General considerations for plugins.
@@ -34,7 +34,7 @@ Before continuing, make sure you've read:
 ## FAQ
 
 
-#### I need async rule, how to do it?
+### I need async rule, how to do it?
 
 Sorry. You can't do it directly. All complex parsers are sync by nature. But you
 can use workarounds:
@@ -48,7 +48,7 @@ Alternatively, you can render HTML, then parse it to DOM, or
 in a more convenient way.
 
 
-#### How to replace part of text token with link?
+### How to replace part of text token with link?
 
 The right sequence is to split text to several tokens and add link tokens in between.
 The result will be: `text` + `link_open` + `text` + `link_close` + `text`.
@@ -58,7 +58,7 @@ See implementations of [linkify](https://github.com/markdown-it/markdown-it/blob
 __Note.__ Don't try to replace text with HTML markup! That's not secure.
 
 
-#### Why my inline rule is not executed?
+### Why my inline rule is not executed?
 
 The inline parser skips pieces of texts to optimize speed. It stops only on [a small set of chars](https://github.com/markdown-it/markdown-it/blob/master/lib/rules_inline/text.js), which can be tokens. We did not made this list extensible for performance reasons too.
 
@@ -66,7 +66,7 @@ If you are absolutely sure that something important is missing there - create a
 ticket and we will consider adding it as a new charcode.
 
 
-#### Why do you reject some useful things?
+### Why do you reject some useful things?
 
 We do a markdown parser. It should keep the "markdown spirit". Other things should
 be kept separate, in plugins, for example. We have no clear criteria, sorry.
