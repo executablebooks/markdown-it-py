@@ -50,8 +50,8 @@ setup(
         "testing": ["coverage", "pytest>=3.6,<4", "pytest-cov", "pytest-regressions"],
         "rtd": [
             "sphinx>=2,<3",
-            "myst-parser~=0.6.0a3",
             "pyyaml",
+            "sphinx_book_theme",
             "myst-nb",
             "sphinx-copybutton",
         ],
