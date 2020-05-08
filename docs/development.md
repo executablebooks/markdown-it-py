@@ -74,3 +74,8 @@ Probably, you will find [CommonMark forum](http://talk.commonmark.org/) a useful
 
 Of course, if you find the architecture of this parser interesting for another type
 of markup, you are welcome to reuse it in another project.
+
+## Code of Conduct
+
+The `markdown-it-py` project follows the
+[Executable Book Project code of conduct](https://executablebooks.org/en/latest/about.html#code-of-conduct).
