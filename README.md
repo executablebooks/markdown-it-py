@@ -64,7 +64,7 @@ pip install markdown-it-py
 
 See also:
 
-- [Using the api] - for an executable notebook guide to the API
+- [Using `markdown_it`][using-the-api] - for an executable notebook guide to the API
 - [Development info] - for plugins writers.
 
 ```python
@@ -200,5 +200,5 @@ CommonMark spec and reference implementations.
 [markdown-it]: https://github.com/markdown-it/markdown-it
 [markdown-it-readme]: https://github.com/markdown-it/markdown-it/blob/master/README.md
 [security-doc]: https://github.com/ExecutableBookProject/markdown-it-py/tree/master/docs/security.md
-[Using the api]: https://github.com/ExecutableBookProject/markdown-it-py/tree/master/docs/Using_the_api.md
+[using-the-api]: https://github.com/ExecutableBookProject/markdown-it-py/tree/master/docs/using.md
 [Development info]: https://github.com/ExecutableBookProject/markdown-it-py/tree/master/docs/development.md
