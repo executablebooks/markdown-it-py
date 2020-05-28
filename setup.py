@@ -21,7 +21,7 @@ setup(
     author="Chris Sewell",
     author_email="chrisj_sewell@hotmail.com",
     license="MIT",
-    packages=find_packages(),
+    packages=find_packages(exclude=["test*"]),
     entry_points={
         "console_scripts": [
             "markdown-it = markdown_it.cli.parse:main",
