@@ -114,12 +114,12 @@ DIGITAL_ENTITY_TEST_RE = re.compile(r"^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))", re.IGN
 
 
 def replaceEntityPattern(match, name):
-    """
+    """Convert HTML entity patterns
+
     ::
-        In [2]: from markdown_it import MarkdownIt
-           ...: md = MarkdownIt()
-           ...: md.render("![](https://www.google.com)")
-        Out[2]: '<p><img src="https%3A//www.google.com" alt=""></p>\n'
+
+        https://www.google.com -> https%3A//www.google.com
+
     """
     code = 0
 
@@ -275,12 +275,15 @@ MD_ASCII_PUNCT = {
 def isMdAsciiPunct(ch: str):
     """Markdown ASCII punctuation characters.
 
-  !, ", #, $, %, &, ', (, ), *, +, ,, -, ., /, :, ;, <, =, >, ?, @, [, \\, ], ^, _, `, {, |, }, or ~
-  http://spec.commonmark.org/0.15/#ascii-punctuation-character
+    ::
 
-  Don't confuse with unicode punctuation !!! It lacks some chars in ascii range.
+        !, ", #, $, %, &, ', (, ), *, +, ,, -, ., /, :, ;, <, =, >, ?, @, [, \\, ], ^, _, `, {, |, }, or ~
 
-  """
+    See http://spec.commonmark.org/0.15/#ascii-punctuation-character
+
+    Don't confuse with unicode punctuation !!! It lacks some chars in ascii range.
+
+    """  # noqa: E501
     return ch in MD_ASCII_PUNCT
 
 

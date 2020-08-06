@@ -68,7 +68,9 @@ def unescape_normalize_uri(x):
 
 
 def normalizeLink(url):
-    """Normalize destination URLs in links::
+    """Normalize destination URLs in links
+
+    ::
 
         [label]:   destination   'title'
                 ^^^^^^^^^^^
@@ -116,7 +118,9 @@ def unescape_unquote(x):
 
 
 def normalizeLinkText(link):
-    """Normalize autolink content::
+    """Normalize autolink content
+
+    ::
 
         <destination>
          ~~~~~~~~~~~

@@ -137,3 +137,5 @@ apidoc/
 __pycache__/
 .ropeproject/
 *.egg-info/
+
+docs/api/

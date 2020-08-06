@@ -15,32 +15,30 @@ from .token import Token
 class RendererHTML:
     """Contains render rules for tokens. Can be updated and extended.
 
-    ##### Example
+    Example:
 
     Each rule is called as independent static function with fixed signature:
 
-    ```python
-    class Renderer:
-        def token_type_name(self, tokens, idx, options, env) {
-            # ...
-            return renderedHTML
-    ```
+    ::
 
-    example:
+        class Renderer:
+            def token_type_name(self, tokens, idx, options, env) {
+                # ...
+                return renderedHTML
 
-    ```python
-    class CustomRenderer(RendererHTML):
-        def strong_open(self, tokens, idx, options, env):
-            return '<b>'
-        def strong_close(self, tokens, idx, options, env):
-            return '</b>'
+    ::
 
-    md = MarkdownIt(renderer=CustomRenderer)
+        class CustomRenderer(RendererHTML):
+            def strong_open(self, tokens, idx, options, env):
+                return '<b>'
+            def strong_close(self, tokens, idx, options, env):
+                return '</b>'
 
-    result = md.render(...)
-    ```
+        md = MarkdownIt(renderer=CustomRenderer)
 
-    See [source code](https://github.com/markdown-it/markdown-it/blob/master/lib/renderer.js)
+        result = md.render(...)
+
+    See https://github.com/markdown-it/markdown-it/blob/master/lib/renderer.js
     for more details and examples.
     """
 
