@@ -2,6 +2,8 @@
 ```
 
 ```{toctree}
+:maxdepth: 2
+
 using
 architecture
 development
