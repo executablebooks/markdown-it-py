@@ -138,5 +138,6 @@ __pycache__/
 .ropeproject/
 *.egg-info/
 .vscode/
+.DS_Store
 
 docs/api/
