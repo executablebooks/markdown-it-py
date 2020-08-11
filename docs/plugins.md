@@ -42,6 +42,20 @@ Other plugins are then available *via* the `markdown_it.extensions` package:
     :::::
     ```
 
+- [deflist](https://github.com/markdown-it/markdown-it-deflist) syntax is based on [pandoc definition lists](http://johnmacfarlane.net/pandoc/README.html#definition-lists).
+
+    ```md
+    Term 1
+
+    : Definition 1 long form
+
+      second paragraph
+
+    Term 2 with *inline markup*
+      ~ Definition 2a compact style
+      ~ Definition 2b
+    ```
+
 - [texmath](https://github.com/goessner/markdown-it-texmath) parses TeX math equations set inside opening and closing delimiters:
 
     ```md
@@ -63,7 +77,6 @@ There are also many other plugins which could easily be ported (and hopefully wi
 
 - [subscript](https://github.com/markdown-it/markdown-it-sub)
 - [superscript](https://github.com/markdown-it/markdown-it-sup)
-- [definition list](https://github.com/markdown-it/markdown-it-deflist)
 - [abbreviation](https://github.com/markdown-it/markdown-it-abbr)
 - [emoji](https://github.com/markdown-it/markdown-it-emoji)
 - [insert](https://github.com/markdown-it/markdown-it-ins)
