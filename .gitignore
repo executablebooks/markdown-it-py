@@ -137,5 +137,6 @@ apidoc/
 __pycache__/
 .ropeproject/
 *.egg-info/
+vscode/
 
 docs/api/

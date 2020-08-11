@@ -9,7 +9,7 @@
     "**/__pycache__": true
   },
   "python.formatting.provider": "black",
-  "python.pythonPath": "/anaconda/envs/js2py/bin/python",
+  "python.pythonPath": "/Users/chrisjsewell/opt/miniconda3/envs/ebp/bin/python",
   "python.linting.pylintEnabled": false,
   "python.linting.flake8Enabled": true,
   "python.linting.enabled": true,
