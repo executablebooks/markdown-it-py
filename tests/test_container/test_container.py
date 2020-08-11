@@ -1,11 +1,6 @@
-from pathlib import Path
 from textwrap import dedent
 
-import pytest
-
 from markdown_it import MarkdownIt
-from markdown_it.rules_inline import StateInline
-from markdown_it.rules_block import StateBlock
 from markdown_it.extensions.container import container_plugin
 
 
