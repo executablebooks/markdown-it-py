@@ -32,6 +32,16 @@ Other plugins are then available *via* the `markdown_it.extensions` package:
     ---
     ```
 
+- [containers](https://github.com/markdown-it/markdown-it-container) is a plugin for creating block-level custom containers:
+
+    ```md
+    ::::: name
+    :::: name
+    *markdown*
+    ::::
+    :::::
+    ```
+
 - [texmath](https://github.com/goessner/markdown-it-texmath) parses TeX math equations set inside opening and closing delimiters:
 
     ```md
@@ -56,7 +66,6 @@ There are also many other plugins which could easily be ported (and hopefully wi
 - [definition list](https://github.com/markdown-it/markdown-it-deflist)
 - [abbreviation](https://github.com/markdown-it/markdown-it-abbr)
 - [emoji](https://github.com/markdown-it/markdown-it-emoji)
-- [custom container](https://github.com/markdown-it/markdown-it-container)
 - [insert](https://github.com/markdown-it/markdown-it-ins)
 - [mark](https://github.com/markdown-it/markdown-it-mark)
 - ... and [others](https://www.npmjs.org/browse/keyword/markdown-it-plugin)
