@@ -33,6 +33,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "myst_nb",
     "sphinx_copybutton",
+    "sphinx_panels",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -57,6 +58,7 @@ html_theme_options = {
     "repository_branch": "master",
     "path_to_docs": "docs",
 }
+panels_add_boostrap_css = False
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
