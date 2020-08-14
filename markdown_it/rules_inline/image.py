@@ -17,7 +17,7 @@ def image(state: StateInline, silent: bool):
     if state.ords[state.pos] != 0x21:
         return False
     # /* [ */
-    if state.ords[state.pos + 1] != 0x5B:
+    if state.pos + 1 < state.posMax and state.ords[state.pos + 1] != 0x5B:
         return False
 
     labelStart = state.pos + 2
