@@ -2,7 +2,7 @@
 import logging
 
 from .state_block import StateBlock
-from ..common.utils import isSpace, charCodeAt
+from ..common.utils import isSpace
 
 LOGGER = logging.getLogger(__name__)
 
@@ -18,7 +18,7 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    ch = charCodeAt(state.src, pos)
+    ch = state.ords[pos]
 
     # /* # */
     if ch != 0x23 or pos >= maximum:
@@ -27,12 +27,12 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
     # count heading level
     level = 1
     pos += 1
-    ch = charCodeAt(state.src, pos)
+    ch = state.ords[pos]
     # /* # */
     while ch == 0x23 and pos < maximum and level <= 6:
         level += 1
         pos += 1
-        ch = charCodeAt(state.src, pos)
+        ch = state.ords[pos]
 
     if level > 6 or (pos < maximum and not isSpace(ch)):
         return False
@@ -44,13 +44,13 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     # maximum = state.skipSpacesBack(maximum, pos)
     # tmp = state.skipCharsBack(maximum, 0x23, pos)  # #
-    # if tmp > pos and isSpace(charCodeAt(state.src, tmp - 1)):
+    # if tmp > pos and isSpace(state.ords[tmp - 1]):
     #     maximum = tmp
     # TODO the code above doesn't seem to work, but this does
     # we should check why the code above doesn't work though
     _max = len(state.src[:maximum].rstrip().rstrip(chr(0x23)))
     try:
-        if isSpace(charCodeAt(state.src, _max - 1)):
+        if isSpace(state.ords[_max - 1]):
             maximum = _max
     except IndexError:
         pass

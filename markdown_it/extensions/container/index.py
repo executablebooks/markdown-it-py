@@ -36,7 +36,7 @@ def container_plugin(md: MarkdownIt, name, **options):
 
         # Check out the first character quickly,
         # this should filter out most of non-containers
-        if marker_char != charCodeAt(state.src, start):
+        if marker_char != state.ords[start]:
             return False
 
         # Check out the rest of the marker string
@@ -79,7 +79,7 @@ def container_plugin(md: MarkdownIt, name, **options):
                 #  test
                 break
 
-            if marker_char != charCodeAt(state.src, start):
+            if marker_char != state.ords[start]:
                 continue
 
             if state.sCount[nextLine] - state.blkIndent >= 4:

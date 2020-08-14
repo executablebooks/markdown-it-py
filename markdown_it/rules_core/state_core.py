@@ -7,6 +7,7 @@ from ..ruler import StateBase
 class StateCore(StateBase):
     def __init__(self, src: str, md, env, tokens=None):
         self.src = src
+        self.ords = [ord(c) for c in src]
         self.md = md  # link to parser instance
         self.env = env
         self.tokens: List[Token] = tokens or []

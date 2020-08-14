@@ -4,7 +4,7 @@ At least 3 of these characters on a line * - _
 """
 import logging
 
-from ..common.utils import charCodeAt, isSpace
+from ..common.utils import isSpace
 from .state_block import StateBlock
 
 
@@ -22,7 +22,7 @@ def hr(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    marker = charCodeAt(state.src, pos)
+    marker = state.ords[pos]
     pos += 1
 
     # Check hr marker: /* * */ /* - */ /* _ */
@@ -33,7 +33,7 @@ def hr(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     cnt = 1
     while pos < maximum:
-        ch = charCodeAt(state.src, pos)
+        ch = state.ords[pos]
         pos += 1
         if ch != marker and not isSpace(ch):
             return False

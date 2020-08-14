@@ -2,7 +2,7 @@
 import logging
 
 from .state_block import StateBlock
-from ..common.utils import charCodeAt, isSpace
+from ..common.utils import isSpace
 
 LOGGER = logging.getLogger(__name__)
 
@@ -14,14 +14,14 @@ def skipBulletListMarker(state: StateBlock, startLine: int):
     pos = state.bMarks[startLine] + state.tShift[startLine]
     maximum = state.eMarks[startLine]
 
-    marker = charCodeAt(state.src, pos)
+    marker = state.ords[pos]
     pos += 1
     # Check bullet /* * */ /* - */ /* + */
     if marker != 0x2A and marker != 0x2D and marker != 0x2B:
         return -1
 
     if pos < maximum:
-        ch = charCodeAt(state.src, pos)
+        ch = state.ords[pos]
 
         if not isSpace(ch):
             # " -test " - is not a list item
@@ -42,7 +42,7 @@ def skipOrderedListMarker(state: StateBlock, startLine: int):
     if pos + 1 >= maximum:
         return -1
 
-    ch = charCodeAt(state.src, pos)
+    ch = state.ords[pos]
     pos += 1
 
     # /* 0 */  /* 9 */
@@ -54,7 +54,7 @@ def skipOrderedListMarker(state: StateBlock, startLine: int):
         if pos >= maximum:
             return -1
 
-        ch = charCodeAt(state.src, pos)
+        ch = state.ords[pos]
         pos += 1
 
         # /* 0 */  /* 9 */
@@ -74,7 +74,7 @@ def skipOrderedListMarker(state: StateBlock, startLine: int):
         return -1
 
     if pos < maximum:
-        ch = charCodeAt(state.src, pos)
+        ch = state.ords[pos]
 
         if not isSpace(ch):
             # " 1.test " - is not a list item
@@ -156,7 +156,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
             return False
 
     # We should terminate list on style change. Remember first one to compare.
-    markerCharCode = charCodeAt(state.src, posAfterMarker - 1)
+    markerCharCode = state.ords[posAfterMarker - 1]
 
     # For validation mode we can terminate immediately
     if silent:
@@ -198,7 +198,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
         )
 
         while pos < maximum:
-            ch = charCodeAt(state.src, pos)
+            ch = state.ords[pos]
 
             if ch == 0x09:
                 offset += 4 - (offset + state.bsCount[nextLine]) % 4
@@ -317,7 +317,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
             if posAfterMarker < 0:
                 break
 
-        if markerCharCode != charCodeAt(state.src, posAfterMarker - 1):
+        if markerCharCode != state.ords[posAfterMarker - 1]:
             break
 
     # Finalize list

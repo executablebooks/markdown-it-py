@@ -1,7 +1,7 @@
 # Process ![image](<src> "title")
 
 from .state_inline import StateInline
-from ..common.utils import isSpace, charCodeAt, normalizeReference
+from ..common.utils import isSpace, normalizeReference
 from ..common.normalize_url import normalizeLink, validateLink
 
 
@@ -14,10 +14,10 @@ def image(state: StateInline, silent: bool):
     max = state.posMax
 
     # /* ! */
-    if charCodeAt(state.src, state.pos) != 0x21:
+    if state.ords[state.pos] != 0x21:
         return False
     # /* [ */
-    if charCodeAt(state.src, state.pos + 1) != 0x5B:
+    if state.ords[state.pos + 1] != 0x5B:
         return False
 
     labelStart = state.pos + 2
@@ -29,7 +29,7 @@ def image(state: StateInline, silent: bool):
 
     pos = labelEnd + 1
     # /* ( */
-    if pos < max and charCodeAt(state.src, pos) == 0x28:
+    if pos < max and state.ords[pos] == 0x28:
         #
         # Inline link
         #
@@ -38,7 +38,7 @@ def image(state: StateInline, silent: bool):
         #        ^^ skipping these spaces
         pos += 1
         while pos < max:
-            code = charCodeAt(state.src, pos)
+            code = state.ords[pos]
             if not isSpace(code) and code != 0x0A:
                 break
             pos += 1
@@ -61,7 +61,7 @@ def image(state: StateInline, silent: bool):
         #                ^^ skipping these spaces
         start = pos
         while pos < max:
-            code = charCodeAt(state.src, pos)
+            code = state.ords[pos]
             if not isSpace(code) and code != 0x0A:
                 break
             pos += 1
@@ -76,7 +76,7 @@ def image(state: StateInline, silent: bool):
             # [link](  <href>  "title"  )
             #                         ^^ skipping these spaces
             while pos < max:
-                code = charCodeAt(state.src, pos)
+                code = state.ords[pos]
                 if not isSpace(code) and code != 0x0A:
                     break
                 pos += 1
@@ -84,7 +84,7 @@ def image(state: StateInline, silent: bool):
             title = ""
 
         # /* ) */
-        if pos >= max or charCodeAt(state.src, pos) != 0x29:
+        if pos >= max or state.ords[pos] != 0x29:
             state.pos = oldPos
             return False
 
@@ -98,7 +98,7 @@ def image(state: StateInline, silent: bool):
             return False
 
         # /* [ */
-        if pos < max and charCodeAt(state.src, pos) == 0x5B:
+        if pos < max and state.ords[pos] == 0x5B:
             start = pos + 1
             pos = state.md.helpers.parseLinkLabel(state, pos)
             if pos >= 0:

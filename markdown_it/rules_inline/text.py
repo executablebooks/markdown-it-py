@@ -2,7 +2,6 @@
 # and increment current pos
 
 from .state_inline import StateInline
-from ..common.utils import charCodeAt
 
 
 # Rule to skip pure text
@@ -42,8 +41,8 @@ def isTerminatorChar(ch):
 
 def text(state: StateInline, silent: bool, **args):
     pos = state.pos
-
-    while (pos < state.posMax) and not isTerminatorChar(charCodeAt(state.src, pos)):
+    posMax = state.posMax
+    while (pos < posMax) and not isTerminatorChar(state.ords[pos]):
         pos += 1
 
     if pos == state.pos:

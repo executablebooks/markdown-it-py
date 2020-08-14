@@ -2,13 +2,12 @@
 #
 
 from .state_inline import StateInline, Delimiter
-from ..common.utils import charCodeAt
 
 
 def tokenize(state: StateInline, silent: bool):
     """Insert each marker as a separate text token, and add it to delimiter list"""
     start = state.pos
-    marker = charCodeAt(state.src, start)
+    marker = state.ords[start]
 
     if silent:
         return False

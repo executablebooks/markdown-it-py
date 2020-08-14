@@ -2,7 +2,7 @@
 Process escaped chars and hardbreaks
 """
 from .state_inline import StateInline
-from ..common.utils import isSpace, charCodeAt
+from ..common.utils import isSpace
 
 
 ESCAPED = [0 for _ in range(256)]
@@ -15,13 +15,13 @@ def escape(state: StateInline, silent: bool):
     maximum = state.posMax
 
     # /* \ */
-    if charCodeAt(state.src, pos) != 0x5C:
+    if state.ords[pos] != 0x5C:
         return False
 
     pos += 1
 
     if pos < maximum:
-        ch = charCodeAt(state.src, pos)
+        ch = state.ords[pos]
 
         if ch < 256 and ESCAPED[ch] != 0:
             if not silent:
@@ -36,7 +36,7 @@ def escape(state: StateInline, silent: bool):
             pos += 1
             # skip leading whitespaces from next line
             while pos < maximum:
-                ch = charCodeAt(state.src, pos)
+                ch = state.ords[pos]
                 if not isSpace(ch):
                     break
                 pos += 1

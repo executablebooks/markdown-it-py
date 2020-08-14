@@ -1,7 +1,7 @@
 # fences (``` lang, ~~~ lang)
 import logging
 
-from ..common.utils import charCodeAt, stripEscape
+from ..common.utils import stripEscape
 from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
@@ -22,7 +22,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if pos + 3 > maximum:
         return False
 
-    marker = charCodeAt(state.src, pos)
+    marker = state.ords[pos]
 
     # /* ~ */  /* ` */
     if marker != 0x7E and marker != 0x60:
@@ -68,7 +68,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool):
             #  test
             break
 
-        if charCodeAt(state.src, pos) != marker:
+        if state.ords[pos] != marker:
             continue
 
         if state.sCount[nextLine] - state.blkIndent >= 4:

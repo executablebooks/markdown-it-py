@@ -3,7 +3,6 @@ import logging
 import re
 
 from .state_block import StateBlock
-from ..common.utils import charCodeAt
 from ..common.html_blocks import block_names
 from ..common.html_re import HTML_OPEN_CLOSE_TAG_STR
 
@@ -45,7 +44,7 @@ def html_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if not state.md.options.get("html", None):
         return False
 
-    if charCodeAt(state.src, pos) != 0x3C:  # /* < */
+    if state.ords[pos] != 0x3C:  # /* < */
         return False
 
     lineText = state.src[pos:maximum]

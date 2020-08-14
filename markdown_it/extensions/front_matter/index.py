@@ -29,7 +29,7 @@ def make_front_matter_rule():
 
         # Check out the first character of the first line quickly,
         # this should filter out non-front matter
-        if startLine != 0 or marker_char != charCodeAt(state.src, 0):
+        if startLine != 0 or marker_char != state.ords[0]:
             return False
 
         # Check out the rest of the marker string
@@ -73,7 +73,7 @@ def make_front_matter_rule():
                 #  test
                 break
 
-            if marker_char != charCodeAt(state.src, start):
+            if marker_char != state.ords[start]:
                 continue
 
             if state.sCount[nextLine] - state.blkIndent >= 4:

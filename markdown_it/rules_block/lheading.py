@@ -1,7 +1,6 @@
 # lheading (---, ==)
 import logging
 
-from ..common.utils import charCodeAt
 from ..ruler import Ruler
 from .state_block import StateBlock
 
@@ -38,7 +37,7 @@ def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool):
             maximum = state.eMarks[nextLine]
 
             if pos < maximum:
-                marker = charCodeAt(state.src, pos)
+                marker = state.ords[pos]
 
                 # /* - */  /* = */
                 if marker == 0x2D or marker == 0x3D:

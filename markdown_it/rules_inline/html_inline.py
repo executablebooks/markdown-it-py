@@ -1,7 +1,6 @@
 # Process html tags
 from .state_inline import StateInline
 from ..common.html_re import HTML_TAG_RE
-from ..common.utils import charCodeAt
 
 
 def isLetter(ch: int):
@@ -19,11 +18,11 @@ def html_inline(state: StateInline, silent: bool):
 
     # Check start
     maximum = state.posMax
-    if charCodeAt(state.src, pos) != 0x3C or pos + 2 >= maximum:  # /* < */
+    if state.ords[pos] != 0x3C or pos + 2 >= maximum:  # /* < */
         return False
 
     # Quick fail on second char
-    ch = charCodeAt(state.src, pos + 1)
+    ch = state.ords[pos + 1]
     if (
         ch != 0x21
         and ch != 0x3F  # /* ! */
