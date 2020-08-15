@@ -1,6 +1,5 @@
 from pathlib import Path
 import pytest
-from shutil import which
 
 import markdown_it
 from markdown_it.extensions import (
