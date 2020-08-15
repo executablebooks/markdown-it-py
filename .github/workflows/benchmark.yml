@@ -5,7 +5,7 @@ on:
     branches: [master,benchmark]
 
 jobs:
-  benchmark:
+  benchmark-packages:
 
     runs-on: ubuntu-latest
     steps:
