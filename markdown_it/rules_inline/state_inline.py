@@ -45,7 +45,7 @@ Scanned = namedtuple("Scanned", ["can_open", "can_close", "length"])
 class StateInline(StateBase):
     def __init__(self, src: str, md, env, outTokens: List[Token]):
         self.src = src
-        self.ords = [ord(c) for c in src]
+        self.ords = [ord(c) for c in src] if src is not None else []
         self.env = env
         self.md = md
         self.tokens = outTokens

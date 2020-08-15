@@ -12,7 +12,7 @@ class StateBlock(StateBase):
         if ords is not None:
             self.ords = ords
         else:
-            self.ords = [ord(c) for c in src]
+            self.ords = [ord(c) for c in src] if src is not None else []
 
         # link to parser instance
         self.md = md
