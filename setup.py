@@ -47,6 +47,7 @@ setup(
             "pytest-cov",
             "pytest-regressions",
             "pytest-benchmark~=3.2",
+            "psutil",
         ],
         "rtd": [
             "sphinx>=2,<4",
