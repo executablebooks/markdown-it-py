@@ -3,8 +3,6 @@ name: benchmark
 on:
   push:
     branches: [master,benchmark]
-    tags:
-      - 'v*'
 
 jobs:
   benchmark:
@@ -12,17 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python 3.8
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
+
     - name: install pandoc
       uses: r-lib/actions/setup-pandoc@v1
       with:
         pandoc-version: '2.6'
-    - name: Install dependencies
+
+    - name: Install tox
       run: |
         python -m pip install --upgrade pip
         pip install tox
+
     - name: Run benchmark
-      run: tox -e py38-bench-packages -- --benchmark-min-rounds 50 --benchmark-json output.json
+      run: tox -e py38-bench-packages -- --benchmark-min-rounds 20 --benchmark-json output.json
+
+    - name: Upload data
+      uses: actions/upload-artifact@v2
+      with:
+        name: bench-packages
+        path: output.json
+        if-no-files-found: error
