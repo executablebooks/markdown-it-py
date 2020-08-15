@@ -26,12 +26,22 @@ jobs:
         python -m pip install --upgrade pip
         pip install tox
 
-    - name: Run benchmark
-      run: tox -e py38-bench-packages -- --benchmark-min-rounds 20 --benchmark-json output.json
+    - name: Run package benchmarks
+      run: tox -e py38-bench-packages -- --benchmark-min-rounds 20 --benchmark-json bench-packages.json
 
-    - name: Upload data
+    - name: Run plugin benchmarks
+      run: tox -e py38-bench-plugins -- --benchmark-min-rounds 20 --benchmark-json bench-plugins.json
+
+    - name: Upload package data
       uses: actions/upload-artifact@v2
       with:
         name: bench-packages
-        path: output.json
+        path: bench-packages.json
+        if-no-files-found: error
+
+    - name: Upload plugin data
+      uses: actions/upload-artifact@v2
+      with:
+        name: bench-plugins
+        path: bench-plugins.json
         if-no-files-found: error
