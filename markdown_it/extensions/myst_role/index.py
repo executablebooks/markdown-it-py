@@ -5,7 +5,7 @@ from markdown_it.rules_inline import StateInline
 from markdown_it.common.utils import charCodeAt, escapeHtml
 
 
-PATTERN = re.compile(r"^\{([a-zA-Z\_\-\+\:]{1,36})\}(`+)(?!`)(.+?)(?<!`)\2(?!`)")
+PATTERN = re.compile(r"^\{([a-zA-Z0-9\_\-\+\:]{1,36})\}(`+)(?!`)(.+?)(?<!`)\2(?!`)")
 
 
 def myst_role_plugin(md: MarkdownIt):
