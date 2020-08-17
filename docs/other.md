@@ -38,6 +38,8 @@ So, if you decide to use plugins that add extended class syntax or autogeneratin
 
 # Performance
 
+You can view our continuous integration benchmarking analysis at: <https://executablebooks.github.io/markdown-it-py/dev/bench/>
+
 markdown-it-py is the fastest _**CommonMark compliant**_ parser written in python!
 
 ```console
