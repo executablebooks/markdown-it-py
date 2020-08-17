@@ -203,7 +203,7 @@ nested_tokens[0]
 
 +++
 
-After the token stream is generated, it's passed to a [renderer](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/renderer.py).
+After the token stream is generated, it's passed to a [renderer](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/renderer.py).
 It then plays all the tokens, passing each to a rule with the same name as token type.
 
 Renderer rules are located in `md.renderer.rules` and are simple functions

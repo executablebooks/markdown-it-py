@@ -16,7 +16,7 @@ setup(
     description="Python port of markdown-it. Markdown parsing, done right!",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
-    url="https://github.com/ExecutableBookProject/markdown-it-py",
+    url="https://github.com/executablebooks/markdown-it-py",
     project_urls={"Documentation": "https://markdown-it-py.readthedocs.io"},
     author="Chris Sewell",
     author_email="chrisj_sewell@hotmail.com",

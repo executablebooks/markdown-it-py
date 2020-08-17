@@ -51,7 +51,7 @@ The difference is simple:
 - There are special token objects, "inline containers", having nested tokens.
   sequences with inline markup (bold, italic, text, ...).
 
-See [token class](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/token.py)
+See [token class](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/token.py)
 for details about each token content.
 
 In total, a token stream is:
@@ -69,8 +69,8 @@ to an AST.
 
 More details about tokens:
 
-- [Renderer source](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/renderer.py)
-- [Token source](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/token.py)
+- [Renderer source](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/renderer.py)
+- [Token source](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/token.py)
 - [Live demo](https://markdown-it.github.io/) - type your text and click `debug` tab.
 
 
@@ -96,7 +96,7 @@ and tried to do something yourself. We never reject with help to real developers
 
 ## Renderer
 
-After the token stream is generated, it's passed to a [renderer](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/renderer.py).
+After the token stream is generated, it's passed to a [renderer](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/renderer.py).
 It then plays all the tokens, passing each to a rule with the same name as token type.
 
 Renderer rules are located in `md.renderer.rules[name]` and are simple functions
@@ -172,9 +172,9 @@ This was mentioned in [Data flow](#data-flow), but let's repeat sequence again:
 
 And somewhere between you can apply additional transformations :) . Full content
 of each chain can be seen on the top of
-[parser_core.py](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/parser_core.py),
-[parser_block.py](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/parser_block.py) and
-[parser_inline.py](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/parser_inline.py)
+[parser_core.py](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/parser_core.py),
+[parser_block.py](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/parser_block.py) and
+[parser_inline.py](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/parser_inline.py)
 files.
 
-Also you can change output directly in [renderer](https://github.com/ExecutableBookProject/markdown-it-py/tree/master/markdown_it/renderer.py) for many simple cases.
+Also you can change output directly in [renderer](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/renderer.py) for many simple cases.

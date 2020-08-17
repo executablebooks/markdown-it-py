@@ -87,14 +87,14 @@ Big thanks to the authors of [markdown-it]:
 
 Also [John MacFarlane](https://github.com/jgm) for his work on the CommonMark spec and reference implementations.
 
-[github-ci]: https://github.com/ExecutableBookProject/markdown-it-py/workflows/Python%20package/badge.svg?branch=master
-[github-link]: https://github.com/ExecutableBookProject/markdown-it-py
+[github-ci]: https://github.com/executablebooks/markdown-it-py/workflows/Python%20package/badge.svg?branch=master
+[github-link]: https://github.com/executablebooks/markdown-it-py
 [pypi-badge]: https://img.shields.io/pypi/v/markdown-it-py.svg
 [pypi-link]: https://pypi.org/project/markdown-it-py
 [conda-badge]: https://anaconda.org/conda-forge/markdown-it-py/badges/version.svg
 [conda-link]: https://anaconda.org/conda-forge/markdown-it-py
-[codecov-badge]: https://codecov.io/gh/ExecutableBookProject/markdown-it-py/branch/master/graph/badge.svg
-[codecov-link]: https://codecov.io/gh/ExecutableBookProject/markdown-it-py
+[codecov-badge]: https://codecov.io/gh/executablebooks/markdown-it-py/branch/master/graph/badge.svg
+[codecov-link]: https://codecov.io/gh/executablebooks/markdown-it-py
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/ambv/black
 
