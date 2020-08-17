@@ -33,11 +33,25 @@ The prefered docstring format is outlined in `markdown-it-py/docstring.fmt.musta
 
 ## Testing
 
-For code tests (using [pytest](https://docs.pytest.org)):
+For code tests, markdown-it-py uses [pytest](https://docs.pytest.org)):
 
 ```shell
 >> cd markdown-it-py
 >> pytest
+```
+
+You use [tox](https://tox.readthedocs.io), to run the tests in multiple isolated environments (see the `tox.ini` file for available test environments):
+
+```shell
+>> cd markdown-it-py
+>> tox -p
+```
+
+This can also be used to run benchmarking tests using [pytest-benchmark](https://pytest-benchmark.readthedocs.io):
+
+```shell
+>> cd markdown-it-py
+tox -e py38-bench-packages -- --benchmark-min-rounds 50
 ```
 
 For documentation build tests:
@@ -47,8 +61,6 @@ For documentation build tests:
 >> make clean
 >> make html-strict
 ```
-
-The `markdown-it-bench` script is also used to compare parsing performance against other parser packages.
 
 ## Contributing a plugin
 

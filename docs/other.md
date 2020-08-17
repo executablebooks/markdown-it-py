@@ -40,24 +40,29 @@ So, if you decide to use plugins that add extended class syntax or autogeneratin
 
 markdown-it-py is the fastest _**CommonMark compliant**_ parser written in python!
 
+You can view our continuous integration benchmarking analysis at: <https://executablebooks.github.io/markdown-it-py/dev/bench/>,
+or you can run it for yourself within the repository:
+
 ```console
-$ markdown-it-bench -n 30
-Test document: spec.md
-Test iterations: 30
-Running 7 test(s) ...
-=====================
-[mistune         (0.8.4): 3.62 s]*
-markdown-it-py   (0.1.0): 9.03 s
-mistletoe        (0.10.0): 9.89 s
-commonmark-py    (0.9.1): 20.82 s
-pymarkdown       (3.2.1): 34.50 s
-pymarkdown:extra (3.2.1): 41.86 s
-panflute         (1.12.5): 35.02 s
+$ tox -e py38-bench-packages -- --benchmark-columns mean,stddev
+
+Name (time in ms)               Mean             StdDev
+-----------------------------------------------------------------
+test_mistune                 77.0086 (1.0)       0.9199 (1.0)
+test_markdown_it_py         220.1133 (2.86)      6.8678 (7.47)
+test_mistletoe              249.1983 (3.24)     20.6663 (22.47)
+test_commonmark_py          503.5010 (6.54)     21.1818 (23.03)
+test_panflute               988.7235 (12.84)    41.9010 (45.55)
+test_pymarkdown           1,088.7477 (14.14)    59.3361 (64.51)
+test_pymarkdown_extra     1,071.4707 (13.91)    38.1846 (41.51)
+-----------------------------------------------------------------
 ```
 
 As you can see, `markdown-it-py` doesn't pay with speed for it's flexibility.
 
-\*Note `mistune` is not CommonMark compliant, which is what allows for its
+```{note}
+`mistune` is not CommonMark compliant, which is what allows for its
 faster parsing, at the expense of issues, for example, with nested inline parsing.
 See [mistletoes's explanation](https://github.com/miyuchina/mistletoe#performance)
 for further details.
+```

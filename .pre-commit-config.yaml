@@ -9,7 +9,7 @@ exclude: >
       test.*\.html|
       .*commonmark\.json|
       benchmark/.*\.md|
-      markdown\_it/cli/spec\.md
+      .*/spec\.md
     )$
 
 repos:

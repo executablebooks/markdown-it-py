@@ -10,7 +10,7 @@ from markdown_it.extensions.texmath import index as main
 from markdown_it.extensions.texmath import texmath_plugin
 from markdown_it.utils import read_fixture_file
 
-FIXTURE_PATH = Path(__file__).parent
+FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures")
 
 
 def test_inline_func():
@@ -83,7 +83,7 @@ def test_plugin_parse(data_regression):
 
 @pytest.mark.parametrize(
     "line,title,input,expected",
-    read_fixture_file(FIXTURE_PATH.joinpath("fixtures_dollar.md")),
+    read_fixture_file(FIXTURE_PATH.joinpath("math_dollar.md")),
 )
 def test_dollar_fixtures(line, title, input, expected):
     md = MarkdownIt("commonmark").use(texmath_plugin)
@@ -95,7 +95,7 @@ def test_dollar_fixtures(line, title, input, expected):
 
 @pytest.mark.parametrize(
     "line,title,input,expected",
-    read_fixture_file(FIXTURE_PATH.joinpath("fixtures_bracket.md")),
+    read_fixture_file(FIXTURE_PATH.joinpath("math_bracket.md")),
 )
 def test_bracket_fixtures(line, title, input, expected):
     md = MarkdownIt("commonmark").use(texmath_plugin, delimiters="brackets")

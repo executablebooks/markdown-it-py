@@ -12,22 +12,17 @@ def get_version():
 
 setup(
     name="markdown-it-py",
-    version=get_version(),  # import_module("markdown_it").__version__,  TODO fix this
+    version=get_version(),
     description="Python port of markdown-it. Markdown parsing, done right!",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/ExecutableBookProject/markdown-it-py",
-    # project_urls={"Documentation": "https://markdown-it-py.readthedocs.io"},
+    project_urls={"Documentation": "https://markdown-it-py.readthedocs.io"},
     author="Chris Sewell",
     author_email="chrisj_sewell@hotmail.com",
     license="MIT",
-    packages=find_packages(exclude=["test*"]),
-    entry_points={
-        "console_scripts": [
-            "markdown-it = markdown_it.cli.parse:main",
-            "markdown-it-bench = markdown_it.cli.benchmark:main",
-        ]
-    },
+    packages=find_packages(exclude=["test*", "benchmarking"]),
+    entry_points={"console_scripts": ["markdown-it = markdown_it.cli.parse:main"]},
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Intended Audience :: Developers",
@@ -45,8 +40,15 @@ setup(
     python_requires="~=3.6",
     install_requires=["attrs~=19.3"],
     extras_require={
-        "code_style": ["flake8<3.8.0,>=3.7.0", "black==19.10b0", "pre-commit==1.17.0"],
-        "testing": ["coverage", "pytest>=3.6,<4", "pytest-cov", "pytest-regressions"],
+        "code_style": ["pre-commit==2.6"],
+        "testing": [
+            "coverage",
+            "pytest>=3.6,<4",
+            "pytest-cov",
+            "pytest-regressions",
+            "pytest-benchmark~=3.2",
+            "psutil",
+        ],
         "rtd": [
             "sphinx>=2,<4",
             "pyyaml",
@@ -55,10 +57,11 @@ setup(
             "sphinx-copybutton",
             "sphinx-panels~=0.4.0",
         ],
-        "benchmark": [
+        "compare": [
             "commonmark~=0.9.1",
             "markdown~=3.2",
             "mistune~=0.8.4",
+            # "mistletoe~=0.7.2",
             "mistletoe-ebp~=0.10.0",
             "panflute~=1.12",
         ],

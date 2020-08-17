@@ -7,7 +7,7 @@ from markdown_it.token import Token
 from markdown_it.utils import read_fixture_file
 from markdown_it.extensions.myst_blocks import myst_block_plugin
 
-FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures.md")
+FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures", "myst_block.md")
 
 
 @pytest.mark.parametrize("line,title,input,expected", read_fixture_file(FIXTURE_PATH))
