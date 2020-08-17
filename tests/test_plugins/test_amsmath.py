@@ -28,7 +28,8 @@ def test_plugin_parse(data_regression):
 
 
 @pytest.mark.parametrize(
-    "line,title,input,expected", read_fixture_file(FIXTURE_PATH.joinpath("fixtures.md"))
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("fixtures", "amsmath.md")),
 )
 def test_fixtures(line, title, input, expected):
     md = MarkdownIt("commonmark").use(amsmath_plugin)

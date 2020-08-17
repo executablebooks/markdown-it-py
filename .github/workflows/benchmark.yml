@@ -1,0 +1,90 @@
+name: benchmark
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  benchmark-packages:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    - name: install pandoc
+      uses: r-lib/actions/setup-pandoc@v1
+      with:
+        pandoc-version: '2.6'
+
+    - name: Install tox
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox
+
+    - name: Run package benchmarks
+      run: tox -e py38-bench-packages -- --benchmark-min-rounds 20 --benchmark-json bench-packages.json
+
+    # - name: Upload package data
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: bench-packages
+    #     path: bench-packages.json
+    #     if-no-files-found: error
+
+    - name: Store benchmark result
+      uses: chrisjsewell/github-action-benchmark@v2
+      with:
+        name: Parsing Benchmarks
+        output-file-path: bench-packages.json
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: true
+        commit-msg-append: "[ci skip]"
+        one-chart-groups: packages,plugins
+        fail-on-alert: false
+
+  benchmark-plugins:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    - name: Install tox
+      run: |
+        python -m pip install --upgrade pip
+        pip install tox
+
+    - name: Run plugin benchmarks
+      run: tox -e py38-bench-plugins -- --benchmark-min-rounds 20 --benchmark-json bench-plugins.json
+
+    # - name: Upload plugin data
+    #   uses: actions/upload-artifact@v2
+    #   with:
+    #     name: bench-plugins
+    #     path: bench-plugins.json
+    #     if-no-files-found: error
+
+    - name: Store benchmark result
+      uses: chrisjsewell/github-action-benchmark@v2
+      with:
+        name: Parsing Benchmarks
+        output-file-path: bench-plugins.json
+        # Use personal access token instead of GITHUB_TOKEN due to https://github.community/t5/GitHub-Actions/Github-action-not-triggering-gh-pages-upon-push/td-p/26869/highlight/false
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        auto-push: true
+        commit-msg-append: "[ci skip]"
+        one-chart-groups: packages,plugins
+        # Show alert with commit comment on detecting possible performance regression
+        alert-threshold: '200%'
+        comment-on-alert: true
+        fail-on-alert: false
+        alert-comment-cc-users: '@chrisjsewell'

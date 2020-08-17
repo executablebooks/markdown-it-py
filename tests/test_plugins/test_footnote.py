@@ -1,4 +1,7 @@
+from pathlib import Path
 from textwrap import dedent
+
+import pytest
 
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
@@ -6,6 +9,9 @@ from markdown_it.rules_inline import StateInline
 from markdown_it.rules_block import StateBlock
 from markdown_it.extensions.footnote import index
 from markdown_it.extensions.footnote import footnote_plugin
+from markdown_it.utils import read_fixture_file
+
+FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures", "footnote.md")
 
 
 def test_footnote_def():
@@ -446,19 +452,12 @@ def test_plugin_render():
     )
 
 
-# def test_plugin_other():
-#     md = MarkdownIt().use(footnote_plugin)
-#     env = {}
-#     tokens = md.parse(
-#         dedent(
-#             """\
-#     [^xxxxx] [^xxxxx]
-
-#     [^xxxxx]: foo
-#     """
-#         ),
-#         env=env,
-#     )
-#     for t in tokens:
-#         if "footnote" in t.type:
-#             print(t)
+@pytest.mark.parametrize("line,title,input,expected", read_fixture_file(FIXTURE_PATH))
+def test_all(line, title, input, expected):
+    md = MarkdownIt("commonmark").use(footnote_plugin)
+    md.options["xhtmlOut"] = False
+    text = md.render(input)
+    print(text)
+    assert text.rstrip().replace("↩︎", "<-").replace(
+        "↩", "<-"
+    ) == expected.rstrip().replace("↩︎", "<-").replace("↩", "<-")
