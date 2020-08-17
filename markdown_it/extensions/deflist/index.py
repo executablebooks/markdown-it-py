@@ -15,7 +15,7 @@ def deflist_plugin(md: MarkdownIt):
             return -1
 
         # Check bullet
-        marker = state.ords[start]
+        marker = state.srcCharCode[start]
         start += 1
         if marker != 0x7E and marker != 0x3A:  # ~ :
             return -1
@@ -118,7 +118,7 @@ def deflist_plugin(md: MarkdownIt):
                 )
 
                 while pos < maximum:
-                    ch = state.ords[pos]
+                    ch = state.srcCharCode[pos]
 
                     if isSpace(ch):
                         if ch == 0x09:

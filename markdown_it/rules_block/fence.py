@@ -22,7 +22,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if pos + 3 > maximum:
         return False
 
-    marker = state.ords[pos]
+    marker = state.srcCharCode[pos]
 
     # /* ~ */  /* ` */
     if marker != 0x7E and marker != 0x60:
@@ -68,7 +68,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool):
             #  test
             break
 
-        if state.ords[pos] != marker:
+        if state.srcCharCode[pos] != marker:
             continue
 
         if state.sCount[nextLine] - state.blkIndent >= 4:

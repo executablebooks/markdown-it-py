@@ -43,23 +43,23 @@ def footnote_def(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if start + 4 > maximum:
         return False
 
-    if state.ords[start] != 0x5B:  # /* [ */
+    if state.srcCharCode[start] != 0x5B:  # /* [ */
         return False
-    if state.ords[start + 1] != 0x5E:  # /* ^ */
+    if state.srcCharCode[start + 1] != 0x5E:  # /* ^ */
         return False
 
     pos = start + 2
     while pos < maximum:
-        if state.ords[pos] == 0x20:
+        if state.srcCharCode[pos] == 0x20:
             return False
-        if state.ords[pos] == 0x5D:  # /* ] */
+        if state.srcCharCode[pos] == 0x5D:  # /* ] */
             break
         pos += 1
 
     if pos == start + 2:  # no empty footnote labels
         return False
     pos += 1
-    if pos + 1 >= maximum or state.ords[pos] != 0x3A:  # /* : */
+    if pos + 1 >= maximum or state.srcCharCode[pos] != 0x3A:  # /* : */
         return False
     if silent:
         return True
@@ -87,7 +87,7 @@ def footnote_def(state: StateBlock, startLine: int, endLine: int, silent: bool):
     )
 
     while pos < maximum:
-        ch = state.ords[pos]
+        ch = state.srcCharCode[pos]
 
         if isSpace(ch):
             if ch == 0x09:
@@ -136,9 +136,9 @@ def footnote_inline(state: StateInline, silent: bool):
 
     if start + 2 >= maximum:
         return False
-    if state.ords[start] != 0x5E:  # /* ^ */
+    if state.srcCharCode[start] != 0x5E:  # /* ^ */
         return False
-    if state.ords[start + 1] != 0x5B:  # /* [ */
+    if state.srcCharCode[start + 1] != 0x5B:  # /* [ */
         return False
 
     labelStart = start + 2
@@ -182,18 +182,18 @@ def footnote_ref(state: StateInline, silent: bool):
 
     if "footnotes" not in state.env or "refs" not in state.env["footnotes"]:
         return False
-    if state.ords[start] != 0x5B:  # /* [ */
+    if state.srcCharCode[start] != 0x5B:  # /* [ */
         return False
-    if state.ords[start + 1] != 0x5E:  # /* ^ */
+    if state.srcCharCode[start + 1] != 0x5E:  # /* ^ */
         return False
 
     pos = start + 2
     while pos < maximum:
-        if state.ords[pos] == 0x20:
+        if state.srcCharCode[pos] == 0x20:
             return False
-        if state.ords[pos] == 0x0A:
+        if state.srcCharCode[pos] == 0x0A:
             return False
-        if state.ords[pos] == 0x5D:  # /* ] */
+        if state.srcCharCode[pos] == 0x5D:  # /* ] */
             break
         pos += 1
 

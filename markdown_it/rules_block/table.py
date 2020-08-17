@@ -85,14 +85,14 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if pos >= state.eMarks[nextLine]:
         return False
 
-    ch = state.ords[pos]
+    ch = state.srcCharCode[pos]
     pos += 1
     # /* | */ /* - */ /* : */
     if ch != 0x7C and ch != 0x2D and ch != 0x3A:
         return False
 
     while pos < state.eMarks[nextLine]:
-        ch = state.ords[pos]
+        ch = state.srcCharCode[pos]
 
         # /* | */  /* - */ /* : */
         if ch != 0x7C and ch != 0x2D and ch != 0x3A and not isSpace(ch):

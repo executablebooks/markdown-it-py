@@ -22,7 +22,7 @@ def hr(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    marker = state.ords[pos]
+    marker = state.srcCharCode[pos]
     pos += 1
 
     # Check hr marker: /* * */ /* - */ /* _ */
@@ -33,7 +33,7 @@ def hr(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     cnt = 1
     while pos < maximum:
-        ch = state.ords[pos]
+        ch = state.srcCharCode[pos]
         pos += 1
         if ch != marker and not isSpace(ch):
             return False

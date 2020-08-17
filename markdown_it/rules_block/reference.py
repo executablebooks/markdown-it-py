@@ -24,17 +24,17 @@ def reference(state: StateBlock, startLine, _endLine, silent):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    if state.ords[pos] != 0x5B:  # /* [ */
+    if state.srcCharCode[pos] != 0x5B:  # /* [ */
         return False
 
     # Simple check to quickly interrupt scan on [link](url) at the start of line.
     # Can be useful on practice: https:#github.com/markdown-it/markdown-it/issues/54
     while pos < maximum:
         # /* ] */  /* \ */  /* : */
-        if state.ords[pos] == 0x5D and state.ords[pos - 1] != 0x5C:
+        if state.srcCharCode[pos] == 0x5D and state.srcCharCode[pos - 1] != 0x5C:
             if pos + 1 == maximum:
                 return False
-            if state.ords[pos + 1] != 0x3A:
+            if state.srcCharCode[pos + 1] != 0x3A:
                 return False
             break
         pos += 1

@@ -14,11 +14,11 @@ def entity(state: StateInline, silent: bool):
     pos = state.pos
     maximum = state.posMax
 
-    if state.ords[pos] != 0x26:  # /* & */
+    if state.srcCharCode[pos] != 0x26:  # /* & */
         return False
 
     if (pos + 1) < maximum:
-        ch = state.ords[pos + 1]
+        ch = state.srcCharCode[pos + 1]
 
         if ch == 0x23:  # /* # */
             match = DIGITAL_RE.search(state.src[pos:])

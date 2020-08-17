@@ -14,10 +14,10 @@ def image(state: StateInline, silent: bool):
     max = state.posMax
 
     # /* ! */
-    if state.ords[state.pos] != 0x21:
+    if state.srcCharCode[state.pos] != 0x21:
         return False
     # /* [ */
-    if state.pos + 1 < state.posMax and state.ords[state.pos + 1] != 0x5B:
+    if state.pos + 1 < state.posMax and state.srcCharCode[state.pos + 1] != 0x5B:
         return False
 
     labelStart = state.pos + 2
@@ -29,7 +29,7 @@ def image(state: StateInline, silent: bool):
 
     pos = labelEnd + 1
     # /* ( */
-    if pos < max and state.ords[pos] == 0x28:
+    if pos < max and state.srcCharCode[pos] == 0x28:
         #
         # Inline link
         #
@@ -38,7 +38,7 @@ def image(state: StateInline, silent: bool):
         #        ^^ skipping these spaces
         pos += 1
         while pos < max:
-            code = state.ords[pos]
+            code = state.srcCharCode[pos]
             if not isSpace(code) and code != 0x0A:
                 break
             pos += 1
@@ -61,7 +61,7 @@ def image(state: StateInline, silent: bool):
         #                ^^ skipping these spaces
         start = pos
         while pos < max:
-            code = state.ords[pos]
+            code = state.srcCharCode[pos]
             if not isSpace(code) and code != 0x0A:
                 break
             pos += 1
@@ -76,7 +76,7 @@ def image(state: StateInline, silent: bool):
             # [link](  <href>  "title"  )
             #                         ^^ skipping these spaces
             while pos < max:
-                code = state.ords[pos]
+                code = state.srcCharCode[pos]
                 if not isSpace(code) and code != 0x0A:
                     break
                 pos += 1
@@ -84,7 +84,7 @@ def image(state: StateInline, silent: bool):
             title = ""
 
         # /* ) */
-        if pos >= max or state.ords[pos] != 0x29:
+        if pos >= max or state.srcCharCode[pos] != 0x29:
             state.pos = oldPos
             return False
 
@@ -98,7 +98,7 @@ def image(state: StateInline, silent: bool):
             return False
 
         # /* [ */
-        if pos < max and state.ords[pos] == 0x5B:
+        if pos < max and state.srcCharCode[pos] == 0x5B:
             start = pos + 1
             pos = state.md.helpers.parseLinkLabel(state, pos)
             if pos >= 0:

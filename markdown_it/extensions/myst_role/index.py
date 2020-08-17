@@ -15,7 +15,7 @@ def myst_role_plugin(md: MarkdownIt):
 
 def myst_role(state: StateInline, silent: bool):
     try:
-        if state.ords[state.pos - 1] == 0x5C:  # /* \ */
+        if state.srcCharCode[state.pos - 1] == 0x5C:  # /* \ */
             # escaped (this could be improved in the case of edge case '\\{')
             return False
     except IndexError:

@@ -18,11 +18,11 @@ def html_inline(state: StateInline, silent: bool):
 
     # Check start
     maximum = state.posMax
-    if state.ords[pos] != 0x3C or pos + 2 >= maximum:  # /* < */
+    if state.srcCharCode[pos] != 0x3C or pos + 2 >= maximum:  # /* < */
         return False
 
     # Quick fail on second char
-    ch = state.ords[pos + 1]
+    ch = state.srcCharCode[pos + 1]
     if (
         ch != 0x21
         and ch != 0x3F  # /* ! */

@@ -13,7 +13,7 @@ def autolink(state: StateBase, silent: bool):
 
     pos = state.pos
 
-    if state.ords[pos] != 0x3C:  # /* < */
+    if state.srcCharCode[pos] != 0x3C:  # /* < */
         return False
 
     tail = state.src[pos:]

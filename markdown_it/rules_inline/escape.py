@@ -15,13 +15,13 @@ def escape(state: StateInline, silent: bool):
     maximum = state.posMax
 
     # /* \ */
-    if state.ords[pos] != 0x5C:
+    if state.srcCharCode[pos] != 0x5C:
         return False
 
     pos += 1
 
     if pos < maximum:
-        ch = state.ords[pos]
+        ch = state.srcCharCode[pos]
 
         if ch < 256 and ESCAPED[ch] != 0:
             if not silent:
@@ -36,7 +36,7 @@ def escape(state: StateInline, silent: bool):
             pos += 1
             # skip leading whitespaces from next line
             while pos < maximum:
-                ch = state.ords[pos]
+                ch = state.srcCharCode[pos]
                 if not isSpace(ch):
                     break
                 pos += 1

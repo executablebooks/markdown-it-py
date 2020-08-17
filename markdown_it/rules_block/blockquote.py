@@ -22,7 +22,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
         return False
 
     # check the block quote marker
-    if state.ords[pos] != 0x3E:  # /* > */
+    if state.srcCharCode[pos] != 0x3E:  # /* > */
         pos += 1
         return False
     pos += 1
@@ -40,7 +40,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
     )
 
     # skip one optional space after '>'
-    if state.ords[pos] == 0x20:  # /* space */
+    if state.srcCharCode[pos] == 0x20:  # /* space */
         # ' >   test '
         #     ^ -- position start of line here:
         pos += 1
@@ -48,7 +48,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
         offset += 1
         adjustTab = False
         spaceAfterMarker = True
-    elif state.ords[pos] == 0x09:  # /* tab */
+    elif state.srcCharCode[pos] == 0x09:  # /* tab */
         spaceAfterMarker = True
 
         if (state.bsCount[startLine] + offset) % 4 == 3:
@@ -71,7 +71,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
     state.bMarks[startLine] = pos
 
     while pos < max:
-        ch = state.ords[pos]
+        ch = state.srcCharCode[pos]
 
         if isSpace(ch):
             if ch == 0x09:  # / tab /
@@ -147,7 +147,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
             # Case 1: line is not inside the blockquote, and this line is empty.
             break
 
-        evaluatesTrue = state.ords[pos] == 0x3E and not wasOutdented  # /* > */
+        evaluatesTrue = state.srcCharCode[pos] == 0x3E and not wasOutdented  # /* > */
         pos += 1
         if evaluatesTrue:
             # This line is inside the blockquote.
@@ -160,7 +160,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
             )
 
             # skip one optional space after '>'
-            if state.ords[pos] == 0x20:  # /* space */
+            if state.srcCharCode[pos] == 0x20:  # /* space */
                 # ' >   test '
                 #     ^ -- position start of line here:
                 pos += 1
@@ -168,7 +168,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
                 offset += 1
                 adjustTab = False
                 spaceAfterMarker = True
-            elif state.ords[pos] == 0x09:  # /* tab */
+            elif state.srcCharCode[pos] == 0x09:  # /* tab */
                 spaceAfterMarker = True
 
                 if (state.bsCount[nextLine] + offset) % 4 == 3:
@@ -191,7 +191,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
             state.bMarks[nextLine] = pos
 
             while pos < max:
-                ch = state.ords[pos]
+                ch = state.srcCharCode[pos]
 
                 if isSpace(ch):
                     if ch == 0x09:

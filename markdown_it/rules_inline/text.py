@@ -42,7 +42,7 @@ def isTerminatorChar(ch):
 def text(state: StateInline, silent: bool, **args):
     pos = state.pos
     posMax = state.posMax
-    while (pos < posMax) and not isTerminatorChar(state.ords[pos]):
+    while (pos < posMax) and not isTerminatorChar(state.srcCharCode[pos]):
         pos += 1
 
     if pos == state.pos:

@@ -37,7 +37,7 @@ def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool):
             maximum = state.eMarks[nextLine]
 
             if pos < maximum:
-                marker = state.ords[pos]
+                marker = state.srcCharCode[pos]
 
                 # /* - */  /* = */
                 if marker == 0x2D or marker == 0x3D:
