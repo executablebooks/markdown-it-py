@@ -12,6 +12,10 @@
       because in python you can't do e.g. `for {i=1;i<x;i++} {}`
     - Use python version of `charCodeAt`
     - |
+      Reduce use of charCodeAt() by storing char codes in a srcCharCodes attribute for state
+      objects and sharing those whenever possible
+      This provides a significant performance boost
+    - |
       Use python's built-in `html.escape` and `urlparse.quote` methods, as a replacement for
       the JS dependencies [mdurl](https://www.npmjs.com/package/mdurl)
       and [punycode](https://www.npmjs.com/package/punycode)
