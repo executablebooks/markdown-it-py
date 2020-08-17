@@ -66,3 +66,13 @@ def test_strikethrough(line, title, input, expected):
     md = MarkdownIt().enable("strikethrough")
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("issue-fixes.md")),
+)
+def test_issue_fixes(line, title, input, expected):
+    md = MarkdownIt()
+    text = md.render(input)
+    assert text.rstrip() == expected.rstrip()
