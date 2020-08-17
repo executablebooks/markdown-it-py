@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597687976002,
+  "lastUpdate": 1597688030376,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -1153,6 +1153,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.020541",
             "group": "plugins",
             "extra": "mean: 253.96 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.5"
+        },
+        "commit": {
+          "id": "43f956b15040a8e784a241822859f53a953254e3",
+          "message": "👌 IMPROVE: Parsing performance (#32)\n\nCharacter codes (ordinals) of `state.src` are now pre-computed, to reduce redundant computations.\r\n\r\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2020-08-17T19:11:31+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/43f956b15040a8e784a241822859f53a953254e3",
+          "distinct": true,
+          "tree_id": "b3c196ab1a1f8d33d4f1d4be75508da924daffa7"
+        },
+        "date": 1597688029905,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 5.036496993088077,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0069728",
+            "group": "packages",
+            "extra": "mean: 198.55 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 14.558530244394802,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0042149",
+            "group": "packages",
+            "extra": "mean: 68.688 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.5342538618690815,
+            "unit": "iter/sec",
+            "range": "stddev: 0.021542",
+            "group": "packages",
+            "extra": "mean: 394.59 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.1116234950017776,
+            "unit": "iter/sec",
+            "range": "stddev: 0.051048",
+            "group": "packages",
+            "extra": "mean: 899.59 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.9900955469682903,
+            "unit": "iter/sec",
+            "range": "stddev: 0.039360",
+            "group": "packages",
+            "extra": "mean: 1.0100 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.834499263276076,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0086500",
+            "group": "packages",
+            "extra": "mean: 206.85 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.1102558985714974,
+            "unit": "iter/sec",
+            "range": "stddev: 0.024485",
+            "group": "packages",
+            "extra": "mean: 900.69 msec\nrounds: 20"
           }
         ]
       }
