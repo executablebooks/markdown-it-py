@@ -22,6 +22,7 @@ setup(
     author_email="chrisj_sewell@hotmail.com",
     license="MIT",
     packages=find_packages(exclude=["test*", "benchmarking"]),
+    include_package_data=True,
     entry_points={"console_scripts": ["markdown-it = markdown_it.cli.parse:main"]},
     classifiers=[
         "Development Status :: 3 - Alpha",
