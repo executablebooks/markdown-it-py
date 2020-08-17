@@ -2,7 +2,7 @@ name: benchmark
 
 on:
   push:
-    branches: [master,benchmark]
+    branches: [master]
 
 jobs:
   benchmark-packages:
