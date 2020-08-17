@@ -1,6 +1,5 @@
 """Process definition lists."""
 from markdown_it import MarkdownIt
-from markdown_it.common.utils import charCodeAt
 from markdown_it.rules_block import StateBlock
 
 
@@ -16,7 +15,7 @@ def deflist_plugin(md: MarkdownIt):
             return -1
 
         # Check bullet
-        marker = charCodeAt(state.src, start)
+        marker = state.srcCharCode[start]
         start += 1
         if marker != 0x7E and marker != 0x3A:  # ~ :
             return -1
@@ -119,7 +118,7 @@ def deflist_plugin(md: MarkdownIt):
                 )
 
                 while pos < maximum:
-                    ch = charCodeAt(state.src, pos)
+                    ch = state.srcCharCode[pos]
 
                     if isSpace(ch):
                         if ch == 0x09:

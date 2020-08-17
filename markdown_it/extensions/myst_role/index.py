@@ -2,7 +2,7 @@ import re
 
 from markdown_it import MarkdownIt
 from markdown_it.rules_inline import StateInline
-from markdown_it.common.utils import charCodeAt, escapeHtml
+from markdown_it.common.utils import escapeHtml
 
 
 PATTERN = re.compile(r"^\{([a-zA-Z0-9\_\-\+\:]{1,36})\}(`+)(?!`)(.+?)(?<!`)\2(?!`)")
@@ -15,7 +15,7 @@ def myst_role_plugin(md: MarkdownIt):
 
 def myst_role(state: StateInline, silent: bool):
     try:
-        if charCodeAt(state.src, state.pos - 1) == 0x5C:  # /* \ */
+        if state.srcCharCode[state.pos - 1] == 0x5C:  # /* \ */
             # escaped (this could be improved in the case of edge case '\\{')
             return False
     except IndexError:

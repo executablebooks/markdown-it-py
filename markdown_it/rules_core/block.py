@@ -11,4 +11,6 @@ def block(state: StateCore):
         token.children = []
         state.tokens.append(token)
     else:
-        state.md.block.parse(state.src, state.md, state.env, state.tokens)
+        state.md.block.parse(
+            state.src, state.md, state.env, state.tokens, state.srcCharCode
+        )

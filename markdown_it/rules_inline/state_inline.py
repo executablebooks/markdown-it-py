@@ -5,7 +5,7 @@ import attr
 
 from ..token import Token
 from ..ruler import StateBase
-from ..common.utils import isWhiteSpace, isPunctChar, isMdAsciiPunct, charCodeAt
+from ..common.utils import isWhiteSpace, isPunctChar, isMdAsciiPunct
 
 
 @attr.s(slots=True)
@@ -45,6 +45,7 @@ Scanned = namedtuple("Scanned", ["can_open", "can_close", "length"])
 class StateInline(StateBase):
     def __init__(self, src: str, md, env, outTokens: List[Token]):
         self.src = src
+        self.srcCharCode = [ord(c) for c in src] if src is not None else []
         self.env = env
         self.md = md
         self.tokens = outTokens
@@ -122,18 +123,18 @@ class StateInline(StateBase):
         left_flanking = True
         right_flanking = True
         maximum = self.posMax
-        marker = charCodeAt(self.src, start)
+        marker = self.srcCharCode[start]
 
         # treat beginning of the line as a whitespace
-        lastChar = charCodeAt(self.src, start - 1) if start > 0 else 0x20
+        lastChar = self.srcCharCode[start - 1] if start > 0 else 0x20
 
-        while pos < maximum and charCodeAt(self.src, pos) == marker:
+        while pos < maximum and self.srcCharCode[pos] == marker:
             pos += 1
 
         count = pos - start
 
         # treat end of the line as a whitespace
-        nextChar = charCodeAt(self.src, pos) if pos < maximum else 0x20
+        nextChar = self.srcCharCode[pos] if pos < maximum else 0x20
 
         isLastPunctChar = isMdAsciiPunct(lastChar) or isPunctChar(chr(lastChar))
         isNextPunctChar = isMdAsciiPunct(nextChar) or isPunctChar(chr(nextChar))

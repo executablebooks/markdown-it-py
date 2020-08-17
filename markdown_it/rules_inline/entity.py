@@ -2,7 +2,7 @@
 import re
 
 from ..common.entities import entities
-from ..common.utils import has, isValidEntityCode, fromCodePoint, charCodeAt
+from ..common.utils import has, isValidEntityCode, fromCodePoint
 from .state_inline import StateInline
 
 DIGITAL_RE = re.compile(r"^&#((?:x[a-f0-9]{1,6}|[0-9]{1,7}));", re.IGNORECASE)
@@ -14,11 +14,11 @@ def entity(state: StateInline, silent: bool):
     pos = state.pos
     maximum = state.posMax
 
-    if charCodeAt(state.src, pos) != 0x26:  # /* & */
+    if state.srcCharCode[pos] != 0x26:  # /* & */
         return False
 
     if (pos + 1) < maximum:
-        ch = charCodeAt(state.src, pos + 1)
+        ch = state.srcCharCode[pos + 1]
 
         if ch == 0x23:  # /* # */
             match = DIGITAL_RE.search(state.src[pos:])

@@ -2,7 +2,7 @@ import re
 
 from markdown_it import MarkdownIt
 from markdown_it.rules_block import StateBlock
-from markdown_it.common.utils import charCodeAt, isSpace, escapeHtml
+from markdown_it.common.utils import isSpace, escapeHtml
 
 
 TARGET_PATTERN = re.compile(r"^\(([a-zA-Z0-9\|\@\<\>\*\.\/\_\-\+\:]{1,100})\)\=\s*$")
@@ -40,7 +40,7 @@ def line_comment(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    marker = charCodeAt(state.src, pos)
+    marker = state.srcCharCode[pos]
     pos += 1
 
     # Check block marker /* % */
@@ -70,7 +70,7 @@ def block_break(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    marker = charCodeAt(state.src, pos)
+    marker = state.srcCharCode[pos]
     pos += 1
 
     # Check block marker /* + */
@@ -81,7 +81,7 @@ def block_break(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     cnt = 1
     while pos < maximum:
-        ch = charCodeAt(state.src, pos)
+        ch = state.srcCharCode[pos]
         if ch != marker and not isSpace(ch):
             break
         if ch == marker:

@@ -1,5 +1,6 @@
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
+from markdown_it.rules_core import StateCore
 
 
 def test_get_rules():
@@ -215,3 +216,37 @@ def test_renderInline():
     md = MarkdownIt("zero")
     tokens = md.renderInline("abc\n\n*xyz*")
     assert tokens == "abc\n\n*xyz*"
+
+
+def test_emptyStr():
+    md = MarkdownIt()
+    tokens = md.parseInline("")
+    assert tokens == [
+        Token(
+            type="inline",
+            tag="",
+            nesting=0,
+            attrs=None,
+            map=[0, 1],
+            level=0,
+            children=[],
+            content="",
+            markup="",
+            info="",
+            meta={},
+            block=False,
+            hidden=False,
+        )
+    ]
+
+
+def test_noneState():
+    md = MarkdownIt()
+    state = StateCore(None, md, {}, [])
+
+    # Remove normalizing rule
+    rules = md.core.ruler.get_active_rules()
+    md.core.ruler.enableOnly(rules[rules.index("inline") :])
+
+    # Check that we can process None str with empty env and block_tokens
+    md.core.process(state)

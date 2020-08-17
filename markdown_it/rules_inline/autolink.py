@@ -1,7 +1,6 @@
 # Process autolinks '<protocol:...>'
 import re
 from .state_inline import StateBase
-from ..common.utils import charCodeAt
 from ..common.normalize_url import normalizeLinkText, normalizeLink, validateLink
 
 EMAIL_RE = re.compile(
@@ -14,7 +13,7 @@ def autolink(state: StateBase, silent: bool):
 
     pos = state.pos
 
-    if charCodeAt(state.src, pos) != 0x3C:  # /* < */
+    if state.srcCharCode[pos] != 0x3C:  # /* < */
         return False
 
     tail = state.src[pos:]

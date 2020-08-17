@@ -2,13 +2,19 @@ from typing import List
 
 from ..token import Token
 from ..ruler import StateBase
-from ..common.utils import isSpace, charCodeAt
+from ..common.utils import isSpace
 
 
 class StateBlock(StateBase):
-    def __init__(self, src: str, md, env, tokens: List[Token]):
+    def __init__(
+        self, src: str, md, env, tokens: List[Token], srcCharCode: List[int] = None
+    ):
 
         self.src = src
+        if srcCharCode is not None:
+            self.srcCharCode = srcCharCode
+        else:
+            self.srcCharCode = [ord(c) for c in src] if src is not None else []
 
         # link to parser instance
         self.md = md
@@ -64,9 +70,7 @@ class StateBlock(StateBase):
         start = pos = indent = offset = 0
         length = len(self.src)
 
-        for pos, character in enumerate(self.src):
-            character = ord(character)
-
+        for pos, character in enumerate(self.srcCharCode):
             if not indent_found:
                 if isSpace(character):
                     indent += 1
@@ -135,7 +139,7 @@ class StateBlock(StateBase):
     def skipSpaces(self, pos: int):
         """Skip spaces from given position."""
         while pos < len(self.src):
-            if not isSpace(charCodeAt(self.src, pos)):
+            if not isSpace(self.srcCharCode[pos]):
                 break
             pos += 1
         return pos
@@ -145,7 +149,7 @@ class StateBlock(StateBase):
         if pos <= minimum:
             return pos
         while pos > minimum:
-            if not isSpace(charCodeAt(self.src, pos)):
+            if not isSpace(self.srcCharCode[pos]):
                 return pos + 1
             pos -= 1
         return pos
@@ -153,7 +157,7 @@ class StateBlock(StateBase):
     def skipChars(self, pos: int, code: int):
         """Skip char codes from given position."""
         while pos < len(self.src):
-            if charCodeAt(self.src, pos) != code:
+            if self.srcCharCode[pos] != code:
                 break
             pos += 1
         return pos
@@ -163,7 +167,7 @@ class StateBlock(StateBase):
         if pos <= minimum:
             return pos
         while pos > minimum:
-            if code != charCodeAt(self.src, pos):
+            if code != self.srcCharCode[pos]:
                 return pos + 1
             pos -= 1
         return pos
@@ -186,7 +190,7 @@ class StateBlock(StateBase):
                 last = self.eMarks[line]
 
             while (first < last) and (lineIndent < indent):
-                ch = charCodeAt(self.src, first)
+                ch = self.srcCharCode[first]
                 if isSpace(ch):
                     if ch == 0x09:
                         lineIndent += 4 - (lineIndent + self.bsCount[line]) % 4
