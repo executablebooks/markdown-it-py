@@ -101,6 +101,6 @@ Also [John MacFarlane](https://github.com/jgm) for his work on the CommonMark sp
 [CommonMark spec]: http://spec.commonmark.org/
 [markdown-it]: https://github.com/markdown-it/markdown-it
 [markdown-it-readme]: https://github.com/markdown-it/markdown-it/blob/master/README.md
-[md-security]: https://github.com/ExecutableBookProject/markdown-it-py/tree/master/docs/security.md
-[md-performance]: https://markdown-it-py.readthedocs.io/en/latest/security.html
+[md-security]: https://markdown-it-py.readthedocs.io/en/latest/other.html
+[md-performance]: https://markdown-it-py.readthedocs.io/en/latest/other.html
 [md-plugins]: https://markdown-it-py.readthedocs.io/en/latest/plugins.html

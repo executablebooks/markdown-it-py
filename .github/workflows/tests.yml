@@ -72,7 +72,7 @@ jobs:
     - name: Run benchmark
       run: tox -e py38-bench-core -- --benchmark-json bench-core.json
 
-    - name: Upload plugin data
+    - name: Upload data
       uses: actions/upload-artifact@v2
       with:
         name: bench-core
