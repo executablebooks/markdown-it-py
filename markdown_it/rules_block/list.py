@@ -282,10 +282,11 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
         nextLine = startLine = state.line
         itemLines[1] = nextLine
-        contentStart = state.bMarks[startLine]
 
         if nextLine >= endLine:
             break
+
+        contentStart = state.bMarks[startLine]
 
         #
         # Try to check if list is terminated or continued.
