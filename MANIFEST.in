@@ -1,1 +1,21 @@
+exclude docs
+recursive-exclude docs *
+exclude tests
+recursive-exclude tests *
+exclude benchmarking
+recursive-exclude benchmarking *
+
+exclude .pre-commit-config.yaml
+exclude .readthedocs.yml
+exclude tox.ini
+exclude docstring.fmt.mustache
+exclude .flake8
+exclude .circleci
+exclude .circleci/config.yml
+
 include LICENSE
+include LICENSE.markdown-it
+include CHANGELOG.md
+
+recursive-exclude markdown_it *.js
+recursive-include markdown_it port.yaml LICENSE README.md
