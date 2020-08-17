@@ -44,6 +44,7 @@ jobs:
     - name: Run pytest
       run: |
         pytest --cov=markdown_it --cov-report=xml --cov-report=term-missing
+        coverage xml
     - name: Upload to Codecov
       if: matrix.python-version == 3.7 && github.repository == 'executablebooks/markdown-it-py'
       uses: codecov/codecov-action@v1
