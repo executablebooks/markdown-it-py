@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597670093430,
+  "lastUpdate": 1597687976002,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -1067,6 +1067,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.021057",
             "group": "packages",
             "extra": "mean: 897.31 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.40",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.5"
+        },
+        "commit": {
+          "id": "43f956b15040a8e784a241822859f53a953254e3",
+          "message": "👌 IMPROVE: Parsing performance (#32)\n\nCharacter codes (ordinals) of `state.src` are now pre-computed, to reduce redundant computations.\r\n\r\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2020-08-17T19:11:31+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/43f956b15040a8e784a241822859f53a953254e3",
+          "distinct": true,
+          "tree_id": "b3c196ab1a1f8d33d4f1d4be75508da924daffa7"
+        },
+        "date": 1597687975398,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.308534869658371,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0099517",
+            "group": "plugins",
+            "extra": "mean: 232.10 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.0611695460714925,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018039",
+            "group": "plugins",
+            "extra": "mean: 246.23 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.101652986599214,
+            "unit": "iter/sec",
+            "range": "stddev: 0.021913",
+            "group": "plugins",
+            "extra": "mean: 322.41 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 4.049512360677673,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018613",
+            "group": "plugins",
+            "extra": "mean: 246.94 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.246515453800136,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012889",
+            "group": "plugins",
+            "extra": "mean: 235.49 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.126701755058404,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010048",
+            "group": "plugins",
+            "extra": "mean: 242.32 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 4.199815781128475,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016824",
+            "group": "plugins",
+            "extra": "mean: 238.11 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 3.9376408133455887,
+            "unit": "iter/sec",
+            "range": "stddev: 0.020541",
+            "group": "plugins",
+            "extra": "mean: 253.96 msec\nrounds: 20"
           }
         ]
       }
