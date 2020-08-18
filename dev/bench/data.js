@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597702043624,
+  "lastUpdate": 1597732756976,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -2051,6 +2051,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.020079",
             "group": "packages",
             "extra": "mean: 1.0207 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.40",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.5"
+        },
+        "commit": {
+          "id": "91bf225d3ad7162cd08aa61dca1c3389f56c847a",
+          "message": "✨ NEW: Add dollarmath plugin (#38)\n\n`dollarmath` is an improved version of `texmath`, for `$`/`$$` enclosed math only.\r\n It is more performant, handles `\\` escaping properly and allows for more configuration.\r\n\r\nIt is implemented in a more \"markdown-it\" way; primarily iterating through the source character, rather than using regexes.\r\nThis is easier to understand, actually more performant (according to the benchmark tests), and allows for greater control over options like allowing internal spaces (which texmath hardcodes).",
+          "timestamp": "2020-08-18T07:37:43+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/91bf225d3ad7162cd08aa61dca1c3389f56c847a",
+          "distinct": true,
+          "tree_id": "f525ec7b4a9d76ce4ed9b63d52ae435dba33ad3e"
+        },
+        "date": 1597732756439,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.249183578279685,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013516",
+            "group": "plugins",
+            "extra": "mean: 235.34 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.152388862689565,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012526",
+            "group": "plugins",
+            "extra": "mean: 240.83 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.1183763367315374,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014679",
+            "group": "plugins",
+            "extra": "mean: 320.68 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 4.074871592019905,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014406",
+            "group": "plugins",
+            "extra": "mean: 245.41 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.164004005582816,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011062",
+            "group": "plugins",
+            "extra": "mean: 240.15 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.15529848161578,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012399",
+            "group": "plugins",
+            "extra": "mean: 240.66 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 4.182881320274619,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012691",
+            "group": "plugins",
+            "extra": "mean: 239.07 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 3.954043389715234,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013004",
+            "group": "plugins",
+            "extra": "mean: 252.91 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 4.175947080921941,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010579",
+            "group": "plugins",
+            "extra": "mean: 239.47 msec\nrounds: 20"
           }
         ]
       }
