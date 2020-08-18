@@ -11,18 +11,12 @@ def dollarmath_plugin(
 ):
     """Plugin for parsing dollar enclosed math, e.g. ``$a=1$``.
 
-    Parameters
-    ----------
-    md : MarkdownIt
-    allow_labels : bool
-        Capture math blocks with label suffix,
-        e.g. ``$$a=1$$ (eq1)``
-    allow_space : bool
-        Parse inline math when there is space after/before the opening/closing ``$``,
-        e.g. ``$ a $``
-    allow_digits : bool
-        Parse inline math when there is a digit before/after the opening/closing ``$``,
-        e.g. ``1$`` or ``$2``. This is useful when also using currency
+    :param allow_labels: Capture math blocks with label suffix, e.g. ``$$a=1$$ (eq1)``
+    :param allow_space: Parse inline math when there is space
+        after/before the opening/closing ``$``, e.g. ``$ a $``
+    :param allow_digits: Parse inline math when there is a digit
+        before/after the opening/closing ``$``, e.g. ``1$`` or ``$2``.
+        This is useful when also using currency.
     """
 
     md.inline.ruler.before(
