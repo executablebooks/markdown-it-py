@@ -51,12 +51,12 @@ setup(
             "psutil",
         ],
         "rtd": [
+            "myst-nb",
+            "sphinx_book_theme",
+            "sphinx-panels~=0.4.0",
+            "sphinx-copybutton",
             "sphinx>=2,<4",
             "pyyaml",
-            "sphinx_book_theme",
-            "myst-nb",
-            "sphinx-copybutton",
-            "sphinx-panels~=0.4.0",
         ],
         "compare": [
             "commonmark~=0.9.1",

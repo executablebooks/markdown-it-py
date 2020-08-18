@@ -6,6 +6,7 @@ from markdown_it.extensions import (
     amsmath,
     container,
     deflist,
+    dollarmath,
     footnote,
     front_matter,
     texmath,
@@ -66,4 +67,10 @@ def test_front_matter(benchmark, parser, spec_text):
 @pytest.mark.benchmark(group="plugins")
 def test_texmath(benchmark, parser, spec_text):
     parser.use(texmath.texmath_plugin)
+    benchmark(parser.render, spec_text)
+
+
+@pytest.mark.benchmark(group="plugins")
+def test_dollarmath(benchmark, parser, spec_text):
+    parser.use(dollarmath.dollarmath_plugin)
     benchmark(parser.render, spec_text)
