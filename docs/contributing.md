@@ -66,7 +66,7 @@ For documentation build tests:
 
 1. Does it already exist as JavaScript implementation ([see npm](https://www.npmjs.com/search?q=keywords:markdown-it-plugin))?
    Where possible try to port directly from that.
-   It is ususually better to modify existing code, instead of writing all from scratch.
+   It is usually better to modify existing code, instead of writing all from scratch.
 2. Try to find the right place for your plugin rule:
   - Will it conflict with existing markup (by priority)?
     - If yes - you need to write an inline or block rule.

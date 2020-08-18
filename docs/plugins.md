@@ -62,6 +62,9 @@ Other plugins are then available *via* the `markdown_it.extensions` package:
     $\alpha = \frac{1}{2}$
     ```
 
+- `dollarmath` is an improved version of `texmath`, for `$`/`$$` enclosed math only.
+  It is more performant, handles `\` escaping properly and allows for more configuration.
+
 - `amsmath` also parses TeX math equations, but without the surrounding delimiters and only for top-level [amsmath](https://ctan.org/pkg/amsmath) environments:
 
     ```latex
