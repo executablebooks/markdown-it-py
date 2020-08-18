@@ -46,15 +46,15 @@ or you can run it for yourself within the repository:
 ```console
 $ tox -e py38-bench-packages -- --benchmark-columns mean,stddev
 
-Name (time in ms)               Mean             StdDev
+Name (time in ms)               Mean              StdDev
 -----------------------------------------------------------------
-test_mistune                 77.0086 (1.0)       0.9199 (1.0)
-test_markdown_it_py         220.1133 (2.86)      6.8678 (7.47)
-test_mistletoe              249.1983 (3.24)     20.6663 (22.47)
-test_commonmark_py          503.5010 (6.54)     21.1818 (23.03)
-test_panflute               988.7235 (12.84)    41.9010 (45.55)
-test_pymarkdown           1,088.7477 (14.14)    59.3361 (64.51)
-test_pymarkdown_extra     1,071.4707 (13.91)    38.1846 (41.51)
+test_mistune                 82.0024 (1.0)       10.7779 (1.61)
+test_markdown_it_py         190.9571 (2.33)       6.6946 (1.0)
+test_mistletoe              247.1633 (3.01)      16.3956 (2.45)
+test_commonmark_py          482.6411 (5.89)      67.8219 (10.13)
+test_panflute             1,043.0018 (12.72)    229.1034 (34.22)
+test_pymarkdown             964.6831 (11.76)     77.2787 (11.54)
+test_pymarkdown_extra     1,051.8680 (12.83)     32.2971 (4.82)
 -----------------------------------------------------------------
 ```
 
