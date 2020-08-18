@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1597732756976,
+  "lastUpdate": 1597732819241,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -2145,6 +2145,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.010579",
             "group": "plugins",
             "extra": "mean: 239.47 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.40",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.5"
+        },
+        "commit": {
+          "id": "91bf225d3ad7162cd08aa61dca1c3389f56c847a",
+          "message": "✨ NEW: Add dollarmath plugin (#38)\n\n`dollarmath` is an improved version of `texmath`, for `$`/`$$` enclosed math only.\r\n It is more performant, handles `\\` escaping properly and allows for more configuration.\r\n\r\nIt is implemented in a more \"markdown-it\" way; primarily iterating through the source character, rather than using regexes.\r\nThis is easier to understand, actually more performant (according to the benchmark tests), and allows for greater control over options like allowing internal spaces (which texmath hardcodes).",
+          "timestamp": "2020-08-18T07:37:43+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/91bf225d3ad7162cd08aa61dca1c3389f56c847a",
+          "distinct": true,
+          "tree_id": "f525ec7b4a9d76ce4ed9b63d52ae435dba33ad3e"
+        },
+        "date": 1597732818754,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.409078383129648,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017132",
+            "group": "packages",
+            "extra": "mean: 226.80 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.112821565737388,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0022973",
+            "group": "packages",
+            "extra": "mean: 89.986 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.5290202339450802,
+            "unit": "iter/sec",
+            "range": "stddev: 0.035874",
+            "group": "packages",
+            "extra": "mean: 654.01 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 0.9104717566296142,
+            "unit": "iter/sec",
+            "range": "stddev: 0.022190",
+            "group": "packages",
+            "extra": "mean: 1.0983 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.813197254011339,
+            "unit": "iter/sec",
+            "range": "stddev: 0.041792",
+            "group": "packages",
+            "extra": "mean: 1.2297 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 3.87476161052287,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014189",
+            "group": "packages",
+            "extra": "mean: 258.08 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 0.9743536956928961,
+            "unit": "iter/sec",
+            "range": "stddev: 0.038833",
+            "group": "packages",
+            "extra": "mean: 1.0263 sec\nrounds: 20"
           }
         ]
       }
