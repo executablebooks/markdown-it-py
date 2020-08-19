@@ -300,6 +300,17 @@ $$a+b$$
 </section>
 .
 
+equation following text. (valid=False)
+.
+Here is some text
+$$a+b$$
+.
+<p>Here is some text</p>
+<section>
+<eqn>a+b</eqn>
+</section>
+.
+
 numbered equation following code block. (valid=True)
 .
 ```
@@ -309,6 +320,18 @@ $$a+b$$(1)
 .
 <pre><code>code
 </code></pre>
+<section>
+<eqn>a+b</eqn>
+<span class="eqno">(1)</span>
+</section>
+.
+
+numbered equation following text. (valid=False)
+.
+Here is some text
+$$a+b$$(1)
+.
+<p>Here is some text</p>
 <section>
 <eqn>a+b</eqn>
 <span class="eqno">(1)</span>
