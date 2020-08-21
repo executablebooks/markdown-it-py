@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.1 - 2020-08-21
+
+⬆️ UPGRADE: attrs -> v20
+
+This is not breaking, since it only deprecates Python 3.4 (see [CHANGELOG.rst](https://github.com/python-attrs/attrs/blob/master/CHANGELOG.rst))
+
 ## 0.5.0 - 2020-08-18
 
 ### Added ✨
