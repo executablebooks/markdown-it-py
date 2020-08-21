@@ -40,7 +40,7 @@ For code tests, markdown-it-py uses [pytest](https://docs.pytest.org)):
 >> pytest
 ```
 
-You use [tox](https://tox.readthedocs.io), to run the tests in multiple isolated environments (see the `tox.ini` file for available test environments):
+You can also use [tox](https://tox.readthedocs.io), to run the tests in multiple isolated environments (see the `tox.ini` file for available test environments):
 
 ```shell
 >> cd markdown-it-py
