@@ -42,7 +42,11 @@ def container_plugin(md: MarkdownIt, name, **options):
         # Check out the rest of the marker string
         pos = start + 1
         while pos <= maximum:
-            if marker_str[(pos - start) % marker_len] != state.src[pos]:
+            try:
+                character = state.src[pos]
+            except IndexError:
+                break
+            if marker_str[(pos - start) % marker_len] != character:
                 break
             pos += 1
 
@@ -88,7 +92,11 @@ def container_plugin(md: MarkdownIt, name, **options):
 
             pos = start + 1
             while pos <= maximum:
-                if marker_str[(pos - start) % marker_len] != state.src[pos]:
+                try:
+                    character = state.src[pos]
+                except IndexError:
+                    break
+                if marker_str[(pos - start) % marker_len] != character:
                     break
                 pos += 1
 
