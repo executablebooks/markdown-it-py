@@ -22,6 +22,20 @@ def test_plugin_parse(data_regression):
     data_regression.check([t.as_dict() for t in tokens])
 
 
+def test_no_new_line_issue(data_regression):
+    """Fixed an IndexError when no newline on final line."""
+    md = MarkdownIt().use(container_plugin, "name")
+    tokens = md.parse(
+        dedent(
+            """\
+    ::: name
+    *content*
+    :::"""
+        )
+    )
+    data_regression.check([t.as_dict() for t in tokens])
+
+
 FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures", "container.md")
 
 
