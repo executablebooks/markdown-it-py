@@ -72,7 +72,7 @@ intersphinx_mapping = {
 
 
 def run_apidoc(app):
-    """ generate apidoc
+    """generate apidoc
 
     See: https://github.com/rtfd/readthedocs.org/issues/1139
     """

@@ -83,8 +83,7 @@ class ParserInline:
         cache[pos] = state.pos
 
     def tokenize(self, state: StateInline):
-        """Generate tokens for input range.
-        """
+        """Generate tokens for input range."""
         ok = False
         rules = self.ruler.getRules("")
         end = state.posMax
@@ -116,8 +115,7 @@ class ParserInline:
             state.pushPending()
 
     def parse(self, src: str, md, env, tokens: List[Token]):
-        """Process input string and push inline tokens into `tokens`
-        """
+        """Process input string and push inline tokens into `tokens`"""
         state = StateInline(src, md, env, tokens)
         self.tokenize(state)
         rules2 = self.ruler2.getRules("")

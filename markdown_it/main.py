@@ -66,9 +66,8 @@ class MarkdownIt:
         self.options = options
 
     def configure(self, presets: Union[str, AttrDict]):
-        """"
-        Batch load of all options and component settings. This is an internal method,
-        and you probably will not need it.
+        """Batch load of all options and component settings.
+        This is an internal method, and you probably will not need it.
         But if you will - see available presets and data structure
         [here](https://github.com/markdown-it/markdown-it/tree/master/lib/presets)
 
