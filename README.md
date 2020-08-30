@@ -5,6 +5,7 @@
 [![PyPI][pypi-badge]][pypi-link]
 [![Conda][conda-badge]][conda-link]
 [![Code style: black][black-badge]][black-link]
+[![PyPI - Downloads][install-badge]][install-link]
 
 > Markdown parser done right.
 
@@ -97,6 +98,8 @@ Also [John MacFarlane](https://github.com/jgm) for his work on the CommonMark sp
 [codecov-link]: https://codecov.io/gh/executablebooks/markdown-it-py
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/ambv/black
+[install-badge]: https://img.shields.io/pypi/dw/markdown-it-py?label=pypi%20installs
+[install-link]: https://pypistats.org/packages/markdown-it-py
 
 [CommonMark spec]: http://spec.commonmark.org/
 [markdown-it]: https://github.com/markdown-it/markdown-it
