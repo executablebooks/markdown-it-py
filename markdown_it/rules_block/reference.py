@@ -74,6 +74,7 @@ def reference(state: StateBlock, startLine, _endLine, silent):
     string = state.getLines(startLine, nextLine, state.blkIndent, False).strip()
     maximum = len(string)
 
+    labelEnd = -1
     pos = 1
     while pos < maximum:
         ch = charCodeAt(string, pos)
