@@ -91,7 +91,9 @@ def reference(state: StateBlock, startLine, _endLine, silent):
                 lines += 1
         pos += 1
 
-    if labelEnd is None or labelEnd < 0 or charCodeAt(string, labelEnd + 1) != 0x3A:  # /* : */
+     if (
+         labelEnd is None or labelEnd < 0 or charCodeAt(string, labelEnd + 1) != 0x3A
+     ):  # /* : */
         return False
 
     # [label]:   destination   'title'
