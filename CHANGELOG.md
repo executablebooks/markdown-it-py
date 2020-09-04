@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.3 - 2020-09-04
+
+🐛 Fixed an undefined variable in the reference block.
+
 ## 0.5.2 - 2020-08-22
 
 🐛 Fixed an `IndexError` in `container_plugin`, when there is no newline on the closing tag line.
