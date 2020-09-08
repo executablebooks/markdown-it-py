@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.5.4 - 2020-09-08
+
+✨ NEW: Add `anchors_plugin` for headers, which can produce:
+
+```html
+<h1 id="title-string">Title String <a class="header-anchor" href="#title-string">¶</a></h1>
+```
+
 ## 0.5.3 - 2020-09-04
 
 🐛 Fixed an undefined variable in the reference block.
