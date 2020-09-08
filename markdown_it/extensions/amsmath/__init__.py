@@ -47,7 +47,17 @@ RE_OPEN = re.compile(r"\\begin\{(" + "|".join(ENVIRONMENTS) + r")([\*]?)\}")
 
 
 def amsmath_plugin(md: MarkdownIt):
+    """Parses TeX math equations, without any surrounding delimiters,
+    only for top-level `amsmath <https://ctan.org/pkg/amsmath>`__ environments:
 
+    .. code-block:: latex
+
+        \\begin{gather*}
+        a_1=b_1+c_1\\\\
+        a_2=b_2+c_2-d_2+e_2
+        \\end{gather*}
+
+    """
     md.block.ruler.before(
         "blockquote",
         "amsmath",

@@ -10,7 +10,26 @@ from markdown_it.common.utils import isSpace
 
 
 def footnote_plugin(md: MarkdownIt):
+    """Plugin ported from
+    `markdown-it-footnote <https://github.com/markdown-it/markdown-it-footnote>`__.
 
+    It is based on the
+    `pandoc definition <http://johnmacfarlane.net/pandoc/README.html#footnotes>`__:
+
+    .. code-block:: md
+
+        Normal footnote:
+
+        Here is a footnote reference,[^1] and another.[^longnote]
+
+        [^1]: Here is the footnote.
+
+        [^longnote]: Here's one with multiple blocks.
+
+            Subsequent paragraphs are indented to show that they
+        belong to the previous footnote.
+
+    """
     md.block.ruler.before(
         "reference", "footnote_def", footnote_def, {"alt": ["paragraph", "reference"]}
     )

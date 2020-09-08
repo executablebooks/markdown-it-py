@@ -51,7 +51,7 @@ setup(
             "psutil",
         ],
         "rtd": [
-            "myst-nb",
+            "myst-nb~=0.10.0",
             "sphinx_book_theme",
             "sphinx-panels~=0.4.0",
             "sphinx-copybutton",

@@ -7,74 +7,42 @@ The following plugins are embedded within the core package (enabled when using t
 - [tables](https://help.github.com/articles/organizing-information-with-tables/) (GFM)
 - [strikethrough](https://help.github.com/articles/basic-writing-and-formatting-syntax/#styling-text) (GFM)
 
-Other plugins are then available *via* the `markdown_it.extensions` package:
+Other plugins are then available *via* the `markdown_it.extensions` package.
+They can be chained and loaded *via*:
 
-- [footnote](https://github.com/markdown-it/markdown-it-footnote) is based on the [pandoc definition](http://johnmacfarlane.net/pandoc/README.html#footnotes):
+```python
+from markdown_it import MarkdownIt
+md = MarkdownIt().use(plugin1, keyword=value).use(plugin2, keyword=value)
+html_string = md.render("some *Markdown*")
+```
 
-    ```md
-    Normal footnote:
+```{eval-rst}
+.. autofunction:: markdown_it.extensions.anchors.anchors_plugin
+    :noindex:
 
-    Here is a footnote reference,[^1] and another.[^longnote]
+.. autofunction:: markdown_it.extensions.footnote.footnote_plugin
+    :noindex:
 
-    [^1]: Here is the footnote.
+.. autofunction:: markdown_it.extensions.front_matter.front_matter_plugin
+    :noindex:
 
-    [^longnote]: Here's one with multiple blocks.
+.. autofunction:: markdown_it.extensions.container.container_plugin
+    :noindex:
 
-        Subsequent paragraphs are indented to show that they
-    belong to the previous footnote.
-    ```
+.. autofunction:: markdown_it.extensions.deflist.deflist_plugin
+    :noindex:
 
-- [front-matter](https://github.com/ParkSB/markdown-it-front-matter) parses initial metadata, stored between opening/closing dashes:
+.. autofunction:: markdown_it.extensions.texmath.texmath_plugin
+    :noindex:
 
-    ```md
-    ---
-    valid-front-matter: true
-    ---
-    ```
+.. autofunction:: markdown_it.extensions.dollarmath.dollarmath_plugin
+    :noindex:
 
-- [containers](https://github.com/markdown-it/markdown-it-container) is a plugin for creating block-level custom containers:
+.. autofunction:: markdown_it.extensions.amsmath.amsmath_plugin
+    :noindex:
+```
 
-    ```md
-    ::::: name
-    :::: name
-    *markdown*
-    ::::
-    :::::
-    ```
-
-- [deflist](https://github.com/markdown-it/markdown-it-deflist) syntax is based on [pandoc definition lists](http://johnmacfarlane.net/pandoc/README.html#definition-lists).
-
-    ```md
-    Term 1
-
-    : Definition 1 long form
-
-      second paragraph
-
-    Term 2 with *inline markup*
-      ~ Definition 2a compact style
-      ~ Definition 2b
-    ```
-
-- [texmath](https://github.com/goessner/markdown-it-texmath) parses TeX math equations set inside opening and closing delimiters:
-
-    ```md
-    $\alpha = \frac{1}{2}$
-    ```
-
-- `dollarmath` is an improved version of `texmath`, for `$`/`$$` enclosed math only.
-  It is more performant, handles `\` escaping properly and allows for more configuration.
-
-- `amsmath` also parses TeX math equations, but without the surrounding delimiters and only for top-level [amsmath](https://ctan.org/pkg/amsmath) environments:
-
-    ```latex
-    \begin{gather*}
-    a_1=b_1+c_1\\
-    a_2=b_2+c_2-d_2+e_2
-    \end{gather*}
-    ```
-
-- `myst_blocks` and `myst_role` plugins are utilised by the [MyST renderer](https://myst-parser.readthedocs.io/en/latest/using/syntax.html)
+`myst_blocks` and `myst_role` plugins are also available, for utilisation by the [MyST renderer](https://myst-parser.readthedocs.io/en/latest/using/syntax.html)
 
 There are also many other plugins which could easily be ported (and hopefully will be):
 
