@@ -1,13 +1,25 @@
 import re
-from markdown_it.common.utils import charCodeAt
+from typing import Optional
 
 from markdown_it import MarkdownIt
+from markdown_it.common.utils import charCodeAt
 from markdown_it.utils import AttrDict
 
 
-def texmath_plugin(md: MarkdownIt, **options):
-    delimiters = options.get("delimiters", None) or "dollars"
-    macros = options.get("macros", {})
+def texmath_plugin(md: MarkdownIt, delimiters="dollars", macros: Optional[dict] = None):
+    """Plugin ported from
+    `markdown-it-texmath <https://github.com/goessner/markdown-it-texmath>`__.
+
+    It parses TeX math equations set inside opening and closing delimiters:
+
+    .. code-block:: md
+
+        $\\alpha = \\frac{1}{2}$
+
+    :param delimiters: one of: brackets, dollars, gitlab, julia, kramdown
+
+    """
+    macros = macros or {}
 
     if delimiters in rules:
         for rule_inline in rules[delimiters]["inline"]:

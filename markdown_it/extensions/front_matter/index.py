@@ -7,6 +7,18 @@ from markdown_it.common.utils import charCodeAt
 
 
 def front_matter_plugin(md: MarkdownIt):
+    """Plugin ported from
+    `markdown-it-front-matter <https://github.com/ParkSB/markdown-it-front-matter>`__.
+
+    It parses initial metadata, stored between opening/closing dashes:
+
+    .. code-block:: md
+
+        ---
+        valid-front-matter: true
+        ---
+
+    """
     frontMatter = make_front_matter_rule()
     md.block.ruler.before(
         "table",

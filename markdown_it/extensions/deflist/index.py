@@ -4,6 +4,24 @@ from markdown_it.rules_block import StateBlock
 
 
 def deflist_plugin(md: MarkdownIt):
+    """Plugin ported from
+    `markdown-it-deflist <https://github.com/markdown-it/markdown-it-deflist>`__.
+
+    The syntax is based on
+    `pandoc definition lists <http://johnmacfarlane.net/pandoc/README.html#definition-lists>`__:
+
+    .. code-block:: md
+
+        Term 1
+        : Definition 1 long form
+
+          second paragraph
+
+        Term 2 with *inline markup*
+        ~ Definition 2a compact style
+        ~ Definition 2b
+
+    """
     isSpace = md.utils.isSpace
 
     def skipMarker(state: StateBlock, line: int):
