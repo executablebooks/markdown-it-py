@@ -214,7 +214,6 @@ Regression test (blockquote inside deflist)
 .
 foo
 : > bar
-
 : baz
 .
 <dl>
@@ -224,9 +223,7 @@ foo
 <p>bar</p>
 </blockquote>
 </dd>
-<dd>
-<p>baz</p>
-</dd>
+<dd>baz</dd>
 </dl>
 .
 
