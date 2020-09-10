@@ -246,5 +246,8 @@ def deflist_plugin(md: MarkdownIt):
         return True
 
     md.block.ruler.before(
-        "paragraph", "deflist", deflist, {"alt": ["paragraph", "reference"]}
+        "paragraph",
+        "deflist",
+        deflist,
+        {"alt": ["paragraph", "reference", "blockquote"]},
     )
