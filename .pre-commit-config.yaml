@@ -21,12 +21,16 @@ repos:
     - id: check-yaml
     - id: end-of-file-fixer
     - id: trailing-whitespace
-    - id: flake8
 
   - repo: https://github.com/mgedmin/check-manifest
     rev: "0.39"
     hooks:
     - id: check-manifest
+
+  - repo: https://gitlab.com/pycqa/flake8
+    rev: 3.8.3
+    hooks:
+    - id: flake8
 
   - repo: https://github.com/psf/black
     rev: 20.8b1
