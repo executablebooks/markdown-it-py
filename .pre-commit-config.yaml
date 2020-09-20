@@ -15,7 +15,7 @@ exclude: >
 repos:
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.2.3
+    rev: v3.2.0
     hooks:
     - id: check-json
     - id: check-yaml
@@ -23,7 +23,7 @@ repos:
     - id: trailing-whitespace
 
   - repo: https://github.com/mgedmin/check-manifest
-    rev: "0.39"
+    rev: "0.42"
     hooks:
     - id: check-manifest
 
