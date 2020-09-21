@@ -12,6 +12,7 @@ exclude docstring.fmt.mustache
 exclude .flake8
 exclude .circleci
 exclude .circleci/config.yml
+exclude codecov.yml
 
 include LICENSE
 include LICENSE.markdown-it

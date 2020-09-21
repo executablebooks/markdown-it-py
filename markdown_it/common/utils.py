@@ -58,9 +58,9 @@ def assign(obj):
 
 def arrayReplaceAt(src: list, pos: int, newElements: list):
     """
-  Remove element from array and put another array at those position.
-  Useful for some operations with tokens
-  """
+    Remove element from array and put another array at those position.
+    Useful for some operations with tokens
+    """
     return src[0:pos] + newElements + src[pos + 1 :]
 
 

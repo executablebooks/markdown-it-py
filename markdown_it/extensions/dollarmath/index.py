@@ -11,6 +11,9 @@ def dollarmath_plugin(
 ):
     """Plugin for parsing dollar enclosed math, e.g. ``$a=1$``.
 
+    This is an improved version of ``texmath``; it is more performant,
+    and handles ``\\`` escaping properly and allows for more configuration.
+
     :param allow_labels: Capture math blocks with label suffix, e.g. ``$$a=1$$ (eq1)``
     :param allow_space: Parse inline math when there is space
         after/before the opening/closing ``$``, e.g. ``$ a $``

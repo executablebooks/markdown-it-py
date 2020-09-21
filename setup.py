@@ -39,7 +39,7 @@ setup(
     ],
     keywords="markdown lexer parser development",
     python_requires="~=3.6",
-    install_requires=["attrs~=19.3"],
+    install_requires=["attrs>=19,<21"],
     extras_require={
         "code_style": ["pre-commit==2.6"],
         "testing": [
@@ -51,7 +51,7 @@ setup(
             "psutil",
         ],
         "rtd": [
-            "myst-nb",
+            "myst-nb~=0.10.0",
             "sphinx_book_theme",
             "sphinx-panels~=0.4.0",
             "sphinx-copybutton",

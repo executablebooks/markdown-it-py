@@ -1,5 +1,27 @@
 # Change Log
 
+## 0.5.4 - 2020-09-08
+
+✨ NEW: Add `anchors_plugin` for headers, which can produce:
+
+```html
+<h1 id="title-string">Title String <a class="header-anchor" href="#title-string">¶</a></h1>
+```
+
+## 0.5.3 - 2020-09-04
+
+🐛 Fixed an undefined variable in the reference block.
+
+## 0.5.2 - 2020-08-22
+
+🐛 Fixed an `IndexError` in `container_plugin`, when there is no newline on the closing tag line.
+
+## 0.5.1 - 2020-08-21
+
+⬆️ UPGRADE: attrs -> v20
+
+This is not breaking, since it only deprecates Python 3.4 (see [CHANGELOG.rst](https://github.com/python-attrs/attrs/blob/master/CHANGELOG.rst))
+
 ## 0.5.0 - 2020-08-18
 
 ### Added ✨

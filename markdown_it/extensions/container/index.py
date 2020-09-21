@@ -1,14 +1,37 @@
 """Process block-level custom containers."""
 from math import floor
+from typing import Callable
 
 from markdown_it import MarkdownIt
 from markdown_it.common.utils import charCodeAt
 from markdown_it.rules_block import StateBlock
 
 
-def container_plugin(md: MarkdownIt, name, **options):
-    """Second param may be useful,
-    if you decide to increase minimal allowed marker length
+def container_plugin(
+    md: MarkdownIt,
+    name: str,
+    marker: str = ":",
+    validate: Callable[[str, str], bool] = None,
+    render=None,
+):
+    """Plugin ported from
+    `markdown-it-container <https://github.com/markdown-it/markdown-it-container>`__.
+
+    It is a plugin for creating block-level custom containers:
+
+    .. code-block:: md
+
+        :::: name
+        ::: name
+        *markdown*
+        :::
+        ::::
+
+    :param name: the name of the container to parse
+    :param marker: the marker character to use
+    :param validate: func(marker, param) -> bool, default matches against the name
+    :param render: render func
+
     """
 
     def validateDefault(params: str, *args):
@@ -22,11 +45,11 @@ def container_plugin(md: MarkdownIt, name, **options):
         return self.renderToken(tokens, idx, _options, env)
 
     min_markers = 3
-    marker_str = options.get("marker", ":")
+    marker_str = marker
     marker_char = charCodeAt(marker_str, 0)
     marker_len = len(marker_str)
-    validate = options.get("validate", validateDefault)
-    render = options.get("render", renderDefault)
+    validate = validate or validateDefault
+    render = render or renderDefault
 
     def container_func(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
@@ -42,7 +65,11 @@ def container_plugin(md: MarkdownIt, name, **options):
         # Check out the rest of the marker string
         pos = start + 1
         while pos <= maximum:
-            if marker_str[(pos - start) % marker_len] != state.src[pos]:
+            try:
+                character = state.src[pos]
+            except IndexError:
+                break
+            if marker_str[(pos - start) % marker_len] != character:
                 break
             pos += 1
 
@@ -88,7 +115,11 @@ def container_plugin(md: MarkdownIt, name, **options):
 
             pos = start + 1
             while pos <= maximum:
-                if marker_str[(pos - start) % marker_len] != state.src[pos]:
+                try:
+                    character = state.src[pos]
+                except IndexError:
+                    break
+                if marker_str[(pos - start) % marker_len] != character:
                     break
                 pos += 1
 
