@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1601197899643,
+  "lastUpdate": 1601197978024,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -4897,6 +4897,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.012572",
             "group": "plugins",
             "extra": "mean: 180.12 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.5"
+        },
+        "commit": {
+          "id": "d9b6de9c8ff3bb0dc2b78d6eda8e09b3b88fa7b4",
+          "message": "👌 IMPROVE: Add `store_labels` option\n\nAllows for storage of original reference label in link/image tokens metadata.\nThis can be useful for renderers.",
+          "timestamp": "2020-09-27T10:10:14+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/d9b6de9c8ff3bb0dc2b78d6eda8e09b3b88fa7b4",
+          "distinct": true,
+          "tree_id": "16749bd1e6cfb64f9ced7eda014c1632edd5369b"
+        },
+        "date": 1601197977457,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.73418416807639,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010710",
+            "group": "packages",
+            "extra": "mean: 211.23 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.937012935516034,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0039307",
+            "group": "packages",
+            "extra": "mean: 83.773 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.5739115121280496,
+            "unit": "iter/sec",
+            "range": "stddev: 0.023981",
+            "group": "packages",
+            "extra": "mean: 635.36 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.040515764427372,
+            "unit": "iter/sec",
+            "range": "stddev: 0.021377",
+            "group": "packages",
+            "extra": "mean: 961.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.916785402294477,
+            "unit": "iter/sec",
+            "range": "stddev: 0.035406",
+            "group": "packages",
+            "extra": "mean: 1.0908 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.332916594426334,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0095021",
+            "group": "packages",
+            "extra": "mean: 230.79 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.0410344965709042,
+            "unit": "iter/sec",
+            "range": "stddev: 0.041610",
+            "group": "packages",
+            "extra": "mean: 960.58 msec\nrounds: 20"
           }
         ]
       }
