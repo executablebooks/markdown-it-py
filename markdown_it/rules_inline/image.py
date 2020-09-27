@@ -114,7 +114,9 @@ def image(state: StateInline, silent: bool):
         if not label:
             label = state.src[labelStart:labelEnd]
 
-        ref = state.env.references.get(normalizeReference(label), None)
+        label = normalizeReference(label)
+
+        ref = state.env.references.get(label, None)
         if not ref:
             state.pos = oldPos
             return False
@@ -133,11 +135,15 @@ def image(state: StateInline, silent: bool):
         state.md.inline.parse(content, state.md, state.env, tokens)
 
         token = state.push("image", "img", 0)
-        token.attrs = attrs = [["src", href], ["alt", ""]]
+        token.attrs = [["src", href], ["alt", ""]]
         token.children = tokens or None
 
         if title:
-            attrs.append(["title", title])
+            token.attrs.append(["title", title])
+
+        # note, this is not part of markdown-it JS, but is useful for renderers
+        if label and state.md.options.get("store_labels", False):
+            token.meta["label"] = label
 
     state.pos = pos
     state.posMax = max
