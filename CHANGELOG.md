@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.5.5 - 2020-09-27
+
+👌 IMPROVE: Add `store_labels` option.
+
+This allows for storage of original reference label in link/image token's metadata,
+which can be useful for renderers.
+
 ## 0.5.4 - 2020-09-08
 
 ✨ NEW: Add `anchors_plugin` for headers, which can produce:
