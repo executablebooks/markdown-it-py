@@ -21,7 +21,8 @@ def main(args: Optional[Sequence[str]] = None) -> bool:
         convert(namespace.filenames)
     else:
         interactive()
-    return True
+    RET_OK = 0
+    return RET_OK
 
 
 def convert(filenames: Iterable[str]) -> None:
