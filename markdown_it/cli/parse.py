@@ -1,4 +1,10 @@
-from argparse import ArgumentParser
+#!/usr/bin/env python
+"""
+CLI interface to markdown-it-py
+
+Parse one or more markdown files, convert each to HTML, and print to stdout.
+"""
+import argparse
 import sys
 
 from markdown_it import __version__
@@ -59,7 +65,32 @@ def interactive(import_readline=False):
 
 def parse_args(args):
     """Parse input CLI arguments."""
-    parser = ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Parse one or more markdown files, "
+        "convert each to HTML, and print to stdout",
+        # NOTE: Remember to update README.md w/ the output of `markdown-it -h`
+        epilog=(
+            """
+Interactive:
+
+  $ markdown-it
+  markdown-it-py [version 0.0.0] (interactive)
+  Type Ctrl-D to complete input, or Ctrl-C to exit.
+  >>> # Example
+  ... > markdown *input*
+  ...
+  <h1>Example</h1>
+  <blockquote>
+  <p>markdown <em>input</em></p>
+  </blockquote>
+
+Batch:
+
+  $ markdown-it README.md README.footer.md > index.html
+"""
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("-v", "--version", action="version", version=version_str)
     parser.add_argument(
         "filenames", nargs="*", help="specify an optional list of files to convert"
