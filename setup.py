@@ -60,7 +60,7 @@ setup(
         ],
         "compare": [
             "commonmark~=0.9.1",
-            "markdown~=3.2",
+            "markdown~=3.2.2",
             "mistune~=0.8.4",
             # "mistletoe~=0.7.2",
             "mistletoe-ebp~=0.10.0",
