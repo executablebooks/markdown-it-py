@@ -13,7 +13,7 @@ class AttrDict(dict):
 
 
 def read_fixture_file(path):
-    text = Path(path).read_text()
+    text = Path(path).read_text(encoding="utf-8")
     tests = []
     section = 0
     last_pos = 0
