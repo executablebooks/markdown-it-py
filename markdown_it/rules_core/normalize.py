@@ -12,9 +12,9 @@ NULL_RE = re.compile(r"\0")
 def normalize(state: StateCore):
 
     # Normalize newlines
-    string, _ = NEWLINES_RE.subn("\n", state.src)
+    string = NEWLINES_RE.sub("\n", state.src)
 
     # Replace NULL characters
-    string, _ = NULL_RE.subn("\uFFFD", string)
+    string = NULL_RE.sub("\uFFFD", string)
 
     state.src = string

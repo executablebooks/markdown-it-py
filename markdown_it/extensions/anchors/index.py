@@ -76,11 +76,9 @@ def _make_anchors_func(
             if level not in selected_levels:
                 continue
             title = "".join(
-                [
-                    child.content
-                    for child in state.tokens[idx + 1].children
-                    if child.type in ["text", "code_inline"]
-                ]
+                child.content
+                for child in state.tokens[idx + 1].children
+                if child.type in ["text", "code_inline"]
             )
             slug = unique_slug(slug_func(title), slugs)
             token.attrSet("id", slug)
@@ -116,9 +114,7 @@ def _make_anchors_func(
 
 
 def slugify(title: str):
-    return re.subn(
-        r"[^\w\u4e00-\u9fff\- ]", "", title.strip().lower().replace(" ", "-")
-    )[0]
+    return re.sub(r"[^\w\u4e00-\u9fff\- ]", "", title.strip().lower().replace(" ", "-"))
 
 
 def unique_slug(slug: str, slugs: set):
