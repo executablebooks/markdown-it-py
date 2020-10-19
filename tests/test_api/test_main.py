@@ -7,7 +7,7 @@ def test_get_rules():
     md = MarkdownIt("zero")
     # print(md.get_all_rules())
     assert md.get_all_rules() == {
-        "core": ["normalize", "block", "inline"],
+        "core": ["normalize", "block", "inline", "replacements"],
         "block": [
             "table",
             "code",

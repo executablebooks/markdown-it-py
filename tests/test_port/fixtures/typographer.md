@@ -4,6 +4,19 @@
 <p>(bad)</p>
 .
 
+copyright (Lower)
+.
+(c)
+.
+<p>©</p>
+.
+
+copyright (Upper)
+.
+(C)
+.
+<p>©</p>
+.
 
 copyright
 .
