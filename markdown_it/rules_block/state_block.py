@@ -131,7 +131,13 @@ class StateBlock(StateBase):
     def skipEmptyLines(self, from_pos):
         """."""
         while from_pos < self.lineMax:
-            if (self.bMarks[from_pos] + self.tShift[from_pos]) < self.eMarks[from_pos]:
+            try:
+                if (self.bMarks[from_pos] + self.tShift[from_pos]) < self.eMarks[
+                    from_pos
+                ]:
+                    break
+            except IndexError:
+                from_pos += 1
                 break
             from_pos += 1
         return from_pos
