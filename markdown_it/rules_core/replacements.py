@@ -11,7 +11,7 @@
 """
 import logging
 import re
-from typing import List
+from typing import List, Match
 
 from .state_core import StateCore
 from ..token import Token
@@ -30,15 +30,10 @@ RARE_RE = r"\+-|\.\.|\?\?\?\?|!!!!|,,|--"
 
 SCOPED_ABBR_RE = r"\((c|tm|r|p)\)"
 
-SCOPED_ABBR = {
-    "c": "©",
-    "r": "®",
-    "p": "§",
-    "tm": "™"
-}
+SCOPED_ABBR = {"c": "©", "r": "®", "p": "§", "tm": "™"}
 
 
-def replaceFn(match: re.Match):
+def replaceFn(match: Match):
     return SCOPED_ABBR[match.group(1).lower()]
 
 
@@ -47,7 +42,9 @@ def replace_scoped(inlineTokens: List[Token]):
 
     for token in inlineTokens:
         if token.type == "text" and not inside_autolink:
-            token.content = re.sub(SCOPED_ABBR_RE, replaceFn, token.content, flags=re.IGNORECASE)
+            token.content = re.sub(
+                SCOPED_ABBR_RE, replaceFn, token.content, flags=re.IGNORECASE
+            )
 
         if token.type == "link_open" and token.info == "auto":
             inside_autolink -= 1
@@ -70,13 +67,22 @@ def replace_rare(inlineTokens: List[Token]):
                 token.content = re.sub(r"([?!]){4,}", "\\1\\1\\1", token.content)
                 token.content = re.sub(r",{2,}", ",", token.content)
                 # em-dash
-                token.content = re.sub(r"(^|[^-])---(?=[^-]|$)",
-                                       "\\1\u2014", token.content, flags=re.MULTILINE)
+                token.content = re.sub(
+                    r"(^|[^-])---(?=[^-]|$)",
+                    "\\1\u2014",
+                    token.content,
+                    flags=re.MULTILINE,
+                )
                 # en-dash
-                token.content = re.sub(r"(^|\s)--(?=\s|$)", "\\1\u2013",
-                                       token.content, flags=re.MULTILINE)
-                token.content = re.sub(r"(^|[^-\s])--(?=[^-\s]|$)",
-                                       "\\1\u2013", token.content, flags=re.MULTILINE)
+                token.content = re.sub(
+                    r"(^|\s)--(?=\s|$)", "\\1\u2013", token.content, flags=re.MULTILINE
+                )
+                token.content = re.sub(
+                    r"(^|[^-\s])--(?=[^-\s]|$)",
+                    "\\1\u2013",
+                    token.content,
+                    flags=re.MULTILINE,
+                )
 
         if token.type == "link_open" and token.info == "auto":
             inside_autolink -= 1

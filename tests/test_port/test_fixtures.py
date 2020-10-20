@@ -9,7 +9,8 @@ FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures")
 
 
 @pytest.mark.parametrize(
-    "line,title,input,expected", read_fixture_file(FIXTURE_PATH.joinpath("typographer.md"))
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("typographer.md")),
 )
 def test_typographer(line, title, input, expected):
     md = MarkdownIt().enable("replacements")

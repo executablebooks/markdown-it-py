@@ -16,7 +16,7 @@ _rules = [
     ["block", block],
     ["inline", inline],
     #   [ 'linkify',        require('./rules_core/linkify')        ],
-    ['replacements', replace],
+    ["replacements", replace],
     #   [ 'smartquotes',    require('./rules_core/smartquotes')    ]
 ]
 
