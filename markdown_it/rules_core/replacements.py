@@ -1,13 +1,18 @@
 """Simple typographic replacements
 
-(c) (C) → ©
-(tm) (TM) → ™
-(r) (R) → ®
-+- → ±
-(p) (P) -> §
-... → … (also ?.... → ?.., !.... → !..)
-???????? → ???, !!!!! → !!!, `,,` → `,`
--- → &ndash;, --- → &mdash;
+* ``(c)``, ``(C)`` → ©
+* ``(tm)``, ``(TM)`` → ™
+* ``(r)``, ``(R)`` → ®
+* ``(p)``, ``(P)`` → §
+* ``+-`` → ±
+* ``...`` → …
+* ``?....`` → ?..
+* ``!....`` → !..
+* ``????????`` → ???
+* ``!!!!!`` → !!!
+* ``,,,`` → ,
+* ``--`` → &ndash
+* ``---`` → &mdash
 """
 import logging
 import re
@@ -50,7 +55,7 @@ EN_DASH_INDENT_RE = re.compile(r"(^|[^-\s])--(?=[^-\s]|$)", flags=re.MULTILINE)
 SCOPED_ABBR = {"c": "©", "r": "®", "p": "§", "tm": "™"}
 
 
-def replaceFn(match: Match):
+def replaceFn(match: Match[str]):
     return SCOPED_ABBR[match.group(1).lower()]
 
 
