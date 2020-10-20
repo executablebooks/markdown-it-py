@@ -172,8 +172,8 @@ def stripEscape(string):
 
 #     if HTML_ESCAPE_REPLACE_RE.search(string):
 
-#         string, _ = UNESCAPE_HTML_RE.subn("&", string)
-#         string, _ = ESCAPE_AND_HTML.subn("&amp;", string)
+#         string = UNESCAPE_HTML_RE.sub("&", string)
+#         string = ESCAPE_AND_HTML.sub("&amp;", string)
 #         for k, v in {"<": "&lt;", ">": "&gt;", '"': "&quot;"}.items():
 #             string = string.replace(k, v)
 
@@ -191,7 +191,7 @@ REGEXP_ESCAPE_RE = re.compile(r"[.?*+^$[\]\\(){}|-]")
 
 
 def escapeRE(string: str) -> str:
-    string, _ = REGEXP_ESCAPE_RE.subn("\\$&", string)
+    string = REGEXP_ESCAPE_RE.sub("\\$&", string)
     return string
 
 
@@ -291,7 +291,7 @@ def normalizeReference(string: str) -> str:
     """Helper to unify [reference labels]."""
     # Trim and collapse whitespace
     #
-    string, _ = re.subn(r"\s+", " ", string.strip())
+    string = re.sub(r"\s+", " ", string.strip())
 
     # In node v10 'ẞ'.toLowerCase() === 'Ṿ', which is presumed to be a bug
     # fixed in v12 (couldn't find any details).

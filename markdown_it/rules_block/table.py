@@ -129,7 +129,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
         return False
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
-    columns = escapedSplit(enclosingPipesRe.subn("", lineText)[0])
+    columns = escapedSplit(enclosingPipesRe.sub("", lineText))
 
     # header row will define an amount of columns in the entire table,
     # and align row shouldn't be smaller than that (the rest of the rows can)
@@ -178,7 +178,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
             break
         if state.sCount[nextLine] - state.blkIndent >= 4:
             break
-        columns = escapedSplit(enclosingPipesRe.subn("", lineText)[0])
+        columns = escapedSplit(enclosingPipesRe.sub("", lineText))
 
         token = state.push("tr_open", "tr", 1)
         for i in range(columnCount):
