@@ -1,5 +1,33 @@
 # Change Log
 
+## 0.5.6 - 2020-10-21
+
+- ✨ NEW: Add simple typographic replacements, thanks to [@tsutsu3](https://github.com/tsutsu3):
+  This allows you to add the `typographer` option to the parser, to replace particular text constructs:
+
+  - ``(c)``, ``(C)`` → ©
+  - ``(tm)``, ``(TM)`` → ™
+  - ``(r)``, ``(R)`` → ®
+  - ``(p)``, ``(P)`` → §
+  - ``+-`` → ±
+  - ``...`` → …
+  - ``?....`` → ?..
+  - ``!....`` → !..
+  - ``????????`` → ???
+  - ``!!!!!`` → !!!
+  - ``,,,`` → ,
+  - ``--`` → &ndash
+  - ``---`` → &mdash
+
+  ```python
+  md = MarkdownIt()
+  md.options["typographer"] = True
+  ```
+
+- 📚 DOCS: Improve documentation for CLI, thanks to [@westurner](https://github.com/westurner)
+- 👌 IMPROVE: Use `re.sub()` instead of `re.subn()[0]`, thanks to [@hukkinj1](https://github.com/hukkinj1)
+- 🐛 FIX: An exception raised by having multiple blank lines at the end of some files
+
 ## 0.5.5 - 2020-09-27
 
 👌 IMPROVE: Add `store_labels` option.
