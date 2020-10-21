@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Mapping, Optional, Union
 
 from . import helpers, presets  # noqa F401
 from .common import utils  # noqa F401
@@ -28,7 +28,7 @@ _PRESETS = AttrDict(
 
 class MarkdownIt:
     def __init__(
-        self, config: Union[str, AttrDict] = "commonmark", renderer_cls=RendererHTML
+        self, config: Union[str, Mapping] = "commonmark", renderer_cls=RendererHTML
     ):
         """Main parser class
 
@@ -69,7 +69,7 @@ class MarkdownIt:
         """
         self.options = options
 
-    def configure(self, presets: Union[str, AttrDict]):
+    def configure(self, presets: Union[str, Mapping]):
         """Batch load of all options and component settings.
         This is an internal method, and you probably will not need it.
         But if you will - see available presets and data structure
@@ -87,13 +87,13 @@ class MarkdownIt:
                 )
         if not presets:
             raise ValueError("Wrong `markdown-it` preset, can't be empty")
-        presets = AttrDict(presets)
+        attr_presets = AttrDict(presets)
 
-        if "options" in presets:
-            self.set(presets.options)
+        if "options" in attr_presets:
+            self.set(attr_presets.options)
 
-        if "components" in presets:
-            for name, component in presets.components.items():
+        if "components" in attr_presets:
+            for name, component in attr_presets.components.items():
                 rules = component.get("rules", None)
                 if rules:
                     self[name].ruler.enableOnly(rules)
