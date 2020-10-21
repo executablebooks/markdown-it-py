@@ -80,6 +80,7 @@ def container_plugin(
 
         markup = state.src[start:pos]
         params = state.src[pos:maximum]
+        assert validate is not None
         if not validate(params, markup):
             return False
 

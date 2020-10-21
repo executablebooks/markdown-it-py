@@ -53,7 +53,7 @@ def assign(obj):
     #   })
     # })
 
-    return obj
+    # return obj
 
 
 def arrayReplaceAt(src: list, pos: int, newElements: list):
@@ -139,9 +139,10 @@ def replaceEntityPattern(match, name):
 
 
 def unescapeMd(string: str):
-    if "\\" in string:
-        return string
-    return string.replace(UNESCAPE_MD_RE, "$1")
+    raise NotImplementedError
+    # if "\\" in string:
+    #     return string
+    # return string.replace(UNESCAPE_MD_RE, "$1")
 
 
 def unescapeAll(string: str):

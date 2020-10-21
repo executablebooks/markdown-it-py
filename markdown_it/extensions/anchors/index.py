@@ -1,5 +1,5 @@
 import re
-from typing import Callable, List, Optional
+from typing import Callable, List, Optional, Set
 
 from markdown_it import MarkdownIt
 from markdown_it.rules_core import StateCore
@@ -65,19 +65,20 @@ def _make_anchors_func(
     permalinkBefore: bool,
     permalinkSpace: bool,
 ):
-    slugs = set()
+    slugs: Set[str] = set()
 
     def _anchor_func(state: StateCore):
         for (idx, token) in enumerate(state.tokens):
-            token: Token
             if token.type != "heading_open":
                 continue
             level = int(token.tag[1])
             if level not in selected_levels:
                 continue
+            inline_token = state.tokens[idx + 1]
+            assert inline_token.children is not None
             title = "".join(
                 child.content
-                for child in state.tokens[idx + 1].children
+                for child in inline_token.children
                 if child.type in ["text", "code_inline"]
             )
             slug = unique_slug(slug_func(title), slugs)
@@ -95,17 +96,17 @@ def _make_anchors_func(
                     Token("link_close", "a", -1),
                 ]
                 if permalinkBefore:
-                    state.tokens[idx + 1].children = (
+                    inline_token.children = (
                         link_tokens
                         + (
                             [Token("text", "", 0, content=" ")]
                             if permalinkSpace
                             else []
                         )
-                        + state.tokens[idx + 1].children
+                        + inline_token.children
                     )
                 else:
-                    state.tokens[idx + 1].children.extend(
+                    inline_token.children.extend(
                         ([Token("text", "", 0, content=" ")] if permalinkSpace else [])
                         + link_tokens
                     )

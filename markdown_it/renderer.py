@@ -64,6 +64,7 @@ class RendererHTML:
         for i, token in enumerate(tokens):
 
             if token.type == "inline":
+                assert token.children is not None
                 result += self.renderInline(token.children, options, env)
             elif token.type in self.rules:
                 result += self.rules[token.type](tokens, i, options, env)
@@ -124,7 +125,7 @@ class RendererHTML:
         result += self.renderAttrs(token)
 
         # Add a slash for self-closing tags, e.g. `<img src="foo" /`
-        if token.nesting == 0 and options.xhtmlOut:
+        if token.nesting == 0 and options["xhtmlOut"]:
             result += " /"
 
         # Check if we need to add a newline after this tag
@@ -184,6 +185,7 @@ class RendererHTML:
             if token.type == "text":
                 result += token.content
             elif token.type == "image":
+                assert token.children is not None
                 result += self.renderInlineAsText(token.children, options, env)
 
         return result

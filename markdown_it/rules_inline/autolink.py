@@ -1,6 +1,6 @@
 # Process autolinks '<protocol:...>'
 import re
-from .state_inline import StateBase
+from .state_inline import StateInline
 from ..common.normalize_url import normalizeLinkText, normalizeLink, validateLink
 
 EMAIL_RE = re.compile(
@@ -9,7 +9,7 @@ EMAIL_RE = re.compile(
 AUTOLINK_RE = re.compile(r"^<([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)>")
 
 
-def autolink(state: StateBase, silent: bool):
+def autolink(state: StateInline, silent: bool):
 
     pos = state.pos
 

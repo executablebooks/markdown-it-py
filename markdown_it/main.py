@@ -43,7 +43,7 @@ class MarkdownIt:
 
         self.utils = utils
         self.helpers = helpers
-        self.options = {}
+        self.options: dict = {}
         self.configure(config)
 
         self.linkify = linkify_it.LinkifyIt() if linkify_it else None
@@ -193,7 +193,7 @@ class MarkdownIt:
         Only applied when ``renderer.__output__ == fmt``
         """
         if self.renderer.__output__ == fmt:
-            self.renderer.rules[name] = function.__get__(self.renderer)
+            self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
 
     def use(self, plugin: Callable, *params, **options) -> "MarkdownIt":
         """Load specified plugin with given params into current parser instance. (chainable)
@@ -225,7 +225,7 @@ class MarkdownIt:
         and then pass updated object to renderer.
         """
         env = AttrDict() if env is None else env
-        if not isinstance(env, AttrDict):
+        if not isinstance(env, AttrDict):  # type: ignore
             raise TypeError(f"Input data should be an AttrDict, not {type(env)}")
         if not isinstance(src, str):
             raise TypeError(f"Input data should be a string, not {type(src)}")
@@ -259,7 +259,7 @@ class MarkdownIt:
         tokens in `children` property. Also updates `env` object.
         """
         env = AttrDict() if env is None else env
-        if not isinstance(env, AttrDict):
+        if not isinstance(env, AttrDict):  # type: ignore
             raise TypeError(f"Input data should be an AttrDict, not {type(env)}")
         if not isinstance(src, str):
             raise TypeError(f"Input data should be a string, not {type(src)}")

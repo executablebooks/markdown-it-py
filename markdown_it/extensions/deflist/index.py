@@ -22,7 +22,7 @@ def deflist_plugin(md: MarkdownIt):
         ~ Definition 2b
 
     """
-    isSpace = md.utils.isSpace
+    isSpace = md.utils.isSpace  # type: ignore
 
     def skipMarker(state: StateBlock, line: int):
         """Search `[:~][\n ]`, returns next pos after marker on success or -1 on fail."""

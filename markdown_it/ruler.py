@@ -26,7 +26,9 @@ class StateBase:
         self.md = md
 
 
-RuleFunc = Callable[[StateBase], None]
+# The first positional arg is always a `StateBase`. Other arguments are
+# optional.
+RuleFunc = Callable[..., None]
 
 
 @attr.s(slots=True)
@@ -44,7 +46,7 @@ class Ruler:
         # Cached rule chains.
         # First level - chain name, '' for default.
         # Second level - diginal anchor for fast filtering by charcodes.
-        self.__cache__: Optional[Dict[str, RuleFunc]] = None
+        self.__cache__: Optional[Dict[str, List[RuleFunc]]] = None
 
     def __find__(self, name: str) -> int:
         """Find rule index by name"""
@@ -201,6 +203,7 @@ class Ruler:
         """
         if self.__cache__ is None:
             self.__compile__()
+            assert self.__cache__ is not None
         # Chain can be empty, if rules disabled. But we still have to return Array.
         return self.__cache__.get(chainName, []) or []
 
