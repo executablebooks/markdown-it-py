@@ -13,6 +13,7 @@ exclude .flake8
 exclude .circleci
 exclude .circleci/config.yml
 exclude codecov.yml
+exclude .mypy.ini
 
 include LICENSE
 include LICENSE.markdown-it
