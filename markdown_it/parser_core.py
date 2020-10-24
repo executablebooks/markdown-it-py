@@ -8,16 +8,16 @@
 
 from .ruler import Ruler
 from .rules_core.state_core import StateCore
-from .rules_core import normalize, block, inline, replace
+from .rules_core import normalize, block, inline, replace, smartquotes
 
-# TODO linkify, replacements, smartquotes
+# TODO linkify
 _rules = [
     ["normalize", normalize],
     ["block", block],
     ["inline", inline],
     #   [ 'linkify',        require('./rules_core/linkify')        ],
     ["replacements", replace],
-    #   [ 'smartquotes',    require('./rules_core/smartquotes')    ]
+    ["smartquotes", smartquotes],
 ]
 
 
