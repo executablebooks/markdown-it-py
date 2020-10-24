@@ -15,8 +15,9 @@ def test_parse():
 
 
 def test_parse_fail():
-    with pytest.raises(SystemExit):
+    with pytest.raises(SystemExit) as exc_info:
         parse.main(["/tmp/nonexistant_path/for_cli_test.md"])
+    assert exc_info.value.code == 1
 
 
 def test_print_heading():
