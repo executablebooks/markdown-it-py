@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from ..token import Token
 from ..ruler import StateBase
@@ -7,7 +7,12 @@ from ..common.utils import isSpace
 
 class StateBlock(StateBase):
     def __init__(
-        self, src: str, md, env, tokens: List[Token], srcCharCode: List[int] = None
+        self,
+        src: str,
+        md,
+        env,
+        tokens: List[Token],
+        srcCharCode: Optional[List[int]] = None,
     ):
 
         self.src = src

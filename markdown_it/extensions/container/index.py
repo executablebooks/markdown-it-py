@@ -1,6 +1,6 @@
 """Process block-level custom containers."""
 from math import floor
-from typing import Callable
+from typing import Callable, Optional
 
 from markdown_it import MarkdownIt
 from markdown_it.common.utils import charCodeAt
@@ -11,7 +11,7 @@ def container_plugin(
     md: MarkdownIt,
     name: str,
     marker: str = ":",
-    validate: Callable[[str, str], bool] = None,
+    validate: Optional[Callable[[str, str], bool]] = None,
     render=None,
 ):
     """Plugin ported from
