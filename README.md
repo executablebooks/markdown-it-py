@@ -35,7 +35,11 @@ or
 pip install markdown-it-py
 ```
 
-## Basic usage
+## Usage
+
+### Python API Usage
+Render markdown to HTML with markdown-it-py and a custom configuration
+with and without plugins and features:
 
 ```python
 from markdown_it import MarkdownIt
@@ -66,17 +70,39 @@ tokens = md.parse(text)
 html_text = md.render(text)
 ```
 
-Also you can use it from the command-line:
+### Command-line Usage
+Render markdown to HTML with markdown-it-py from the
+command-line:
 
 ```console
-$ markdown-it
-markdown-it-py [version 0.1.0] (interactive)
-Type Ctrl-D to complete input, or Ctrl-C to exit.
->>> > **hallo** there!
-...
-<blockquote>
-<p><strong>hallo</strong> there!</p>
-</blockquote>
+usage: markdown-it [-h] [-v] [filenames [filenames ...]]
+
+Parse one or more markdown files, convert each to HTML, and print to stdout
+
+positional arguments:
+  filenames      specify an optional list of files to convert
+
+optional arguments:
+  -h, --help     show this help message and exit
+  -v, --version  show program's version number and exit
+
+Interactive:
+
+  $ markdown-it
+  markdown-it-py [version 0.0.0] (interactive)
+  Type Ctrl-D to complete input, or Ctrl-C to exit.
+  >>> # Example
+  ... > markdown *input*
+  ...
+  <h1>Example</h1>
+  <blockquote>
+  <p>markdown <em>input</em></p>
+  </blockquote>
+
+Batch:
+
+  $ markdown-it README.md README.footer.md > index.html
+
 ```
 
 ## References / Thanks

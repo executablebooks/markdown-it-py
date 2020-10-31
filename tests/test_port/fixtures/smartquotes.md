@@ -132,9 +132,9 @@ and "that".
 "this" and\
 "that".
 .
-<p>“this”<br>
+<p>“this”<br />
 and “that”.</p>
-<p>“this” and<br>
+<p>“this” and<br />
 “that”.</p>
 .
 
@@ -143,4 +143,24 @@ Should allow quotes adjacent to other punctuation characters, #643:
 The dog---"'man's' best friend"
 .
 <p>The dog—“‘man’s’ best friend”</p>
+.
+
+Should parse quotes adjacent to code block, #677:
+.
+"test `code`"
+
+"`code` test"
+.
+<p>“test <code>code</code>”</p>
+<p>“<code>code</code> test”</p>
+.
+
+Should parse quotes adjacent to inline html, #677:
+.
+"test <br>"
+
+"<br> test"
+.
+<p>“test <br>”</p>
+<p>“<br> test”</p>
 .

@@ -32,6 +32,7 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: Implementation :: CPython",
         "Programming Language :: Python :: Implementation :: PyPy",
         "Topic :: Software Development :: Libraries :: Python Modules",
@@ -60,7 +61,7 @@ setup(
         ],
         "compare": [
             "commonmark~=0.9.1",
-            "markdown~=3.2",
+            "markdown~=3.2.2",
             "mistune~=0.8.4",
             # "mistletoe~=0.7.2",
             "mistletoe-ebp~=0.10.0",

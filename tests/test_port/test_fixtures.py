@@ -9,6 +9,28 @@ FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures")
 
 
 @pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("smartquotes.md")),
+)
+def test_smartquotes(line, title, input, expected):
+    md = MarkdownIt().enable("replacements").enable("smartquotes")
+    md.options["typographer"] = True
+    text = md.render(input)
+    assert text.rstrip() == expected.rstrip()
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("typographer.md")),
+)
+def test_typographer(line, title, input, expected):
+    md = MarkdownIt().enable("replacements")
+    md.options["typographer"] = True
+    text = md.render(input)
+    assert text.rstrip() == expected.rstrip()
+
+
+@pytest.mark.parametrize(
     "line,title,input,expected", read_fixture_file(FIXTURE_PATH.joinpath("tables.md"))
 )
 def test_title(line, title, input, expected):
