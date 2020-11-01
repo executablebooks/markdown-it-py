@@ -65,7 +65,7 @@ class StateInline(StateBase):
         self.delimiters: List[Delimiter] = []
 
         # Stack of delimiter lists for upper level tags
-        self._prev_delimiters: list = []
+        self._prev_delimiters: List[List[Delimiter]] = []
 
     def __repr__(self):
         return (

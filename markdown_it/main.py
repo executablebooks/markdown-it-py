@@ -43,7 +43,7 @@ class MarkdownIt:
 
         self.utils = utils
         self.helpers = helpers
-        self.options: dict = {}
+        self.options: Dict[str, Any] = {}
         self.configure(config)
 
         self.linkify = linkify_it.LinkifyIt() if linkify_it else None
