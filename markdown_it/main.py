@@ -87,13 +87,13 @@ class MarkdownIt:
                 )
         if not presets:
             raise ValueError("Wrong `markdown-it` preset, can't be empty")
-        attr_presets = AttrDict(presets)
+        config = AttrDict(presets)
 
-        if "options" in attr_presets:
-            self.set(attr_presets.options)
+        if "options" in config:
+            self.set(config.options)
 
-        if "components" in attr_presets:
-            for name, component in attr_presets.components.items():
+        if "components" in config:
+            for name, component in config.components.items():
                 rules = component.get("rules", None)
                 if rules:
                     self[name].ruler.enableOnly(rules)
