@@ -15,7 +15,7 @@ class _Entities:
         return DATA[name]
 
     def __contains__(self, name):
-        name in DATA
+        return name in DATA
 
 
 entities = _Entities()
