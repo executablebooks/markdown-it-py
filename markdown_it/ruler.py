@@ -47,9 +47,7 @@ class StateBase:
     @src.setter
     def src(self, value):
         self._src = value
-        self.srcCharCode = (
-            tuple(ord(c) for c in self.src) if self.src is not None else ()
-        )
+        self.srcCharCode = tuple(ord(c) for c in self.src)
 
 
 # The first positional arg is always a subtype of `StateBase`. Other
