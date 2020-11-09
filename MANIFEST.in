@@ -19,4 +19,4 @@ include LICENSE.markdown-it
 include CHANGELOG.md
 
 recursive-exclude markdown_it *.js
-recursive-include markdown_it port.yaml LICENSE README.md
+recursive-include markdown_it port.yaml LICENSE README.md py.typed
