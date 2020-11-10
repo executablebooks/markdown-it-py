@@ -1,0 +1,458 @@
+- attrs:
+  - - class
+    - contains-task-list
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map:
+  - 0
+  - 4
+  markup: '*'
+  meta: {}
+  nesting: 1
+  tag: ul
+  type: bullet_list_open
+- attrs:
+  - - class
+    - task-list-item
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 0
+  - 1
+  markup: '*'
+  meta: {}
+  nesting: 1
+  tag: li
+  type: list_item_open
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 2
+  map:
+  - 0
+  - 1
+  markup: ''
+  meta: {}
+  nesting: 1
+  tag: p
+  type: paragraph_open
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: <input class="task-list-item-checkbox" disabled="disabled" type="checkbox">
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: {}
+    nesting: 0
+    tag: ''
+    type: html_inline
+  - attrs: null
+    block: false
+    children: null
+    content: ' Task incomplete'
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: {}
+    nesting: 0
+    tag: ''
+    type: text
+  content: ' Task incomplete'
+  hidden: false
+  info: ''
+  level: 3
+  map:
+  - 0
+  - 1
+  markup: ''
+  meta: {}
+  nesting: 0
+  tag: ''
+  type: inline
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 2
+  map: null
+  markup: ''
+  meta: {}
+  nesting: -1
+  tag: p
+  type: paragraph_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 1
+  map: null
+  markup: '*'
+  meta: {}
+  nesting: -1
+  tag: li
+  type: list_item_close
+- attrs:
+  - - class
+    - task-list-item
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 1
+  - 4
+  markup: '*'
+  meta: {}
+  nesting: 1
+  tag: li
+  type: list_item_open
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 2
+  map:
+  - 1
+  - 2
+  markup: ''
+  meta: {}
+  nesting: 1
+  tag: p
+  type: paragraph_open
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: <input class="task-list-item-checkbox" checked="checked" disabled="disabled"
+      type="checkbox">
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: {}
+    nesting: 0
+    tag: ''
+    type: html_inline
+  - attrs: null
+    block: false
+    children: null
+    content: ' Task complete'
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: {}
+    nesting: 0
+    tag: ''
+    type: text
+  content: ' Task complete'
+  hidden: false
+  info: ''
+  level: 3
+  map:
+  - 1
+  - 2
+  markup: ''
+  meta: {}
+  nesting: 0
+  tag: ''
+  type: inline
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 2
+  map: null
+  markup: ''
+  meta: {}
+  nesting: -1
+  tag: p
+  type: paragraph_close
+- attrs:
+  - - class
+    - contains-task-list
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 2
+  map:
+  - 2
+  - 4
+  markup: '*'
+  meta: {}
+  nesting: 1
+  tag: ul
+  type: bullet_list_open
+- attrs:
+  - - class
+    - task-list-item
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 3
+  map:
+  - 2
+  - 3
+  markup: '*'
+  meta: {}
+  nesting: 1
+  tag: li
+  type: list_item_open
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 4
+  map:
+  - 2
+  - 3
+  markup: ''
+  meta: {}
+  nesting: 1
+  tag: p
+  type: paragraph_open
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: <input class="task-list-item-checkbox" disabled="disabled" type="checkbox">
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: {}
+    nesting: 0
+    tag: ''
+    type: html_inline
+  - attrs: null
+    block: false
+    children: null
+    content: ' Indented task incomplete'
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: {}
+    nesting: 0
+    tag: ''
+    type: text
+  content: ' Indented task incomplete'
+  hidden: false
+  info: ''
+  level: 5
+  map:
+  - 2
+  - 3
+  markup: ''
+  meta: {}
+  nesting: 0
+  tag: ''
+  type: inline
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 4
+  map: null
+  markup: ''
+  meta: {}
+  nesting: -1
+  tag: p
+  type: paragraph_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 3
+  map: null
+  markup: '*'
+  meta: {}
+  nesting: -1
+  tag: li
+  type: list_item_close
+- attrs:
+  - - class
+    - task-list-item
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 3
+  map:
+  - 3
+  - 4
+  markup: '*'
+  meta: {}
+  nesting: 1
+  tag: li
+  type: list_item_open
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 4
+  map:
+  - 3
+  - 4
+  markup: ''
+  meta: {}
+  nesting: 1
+  tag: p
+  type: paragraph_open
+- attrs: null
+  block: true
+  children:
+  - attrs: null
+    block: false
+    children: null
+    content: <input class="task-list-item-checkbox" checked="checked" disabled="disabled"
+      type="checkbox">
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: {}
+    nesting: 0
+    tag: ''
+    type: html_inline
+  - attrs: null
+    block: false
+    children: null
+    content: ' Indented task complete'
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: {}
+    nesting: 0
+    tag: ''
+    type: text
+  content: ' Indented task complete'
+  hidden: false
+  info: ''
+  level: 5
+  map:
+  - 3
+  - 4
+  markup: ''
+  meta: {}
+  nesting: 0
+  tag: ''
+  type: inline
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: true
+  info: ''
+  level: 4
+  map: null
+  markup: ''
+  meta: {}
+  nesting: -1
+  tag: p
+  type: paragraph_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 3
+  map: null
+  markup: '*'
+  meta: {}
+  nesting: -1
+  tag: li
+  type: list_item_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 2
+  map: null
+  markup: '*'
+  meta: {}
+  nesting: -1
+  tag: ul
+  type: bullet_list_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 1
+  map: null
+  markup: '*'
+  meta: {}
+  nesting: -1
+  tag: li
+  type: list_item_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map: null
+  markup: '*'
+  meta: {}
+  nesting: -1
+  tag: ul
+  type: bullet_list_close
