@@ -41,10 +41,14 @@ def tasklists_plugin(
 
             if is_todo_item(tokens, i):
                 todoify(tokens[i], tokens[i].__class__)
-                attr_set(tokens[i - 2], 'class', 'task-list-item' + (' enabled' if not disable_checkboxes else ''))
-                attr_set(tokens[parent_token(tokens, i - 2)], 'class', 'contains-task-list')
+                attr_set(
+                    tokens[i - 2],
+                    "class",
+                    "task-list-item" + (" enabled" if not disable_checkboxes else "")
+                )
+                attr_set(tokens[parent_token(tokens, i - 2)], "class", "contains-task-list")
 
-    md.core.ruler.after('inline', 'github-tasklists', fcn)
+    md.core.ruler.after("inline", "github-tasklists", fcn)
 
     def attr_set(token, name, value):
         index = token.attrIndex(name)
@@ -79,51 +83,58 @@ def tasklists_plugin(
                 token.children.pop()
 
                 # Use large random number as id property of the checkbox.
-                checklist_id = 'task-item-' + str(ceil(random() * (10000 * 1000) - 1000))
-                token.children[0].content = token.children[0].content[0:-1] + ' id="' + checklist_id + '">'
+                checklist_id = "task-item-" + str(ceil(random() * (10000 * 1000) - 1000))
+                token.children[0].content = token.children[0].content[0:-1] + " id="" + checklist_id + "">"
                 token.children.append(after_label(token.content, checklist_id, token_constructor))
             else:
                 token.children.insert(0, begin_label(token_constructor))
                 token.children.append(end_label(token_constructor))
 
     def make_checkbox(token, token_constructor):
-        checkbox = token_constructor('html_inline', '', 0)
-        disabled_attr = 'disabled="disabled"' if disable_checkboxes else ''
-        if token.content.startswith('[ ] '):
-            checkbox.content = f'<input class="task-list-item-checkbox" {disabled_attr} type="checkbox">'
-        elif token.content.startswith('[x] ') or token.content.startswith('[X] '):
-            checkbox.content = f'<input class="task-list-item-checkbox" checked="checked" {disabled_attr} type="checkbox">'
+        checkbox = token_constructor("html_inline", "", 0)
+        disabled_attr = "disabled=\"disabled\"" if disable_checkboxes else ""
+        if token.content.startswith("[ ] "):
+            checkbox.content = (
+                f"<input class=\"task-list-item-checkbox\" {disabled_attr} type=\"checkbox\">"
+            )
+        elif token.content.startswith("[x] ") or token.content.startswith("[X] "):
+            checkbox.content = (
+                "<input class=\"task-list-item-checkbox\" checked=\"checked\" "
+                f"{disabled_attr} type=\"checkbox\">"
+            )
         return checkbox
 
     def begin_label(token_constructor):
-        token = token_constructor('html_inline', '', 0)
-        token.content = '<label>'
+        token = token_constructor("html_inline", "", 0)
+        token.content = "<label>"
         return token
 
     def end_label(token_constructor):
-        token = token_constructor('html_inline', '', 0)
-        token.content = '</label>'
+        token = token_constructor("html_inline", "", 0)
+        token.content = "</label>"
         return token
 
     def after_label(content, checkbox_id, token_constructor):
-        token = token_constructor('html_inline', '', 0)
-        token.content = f'<label class="task-list-item-label" for="{checkbox_id}">{content}</label>'
+        token = token_constructor("html_inline", "", 0)
+        token.content = (
+            f"<label class=\"task-list-item-label\" for=\"{checkbox_id}\">{content}</label>"
+        )
         token.attrs = [{"for": checkbox_id}]
         return token
 
     def is_inline(token):
-        return token.type == 'inline'
+        return token.type == "inline"
 
     def is_paragraph(token):
-        return token.type == 'paragraph_open'
+        return token.type == "paragraph_open"
 
     def is_list_item(token):
-        return token.type == 'list_item_open'
+        return token.type == "list_item_open"
 
     def starts_with_todo_markdown(token):
         # leading whitespace in a list item is already trimmed off by markdown-it
         return (
-                token.content.startswith('[ ] ')
-                or token.content.startswith('[x] ')
-                or token.content.startswith('[X] ')
+            token.content.startswith("[ ] ")
+            or token.content.startswith("[x] ")
+            or token.content.startswith("[X] ")
         )
