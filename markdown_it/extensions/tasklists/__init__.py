@@ -26,10 +26,10 @@ from markdown_it.token import Token
 
 
 def tasklists_plugin(
-        md: MarkdownIt,
-        enabled: bool = False,
-        label: bool = False,
-        label_after: bool = False
+    md: MarkdownIt,
+    enabled: bool = False,
+    label: bool = False,
+    label_after: bool = False,
 ):
     disable_checkboxes = not enabled
     use_label_wrapper = label
@@ -37,16 +37,18 @@ def tasklists_plugin(
 
     def fcn(state):
         tokens: List[Token] = state.tokens
-        for i in range(2, len(tokens)-1):
+        for i in range(2, len(tokens) - 1):
 
             if is_todo_item(tokens, i):
                 todoify(tokens[i], tokens[i].__class__)
                 attr_set(
                     tokens[i - 2],
                     "class",
-                    "task-list-item" + (" enabled" if not disable_checkboxes else "")
+                    "task-list-item" + (" enabled" if not disable_checkboxes else ""),
                 )
-                attr_set(tokens[parent_token(tokens, i - 2)], "class", "contains-task-list")
+                attr_set(
+                    tokens[parent_token(tokens, i - 2)], "class", "contains-task-list"
+                )
 
     md.core.ruler.after("inline", "github-tasklists", fcn)
 
@@ -60,17 +62,17 @@ def tasklists_plugin(
 
     def parent_token(tokens, index):
         target_level = tokens[index].level - 1
-        for i in range(1, index+1):
-            if tokens[index-i].level == target_level:
-                return index-i
+        for i in range(1, index + 1):
+            if tokens[index - i].level == target_level:
+                return index - i
         return -1
 
     def is_todo_item(tokens, index):
         return (
-                is_inline(tokens[index]) and
-                is_paragraph(tokens[index - 1]) and
-                is_list_item(tokens[index - 2]) and
-                starts_with_todo_markdown(tokens[index])
+            is_inline(tokens[index])
+            and is_paragraph(tokens[index - 1])
+            and is_list_item(tokens[index - 2])
+            and starts_with_todo_markdown(tokens[index])
         )
 
     def todoify(token: Token, token_constructor):
@@ -83,24 +85,28 @@ def tasklists_plugin(
                 token.children.pop()
 
                 # Use large random number as id property of the checkbox.
-                checklist_id = "task-item-" + str(ceil(random() * (10000 * 1000) - 1000))
-                token.children[0].content = token.children[0].content[0:-1] + " id="" + checklist_id + "">"
-                token.children.append(after_label(token.content, checklist_id, token_constructor))
+                checklist_id = "task-item-" + str(
+                    ceil(random() * (10000 * 1000) - 1000)
+                )
+                token.children[0].content = (
+                    token.children[0].content[0:-1] + " id=" " + checklist_id + " ">"
+                )
+                token.children.append(
+                    after_label(token.content, checklist_id, token_constructor)
+                )
             else:
                 token.children.insert(0, begin_label(token_constructor))
                 token.children.append(end_label(token_constructor))
 
     def make_checkbox(token, token_constructor):
         checkbox = token_constructor("html_inline", "", 0)
-        disabled_attr = "disabled=\"disabled\"" if disable_checkboxes else ""
+        disabled_attr = 'disabled="disabled"' if disable_checkboxes else ""
         if token.content.startswith("[ ] "):
-            checkbox.content = (
-                f"<input class=\"task-list-item-checkbox\" {disabled_attr} type=\"checkbox\">"
-            )
+            checkbox.content = f'<input class="task-list-item-checkbox" {disabled_attr} type="checkbox">'
         elif token.content.startswith("[x] ") or token.content.startswith("[X] "):
             checkbox.content = (
-                "<input class=\"task-list-item-checkbox\" checked=\"checked\" "
-                f"{disabled_attr} type=\"checkbox\">"
+                '<input class="task-list-item-checkbox" checked="checked" '
+                f'{disabled_attr} type="checkbox">'
             )
         return checkbox
 
@@ -117,7 +123,7 @@ def tasklists_plugin(
     def after_label(content, checkbox_id, token_constructor):
         token = token_constructor("html_inline", "", 0)
         token.content = (
-            f"<label class=\"task-list-item-label\" for=\"{checkbox_id}\">{content}</label>"
+            f'<label class="task-list-item-label" for="{checkbox_id}">{content}</label>'
         )
         token.attrs = [{"for": checkbox_id}]
         return token
