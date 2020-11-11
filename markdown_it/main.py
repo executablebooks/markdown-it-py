@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Any, Callable, Dict, List, Mapping, Optional, Union
+from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Union
 
 from . import helpers, presets  # noqa F401
 from .common import utils  # noqa F401
@@ -122,7 +122,7 @@ class MarkdownIt:
         return rules
 
     def enable(
-        self, names: Union[str, List[str]], ignoreInvalid: bool = False
+        self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False
     ) -> "MarkdownIt":
         """Enable list or rules. (chainable)
 
@@ -155,7 +155,7 @@ class MarkdownIt:
         return self
 
     def disable(
-        self, names: Union[str, List[str]], ignoreInvalid: bool = False
+        self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False
     ) -> "MarkdownIt":
         """The same as [[MarkdownIt.enable]], but turn specified rules off. (chainable)
 

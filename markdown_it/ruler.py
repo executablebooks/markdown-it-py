@@ -15,7 +15,7 @@ You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 [[MarkdownIt.use]].
 """
-from typing import Callable, Dict, List, Optional, Union
+from typing import Callable, Dict, Iterable, List, Optional, Union
 import attr
 
 
@@ -135,7 +135,7 @@ class Ruler:
         self.__rules__.append(Rule(ruleName, True, fn, (options or {}).get("alt", [])))
         self.__cache__ = None
 
-    def enable(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
+    def enable(self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False):
         """Enable rules with given names.
 
         :param names: name or list of rule names to enable.
@@ -157,7 +157,7 @@ class Ruler:
         self.__cache__ = None
         return result
 
-    def enableOnly(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
+    def enableOnly(self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False):
         """Enable rules with given names, and disable everything else.
 
         :param names: name or list of rule names to enable.
@@ -171,7 +171,7 @@ class Ruler:
             rule.enabled = False
         self.enable(names, ignoreInvalid)
 
-    def disable(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
+    def disable(self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False):
         """Disable rules with given names.
 
         :param names: name or list of rule names to enable.
