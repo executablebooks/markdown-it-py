@@ -31,6 +31,16 @@ def tasklists_plugin(
     label: bool = False,
     label_after: bool = False,
 ):
+    """Plugin for building task/todo lists out of markdown lists with items starting with [ ] or [x]
+    .. Nothing else
+
+    The rendered checkboxes are disabled; to change this, pass a truthy value into the enabled
+    property of the plugin options.
+
+    :param enabled: True enables the rendered checkboxes
+    :param label: True wraps the rendered list items in a <label> element for UX purposes,
+    :param label_after: True – adds the <label> element after the checkbox.
+    """
     disable_checkboxes = not enabled
     use_label_wrapper = label
     use_label_after = label_after
