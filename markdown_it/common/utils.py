@@ -272,7 +272,7 @@ MD_ASCII_PUNCT = {
 }
 
 
-def isMdAsciiPunct(ch: str):
+def isMdAsciiPunct(ch: int):
     """Markdown ASCII punctuation characters.
 
     ::

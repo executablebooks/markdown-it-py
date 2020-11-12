@@ -94,12 +94,8 @@ def process_inlines(tokens: List[Token], state: StateCore):
                     nextChar = charCodeAt(tokens[j].content, 0)
                     break
 
-            isLastPunctChar = isMdAsciiPunct(chr(lastChar)) or isPunctChar(
-                chr(lastChar)
-            )
-            isNextPunctChar = isMdAsciiPunct(chr(nextChar)) or isPunctChar(
-                chr(nextChar)
-            )
+            isLastPunctChar = isMdAsciiPunct(lastChar) or isPunctChar(chr(lastChar))
+            isNextPunctChar = isMdAsciiPunct(nextChar) or isPunctChar(chr(nextChar))
 
             isLastWhiteSpace = isWhiteSpace(lastChar)
             isNextWhiteSpace = isWhiteSpace(nextChar)
