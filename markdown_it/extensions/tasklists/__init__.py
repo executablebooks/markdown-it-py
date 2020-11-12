@@ -19,6 +19,7 @@
 from math import ceil
 from random import random
 from typing import List
+from uuid import uuid4
 
 from markdown_it import MarkdownIt
 
@@ -98,12 +99,10 @@ def tasklists_plugin(
             if use_label_after:
                 token.children.pop()
 
-                # Use large random number as id property of the checkbox.
-                checklist_id = "task-item-" + str(
-                    ceil(random() * (10000 * 1000) - 1000)
-                )
+                # Replaced number generator from original plugin with uuid.
+                checklist_id = f"task-item-{uuid4()}"
                 token.children[0].content = (
-                    token.children[0].content[0:-1] + " id=" " + checklist_id + " ">"
+                    token.children[0].content[0:-1] + f' id="{checklist_id}">'
                 )
                 token.children.append(
                     after_label(token.content, checklist_id, token_constructor)
