@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605140658558,
+  "lastUpdate": 1605140751312,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -7415,6 +7415,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0076030",
             "group": "plugins",
             "extra": "mean: 224.85 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.40",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "a874755632e3c0bb8e074bebc9d0a884d8e74f0a",
+          "message": "🔧 MAINTAIN: Remove unused `import readline` logic (#68)\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2020-11-12T01:22:45+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/a874755632e3c0bb8e074bebc9d0a884d8e74f0a",
+          "distinct": true,
+          "tree_id": "0a2c002e3d9e813eb32fe74d98dd1bea4e59033c"
+        },
+        "date": 1605140750594,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.515013196702943,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0065678",
+            "group": "packages",
+            "extra": "mean: 221.48 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.556548808567609,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0020679",
+            "group": "packages",
+            "extra": "mean: 86.531 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.602839380723722,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015757",
+            "group": "packages",
+            "extra": "mean: 623.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 0.9356612153780598,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011069",
+            "group": "packages",
+            "extra": "mean: 1.0688 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.8438799262626703,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016018",
+            "group": "packages",
+            "extra": "mean: 1.1850 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 3.99229008220719,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0050682",
+            "group": "packages",
+            "extra": "mean: 250.48 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.024529669656321,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012045",
+            "group": "packages",
+            "extra": "mean: 976.06 msec\nrounds: 20"
           }
         ]
       }
