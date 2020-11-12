@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605140514019,
+  "lastUpdate": 1605140658558,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -7321,6 +7321,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.026757",
             "group": "packages",
             "extra": "mean: 830.28 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "a874755632e3c0bb8e074bebc9d0a884d8e74f0a",
+          "message": "🔧 MAINTAIN: Remove unused `import readline` logic (#68)\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2020-11-12T01:22:45+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/a874755632e3c0bb8e074bebc9d0a884d8e74f0a",
+          "distinct": true,
+          "tree_id": "0a2c002e3d9e813eb32fe74d98dd1bea4e59033c"
+        },
+        "date": 1605140657799,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.541106228794452,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0052081",
+            "group": "plugins",
+            "extra": "mean: 220.21 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.456756212683817,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0060571",
+            "group": "plugins",
+            "extra": "mean: 224.38 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.6607209058339008,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0073233",
+            "group": "plugins",
+            "extra": "mean: 273.17 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 4.453999999626281,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0065323",
+            "group": "plugins",
+            "extra": "mean: 224.52 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.4775756064430965,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0060156",
+            "group": "plugins",
+            "extra": "mean: 223.34 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.4527911500006745,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0063085",
+            "group": "plugins",
+            "extra": "mean: 224.58 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 4.480201693805903,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0062390",
+            "group": "plugins",
+            "extra": "mean: 223.20 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 4.370266074116254,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0067903",
+            "group": "plugins",
+            "extra": "mean: 228.82 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 4.447483930075318,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0076030",
+            "group": "plugins",
+            "extra": "mean: 224.85 msec\nrounds: 20"
           }
         ]
       }
