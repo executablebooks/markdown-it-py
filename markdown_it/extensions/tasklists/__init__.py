@@ -34,7 +34,11 @@ def tasklists_plugin(
     """Plugin for building task/todo lists out of markdown lists with items starting with [ ] or [x]
     .. Nothing else
 
-    The rendered checkboxes are disabled; to change this, pass a truthy value into the enabled
+    For example::
+       - [ ] An item that needs doing
+       - [x] An item that is complete
+
+    The rendered HTML checkboxes are disabled; to change this, pass a truthy value into the enabled
     property of the plugin options.
 
     :param enabled: True enables the rendered checkboxes
