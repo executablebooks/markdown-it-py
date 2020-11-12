@@ -24,5 +24,5 @@ def test_interactive():
 
     with patch("builtins.print") as patched:
         with patch("builtins.input", mock_input):
-            parse.interactive(import_readline=False)
+            parse.interactive()
     patched.assert_called()

@@ -40,13 +40,11 @@ def convert_file(filename):
         sys.exit('Cannot open file "{}".'.format(filename))
 
 
-def interactive(import_readline=False):
+def interactive():
     """
     Parse user input, dump to stdout, rinse and repeat.
     Python REPL style.
     """
-    if import_readline:
-        _import_readline()
     print_heading()
     contents = []
     more = False
@@ -96,13 +94,6 @@ Batch:
         "filenames", nargs="*", help="specify an optional list of files to convert"
     )
     return parser.parse_args(args)
-
-
-def _import_readline():
-    try:
-        import readline  # noqa: F401
-    except ImportError:
-        print("[warning] readline library not available.")
 
 
 def print_heading():
