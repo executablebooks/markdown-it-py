@@ -240,7 +240,8 @@ class MarkdownIt:
         But you will not need it with high probability. See also comment
         in [[MarkdownIt.parse]].
         """
-        env = env or AttrDict()
+        if env is None:
+            env = AttrDict()
         return self.renderer.render(self.parse(src, env), self.options, env)
 
     def parseInline(self, src: str, env: Optional[AttrDict] = None) -> List[Token]:
