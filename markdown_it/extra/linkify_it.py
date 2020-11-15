@@ -21,23 +21,23 @@ class LinkifyIt:
     def __init__(self, schemas=None, options=None):
         pass
 
-    def add(self, schema, definition):
-        raise NotImportedError
+    # def add(self, schema, definition):
+    #     raise NotImportedError
 
-    def match(self, text):
-        raise NotImportedError
+    # def match(self, text):
+    #     raise NotImportedError
 
     def pretest(self, text):
         raise NotImportedError
 
-    def set(self, options):
-        raise NotImportedError
+    # def set(self, options):
+    #     raise NotImportedError
 
-    def test(self, text):
-        raise NotImportedError
+    # def test(self, text):
+    #     raise NotImportedError
 
-    def test_schema_at(self, text, name, position):
-        raise NotImportedError
+    # def test_schema_at(self, text, name, position):
+    #     raise NotImportedError
 
-    def tlds(self, list_tlds, keep_old=False):
-        raise NotImportedError
+    # def tlds(self, list_tlds, keep_old=False):
+    #     raise NotImportedError
