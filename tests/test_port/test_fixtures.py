@@ -4,8 +4,21 @@ import pytest
 
 from markdown_it import MarkdownIt
 from markdown_it.utils import read_fixture_file
+from markdown_it.extra.linkify_it import LinkifyIt, NotImportedError
 
 FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures")
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("linkify.md")),
+)
+def test_linkify_without_package(line, title, input, expected):
+    md = MarkdownIt().enable("linkify")
+    md.options["linkify"] = True
+    md.linkify = LinkifyIt()  # if not install linkify-it-py, load dummy
+    with pytest.raises(NotImportedError):
+        md.render(input)
 
 
 @pytest.mark.parametrize(
