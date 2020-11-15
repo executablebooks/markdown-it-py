@@ -11,7 +11,11 @@ from .rules_core.state_core import StateCore
 from .renderer import RendererHTML
 from .utils import AttrDict
 
-from linkify_it import LinkifyIt
+try:
+    from linkify_it import LinkifyIt
+except (ImportError, ModuleNotFoundError):
+    from markdown_it.extra import LinkifyIt
+
 
 _PRESETS = AttrDict(
     {

@@ -40,7 +40,7 @@ setup(
     ],
     keywords="markdown lexer parser development",
     python_requires="~=3.6",
-    install_requires=["attrs>=19,<21", "linkify-it-py"],
+    install_requires=["attrs>=19,<21"],
     extras_require={
         "code_style": ["pre-commit==2.6"],
         "testing": [
@@ -67,6 +67,7 @@ setup(
             "mistletoe-ebp~=0.10.0",
             "panflute~=1.12",
         ],
+        "linkify": ["linkify-it-py"],
     },
     zip_safe=False,
 )
