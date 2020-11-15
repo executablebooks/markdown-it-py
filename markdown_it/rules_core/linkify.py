@@ -40,6 +40,7 @@ def linkify(state: StateCore):
 
         # We scan from the end, to keep position when new tags added.
         # Use reversed logic in links start/end match
+        assert tokens is not None
         for i in range(len(tokens))[::-1]:
             currentToken = tokens[i]
 
