@@ -12,9 +12,9 @@ from .renderer import RendererHTML
 from .utils import AttrDict
 
 try:
-    from linkify_it import LinkifyIt
-except (ImportError, ModuleNotFoundError):
-    from markdown_it.extra import LinkifyIt
+    import linkify_it
+except ModuleNotFoundError:
+    linkify_it = None
 
 
 _PRESETS = AttrDict(
@@ -46,7 +46,7 @@ class MarkdownIt:
         self.options = {}
         self.configure(config)
 
-        self.linkify = LinkifyIt()
+        self.linkify = linkify_it.LinkifyIt() if linkify_it else None
 
     def __repr__(self):
         return f"{self.__class__.__module__}.{self.__class__.__name__}()"

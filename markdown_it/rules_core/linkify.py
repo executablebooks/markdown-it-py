@@ -28,6 +28,9 @@ def linkify(state: StateCore):
     if not state.md.options.linkify:
         return
 
+    if not state.md.linkify:
+        raise Exception("Linkify enabed but not installed.")
+
     for j in range(len(blockTokens)):
         if blockTokens[j].type != "inline" or not state.md.linkify.pretest(
             blockTokens[j].content
