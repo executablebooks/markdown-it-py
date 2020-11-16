@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1605141663492,
+  "lastUpdate": 1605563516999,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -7665,6 +7665,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0083169",
             "group": "packages",
             "extra": "mean: 1.0059 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "9877c0c2d0202662ab34ee30d8c07b0bea1719b8",
+          "message": "✨ NEW: Add markdown-it-task-lists plugin (#76)",
+          "timestamp": "2020-11-16T22:50:33+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/9877c0c2d0202662ab34ee30d8c07b0bea1719b8",
+          "distinct": true,
+          "tree_id": "bb3687d6c5e80bab8e28a31925bded9bf926c7c7"
+        },
+        "date": 1605563516242,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.616634265834758,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0068339",
+            "group": "plugins",
+            "extra": "mean: 216.61 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.523589386509337,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0055820",
+            "group": "plugins",
+            "extra": "mean: 221.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.7436972652437777,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059342",
+            "group": "plugins",
+            "extra": "mean: 267.12 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 4.556842458269563,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0055157",
+            "group": "plugins",
+            "extra": "mean: 219.45 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.58302120466913,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0054555",
+            "group": "plugins",
+            "extra": "mean: 218.20 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.5597911235926185,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057899",
+            "group": "plugins",
+            "extra": "mean: 219.31 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 4.596422345480124,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058232",
+            "group": "plugins",
+            "extra": "mean: 217.56 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 4.514890676974476,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0067642",
+            "group": "plugins",
+            "extra": "mean: 221.49 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 4.603301583275975,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0056878",
+            "group": "plugins",
+            "extra": "mean: 217.24 msec\nrounds: 20"
           }
         ]
       }
