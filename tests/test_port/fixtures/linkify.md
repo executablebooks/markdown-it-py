@@ -55,3 +55,45 @@ http://example.com/(c)
 .
 <p><a href="http://example.com/(c)">http://example.com/(c)</a></p>
 .
+
+before line
+.
+before
+github.com
+.
+<p>before
+<a href="http://github.com">github.com</a></p>
+.
+
+after line
+.
+github.com
+after
+.
+<p><a href="http://github.com">github.com</a>
+after</p>
+.
+
+before after lines
+.
+before
+github.com
+after
+.
+<p>before
+<a href="http://github.com">github.com</a>
+after</p>
+.
+
+before after lines with blank line
+.
+before
+
+github.com
+
+after
+.
+<p>before</p>
+<p><a href="http://github.com">github.com</a></p>
+<p>after</p>
+.
