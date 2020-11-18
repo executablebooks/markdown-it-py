@@ -45,10 +45,8 @@ def linkify(state: StateCore):
         # Use reversed logic in links start/end match
         assert tokens is not None
         i = len(tokens)
-        while i >= 0:
+        while i >= 1:
             i -= 1
-            if i < 0:
-                break
             assert isinstance(tokens, list)
             currentToken = tokens[i]
 
