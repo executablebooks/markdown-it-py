@@ -40,6 +40,9 @@ html_string = md.render("some *Markdown*")
 
 .. autofunction:: markdown_it.extensions.amsmath.amsmath_plugin
     :noindex:
+
+.. autofunction:: markdown_it.extensions.tasklists.tasklists_plugin
+    :noindex:
 ```
 
 `myst_blocks` and `myst_role` plugins are also available, for utilisation by the [MyST renderer](https://myst-parser.readthedocs.io/en/latest/using/syntax.html)
