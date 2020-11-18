@@ -20,7 +20,7 @@ def test_linkify(line, title, input, expected):
 
     # if not install linkify-it-py
     md.linkify = None
-    with pytest.raises(Exception):
+    with pytest.raises(ModuleNotFoundError):
         md.render(input)
 
 

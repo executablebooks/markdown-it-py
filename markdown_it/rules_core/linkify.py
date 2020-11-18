@@ -29,7 +29,7 @@ def linkify(state: StateCore):
         return
 
     if not state.md.linkify:
-        raise Exception("Linkify enabed but not installed.")
+        raise ModuleNotFoundError("Linkify enabled but not installed.")
 
     for j in range(len(blockTokens)):
         if blockTokens[j].type != "inline" or not state.md.linkify.pretest(
