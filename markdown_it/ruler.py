@@ -26,9 +26,11 @@ class StateBase:
         self.md = md
 
 
-# The first positional arg is always a `StateBase`. Other arguments are
-# optional.
-RuleFunc = Callable[..., None]
+# The first positional arg is always a subtype of `StateBase`. Other
+# arguments may or may not exist, based on the rule's type (block,
+# core, inline). Return type is either `None` or `bool` based on the
+# rule's type.
+RuleFunc = Callable
 
 
 @attr.s(slots=True)
