@@ -92,15 +92,7 @@ def isValidEntityCode(c):
     return True
 
 
-def fromCodePoint(c):
-
-    if c > 0xFFFF:
-        c -= 0x10000
-        surrogate1 = 0xD800 + (c >> 10)
-        surrogate2 = 0xDC00 + (c & 0x3FF)
-
-        return "".join(map(chr, [surrogate1, surrogate2]))
-
+def fromCodePoint(c: int) -> str:
     return chr(c)
 
 
