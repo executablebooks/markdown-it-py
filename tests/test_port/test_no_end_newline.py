@@ -7,6 +7,7 @@ from markdown_it import MarkdownIt
     "input,expected",
     [
         ("#", "<h1></h1>\n"),
+        ("###", "<h3></h3>\n"),
         ("` `", "<p><code> </code></p>\n"),
         ("``````", "<pre><code></code></pre>\n"),
         ("-", "<ul>\n<li></li>\n</ul>\n"),
