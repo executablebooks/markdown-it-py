@@ -11,6 +11,7 @@ from markdown_it import MarkdownIt
         ("` `", "<p><code> </code></p>\n"),
         ("``````", "<pre><code></code></pre>\n"),
         ("-", "<ul>\n<li></li>\n</ul>\n"),
+        (">", "<blockquote></blockquote>\n"),
     ],
 )
 def test_no_end_newline(input, expected):
