@@ -180,8 +180,4 @@ def validateLink(url: str, validator: Callable = None):
     if validator is not None:
         return validator(url)
     url = url.strip().lower()
-    return (
-        (True if GOOD_DATA_RE.search(url) else False)
-        if BAD_PROTO_RE.search(url)
-        else True
-    )
+    return bool(GOOD_DATA_RE.search(url)) if BAD_PROTO_RE.search(url) else True
