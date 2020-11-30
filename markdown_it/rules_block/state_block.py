@@ -155,9 +155,9 @@ class StateBlock(StateBase):
         if pos <= minimum:
             return pos
         while pos > minimum:
+            pos -= 1
             if not isSpace(self.srcCharCode[pos]):
                 return pos + 1
-            pos -= 1
         return pos
 
     def skipChars(self, pos: int, code: int):
@@ -173,9 +173,9 @@ class StateBlock(StateBase):
         if pos <= minimum:
             return pos
         while pos > minimum:
+            pos -= 1
             if code != self.srcCharCode[pos]:
                 return pos + 1
-            pos -= 1
         return pos
 
     def getLines(self, begin: int, end: int, indent, keepLastLF):
