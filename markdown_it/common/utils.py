@@ -92,15 +92,13 @@ def isValidEntityCode(c):
     return True
 
 
-def fromCodePoint(c):
+def fromCodePoint(c: int) -> str:
+    """Convert ordinal to unicode.
 
-    if c > 0xFFFF:
-        c -= 0x10000
-        surrogate1 = 0xD800 + (c >> 10)
-        surrogate2 = 0xDC00 + (c & 0x3FF)
-
-        return "".join(map(chr, [surrogate1, surrogate2]))
-
+    Note, in the original Javascript two string characters were required,
+    for codepoints larger than `0xFFFF`.
+    But Python 3 can represent any unicode codepoint in one character.
+    """
     return chr(c)
 
 
