@@ -11,6 +11,11 @@ from .rules_core.state_core import StateCore
 from .renderer import RendererHTML
 from .utils import AttrDict
 
+try:
+    import linkify_it
+except ModuleNotFoundError:
+    linkify_it = None
+
 
 _PRESETS = AttrDict(
     {
@@ -41,8 +46,7 @@ class MarkdownIt:
         self.options = {}
         self.configure(config)
 
-        # var LinkifyIt    = require('linkify-it')
-        # self.linkify = LinkifyIt()  # TODO maybe see https://github.com/Suor/autolink
+        self.linkify = linkify_it.LinkifyIt() if linkify_it else None
 
     def __repr__(self):
         return f"{self.__class__.__module__}.{self.__class__.__name__}()"
