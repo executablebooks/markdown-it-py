@@ -128,7 +128,7 @@ class StateBlock(StateBase):
         """."""
         return (self.bMarks[line] + self.tShift[line]) >= self.eMarks[line]
 
-    def skipEmptyLines(self, from_pos):
+    def skipEmptyLines(self, from_pos: int) -> int:
         """."""
         while from_pos < self.lineMax:
             try:
@@ -142,7 +142,7 @@ class StateBlock(StateBase):
             from_pos += 1
         return from_pos
 
-    def skipSpaces(self, pos: int):
+    def skipSpaces(self, pos: int) -> int:
         """Skip spaces from given position."""
         while pos < len(self.src):
             if not isSpace(self.srcCharCode[pos]):
@@ -150,17 +150,17 @@ class StateBlock(StateBase):
             pos += 1
         return pos
 
-    def skipSpacesBack(self, pos: int, minimum: int):
+    def skipSpacesBack(self, pos: int, minimum: int) -> int:
         """Skip spaces from given position in reverse."""
         if pos <= minimum:
             return pos
         while pos > minimum:
+            pos -= 1
             if not isSpace(self.srcCharCode[pos]):
                 return pos + 1
-            pos -= 1
         return pos
 
-    def skipChars(self, pos: int, code: int):
+    def skipChars(self, pos: int, code: int) -> int:
         """Skip char codes from given position."""
         while pos < len(self.src):
             if self.srcCharCode[pos] != code:
@@ -168,14 +168,14 @@ class StateBlock(StateBase):
             pos += 1
         return pos
 
-    def skipCharsBack(self, pos, code, minimum):
+    def skipCharsBack(self, pos: int, code: int, minimum: int) -> int:
         """Skip char codes reverse from given position - 1."""
         if pos <= minimum:
             return pos
         while pos > minimum:
+            pos -= 1
             if code != self.srcCharCode[pos]:
                 return pos + 1
-            pos -= 1
         return pos
 
     def getLines(self, begin: int, end: int, indent, keepLastLF):

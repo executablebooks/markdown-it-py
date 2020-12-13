@@ -29,3 +29,10 @@
 <p>Another Block Quote</p>
 </blockquote>
 .
+
+#80 UnicodeError with codepoints larger than 0xFFFF
+.
+&#x1F4AC;
+.
+<p>💬</p>
+.
