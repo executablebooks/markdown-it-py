@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1606329119131,
+  "lastUpdate": 1607858647438,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -8009,6 +8009,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.024761",
             "group": "packages",
             "extra": "mean: 827.43 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "a5c28ff641e8feb64e549ba09070730acf5280cc",
+          "message": "🐛 FIX: parsing of unicode ordinals (#81)\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2020-12-13T11:22:55Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/a5c28ff641e8feb64e549ba09070730acf5280cc",
+          "distinct": true,
+          "tree_id": "eacc020d1533fff40623d84646ba1b88d852b39d"
+        },
+        "date": 1607858646737,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 5.3950522985862595,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0052536",
+            "group": "plugins",
+            "extra": "mean: 185.36 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 5.232339232150697,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0055244",
+            "group": "plugins",
+            "extra": "mean: 191.12 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 4.360663125561824,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059402",
+            "group": "plugins",
+            "extra": "mean: 229.32 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 5.285860360352066,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057489",
+            "group": "plugins",
+            "extra": "mean: 189.18 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 5.317913115393077,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0048748",
+            "group": "plugins",
+            "extra": "mean: 188.04 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 5.294101026384378,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0054989",
+            "group": "plugins",
+            "extra": "mean: 188.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 5.3331159469943685,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0051844",
+            "group": "plugins",
+            "extra": "mean: 187.51 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 5.209112429350309,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059583",
+            "group": "plugins",
+            "extra": "mean: 191.97 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 5.284835962247181,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059166",
+            "group": "plugins",
+            "extra": "mean: 189.22 msec\nrounds: 20"
           }
         ]
       }
