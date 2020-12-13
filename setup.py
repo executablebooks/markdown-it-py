@@ -67,7 +67,7 @@ setup(
             "mistletoe-ebp~=0.10.0",
             "panflute~=1.12",
         ],
-        "linkify": ["linkify-it-py"],
+        "linkify": ["linkify-it-py~=1.0"],
     },
     zip_safe=False,
 )
