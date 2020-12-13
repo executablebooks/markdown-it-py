@@ -1,5 +1,23 @@
 # Change Log
 
+## 0.5.8 - 2020-12-13
+
+✨ NEW: Add linkify, thanks to [@tsutsu3](https://github.com/tsutsu3).
+
+This extension uses [linkify-it-py](https://github.com/tsutsu3/linkify-it-py) to identify URL links within text:
+
+- `github.com` -> `<a href="http://github.com">github.com</a>`
+
+**Important:** To use this extension you must install linkify-it-py; `pip install markdown-it-py[linkify]`
+
+It can then be activated by:
+
+```python
+from markdown_it import MarkdownIt
+md = MarkdownIt().enable("linkify")
+md.options["linkify"] = True
+```
+
 ## 0.5.7 - 2020-12-13
 
 ✨ NEW: Add smartquotes, thanks to [@tsutsu3](https://github.com/tsutsu3).
@@ -12,6 +30,7 @@ This extension will convert basic quote marks to their opening and closing varia
 It can be activated by:
 
 ```python
+from markdown_it import MarkdownIt
 md = MarkdownIt().enable("replacements").enable("smartquotes")
 ```
 
