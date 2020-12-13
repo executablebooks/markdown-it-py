@@ -27,12 +27,18 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
     # count heading level
     level = 1
     pos += 1
-    ch = state.srcCharCode[pos]
+    try:
+        ch = state.srcCharCode[pos]
+    except IndexError:
+        ch = None
     # /* # */
     while ch == 0x23 and pos < maximum and level <= 6:
         level += 1
         pos += 1
-        ch = state.srcCharCode[pos]
+        try:
+            ch = state.srcCharCode[pos]
+        except IndexError:
+            ch = None
 
     if level > 6 or (pos < maximum and not isSpace(ch)):
         return False
