@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607858647438,
+  "lastUpdate": 1607858706605,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -8103,6 +8103,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0059166",
             "group": "plugins",
             "extra": "mean: 189.22 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "a5c28ff641e8feb64e549ba09070730acf5280cc",
+          "message": "🐛 FIX: parsing of unicode ordinals (#81)\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2020-12-13T11:22:55Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/a5c28ff641e8feb64e549ba09070730acf5280cc",
+          "distinct": true,
+          "tree_id": "eacc020d1533fff40623d84646ba1b88d852b39d"
+        },
+        "date": 1607858705893,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 5.3259966082546155,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0055066",
+            "group": "packages",
+            "extra": "mean: 187.76 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 15.500594913608193,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0025101",
+            "group": "packages",
+            "extra": "mean: 64.514 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.6149435904440494,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016208",
+            "group": "packages",
+            "extra": "mean: 382.42 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.170782602527525,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010928",
+            "group": "packages",
+            "extra": "mean: 854.13 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.0615036517774037,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018925",
+            "group": "packages",
+            "extra": "mean: 942.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.798049228720644,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0078111",
+            "group": "packages",
+            "extra": "mean: 208.42 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.1657895263938458,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0068247",
+            "group": "packages",
+            "extra": "mean: 857.79 msec\nrounds: 20"
           }
         ]
       }
