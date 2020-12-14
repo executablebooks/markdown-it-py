@@ -8,6 +8,7 @@ from markdown_it.rules_inline import StateInline
 from markdown_it.rules_block import StateBlock
 from markdown_it.extensions.texmath import index as main
 from markdown_it.extensions.texmath import texmath_plugin
+
 from markdown_it.utils import read_fixture_file
 
 FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures")
