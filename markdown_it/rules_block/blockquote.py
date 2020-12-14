@@ -1,5 +1,6 @@
 # Block quotes
 import logging
+from typing import Optional
 
 from .state_block import StateBlock
 from ..common.utils import isSpace
@@ -23,7 +24,6 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     # check the block quote marker
     if state.srcCharCode[pos] != 0x3E:  # /* > */
-        pos += 1
         return False
     pos += 1
 
@@ -39,8 +39,13 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
         - (state.bMarks[startLine] + state.tShift[startLine])
     )
 
+    try:
+        second_char_code: Optional[int] = state.srcCharCode[pos]
+    except IndexError:
+        second_char_code = None
+
     # skip one optional space after '>'
-    if state.srcCharCode[pos] == 0x20:  # /* space */
+    if second_char_code == 0x20:  # /* space */
         # ' >   test '
         #     ^ -- position start of line here:
         pos += 1
@@ -48,7 +53,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
         offset += 1
         adjustTab = False
         spaceAfterMarker = True
-    elif state.srcCharCode[pos] == 0x09:  # /* tab */
+    elif second_char_code == 0x09:  # /* tab */
         spaceAfterMarker = True
 
         if (state.bsCount[startLine] + offset) % 4 == 3:

@@ -1,13 +1,16 @@
 # Process ![image](<src> "title")
 
+from typing import List
+
 from .state_inline import StateInline
+from ..token import Token
 from ..common.utils import isSpace, normalizeReference
 from ..common.normalize_url import normalizeLink, validateLink
 
 
 def image(state: StateInline, silent: bool):
 
-    tokens = None
+    tokens: List[Token] = []
     label = None
     href = ""
     oldPos = state.pos
@@ -131,7 +134,6 @@ def image(state: StateInline, silent: bool):
     if not silent:
         content = state.src[labelStart:labelEnd]
 
-        tokens = []
         state.md.inline.parse(content, state.md, state.env, tokens)
 
         token = state.push("image", "img", 0)

@@ -1,5 +1,68 @@
 # Change Log
 
+## 0.5.8 - 2020-12-13
+
+✨ NEW: Add linkify, thanks to [@tsutsu3](https://github.com/tsutsu3).
+
+This extension uses [linkify-it-py](https://github.com/tsutsu3/linkify-it-py) to identify URL links within text:
+
+- `github.com` -> `<a href="http://github.com">github.com</a>`
+
+**Important:** To use this extension you must install linkify-it-py; `pip install markdown-it-py[linkify]`
+
+It can then be activated by:
+
+```python
+from markdown_it import MarkdownIt
+md = MarkdownIt().enable("linkify")
+md.options["linkify"] = True
+```
+
+## 0.5.7 - 2020-12-13
+
+✨ NEW: Add smartquotes, thanks to [@tsutsu3](https://github.com/tsutsu3).
+
+This extension will convert basic quote marks to their opening and closing variants:
+
+- 'single quotes' -> ‘single quotes’
+- "double quotes" -> “double quotes”
+
+It can be activated by:
+
+```python
+from markdown_it import MarkdownIt
+md = MarkdownIt().enable("replacements").enable("smartquotes")
+```
+
+✨ NEW: Add markdown-it-task-lists plugin, thanks to [@wna-se](https://github.com/wna-se).
+
+This is a port of the JS [markdown-it-task-lists](https://github.com/revin/markdown-it-task-lists),
+for building task/todo lists out of markdown lists with items starting with `[ ]` or `[x]`.
+For example:
+
+```markdown
+- [ ] An item that needs doing
+- [x] An item that is complete
+```
+
+This plugin can be activated by:
+
+```python
+from markdown_it import MarkdownIt
+from markdown_it.extensions.tasklists import tasklists_plugin
+md = MarkdownIt().use(tasklists_plugin)
+```
+
+🐛 Various bug fixes, thanks to [@hukkinj1](https://github.com/hukkinj1):
+
+- Do not copy empty `env` arg in `MarkdownIt.render`
+- `_Entities.__contains__` fix return data
+- Parsing of unicode ordinals
+- Handling of final character in `skipSpacesBack` and `skipCharsBack` methods
+- Avoid exception when document ends in heading/blockquote marker
+
+🧪 TESTS: Add CI for Python 3.9 and PyPy3
+
 ## 0.5.6 - 2020-10-21
 
 - ✨ NEW: Add simple typographic replacements, thanks to [@tsutsu3](https://github.com/tsutsu3):
@@ -20,7 +83,7 @@
   - ``---`` → &mdash
 
   ```python
-  md = MarkdownIt()
+  md = MarkdownIt().enable("replacements")
   md.options["typographer"] = True
   ```
 

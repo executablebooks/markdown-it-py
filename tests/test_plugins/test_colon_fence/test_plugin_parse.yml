@@ -1,0 +1,17 @@
+- attrs: null
+  block: true
+  children: null
+  content: '*content*
+
+    '
+  hidden: false
+  info: ' name'
+  level: 0
+  map:
+  - 0
+  - 3
+  markup: ':::'
+  meta: {}
+  nesting: 0
+  tag: code
+  type: colon_fence

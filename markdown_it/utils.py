@@ -1,15 +1,20 @@
 from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 
-class AttrDict(dict):
-    def __init__(self, *args, **kwargs):
-        super(AttrDict, self).__init__(*args, **kwargs)
-        self.__dict__ = self
+if TYPE_CHECKING:
+    AttrDict = Any
+else:
 
-        # recursively apply to all nested dictionaries
-        for key, item in list(self.items()):
-            if isinstance(item, dict):
-                self[key] = AttrDict(item)
+    class AttrDict(dict):
+        def __init__(self, *args, **kwargs):
+            super(AttrDict, self).__init__(*args, **kwargs)
+            self.__dict__ = self
+
+            # recursively apply to all nested dictionaries
+            for key, item in list(self.items()):
+                if isinstance(item, dict):
+                    self[key] = AttrDict(item)
 
 
 def read_fixture_file(path):

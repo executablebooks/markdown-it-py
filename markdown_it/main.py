@@ -1,5 +1,5 @@
 from contextlib import contextmanager
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Union
 
 from . import helpers, presets  # noqa F401
 from .common import utils  # noqa F401
@@ -10,6 +10,11 @@ from .parser_inline import ParserInline  # noqa F401
 from .rules_core.state_core import StateCore
 from .renderer import RendererHTML
 from .utils import AttrDict
+
+try:
+    import linkify_it
+except ModuleNotFoundError:
+    linkify_it = None
 
 
 _PRESETS = AttrDict(
@@ -23,7 +28,7 @@ _PRESETS = AttrDict(
 
 class MarkdownIt:
     def __init__(
-        self, config: Union[str, AttrDict] = "commonmark", renderer_cls=RendererHTML
+        self, config: Union[str, Mapping] = "commonmark", renderer_cls=RendererHTML
     ):
         """Main parser class
 
@@ -38,11 +43,10 @@ class MarkdownIt:
 
         self.utils = utils
         self.helpers = helpers
-        self.options = {}
+        self.options: Dict[str, Any] = {}
         self.configure(config)
 
-        # var LinkifyIt    = require('linkify-it')
-        # self.linkify = LinkifyIt()  # TODO maybe see https://github.com/Suor/autolink
+        self.linkify = linkify_it.LinkifyIt() if linkify_it else None
 
     def __repr__(self):
         return f"{self.__class__.__module__}.{self.__class__.__name__}()"
@@ -65,7 +69,7 @@ class MarkdownIt:
         """
         self.options = options
 
-    def configure(self, presets: Union[str, AttrDict]):
+    def configure(self, presets: Union[str, Mapping]):
         """Batch load of all options and component settings.
         This is an internal method, and you probably will not need it.
         But if you will - see available presets and data structure
@@ -83,13 +87,13 @@ class MarkdownIt:
                 )
         if not presets:
             raise ValueError("Wrong `markdown-it` preset, can't be empty")
-        presets = AttrDict(presets)
+        config = AttrDict(presets)
 
-        if "options" in presets:
-            self.set(presets.options)
+        if "options" in config:
+            self.set(config.options)
 
-        if "components" in presets:
-            for name, component in presets.components.items():
+        if "components" in config:
+            for name, component in config.components.items():
                 rules = component.get("rules", None)
                 if rules:
                     self[name].ruler.enableOnly(rules)
@@ -118,7 +122,7 @@ class MarkdownIt:
         return rules
 
     def enable(
-        self, names: Union[str, List[str]], ignoreInvalid: bool = False
+        self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False
     ) -> "MarkdownIt":
         """Enable list or rules. (chainable)
 
@@ -151,7 +155,7 @@ class MarkdownIt:
         return self
 
     def disable(
-        self, names: Union[str, List[str]], ignoreInvalid: bool = False
+        self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False
     ) -> "MarkdownIt":
         """The same as [[MarkdownIt.enable]], but turn specified rules off. (chainable)
 
@@ -189,7 +193,7 @@ class MarkdownIt:
         Only applied when ``renderer.__output__ == fmt``
         """
         if self.renderer.__output__ == fmt:
-            self.renderer.rules[name] = function.__get__(self.renderer)
+            self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
 
     def use(self, plugin: Callable, *params, **options) -> "MarkdownIt":
         """Load specified plugin with given params into current parser instance. (chainable)
@@ -221,7 +225,7 @@ class MarkdownIt:
         and then pass updated object to renderer.
         """
         env = AttrDict() if env is None else env
-        if not isinstance(env, AttrDict):
+        if not isinstance(env, AttrDict):  # type: ignore
             raise TypeError(f"Input data should be an AttrDict, not {type(env)}")
         if not isinstance(src, str):
             raise TypeError(f"Input data should be a string, not {type(src)}")
@@ -240,7 +244,8 @@ class MarkdownIt:
         But you will not need it with high probability. See also comment
         in [[MarkdownIt.parse]].
         """
-        env = env or AttrDict()
+        if env is None:
+            env = AttrDict()
         return self.renderer.render(self.parse(src, env), self.options, env)
 
     def parseInline(self, src: str, env: Optional[AttrDict] = None) -> List[Token]:
@@ -254,7 +259,7 @@ class MarkdownIt:
         tokens in `children` property. Also updates `env` object.
         """
         env = AttrDict() if env is None else env
-        if not isinstance(env, AttrDict):
+        if not isinstance(env, AttrDict):  # type: ignore
             raise TypeError(f"Input data should be an AttrDict, not {type(env)}")
         if not isinstance(src, str):
             raise TypeError(f"Input data should be a string, not {type(src)}")

@@ -1,6 +1,6 @@
 import html
 import re
-from typing import Callable
+from typing import Callable, Optional
 from urllib.parse import urlparse, urlunparse, quote, unquote  # noqa: F401
 
 from .utils import ESCAPABLE
@@ -166,7 +166,7 @@ BAD_PROTO_RE = re.compile(r"^(vbscript|javascript|file|data):")
 GOOD_DATA_RE = re.compile(r"^data:image\/(gif|png|jpeg|webp);")
 
 
-def validateLink(url: str, validator: Callable = None):
+def validateLink(url: str, validator: Optional[Callable] = None):
     """Validate URL link is allowed in output.
 
     This validator can prohibit more than really needed to prevent XSS.
@@ -180,8 +180,4 @@ def validateLink(url: str, validator: Callable = None):
     if validator is not None:
         return validator(url)
     url = url.strip().lower()
-    return (
-        (True if GOOD_DATA_RE.search(url) else False)
-        if BAD_PROTO_RE.search(url)
-        else True
-    )
+    return bool(GOOD_DATA_RE.search(url)) if BAD_PROTO_RE.search(url) else True
