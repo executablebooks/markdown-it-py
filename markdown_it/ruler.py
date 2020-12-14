@@ -15,7 +15,7 @@ You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 [[MarkdownIt.use]].
 """
-from typing import Callable, Dict, List, Optional, Union
+from typing import Callable, Dict, Iterable, List, Optional, Union
 import attr
 
 
@@ -26,7 +26,11 @@ class StateBase:
         self.md = md
 
 
-RuleFunc = Callable[[StateBase], None]
+# The first positional arg is always a subtype of `StateBase`. Other
+# arguments may or may not exist, based on the rule's type (block,
+# core, inline). Return type is either `None` or `bool` based on the
+# rule's type.
+RuleFunc = Callable
 
 
 @attr.s(slots=True)
@@ -44,7 +48,7 @@ class Ruler:
         # Cached rule chains.
         # First level - chain name, '' for default.
         # Second level - diginal anchor for fast filtering by charcodes.
-        self.__cache__: Optional[Dict[str, RuleFunc]] = None
+        self.__cache__: Optional[Dict[str, List[RuleFunc]]] = None
 
     def __find__(self, name: str) -> int:
         """Find rule index by name"""
@@ -133,7 +137,7 @@ class Ruler:
         self.__rules__.append(Rule(ruleName, True, fn, (options or {}).get("alt", [])))
         self.__cache__ = None
 
-    def enable(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
+    def enable(self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False):
         """Enable rules with given names.
 
         :param names: name or list of rule names to enable.
@@ -155,7 +159,7 @@ class Ruler:
         self.__cache__ = None
         return result
 
-    def enableOnly(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
+    def enableOnly(self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False):
         """Enable rules with given names, and disable everything else.
 
         :param names: name or list of rule names to enable.
@@ -169,7 +173,7 @@ class Ruler:
             rule.enabled = False
         self.enable(names, ignoreInvalid)
 
-    def disable(self, names: Union[str, List[str]], ignoreInvalid: bool = False):
+    def disable(self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False):
         """Disable rules with given names.
 
         :param names: name or list of rule names to enable.
@@ -201,6 +205,7 @@ class Ruler:
         """
         if self.__cache__ is None:
             self.__compile__()
+            assert self.__cache__ is not None
         # Chain can be empty, if rules disabled. But we still have to return Array.
         return self.__cache__.get(chainName, []) or []
 

@@ -1,5 +1,5 @@
 """HTML5 entities map: { name -> characters }."""
-import html
+import html.entities
 
 from markdown_it.utils import AttrDict
 

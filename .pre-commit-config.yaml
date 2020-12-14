@@ -15,7 +15,7 @@ exclude: >
 repos:
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.2.0
+    rev: v3.3.0
     hooks:
     - id: check-json
     - id: check-yaml
@@ -23,12 +23,12 @@ repos:
     - id: trailing-whitespace
 
   - repo: https://github.com/mgedmin/check-manifest
-    rev: "0.42"
+    rev: "0.44"
     hooks:
     - id: check-manifest
 
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.3
+    rev: 3.8.4
     hooks:
     - id: flake8
 
@@ -36,3 +36,9 @@ repos:
     rev: 20.8b1
     hooks:
     - id: black
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v0.790
+    hooks:
+    - id: mypy
+      additional_dependencies: [attrs]

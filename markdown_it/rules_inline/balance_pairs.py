@@ -99,6 +99,7 @@ def link_pairs(state: StateInline):
 
     curr = 0
     while curr < maximum:
-        if tokens_meta[curr] and "delimiters" in tokens_meta[curr]:
-            processDelimiters(state, tokens_meta[curr]["delimiters"])
+        curr_meta = tokens_meta[curr]
+        if curr_meta and "delimiters" in curr_meta:
+            processDelimiters(state, curr_meta["delimiters"])
         curr += 1

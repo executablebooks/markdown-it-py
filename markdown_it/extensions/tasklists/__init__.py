@@ -89,6 +89,7 @@ def tasklists_plugin(
         )
 
     def todoify(token: Token, token_constructor):
+        assert token.children is not None
         token.children.insert(0, make_checkbox(token, token_constructor))
         token.children[1].content = token.children[1].content[3:]
         token.content = token.content[3:]

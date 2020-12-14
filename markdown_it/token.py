@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple, Union
+from typing import List, Optional, Union
 
 import attr
 
@@ -17,7 +17,7 @@ class Token:
     # Html attributes. Format: `[ [ name1, value1 ], [ name2, value2 ] ]`
     attrs: Optional[list] = attr.ib(default=None)
     # Source map info. Format: `[ line_begin, line_end ]`
-    map: Optional[Tuple[int, int]] = attr.ib(default=None)
+    map: Optional[List[int]] = attr.ib(default=None)
     # nesting level, the same as `state.level`
     level: int = attr.ib(default=0)
     # An array of child nodes (inline and img tokens)
@@ -46,7 +46,7 @@ class Token:
                 return i
         return -1
 
-    def attrPush(self, attrData: Tuple[str, str]):
+    def attrPush(self, attrData: List[str]):
         """Add `[ name, value ]` attribute to list. Init attrs if necessary."""
         if self.attrs:
             self.attrs.append(attrData)
@@ -59,12 +59,14 @@ class Token:
         if idx < 0:
             self.attrPush([name, value])
         else:
+            assert self.attrs is not None
             self.attrs[idx] = [name, value]
 
-    def attrGet(self, name: str) -> str:
+    def attrGet(self, name: str) -> Optional[str]:
         """ Get the value of attribute `name`, or null if it does not exist."""
         idx = self.attrIndex(name)
         if idx >= 0:
+            assert self.attrs is not None
             return self.attrs[idx][1]
         return None
 
@@ -121,7 +123,7 @@ class NestedTokens:
     def __getattr__(self, name):
         return getattr(self.opening, name)
 
-    def attrGet(self, name: str) -> str:
+    def attrGet(self, name: str) -> Optional[str]:
         """ Get the value of attribute `name`, or null if it does not exist."""
         return self.opening.attrGet(name)
 
@@ -132,7 +134,7 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
     ``NestedTokens`` contain the open and close tokens and a list of children
     of all tokens in between (recursively nested)
     """
-    output = []
+    output: List[Union[Token, NestedTokens]] = []
 
     tokens = list(reversed(tokens))
     while tokens:
@@ -142,7 +144,7 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
             token = token.copy()
             output.append(token)
             if token.children:
-                token.children = nest_tokens(token.children)
+                token.children = nest_tokens(token.children)  # type: ignore
             continue
 
         assert token.nesting == 1, token.nesting

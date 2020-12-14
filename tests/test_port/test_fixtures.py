@@ -10,6 +10,22 @@ FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures")
 
 @pytest.mark.parametrize(
     "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("linkify.md")),
+)
+def test_linkify(line, title, input, expected):
+    md = MarkdownIt().enable("linkify")
+    md.options["linkify"] = True
+    text = md.render(input)
+    assert text.rstrip() == expected.rstrip()
+
+    # if not install linkify-it-py
+    md.linkify = None
+    with pytest.raises(ModuleNotFoundError):
+        md.render(input)
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
     read_fixture_file(FIXTURE_PATH.joinpath("smartquotes.md")),
 )
 def test_smartquotes(line, title, input, expected):
