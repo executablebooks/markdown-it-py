@@ -9,10 +9,10 @@ The following plugins are embedded within the core package (enabled when using t
 
 Other plugins are then available *via* the [`mdit_py_plugins`](https://github.com/executablebooks/mdit-py-plugins).
 
-:::{important}
+```{important}
 ``markdown_it.extensions`` is now deprecated and plugins have been moved to
 [`mdit_py_plugins`](https://github.com/executablebooks/mdit-py-plugins)
-:::
+```
 
 They can be chained and loaded *via*:
 
