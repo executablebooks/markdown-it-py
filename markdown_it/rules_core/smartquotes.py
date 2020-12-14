@@ -1,7 +1,7 @@
 """Convert straight quotation marks to typographic ones
 """
 import re
-from typing import List
+from typing import Any, Dict, List
 
 from .state_core import StateCore
 from ..common.utils import charCodeAt
@@ -22,7 +22,7 @@ def replaceAt(string: str, index: int, ch: str):
 
 
 def process_inlines(tokens: List[Token], state: StateCore):
-    stack = []
+    stack: List[Dict[str, Any]] = []
 
     for i in range(len(tokens)):
         token = tokens[i]
@@ -198,5 +198,5 @@ def smartquotes(state: StateCore):
 
         if token.type != "inline" or not QUOTE_RE.search(token.content):
             continue
-
+        assert token.children is not None
         process_inlines(token.children, state)

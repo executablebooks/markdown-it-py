@@ -1,6 +1,8 @@
 # Process footnotes
 #
 
+from typing import List, Optional
+
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
 from markdown_it.rules_inline import StateInline
@@ -174,7 +176,7 @@ def footnote_inline(state: StateInline, silent: bool):
         refs = state.env.setdefault("footnotes", {}).setdefault("list", {})
         footnoteId = len(refs)
 
-        tokens = []
+        tokens: List[Token] = []
         state.md.inline.parse(
             state.src[labelStart:labelEnd], state.md, state.env, tokens
         )
@@ -260,7 +262,7 @@ def footnote_tail(state: StateBlock, *args, **kwargs):
     if "footnotes" not in state.env:
         return
 
-    current = []
+    current: List[Token] = []
     tok_filter = []
     for tok in state.tokens:
 
@@ -320,7 +322,7 @@ def footnote_tail(state: StateBlock, *args, **kwargs):
 
         state.tokens.extend(tokens)
         if state.tokens[len(state.tokens) - 1].type == "paragraph_close":
-            lastParagraph = state.tokens.pop()
+            lastParagraph: Optional[Token] = state.tokens.pop()
         else:
             lastParagraph = None
 

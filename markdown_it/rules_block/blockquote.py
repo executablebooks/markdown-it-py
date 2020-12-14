@@ -1,5 +1,6 @@
 # Block quotes
 import logging
+from typing import Optional
 
 from .state_block import StateBlock
 from ..common.utils import isSpace
@@ -39,7 +40,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
     )
 
     try:
-        second_char_code = state.srcCharCode[pos]
+        second_char_code: Optional[int] = state.srcCharCode[pos]
     except IndexError:
         second_char_code = None
 

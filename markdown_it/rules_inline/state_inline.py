@@ -1,5 +1,5 @@
 from collections import namedtuple
-from typing import List
+from typing import Dict, List, Optional
 
 import attr
 
@@ -49,7 +49,7 @@ class StateInline(StateBase):
         self.env = env
         self.md = md
         self.tokens = outTokens
-        self.tokens_meta = [None] * len(outTokens)
+        self.tokens_meta: List[Optional[dict]] = [None] * len(outTokens)
 
         self.pos = 0
         self.posMax = len(self.src)
@@ -59,13 +59,13 @@ class StateInline(StateBase):
 
         # Stores { start: end } pairs. Useful for backtrack
         # optimization of pairs parse (emphasis, strikes).
-        self.cache = {}
+        self.cache: Dict[int, int] = {}
 
         # List of emphasis-like delimiters for current tag
         self.delimiters: List[Delimiter] = []
 
         # Stack of delimiter lists for upper level tags
-        self._prev_delimiters = []
+        self._prev_delimiters: List[List[Delimiter]] = []
 
     def __repr__(self):
         return (

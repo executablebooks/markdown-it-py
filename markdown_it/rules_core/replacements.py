@@ -115,6 +115,7 @@ def replace(state: StateCore):
     for token in state.tokens:
         if token.type != "inline":
             continue
+        assert token.children is not None
 
         if SCOPED_ABBR_RE.search(token.content):
             replace_scoped(token.children)

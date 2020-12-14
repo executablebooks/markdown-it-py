@@ -1,6 +1,6 @@
 """Block-level tokenizer."""
 import logging
-from typing import List
+from typing import List, Optional
 
 from .ruler import Ruler
 from .token import Token
@@ -92,7 +92,14 @@ class ParserBlock:
                 line += 1
                 state.line = line
 
-    def parse(self, src: str, md, env, outTokens: List[Token], ords: List[int] = None):
+    def parse(
+        self,
+        src: str,
+        md,
+        env,
+        outTokens: List[Token],
+        ords: Optional[List[int]] = None,
+    ):
         """Process input string and push block tokens into `outTokens`."""
         if not src:
             return

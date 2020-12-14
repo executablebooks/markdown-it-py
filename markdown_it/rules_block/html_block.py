@@ -1,6 +1,7 @@
 # HTML block
 import logging
 import re
+from typing import List, Tuple, Pattern
 
 from .state_block import StateBlock
 from ..common.html_blocks import block_names
@@ -10,23 +11,22 @@ LOGGER = logging.getLogger(__name__)
 
 # An array of opening and corresponding closing sequences for html tags,
 # last argument defines whether it can terminate a paragraph or not
-#
-HTML_SEQUENCES = [
-    [
+HTML_SEQUENCES: List[Tuple[Pattern, Pattern, bool]] = [
+    (
         re.compile(r"^<(script|pre|style)(?=(\s|>|$))", re.IGNORECASE),
         re.compile(r"<\/(script|pre|style)>", re.IGNORECASE),
         True,
-    ],
-    [re.compile(r"^<!--"), re.compile(r"-->"), True],
-    [re.compile(r"^<\?"), re.compile(r"\?>"), True],
-    [re.compile(r"^<![A-Z]"), re.compile(r">"), True],
-    [re.compile(r"^<!\[CDATA\["), re.compile(r"\]\]>"), True],
-    [
+    ),
+    (re.compile(r"^<!--"), re.compile(r"-->"), True),
+    (re.compile(r"^<\?"), re.compile(r"\?>"), True),
+    (re.compile(r"^<![A-Z]"), re.compile(r">"), True),
+    (re.compile(r"^<!\[CDATA\["), re.compile(r"\]\]>"), True),
+    (
         re.compile("^</?(" + "|".join(block_names) + ")(?=(\\s|/?>|$))", re.IGNORECASE),
         re.compile(r"^$"),
         True,
-    ],
-    [re.compile(HTML_OPEN_CLOSE_TAG_STR + "\\s*$"), re.compile(r"^$"), False],
+    ),
+    (re.compile(HTML_OPEN_CLOSE_TAG_STR + "\\s*$"), re.compile(r"^$"), False),
 ]
 
 
