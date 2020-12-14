@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607890657223,
+  "lastUpdate": 1607963882175,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -9041,6 +9041,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.015489",
             "group": "packages",
             "extra": "mean: 897.69 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "3a5bdcc98e67de9df26ebb8bc7cd0221a0d6b51b",
+          "message": "✨ NEW: Add colon_fence plugin (#91)",
+          "timestamp": "2020-12-14T16:36:52Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/3a5bdcc98e67de9df26ebb8bc7cd0221a0d6b51b",
+          "distinct": true,
+          "tree_id": "13986fcc5d3843e4d8f94a093a478d817fdd7869"
+        },
+        "date": 1607963881294,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 6.113693921605255,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0047129",
+            "group": "plugins",
+            "extra": "mean: 163.57 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 5.987268728056968,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0052543",
+            "group": "plugins",
+            "extra": "mean: 167.02 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 4.928263506443304,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0061535",
+            "group": "plugins",
+            "extra": "mean: 202.91 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 5.925040663405848,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014223",
+            "group": "plugins",
+            "extra": "mean: 168.78 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 6.066841773839939,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0050136",
+            "group": "plugins",
+            "extra": "mean: 164.83 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 6.0327656241974426,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0053018",
+            "group": "plugins",
+            "extra": "mean: 165.76 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 6.0647321349533305,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0047059",
+            "group": "plugins",
+            "extra": "mean: 164.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 5.888639339051381,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057354",
+            "group": "plugins",
+            "extra": "mean: 169.82 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 5.986640579265691,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0084652",
+            "group": "plugins",
+            "extra": "mean: 167.04 msec\nrounds: 20"
           }
         ]
       }
