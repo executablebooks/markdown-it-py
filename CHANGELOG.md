@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.6.0 - 2020-12-15
+
+🗑 DEPRECATE: Move plugins to `mdit_py_plugins`
+
+Plugins (in `markdown_it.extensions`) have now been moved to [executablebooks/mdit-py-plugins](https://github.com/executablebooks/mdit-py-plugins).
+This will allow for their maintenance to occur on a different cycle to the core code, facilitating the release of a v1.0.0 for this package
+
+🔧 MAINTAIN: Add [mypy](https://mypy.readthedocs.io) type-checking, thanks to [@hukkinj1](https://github.com/hukkinj1).
+
 ## 0.5.8 - 2020-12-13
 
 ✨ NEW: Add linkify, thanks to [@tsutsu3](https://github.com/tsutsu3).
