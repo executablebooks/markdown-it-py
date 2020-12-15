@@ -14,14 +14,14 @@ QUOTE_RE = re.compile(r"['\"]")
 APOSTROPHE = "\u2019"  # ’
 
 
-def replaceAt(string: str, index: int, ch: str):
+def replaceAt(string: str, index: int, ch: str) -> str:
     # When the index is negative, the behavior is different from the js version.
     # But basically, the index will not be negative.
     assert index >= 0
     return string[:index] + ch + string[index + 1 :]
 
 
-def process_inlines(tokens: List[Token], state: StateCore):
+def process_inlines(tokens: List[Token], state: StateCore) -> None:
     stack: List[Dict[str, Any]] = []
 
     for i in range(len(tokens)):
@@ -190,7 +190,7 @@ def process_inlines(tokens: List[Token], state: StateCore):
                 )
 
 
-def smartquotes(state: StateCore):
+def smartquotes(state: StateCore) -> None:
     if not state.md.options.typographer:
         return
 
