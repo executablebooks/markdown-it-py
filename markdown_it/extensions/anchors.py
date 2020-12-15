@@ -1,4 +1,4 @@
-from mdit_py_plugins.colon_fence import *  # noqa: F401,F403
+from mdit_py_plugins.anchors import *  # noqa: F401,F403
 
 import warnings
 
