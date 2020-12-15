@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1607970279853,
+  "lastUpdate": 1608021691772,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -9729,6 +9729,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.026306",
             "group": "packages",
             "extra": "mean: 999.95 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "bddc8829c33faa26a89ad1df85bbe8cfe0d80729",
+          "message": "🗑 DEPRECATE: Move plugins to `mdit_py_plugins` (#93)\n\nPlugins (in `markdown_it.extensions`) have now been moved to <https://github.com/executablebooks/mdit-py-plugins>.\r\nThis will allow for their maintenance to occur on a different cycle to the core code, facilitating the release of a v1.0.0 for this package",
+          "timestamp": "2020-12-15T08:40:01Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/bddc8829c33faa26a89ad1df85bbe8cfe0d80729",
+          "distinct": true,
+          "tree_id": "b8d6ae615c947d5ca5a80318ffa31b454ed26d3c"
+        },
+        "date": 1608021691010,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.59489305500365,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0064688",
+            "group": "plugins",
+            "extra": "mean: 217.63 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.520629509530347,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058981",
+            "group": "plugins",
+            "extra": "mean: 221.21 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.738530567446297,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058145",
+            "group": "plugins",
+            "extra": "mean: 267.48 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 4.535836349833019,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058703",
+            "group": "plugins",
+            "extra": "mean: 220.47 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.561321952895505,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0056025",
+            "group": "plugins",
+            "extra": "mean: 219.23 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.52609589020058,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0050273",
+            "group": "plugins",
+            "extra": "mean: 220.94 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 4.485229627185157,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0090780",
+            "group": "plugins",
+            "extra": "mean: 222.95 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 4.239339138646564,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0099818",
+            "group": "plugins",
+            "extra": "mean: 235.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 4.547098426945965,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0060732",
+            "group": "plugins",
+            "extra": "mean: 219.92 msec\nrounds: 20"
           }
         ]
       }
