@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1608021691772,
+  "lastUpdate": 1608021744342,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -9823,6 +9823,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0060732",
             "group": "plugins",
             "extra": "mean: 219.92 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "bddc8829c33faa26a89ad1df85bbe8cfe0d80729",
+          "message": "🗑 DEPRECATE: Move plugins to `mdit_py_plugins` (#93)\n\nPlugins (in `markdown_it.extensions`) have now been moved to <https://github.com/executablebooks/mdit-py-plugins>.\r\nThis will allow for their maintenance to occur on a different cycle to the core code, facilitating the release of a v1.0.0 for this package",
+          "timestamp": "2020-12-15T08:40:01Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/bddc8829c33faa26a89ad1df85bbe8cfe0d80729",
+          "distinct": true,
+          "tree_id": "b8d6ae615c947d5ca5a80318ffa31b454ed26d3c"
+        },
+        "date": 1608021743601,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 5.341808512818537,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0053048",
+            "group": "packages",
+            "extra": "mean: 187.20 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 15.478986322948389,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0027064",
+            "group": "packages",
+            "extra": "mean: 64.604 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.580236641578541,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017599",
+            "group": "packages",
+            "extra": "mean: 387.56 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.1731475213192482,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0096780",
+            "group": "packages",
+            "extra": "mean: 852.41 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.0680216728261713,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0095720",
+            "group": "packages",
+            "extra": "mean: 936.31 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.776744667740124,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0075278",
+            "group": "packages",
+            "extra": "mean: 209.35 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.1664871848146317,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0045242",
+            "group": "packages",
+            "extra": "mean: 857.27 msec\nrounds: 20"
           }
         ]
       }
