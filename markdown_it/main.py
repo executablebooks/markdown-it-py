@@ -133,11 +133,10 @@ class MarkdownIt:
         containing rules with given names. If rule not found, and `ignoreInvalid`
         not set - throws exception.
 
-        ##### Example
+        Example::
 
-        ```python
-        md = MarkdownIt()..enable(['sub', 'sup']).disable('smartquotes')
-        ```
+            md = MarkdownIt().enable(['sub', 'sup']).disable('smartquotes')
+
         """
         result = []
 
