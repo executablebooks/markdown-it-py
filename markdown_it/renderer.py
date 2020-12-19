@@ -237,19 +237,11 @@ class RendererHTML:
         # May be, one day we will add .clone() for token and simplify this part, but
         # now we prefer to keep things local.
         if info:
-            i = token.attrIndex("class")
             tmpAttrs = token.attrs[:] if token.attrs else []
-
-            if i < 0:
-                tmpAttrs.append(("class", options.langPrefix + langName))
-            else:
-                tmpAttrs[i] = (
-                    tmpAttrs[i][0],
-                    tmpAttrs[i][1] + " " + options.langPrefix + langName,
-                )
 
             # Fake token just to render attributes
             tmpToken = Token(type="", tag="", nesting=0, attrs=tmpAttrs)
+            tmpToken.attrJoin("class", options.langPrefix + langName)
 
             return (
                 "<pre><code"
@@ -276,10 +268,7 @@ class RendererHTML:
         #
         # Replace content with actual value
 
-        token.attrs[token.attrIndex("alt")] = (
-            token.attrs[token.attrIndex("alt")][0],
-            self.renderInlineAsText(token.children, options, env),
-        )
+        token.attrSet("alt", self.renderInlineAsText(token.children, options, env))
 
         return self.renderToken(tokens, idx, options, env)
 
