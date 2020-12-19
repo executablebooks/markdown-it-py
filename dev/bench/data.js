@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1608347815540,
+  "lastUpdate": 1608348128090,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -10417,6 +10417,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0045876",
             "group": "packages",
             "extra": "mean: 869.46 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "ecb87278195369e609eda207aa5b1b74794e70ad",
+          "message": "🐛 FIX: Backslash escapes should not work inside autolinks (#97)\n\nFixes CommonMark specificaion example 599",
+          "timestamp": "2020-12-19T03:20:56Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/ecb87278195369e609eda207aa5b1b74794e70ad",
+          "distinct": true,
+          "tree_id": "e1d7ada2b6d5d78acb9b7c81520dc26489532756"
+        },
+        "date": 1608348127349,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 5.377686180127088,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0065648",
+            "group": "plugins",
+            "extra": "mean: 185.95 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 5.280615082918761,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058797",
+            "group": "plugins",
+            "extra": "mean: 189.37 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 4.350309210353627,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0070268",
+            "group": "plugins",
+            "extra": "mean: 229.87 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 5.263565366723943,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0070195",
+            "group": "plugins",
+            "extra": "mean: 189.99 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 5.2958473739244925,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0078408",
+            "group": "plugins",
+            "extra": "mean: 188.83 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 5.2817761389472855,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0075085",
+            "group": "plugins",
+            "extra": "mean: 189.33 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 5.311652974685566,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0078962",
+            "group": "plugins",
+            "extra": "mean: 188.27 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 5.156880116119513,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0086588",
+            "group": "plugins",
+            "extra": "mean: 193.92 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 5.301220164457247,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0069498",
+            "group": "plugins",
+            "extra": "mean: 188.64 msec\nrounds: 20"
           }
         ]
       }
