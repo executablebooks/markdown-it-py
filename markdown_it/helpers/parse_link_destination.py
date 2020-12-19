@@ -15,7 +15,7 @@ class _Result:
         self.str = ""
 
 
-def parseLinkDestination(string, pos, maximum):
+def parseLinkDestination(string: str, pos: int, maximum: int) -> _Result:
     lines = 0
     start = pos
     result = _Result()

@@ -91,7 +91,7 @@ def processDelimiters(state: StateInline, delimiters, *args):
         closerIdx += 1
 
 
-def link_pairs(state: StateInline):
+def link_pairs(state: StateInline) -> None:
     tokens_meta = state.tokens_meta
     maximum = len(state.tokens_meta)
 

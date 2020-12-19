@@ -14,15 +14,15 @@ MAILTO_RE = re.compile(r"^mailto:")
 TEST_MAILTO_RE = re.compile(r"^mailto:", flags=re.IGNORECASE)
 
 
-def isLinkOpen(string: str):
-    return LINK_OPEN_RE.search(string)
+def isLinkOpen(string: str) -> bool:
+    return bool(LINK_OPEN_RE.search(string))
 
 
-def isLinkClose(string: str):
-    return LINK_CLOSE_RE.search(string)
+def isLinkClose(string: str) -> bool:
+    return bool(LINK_CLOSE_RE.search(string))
 
 
-def linkify(state: StateCore):
+def linkify(state: StateCore) -> None:
     blockTokens = state.tokens
 
     if not state.md.options.linkify:
