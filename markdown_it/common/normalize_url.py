@@ -54,7 +54,7 @@ def unescape_string(s: str) -> str:
 
 
 def normalize_uri(uri: str) -> str:
-    return quote(uri.encode("utf-8"), safe=str("/@:+?=&()%#*,"))
+    return quote(uri, safe="/@:+?=&()%#*,")
 
 
 ##################
