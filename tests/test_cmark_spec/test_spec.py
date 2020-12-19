@@ -19,9 +19,6 @@ def test_file(file_regression):
 
 @pytest.mark.parametrize("entry", json.loads(TESTS_INPUT.read_text()))
 def test_spec(entry):
-    if entry["example"] == 599:
-        # TODO fix Backslash-escapes do not work inside autolinks
-        pytest.skip("autolinks backslash escape")
     md = MarkdownIt("commonmark")
     output = md.render(entry["markdown"])
     expected = entry["html"]

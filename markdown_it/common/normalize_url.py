@@ -81,7 +81,7 @@ def normalizeLink(url):
             (
                 scheme,
                 unescape_normalize_uri(netloc),
-                unescape_normalize_uri(path),
+                normalize_uri(path),
                 unescape_normalize_uri(params),
                 normalize_uri(query),
                 unescape_normalize_uri(fragment),
