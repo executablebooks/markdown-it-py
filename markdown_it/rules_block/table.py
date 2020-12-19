@@ -153,7 +153,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
         token = state.push("th_open", "th", 1)
         token.map = [startLine, startLine + 1]
         if aligns[i]:
-            token.attrs = [["style", "text-align:" + aligns[i]]]
+            token.attrs = [("style", "text-align:" + aligns[i])]
 
         token = state.push("inline", "", 0)
         token.content = columns[i].strip()
@@ -185,7 +185,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
             token = state.push("td_open", "td", 1)
             token.map = [nextLine, nextLine + 1]
             if aligns[i]:
-                token.attrs = [["style", "text-align:" + aligns[i]]]
+                token.attrs = [("style", "text-align:" + aligns[i])]
 
             token = state.push("inline", "", 0)
             token.map = [nextLine, nextLine + 1]

@@ -1,4 +1,4 @@
-from typing import Any, List, Optional, Union
+from typing import Any, List, Optional, Tuple, Union
 
 import attr
 
@@ -15,7 +15,7 @@ class Token:
     # - `-1` means the tag is closing
     nesting: int = attr.ib()
     # Html attributes. Format: `[ [ name1, value1 ], [ name2, value2 ] ]`
-    attrs: Optional[List[list]] = attr.ib(default=None)
+    attrs: Optional[List[Tuple[str, Any]]] = attr.ib(default=None)
     # Source map info. Format: `[ line_begin, line_end ]`
     map: Optional[List[int]] = attr.ib(default=None)
     # nesting level, the same as `state.level`
@@ -46,7 +46,7 @@ class Token:
                 return i
         return -1
 
-    def attrPush(self, attrData: list) -> None:
+    def attrPush(self, attrData: Tuple[str, Any]) -> None:
         """Add `[ name, value ]` attribute to list. Init attrs if necessary."""
         if self.attrs:
             self.attrs.append(attrData)
@@ -57,10 +57,10 @@ class Token:
         """Set `name` attribute to `value`. Override old value if exists."""
         idx = self.attrIndex(name)
         if idx < 0:
-            self.attrPush([name, value])
+            self.attrPush((name, value))
         else:
             assert self.attrs is not None
-            self.attrs[idx] = [name, value]
+            self.attrs[idx] = (name, value)
 
     def attrGet(self, name: str) -> Any:
         """ Get the value of attribute `name`, or null if it does not exist."""
@@ -70,16 +70,17 @@ class Token:
             return self.attrs[idx][1]
         return None
 
-    def attrJoin(self, name, value):
+    def attrJoin(self, name: str, value: str) -> None:
         """Join value to existing attribute via space.
         Or create new attribute if not exists.
         Useful to operate with token classes.
         """
         idx = self.attrIndex(name)
         if idx < 0:
-            self.attrPush([name, value])
+            self.attrPush((name, value))
         else:
-            self.attrs[idx][1] = self.attrs[idx][1] + " " + value
+            assert self.attrs is not None
+            self.attrs[idx] = (self.attrs[idx][0], self.attrs[idx][1] + " " + value)
 
     def copy(self) -> "Token":
         """Return a shallow copy of the instance."""

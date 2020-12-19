@@ -22,7 +22,7 @@ def test_token():
     assert token.attrGet("a") == "b"
     token.attrJoin("a", "c")
     assert token.attrGet("a") == "b c"
-    token.attrPush(["x", "y"])
+    token.attrPush(("x", "y"))
     assert token.attrGet("x") == "y"
     assert token.attrIndex("a") == 0
     assert token.attrIndex("x") == 1

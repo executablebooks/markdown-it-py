@@ -168,7 +168,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if isOrdered:
         token = state.push("ordered_list_open", "ol", 1)
         if markerValue != 1:
-            token.attrs = [["start", markerValue]]
+            token.attrs = [("start", markerValue)]
 
     else:
         token = state.push("bullet_list_open", "ul", 1)
