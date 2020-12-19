@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1608348128090,
+  "lastUpdate": 1608348204237,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -10511,6 +10511,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0069498",
             "group": "plugins",
             "extra": "mean: 188.64 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "ecb87278195369e609eda207aa5b1b74794e70ad",
+          "message": "🐛 FIX: Backslash escapes should not work inside autolinks (#97)\n\nFixes CommonMark specificaion example 599",
+          "timestamp": "2020-12-19T03:20:56Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/ecb87278195369e609eda207aa5b1b74794e70ad",
+          "distinct": true,
+          "tree_id": "e1d7ada2b6d5d78acb9b7c81520dc26489532756"
+        },
+        "date": 1608348203501,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.351210740553324,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0087472",
+            "group": "packages",
+            "extra": "mean: 229.82 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 12.560129744984998,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0040683",
+            "group": "packages",
+            "extra": "mean: 79.617 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.1522473484599174,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015658",
+            "group": "packages",
+            "extra": "mean: 464.63 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 0.9410499344455379,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013517",
+            "group": "packages",
+            "extra": "mean: 1.0626 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.8560672574541577,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018464",
+            "group": "packages",
+            "extra": "mean: 1.1681 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 3.9587842523443326,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0083216",
+            "group": "packages",
+            "extra": "mean: 252.60 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 0.9803682394819992,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0068142",
+            "group": "packages",
+            "extra": "mean: 1.0200 sec\nrounds: 20"
           }
         ]
       }
