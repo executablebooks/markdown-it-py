@@ -59,7 +59,7 @@ def replaceFn(match: Match[str]):
     return SCOPED_ABBR[match.group(1).lower()]
 
 
-def replace_scoped(inlineTokens: List[Token]):
+def replace_scoped(inlineTokens: List[Token]) -> None:
     inside_autolink = 0
 
     for token in inlineTokens:
@@ -73,7 +73,7 @@ def replace_scoped(inlineTokens: List[Token]):
             inside_autolink += 1
 
 
-def replace_rare(inlineTokens: List[Token]):
+def replace_rare(inlineTokens: List[Token]) -> None:
     inside_autolink = 0
 
     for token in inlineTokens:
@@ -108,7 +108,7 @@ def replace_rare(inlineTokens: List[Token]):
             inside_autolink += 1
 
 
-def replace(state: StateCore):
+def replace(state: StateCore) -> None:
     if not state.md.options.typographer:
         return
 

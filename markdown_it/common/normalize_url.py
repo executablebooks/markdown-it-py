@@ -38,14 +38,14 @@ reEntityOrEscapedChar = re.compile(
 )
 
 
-def unescape_char(s):
+def unescape_char(s: str) -> str:
     if s[0] == "\\":
         return s[1]
     else:
         return html.unescape(s)
 
 
-def unescape_string(s):
+def unescape_string(s: str) -> str:
     """Replace entities and backslash escapes with literal characters."""
     if re.search(reBackslashOrAmp, s):
         return re.sub(reEntityOrEscapedChar, lambda m: unescape_char(m.group()), s)
@@ -53,7 +53,7 @@ def unescape_string(s):
         return s
 
 
-def normalize_uri(uri):
+def normalize_uri(uri: str) -> str:
     return quote(uri.encode("utf-8"), safe=str("/@:+?=&()%#*,"))
 
 
@@ -63,7 +63,7 @@ def normalize_uri(uri):
 RECODE_HOSTNAME_FOR = ("http", "https", "mailto")
 
 
-def unescape_normalize_uri(x):
+def unescape_normalize_uri(x: str) -> str:
     return normalize_uri(unescape_string(x))
 
 
@@ -166,7 +166,7 @@ BAD_PROTO_RE = re.compile(r"^(vbscript|javascript|file|data):")
 GOOD_DATA_RE = re.compile(r"^data:image\/(gif|png|jpeg|webp);")
 
 
-def validateLink(url: str, validator: Optional[Callable] = None):
+def validateLink(url: str, validator: Optional[Callable] = None) -> bool:
     """Validate URL link is allowed in output.
 
     This validator can prohibit more than really needed to prevent XSS.
