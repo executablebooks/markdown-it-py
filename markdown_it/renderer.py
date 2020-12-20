@@ -6,7 +6,7 @@ copy of rules. Those can be rewritten with ease. Also, you can add new
 rules if you create plugin and adds new token types.
 """
 import inspect
-from typing import List
+from typing import Sequence
 
 from .common.utils import unescapeAll, escapeHtml
 from .token import Token
@@ -51,7 +51,7 @@ class RendererHTML:
             if not (k.startswith("render") or k.startswith("_"))
         }
 
-    def render(self, tokens: List[Token], options, env) -> str:
+    def render(self, tokens: Sequence[Token], options, env) -> str:
         """Takes token stream and generates HTML.
 
         :param tokens: list on block tokens to render
@@ -73,7 +73,7 @@ class RendererHTML:
 
         return result
 
-    def renderInline(self, tokens: List[Token], options, env) -> str:
+    def renderInline(self, tokens: Sequence[Token], options, env) -> str:
         """The same as ``render``, but for single token of `inline` type.
 
         :param tokens: list on block tokens to render
@@ -91,7 +91,7 @@ class RendererHTML:
         return result
 
     def renderToken(
-        self, tokens: List[Token], idx: int, options: dict, env: dict
+        self, tokens: Sequence[Token], idx: int, options: dict, env: dict
     ) -> str:
         """Default token renderer.
 
@@ -169,7 +169,7 @@ class RendererHTML:
 
         return result
 
-    def renderInlineAsText(self, tokens: List[Token], options, env) -> str:
+    def renderInlineAsText(self, tokens: Sequence[Token], options, env) -> str:
         """Special kludge for image `alt` attributes to conform CommonMark spec.
 
         Don't try to use it! Spec requires to show `alt` content with stripped markup,
