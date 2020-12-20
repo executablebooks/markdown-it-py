@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1608390781243,
+  "lastUpdate": 1608488130710,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -10761,6 +10761,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.014821",
             "group": "packages",
             "extra": "mean: 962.28 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "c23830655a9e3f8603cd4145b5fd6419ad468bc6",
+          "message": "👌 IMPROVE: Type annotate renderer's token stream immutable (#104)",
+          "timestamp": "2020-12-20T18:14:15Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/c23830655a9e3f8603cd4145b5fd6419ad468bc6",
+          "distinct": true,
+          "tree_id": "53a6a102c8a892bbe217be08549629a8fab77d67"
+        },
+        "date": 1608488129976,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 5.050801072088802,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0064350",
+            "group": "plugins",
+            "extra": "mean: 197.99 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.9212783772359545,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0073587",
+            "group": "plugins",
+            "extra": "mean: 203.20 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.9446910162648257,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012780",
+            "group": "plugins",
+            "extra": "mean: 253.51 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 4.760627610200017,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0080456",
+            "group": "plugins",
+            "extra": "mean: 210.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.962234935832035,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0071912",
+            "group": "plugins",
+            "extra": "mean: 201.52 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.980539599878147,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0060196",
+            "group": "plugins",
+            "extra": "mean: 200.78 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 5.028875620257578,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0064024",
+            "group": "plugins",
+            "extra": "mean: 198.85 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 4.781000046493769,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0099935",
+            "group": "plugins",
+            "extra": "mean: 209.16 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 4.985519360842029,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0071349",
+            "group": "plugins",
+            "extra": "mean: 200.58 msec\nrounds: 20"
           }
         ]
       }
