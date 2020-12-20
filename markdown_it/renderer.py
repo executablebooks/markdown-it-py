@@ -192,7 +192,7 @@ class RendererHTML:
 
     ###################################################
 
-    def code_inline(self, tokens, idx, options, env):
+    def code_inline(self, tokens: Sequence[Token], idx, options, env):
         token = tokens[idx]
         return (
             "<code"
@@ -202,7 +202,7 @@ class RendererHTML:
             + "</code>"
         )
 
-    def code_block(self, tokens, idx, options, env):
+    def code_block(self, tokens: Sequence[Token], idx, options, env):
         token = tokens[idx]
 
         return (
@@ -213,7 +213,7 @@ class RendererHTML:
             + "</code></pre>\n"
         )
 
-    def fence(self, tokens, idx, options, env):
+    def fence(self, tokens: Sequence[Token], idx, options, env):
         token = tokens[idx]
         info = unescapeAll(token.info).strip() if token.info else ""
         langName = ""
@@ -262,7 +262,7 @@ class RendererHTML:
             + "</code></pre>\n"
         )
 
-    def image(self, tokens, idx, options, env):
+    def image(self, tokens: Sequence[Token], idx, options, env):
         token = tokens[idx]
 
         # "alt" attr MUST be set, even if empty. Because it's mandatory and
@@ -276,19 +276,19 @@ class RendererHTML:
 
         return self.renderToken(tokens, idx, options, env)
 
-    def hardbreak(self, tokens, idx, options, *args):
+    def hardbreak(self, tokens: Sequence[Token], idx, options, *args):
         return "<br />\n" if options.xhtmlOut else "<br>\n"
 
-    def softbreak(self, tokens, idx, options, *args):
+    def softbreak(self, tokens: Sequence[Token], idx, options, *args):
         return (
             ("<br />\n" if options.xhtmlOut else "<br>\n") if options.breaks else "\n"
         )
 
-    def text(self, tokens, idx, *args):
+    def text(self, tokens: Sequence[Token], idx, *args):
         return escapeHtml(tokens[idx].content)
 
-    def html_block(self, tokens, idx, *args):
+    def html_block(self, tokens: Sequence[Token], idx, *args):
         return tokens[idx].content
 
-    def html_inline(self, tokens, idx, *args):
+    def html_inline(self, tokens: Sequence[Token], idx, *args):
         return tokens[idx].content
