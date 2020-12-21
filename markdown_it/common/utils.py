@@ -197,7 +197,7 @@ def escapeRE(string: str) -> str:
 # //////////////////////////////////////////////////////////////////////////////
 
 
-def isSpace(code):
+def isSpace(code) -> bool:
     return code in {0x09, 0x20}
 
 
@@ -216,7 +216,7 @@ MD_WHITESPACE = {
 }
 
 
-def isWhiteSpace(code):
+def isWhiteSpace(code: int) -> bool:
     r"""Zs (unicode class) || [\t\f\v\r\n]"""
     if code >= 0x2000 and code <= 0x200A:
         return True
@@ -231,7 +231,7 @@ UNICODE_PUNCT_RE = re.compile(
 
 
 # Currently without astral characters support.
-def isPunctChar(ch):
+def isPunctChar(ch: str) -> bool:
     return UNICODE_PUNCT_RE.search(ch) is not None
 
 

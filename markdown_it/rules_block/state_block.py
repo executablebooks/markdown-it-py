@@ -117,7 +117,7 @@ class StateBlock(StateBase):
             f"(line={self.line},level={self.level},tokens={len(self.tokens)})"
         )
 
-    def push(self, ttype, tag, nesting):
+    def push(self, ttype: str, tag: str, nesting: int) -> Token:
         """Push new token to "stream"."""
         token = Token(ttype, tag, nesting)
         token.block = True
@@ -129,7 +129,7 @@ class StateBlock(StateBase):
         self.tokens.append(token)
         return token
 
-    def isEmpty(self, line):
+    def isEmpty(self, line: int) -> bool:
         """."""
         return (self.bMarks[line] + self.tShift[line]) >= self.eMarks[line]
 
@@ -183,7 +183,7 @@ class StateBlock(StateBase):
                 return pos + 1
         return pos
 
-    def getLines(self, begin: int, end: int, indent, keepLastLF):
+    def getLines(self, begin: int, end: int, indent: int, keepLastLF: bool) -> str:
         """Cut lines range from source."""
         line = begin
         if begin >= end:

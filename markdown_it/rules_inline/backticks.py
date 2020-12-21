@@ -6,7 +6,7 @@ from .state_inline import StateInline
 regex = re.compile("^ (.+) $")
 
 
-def backtick(state: StateInline, silent: bool):
+def backtick(state: StateInline, silent: bool) -> bool:
 
     pos = state.pos
     ch = state.srcCharCode[pos]

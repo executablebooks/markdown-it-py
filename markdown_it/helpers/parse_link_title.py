@@ -16,7 +16,7 @@ class _Result:
         return self.str
 
 
-def parseLinkTitle(string, pos, maximum):
+def parseLinkTitle(string: str, pos: int, maximum: int) -> _Result:
     lines = 0
     start = pos
     result = _Result()
