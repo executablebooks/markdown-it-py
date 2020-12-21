@@ -40,7 +40,8 @@ It can be activated by:
 
 ```python
 from markdown_it import MarkdownIt
-md = MarkdownIt().enable("replacements").enable("smartquotes")
+md = MarkdownIt().enable("smartquotes")
+md.options["typographer"] = True
 ```
 
 ✨ NEW: Add markdown-it-task-lists plugin, thanks to [@wna-se](https://github.com/wna-se).
