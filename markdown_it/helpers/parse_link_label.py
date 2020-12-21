@@ -5,9 +5,10 @@ this function assumes that first character ("[") already matches
 returns the end of the label
 
 """
+from markdown_it.rules_inline import StateInline
 
 
-def parseLinkLabel(state, start, disableNested=False):
+def parseLinkLabel(state: StateInline, start: int, disableNested: bool = False) -> int:
 
     labelEnd = -1
     oldPos = state.pos
