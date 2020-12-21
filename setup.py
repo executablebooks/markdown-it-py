@@ -52,15 +52,12 @@ setup(
             "psutil",
         ],
         "rtd": [
-            "myst-nb~=0.10.0",
-            # "sphinx_book_theme",
-            # "sphinx-panels~=0.4.0",
-            # "sphinx-copybutton",
+            "myst-nb==0.11.0a1",
+            "sphinx_book_theme",
+            "sphinx-panels~=0.4.0",
+            "sphinx-copybutton",
             "sphinx>=2,<4",
             "pyyaml",
-            # this is required due to
-            # https://github.com/readthedocs/readthedocs.org/issues/7768
-            # "ipython<6",
         ],
         "compare": [
             "commonmark~=0.9.1",
