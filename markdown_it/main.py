@@ -42,8 +42,8 @@ class MarkdownIt:
         self.renderer = renderer_cls(self)
 
         self.utils = utils
-        self.helpers = helpers
-        self.options: Dict[str, Any] = {}
+        self.helpers: Any = helpers
+        self.options = AttrDict()
         self.configure(config)
 
         self.linkify = linkify_it.LinkifyIt() if linkify_it else None
@@ -59,7 +59,7 @@ class MarkdownIt:
             "renderer": self.renderer,
         }[name]
 
-    def set(self, options):
+    def set(self, options: AttrDict) -> None:
         """Set parser options (in the same format as in constructor).
         Probably, you will never need it, but you can change options after constructor call.
 
