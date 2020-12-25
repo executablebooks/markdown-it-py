@@ -17,4 +17,4 @@ def normalize(state: StateCore) -> None:
     # Replace NULL characters
     string = NULL_RE.sub("\uFFFD", string)
 
-    state.src = string
+    state.set_src(string)

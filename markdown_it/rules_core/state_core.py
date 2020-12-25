@@ -12,3 +12,7 @@ class StateCore(StateBase):
         self.env = env
         self.tokens: List[Token] = tokens or []
         self.inlineMode = False
+
+    def set_src(self, src):
+        self.src = src
+        self.srcCharCode = [ord(c) for c in src] if src is not None else []
