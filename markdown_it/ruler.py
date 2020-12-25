@@ -21,6 +21,7 @@ import attr
 
 class StateBase:
     def __init__(self, src: str, md, env):
+        self.srcCharCode = []
         self.src = src
         self.env = env
         self.md = md
@@ -32,7 +33,7 @@ class StateBase:
     @src.setter
     def src(self, value):
         self._src = value
-        self._srcCharCode = [ord(c) for c in self.src]
+        self.srcCharCode = [ord(c) for c in self.src] if self.src is not None else []
 
 
 # The first positional arg is always a subtype of `StateBase`. Other
