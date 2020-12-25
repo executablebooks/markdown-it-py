@@ -25,6 +25,19 @@ class StateBase:
         self.env = env
         self.md = md
 
+    @property
+    def src(self):
+        return self._src
+
+    @src.setter
+    def src(self, value):
+        self._src = value
+        self._srcCharCode = [ord(c) for c in self.src]
+
+    @property
+    def srcCharCode(self):
+        # To avoid assigning srcCharCode
+        return self._srcCharCode
 
 # The first positional arg is always a subtype of `StateBase`. Other
 # arguments may or may not exist, based on the rule's type (block,
