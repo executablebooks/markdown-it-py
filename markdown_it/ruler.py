@@ -21,7 +21,7 @@ import attr
 
 class StateBase:
     def __init__(self, src: str, md, env):
-        self.srcCharCode = []
+        self.srcCharCode: List[int] = []
         self.src = src
         self.env = env
         self.md = md
