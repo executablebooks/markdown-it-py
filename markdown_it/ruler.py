@@ -35,6 +35,9 @@ class StateBase:
         self._src = value
         self.srcCharCode = [ord(c) for c in self.src] if self.src is not None else []
 
+    def set_underline_src(self, src):
+        self._src = src
+
 
 # The first positional arg is always a subtype of `StateBase`. Other
 # arguments may or may not exist, based on the rule's type (block,
