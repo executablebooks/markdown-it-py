@@ -16,7 +16,7 @@ class StateBlock(StateBase):
     ):
 
         if srcCharCode is not None:
-            self.set_underline_src(src)
+            self._src = src
             self.srcCharCode = srcCharCode
         else:
             self.src = src
