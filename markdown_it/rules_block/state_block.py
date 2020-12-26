@@ -19,7 +19,7 @@ class StateBlock(StateBase):
             self.set_underline_src(src)
             self.srcCharCode = srcCharCode
         else:
-            self.srcCharCode = [ord(c) for c in src] if src is not None else []
+            self.src = src
 
         # link to parser instance
         self.md = md
