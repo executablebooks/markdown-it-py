@@ -67,6 +67,10 @@ class StateInline(StateBase):
         # Stack of delimiter lists for upper level tags
         self._prev_delimiters: List[List[Delimiter]] = []
 
+        # backticklength => last seen position
+        self.backticks: Dict[int, int] = {}
+        self.backticksScanned = False
+
     def __repr__(self):
         return (
             f"{self.__class__.__name__}"

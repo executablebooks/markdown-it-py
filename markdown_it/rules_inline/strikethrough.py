@@ -35,7 +35,7 @@ def tokenize(state: StateInline, silent: bool):
                 **{
                     "marker": marker,
                     "length": 0,  # disable "rule of 3" length checks meant for emphasis
-                    "jump": i,
+                    "jump": i // 2,  # for `~~` 1 marker = 2 characters
                     "token": len(state.tokens) - 1,
                     "end": -1,
                     "open": scanned.can_open,
