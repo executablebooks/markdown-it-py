@@ -3,10 +3,10 @@ from markdown_it import presets
 
 
 def test_highlight_arguments():
-    def highlight_func(str_, lang, attrs):
+    def highlight_func(string, lang, attrs):
         assert lang == "a"
         assert attrs == "b  c  d"
-        return "<pre><code>==" + str_ + "==</code></pre>"
+        return "<pre><code>==" + string + "==</code></pre>"
 
     conf = presets.commonmark.make()
     conf["options"]["highlight"] = highlight_func

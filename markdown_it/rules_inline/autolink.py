@@ -17,11 +17,11 @@ def autolink(state: StateInline, silent: bool) -> bool:
         return False
 
     start = state.pos
-    max = state.posMax
+    maximum = state.posMax
 
     while True:
         pos += 1
-        if pos >= max:
+        if pos >= maximum:
             return False
 
         ch = state.srcCharCode[pos]
