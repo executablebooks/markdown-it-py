@@ -10,7 +10,6 @@ from ..common.normalize_url import normalizeLink, validateLink
 
 def image(state: StateInline, silent: bool):
 
-    tokens: List[Token] = []
     label = None
     href = ""
     oldPos = state.pos
@@ -134,11 +133,13 @@ def image(state: StateInline, silent: bool):
     if not silent:
         content = state.src[labelStart:labelEnd]
 
+        tokens: List[Token] = []
         state.md.inline.parse(content, state.md, state.env, tokens)
 
         token = state.push("image", "img", 0)
         token.attrs = [["src", href], ["alt", ""]]
         token.children = tokens or None
+        token.content = content
 
         if title:
             token.attrs.append(["title", title])
