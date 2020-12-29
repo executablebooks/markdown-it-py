@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from ..token import Token
 from ..ruler import StateBase
@@ -12,7 +12,7 @@ class StateBlock(StateBase):
         md,
         env,
         tokens: List[Token],
-        srcCharCode: Optional[List[int]] = None,
+        srcCharCode: Optional[Tuple[int, ...]] = None,
     ):
 
         if srcCharCode is not None:
