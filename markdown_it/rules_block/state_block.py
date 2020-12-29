@@ -15,11 +15,11 @@ class StateBlock(StateBase):
         srcCharCode: Optional[List[int]] = None,
     ):
 
-        self.src = src
         if srcCharCode is not None:
+            self._src = src
             self.srcCharCode = srcCharCode
         else:
-            self.srcCharCode = [ord(c) for c in src] if src is not None else []
+            self.src = src
 
         # link to parser instance
         self.md = md
