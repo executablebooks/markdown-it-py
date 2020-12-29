@@ -1,6 +1,6 @@
 """Block-level tokenizer."""
 import logging
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from .ruler import Ruler
 from .token import Token
@@ -98,7 +98,7 @@ class ParserBlock:
         md,
         env,
         outTokens: List[Token],
-        ords: Optional[List[int]] = None,
+        ords: Optional[Tuple[int, ...]] = None,
     ):
         """Process input string and push block tokens into `outTokens`."""
         if not src:
