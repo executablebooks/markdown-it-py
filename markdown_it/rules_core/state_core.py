@@ -17,7 +17,6 @@ class StateCore(StateBase):
         tokens: Optional[List[Token]] = None,
     ):
         self.src = src
-        self.srcCharCode = [ord(c) for c in src] if src is not None else []
         self.md = md  # link to parser instance
         self.env = env
         self.tokens: List[Token] = tokens or []

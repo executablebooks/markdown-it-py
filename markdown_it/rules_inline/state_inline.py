@@ -51,7 +51,6 @@ class StateInline(StateBase):
         self, src: str, md: "MarkdownIt", env: AttrDict, outTokens: List[Token]
     ):
         self.src = src
-        self.srcCharCode = [ord(c) for c in src] if src is not None else []
         self.env = env
         self.md = md
         self.tokens = outTokens
