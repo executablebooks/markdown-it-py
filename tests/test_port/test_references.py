@@ -279,7 +279,7 @@ def test_store_labels():
                             hidden=False,
                         )
                     ],
-                    content="",
+                    content="a",
                     markup="",
                     info="",
                     meta={"label": "A"},
