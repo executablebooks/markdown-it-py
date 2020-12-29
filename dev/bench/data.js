@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1609205022821,
+  "lastUpdate": 1609205092334,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -11715,6 +11715,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0061366",
             "group": "plugins",
             "extra": "mean: 203.79 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.6"
+        },
+        "commit": {
+          "id": "8290faad18c82151a82089e1d66c8f99ad3e02ee",
+          "message": "👌 IMPROVE: Add more typing (#106)\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2020-12-29T01:22:21Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/8290faad18c82151a82089e1d66c8f99ad3e02ee",
+          "distinct": true,
+          "tree_id": "da3bdb0e73d16a66b11f63795aac872b659f3a8a"
+        },
+        "date": 1609205091585,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.410292120369045,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0053963",
+            "group": "packages",
+            "extra": "mean: 226.74 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.704570683522489,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0027615",
+            "group": "packages",
+            "extra": "mean: 72.968 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.1894028777415016,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015033",
+            "group": "packages",
+            "extra": "mean: 456.75 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.011719809111373,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0082011",
+            "group": "packages",
+            "extra": "mean: 988.42 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.9060323098168797,
+            "unit": "iter/sec",
+            "range": "stddev: 0.026762",
+            "group": "packages",
+            "extra": "mean: 1.1037 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.236297367956275,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0081221",
+            "group": "packages",
+            "extra": "mean: 236.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.0478497903850834,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017493",
+            "group": "packages",
+            "extra": "mean: 954.34 msec\nrounds: 20"
           }
         ]
       }
