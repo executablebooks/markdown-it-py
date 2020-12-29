@@ -15,12 +15,25 @@ You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 [[MarkdownIt.use]].
 """
-from typing import Callable, Dict, Iterable, List, Optional, Union
+from typing import (
+    Callable,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    TYPE_CHECKING,
+    Union,
+)
 import attr
+
+from markdown_it.utils import AttrDict
+
+if TYPE_CHECKING:
+    from markdown_it import MarkdownIt
 
 
 class StateBase:
-    def __init__(self, src: str, md, env):
+    def __init__(self, src: str, md: "MarkdownIt", env: AttrDict):
         self.srcCharCode: List[int] = []
         self.src = src
         self.env = env

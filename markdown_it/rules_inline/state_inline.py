@@ -1,11 +1,15 @@
 from collections import namedtuple
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, TYPE_CHECKING
 
 import attr
 
+from ..utils import AttrDict
 from ..token import Token
 from ..ruler import StateBase
 from ..common.utils import isWhiteSpace, isPunctChar, isMdAsciiPunct
+
+if TYPE_CHECKING:
+    from markdown_it import MarkdownIt
 
 
 @attr.s(slots=True)
@@ -43,7 +47,9 @@ Scanned = namedtuple("Scanned", ["can_open", "can_close", "length"])
 
 
 class StateInline(StateBase):
-    def __init__(self, src: str, md, env, outTokens: List[Token]):
+    def __init__(
+        self, src: str, md: "MarkdownIt", env: AttrDict, outTokens: List[Token]
+    ):
         self.src = src
         self.env = env
         self.md = md

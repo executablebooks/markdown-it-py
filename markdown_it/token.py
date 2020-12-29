@@ -81,7 +81,7 @@ class Token:
         else:
             self.attrs[idx][1] = self.attrs[idx][1] + " " + value
 
-    def copy(self):
+    def copy(self) -> "Token":
         """Return a shallow copy of the instance."""
         return attr.evolve(self)
 
