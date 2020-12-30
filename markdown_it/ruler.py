@@ -84,7 +84,7 @@ class Ruler:
                 return i
         return -1
 
-    def __compile__(self):
+    def __compile__(self) -> None:
         """Build rules lookup cache"""
         chains = {""}
         # collect unique names
