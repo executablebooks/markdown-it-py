@@ -117,7 +117,7 @@ class NestedTokens:
     """
 
     opening: Token = attr.ib()
-    closing: Optional[Token] = attr.ib()
+    closing: Token = attr.ib()
     children: List[Union[Token, "NestedTokens"]] = attr.ib(factory=list)
 
     def __getattr__(self, name):
