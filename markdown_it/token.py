@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import List, Optional
 
 import attr
 
@@ -117,8 +117,8 @@ class NestedTokens:
     """
 
     opening: Token = attr.ib()
-    closing: Optional[Token] = attr.ib()
-    children: List[Union[Token, "NestedTokens"]] = attr.ib(factory=list)
+    closing: Optional[Token] = attr.ib(default=None)
+    children: List["NestedTokens"] = attr.ib(factory=list)
 
     def __getattr__(self, name):
         return getattr(self.opening, name)
@@ -128,13 +128,13 @@ class NestedTokens:
         return self.opening.attrGet(name)
 
 
-def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
-    """Convert the token stream to a list of tokens and nested tokens.
+def nest_tokens(tokens: List[Token]) -> List[NestedTokens]:
+    """Convert the token stream to a list of nested tokens.
 
     ``NestedTokens`` contain the open and close tokens and a list of children
     of all tokens in between (recursively nested)
     """
-    output: List[Union[Token, NestedTokens]] = []
+    output: List[NestedTokens] = []
 
     tokens = list(reversed(tokens))
     while tokens:
@@ -142,9 +142,10 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
 
         if token.nesting == 0:
             token = token.copy()
-            output.append(token)
+            nested_token = NestedTokens(token)
+            output.append(nested_token)
             if token.children:
-                token.children = nest_tokens(token.children)  # type: ignore
+                nested_token.children = nest_tokens(token.children)
             continue
 
         assert token.nesting == 1, token.nesting

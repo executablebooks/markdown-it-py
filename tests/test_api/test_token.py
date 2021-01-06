@@ -47,9 +47,9 @@ def test_nest_tokens():
         ]
     )
     assert [t.type for t in tokens] == ["start", "open", "end"]
-    assert isinstance(tokens[0], Token)
+    assert isinstance(tokens[0], NestedTokens)
     assert isinstance(tokens[1], NestedTokens)
-    assert isinstance(tokens[2], Token)
+    assert isinstance(tokens[2], NestedTokens)
 
     nested = tokens[1]
     assert nested.opening.type == "open"
