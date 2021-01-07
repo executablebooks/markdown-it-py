@@ -144,6 +144,9 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
             token = token.copy()
             output.append(token)
             if token.children:
+                # Ignore type checkers because `nest_tokens` doesn't respect
+                # typing of `Token.children`. We add `NestedTokens` into a
+                # `List[Token]` here.
                 token.children = nest_tokens(token.children)  # type: ignore
             continue
 
