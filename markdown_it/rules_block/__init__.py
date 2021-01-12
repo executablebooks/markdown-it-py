@@ -14,7 +14,7 @@ __all__ = (
 )
 
 from .state_block import StateBlock
-from .paragraph import paragraph  # noqa: F401
+from .paragraph import paragraph
 from .heading import heading
 from .lheading import lheading
 from .code import code
