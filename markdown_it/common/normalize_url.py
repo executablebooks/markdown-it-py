@@ -113,7 +113,7 @@ def normalizeLink(url):
     # return quote(urlunparse(parsed))
 
 
-def unescape_unquote(x):
+def unescape_unquote(x: str) -> str:
     return unquote(unescape_string(x))
 
 

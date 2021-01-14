@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, List, Union
 
 
 if TYPE_CHECKING:
@@ -17,7 +17,7 @@ else:
                     self[key] = AttrDict(item)
 
 
-def read_fixture_file(path):
+def read_fixture_file(path: Union[str, Path]) -> List[list]:
     text = Path(path).read_text(encoding="utf-8")
     tests = []
     section = 0

@@ -6,7 +6,7 @@ copy of rules. Those can be rewritten with ease. Also, you can add new
 rules if you create plugin and adds new token types.
 """
 import inspect
-from typing import Sequence
+from typing import Optional, Sequence
 
 from .common.utils import unescapeAll, escapeHtml
 from .token import Token
@@ -151,7 +151,7 @@ class RendererHTML:
         return result
 
     @staticmethod
-    def renderAttrs(token):
+    def renderAttrs(token: Token) -> str:
         """Render token attributes to string."""
         if not token.attrs:
             return ""
@@ -169,7 +169,9 @@ class RendererHTML:
 
         return result
 
-    def renderInlineAsText(self, tokens: Sequence[Token], options, env) -> str:
+    def renderInlineAsText(
+        self, tokens: Optional[Sequence[Token]], options, env
+    ) -> str:
         """Special kludge for image `alt` attributes to conform CommonMark spec.
 
         Don't try to use it! Spec requires to show `alt` content with stripped markup,
@@ -192,7 +194,7 @@ class RendererHTML:
 
     ###################################################
 
-    def code_inline(self, tokens: Sequence[Token], idx, options, env):
+    def code_inline(self, tokens: Sequence[Token], idx: int, options, env) -> str:
         token = tokens[idx]
         return (
             "<code"
@@ -202,7 +204,7 @@ class RendererHTML:
             + "</code>"
         )
 
-    def code_block(self, tokens: Sequence[Token], idx, options, env):
+    def code_block(self, tokens: Sequence[Token], idx: int, options, env) -> str:
         token = tokens[idx]
 
         return (
@@ -213,7 +215,7 @@ class RendererHTML:
             + "</code></pre>\n"
         )
 
-    def fence(self, tokens: Sequence[Token], idx, options, env):
+    def fence(self, tokens: Sequence[Token], idx: int, options, env) -> str:
         token = tokens[idx]
         info = unescapeAll(token.info).strip() if token.info else ""
         langName = ""
@@ -267,8 +269,9 @@ class RendererHTML:
             + "</code></pre>\n"
         )
 
-    def image(self, tokens: Sequence[Token], idx, options, env):
+    def image(self, tokens: Sequence[Token], idx: int, options, env) -> str:
         token = tokens[idx]
+        assert token.attrs is not None, '"image" token\'s attrs must not be `None`'
 
         # "alt" attr MUST be set, even if empty. Because it's mandatory and
         # should be placed on proper position for tests.
@@ -281,19 +284,19 @@ class RendererHTML:
 
         return self.renderToken(tokens, idx, options, env)
 
-    def hardbreak(self, tokens: Sequence[Token], idx, options, *args):
+    def hardbreak(self, tokens: Sequence[Token], idx: int, options, *args) -> str:
         return "<br />\n" if options.xhtmlOut else "<br>\n"
 
-    def softbreak(self, tokens: Sequence[Token], idx, options, *args):
+    def softbreak(self, tokens: Sequence[Token], idx: int, options, *args) -> str:
         return (
             ("<br />\n" if options.xhtmlOut else "<br>\n") if options.breaks else "\n"
         )
 
-    def text(self, tokens: Sequence[Token], idx, *args):
+    def text(self, tokens: Sequence[Token], idx: int, *args) -> str:
         return escapeHtml(tokens[idx].content)
 
-    def html_block(self, tokens: Sequence[Token], idx, *args):
+    def html_block(self, tokens: Sequence[Token], idx: int, *args) -> str:
         return tokens[idx].content
 
-    def html_inline(self, tokens: Sequence[Token], idx, *args):
+    def html_inline(self, tokens: Sequence[Token], idx: int, *args) -> str:
         return tokens[idx].content

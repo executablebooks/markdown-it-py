@@ -194,10 +194,12 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
         for i in range(columnCount):
             token = state.push("td_open", "td", 1)
+            token.map = [nextLine, nextLine + 1]
             if aligns[i]:
                 token.attrs = [["style", "text-align:" + aligns[i]]]
 
             token = state.push("inline", "", 0)
+            token.map = [nextLine, nextLine + 1]
             try:
                 token.content = columns[i].strip() if columns[i] else ""
             except IndexError:

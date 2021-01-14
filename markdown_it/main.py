@@ -1,5 +1,15 @@
 from contextlib import contextmanager
-from typing import Any, Callable, Dict, Iterable, List, Mapping, Optional, Union
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    Generator,
+    Iterable,
+    List,
+    Mapping,
+    Optional,
+    Union,
+)
 
 from . import helpers, presets  # noqa F401
 from .common import utils  # noqa F401
@@ -42,16 +52,16 @@ class MarkdownIt:
         self.renderer = renderer_cls(self)
 
         self.utils = utils
-        self.helpers = helpers
-        self.options: Dict[str, Any] = {}
+        self.helpers: Any = helpers
+        self.options = AttrDict()
         self.configure(config)
 
         self.linkify = linkify_it.LinkifyIt() if linkify_it else None
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"{self.__class__.__module__}.{self.__class__.__name__}()"
 
-    def __getitem__(self, name):
+    def __getitem__(self, name: str) -> Any:
         return {
             "inline": self.inline,
             "block": self.block,
@@ -59,7 +69,7 @@ class MarkdownIt:
             "renderer": self.renderer,
         }[name]
 
-    def set(self, options):
+    def set(self, options: AttrDict) -> None:
         """Set parser options (in the same format as in constructor).
         Probably, you will never need it, but you can change options after constructor call.
 
@@ -69,7 +79,7 @@ class MarkdownIt:
         """
         self.options = options
 
-    def configure(self, presets: Union[str, Mapping]):
+    def configure(self, presets: Union[str, Mapping]) -> "MarkdownIt":
         """Batch load of all options and component settings.
         This is an internal method, and you probably will not need it.
         But if you will - see available presets and data structure
@@ -177,7 +187,7 @@ class MarkdownIt:
         return self
 
     @contextmanager
-    def reset_rules(self):
+    def reset_rules(self) -> Generator[None, None, None]:
         """A context manager, that will reset the current enabled rules on exit."""
         chain_rules = self.get_active_rules()
         yield
@@ -186,7 +196,7 @@ class MarkdownIt:
                 self[chain].ruler.enableOnly(rules)
         self.inline.ruler2.enableOnly(chain_rules["inline2"])
 
-    def add_render_rule(self, name: str, function: Callable, fmt="html"):
+    def add_render_rule(self, name: str, function: Callable, fmt: str = "html") -> None:
         """Add a rule for rendering a particular Token type.
 
         Only applied when ``renderer.__output__ == fmt``

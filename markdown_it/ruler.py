@@ -15,15 +15,42 @@ You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 [[MarkdownIt.use]].
 """
-from typing import Callable, Dict, Iterable, List, Optional, Union
+from typing import (
+    Callable,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    Tuple,
+    TYPE_CHECKING,
+    Union,
+)
 import attr
+
+from markdown_it.utils import AttrDict
+
+if TYPE_CHECKING:
+    from markdown_it import MarkdownIt
 
 
 class StateBase:
-    def __init__(self, src: str, md, env):
+    srcCharCode: Tuple[int, ...]
+
+    def __init__(self, src: str, md: "MarkdownIt", env: AttrDict):
         self.src = src
         self.env = env
         self.md = md
+
+    @property
+    def src(self):
+        return self._src
+
+    @src.setter
+    def src(self, value):
+        self._src = value
+        self.srcCharCode = (
+            tuple(ord(c) for c in self.src) if self.src is not None else ()
+        )
 
 
 # The first positional arg is always a subtype of `StateBase`. Other
@@ -57,7 +84,7 @@ class Ruler:
                 return i
         return -1
 
-    def __compile__(self):
+    def __compile__(self) -> None:
         """Build rules lookup cache"""
         chains = {""}
         # collect unique names

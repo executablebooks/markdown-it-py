@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.6.1 - 2021-01-01
+
+This release provides some improvements to the code base:
+
+- 🐛 FIX: Do not resolve backslash escapes inside auto-links
+- 🐛 FIX: Add content to image tokens
+- 👌 IMPROVE: Add more type annotations, thanks to [@hukkinj1](https://github.com/hukkinj1)
+
 ## 0.6.0 - 2020-12-15
 
 🗑 DEPRECATE: Move plugins to `mdit_py_plugins`
