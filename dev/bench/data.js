@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1609516638759,
+  "lastUpdate": 1610646799506,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -12309,6 +12309,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.019324",
             "group": "packages",
             "extra": "mean: 935.02 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.7"
+        },
+        "commit": {
+          "id": "fa1d3e3c338533e042c327e14d050c7a3a9a7a05",
+          "message": "🐛 FIX: port markdown-it v11.0.1 (#109)\n\nThis commit updates the port to be up-to-date with markdown-it v11.0.1 (2020-09-14), applying two fixes:\r\n\r\n- Fix blockquote lazy newlines, [[#696](https://github.com/markdown-it/markdown-it/issues/696)].\r\n- Fix missed mappings for table rows, [[#705](https://github.com/markdown-it/markdown-it/issues/705)].",
+          "timestamp": "2021-01-14T17:51:56Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/fa1d3e3c338533e042c327e14d050c7a3a9a7a05",
+          "distinct": true,
+          "tree_id": "81ca0745ed15786e808d739baac63add392fa4c8"
+        },
+        "date": 1610646798673,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.623339513079306,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0088352",
+            "group": "plugins",
+            "extra": "mean: 216.29 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.744865657857129,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0081221",
+            "group": "plugins",
+            "extra": "mean: 210.75 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.934477428024486,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010600",
+            "group": "plugins",
+            "extra": "mean: 254.16 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 4.716553424109497,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0077467",
+            "group": "plugins",
+            "extra": "mean: 212.02 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.6792957253676875,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0091985",
+            "group": "plugins",
+            "extra": "mean: 213.71 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.675437700205752,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010824",
+            "group": "plugins",
+            "extra": "mean: 213.88 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 4.629197694409144,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012827",
+            "group": "plugins",
+            "extra": "mean: 216.02 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 4.265759864857543,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017864",
+            "group": "plugins",
+            "extra": "mean: 234.42 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 4.642265945232274,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013322",
+            "group": "plugins",
+            "extra": "mean: 215.41 msec\nrounds: 20"
           }
         ]
       }
