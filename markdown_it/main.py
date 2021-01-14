@@ -225,7 +225,7 @@ class MarkdownIt:
         :param src: source string
         :param env: environment sandbox
 
-        Parse input string and returns list of block tokens (special token type
+        Parse input string and return list of block tokens (special token type
         "inline" will contain list of inline tokens).
 
         `env` is used to pass data between "distributed" rules and return additional

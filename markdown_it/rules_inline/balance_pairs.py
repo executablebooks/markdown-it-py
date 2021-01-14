@@ -42,7 +42,7 @@ def processDelimiters(state: StateInline, delimiters, *args):
             if newMinOpenerIdx == -1:
                 newMinOpenerIdx = openerIdx
 
-            if opener.open and opener.end < 0 and opener.level == closer.level:
+            if opener.open and opener.end < 0:
 
                 isOddMatch = False
 

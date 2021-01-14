@@ -32,12 +32,8 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if silent:
         return True
 
-    # skip spaces after ">" and re-calculate offset
-    initial = offset = (
-        state.sCount[startLine]
-        + pos
-        - (state.bMarks[startLine] + state.tShift[startLine])
-    )
+    # set offset past spaces and ">"
+    initial = offset = state.sCount[startLine] + 1
 
     try:
         second_char_code: Optional[int] = state.srcCharCode[pos]
@@ -109,7 +105,6 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     oldParentType = state.parentType
     state.parentType = "blockquote"
-    wasOutdented = False
 
     # Search the end of the block
     #
@@ -142,8 +137,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
         #    > current blockquote
         # 2. checking this line
         # ```
-        if state.sCount[nextLine] < state.blkIndent:
-            wasOutdented = True
+        isOutdented = state.sCount[nextLine] < state.blkIndent
 
         pos = state.bMarks[nextLine] + state.tShift[nextLine]
         max = state.eMarks[nextLine]
@@ -152,17 +146,13 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
             # Case 1: line is not inside the blockquote, and this line is empty.
             break
 
-        evaluatesTrue = state.srcCharCode[pos] == 0x3E and not wasOutdented  # /* > */
+        evaluatesTrue = state.srcCharCode[pos] == 0x3E and not isOutdented  # /* > */
         pos += 1
         if evaluatesTrue:
             # This line is inside the blockquote.
 
-            # skip spaces after ">" and re-calculate offset
-            initial = offset = (
-                state.sCount[nextLine]
-                + pos
-                - (state.bMarks[nextLine] + state.tShift[nextLine])
-            )
+            # set offset past spaces and ">"
+            initial = offset = state.sCount[nextLine] + 1
 
             # skip one optional space after '>'
             if state.srcCharCode[pos] == 0x20:  # /* space */
