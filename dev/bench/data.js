@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1610646799506,
+  "lastUpdate": 1610646857437,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -12403,6 +12403,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.013322",
             "group": "plugins",
             "extra": "mean: 215.41 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.7"
+        },
+        "commit": {
+          "id": "fa1d3e3c338533e042c327e14d050c7a3a9a7a05",
+          "message": "🐛 FIX: port markdown-it v11.0.1 (#109)\n\nThis commit updates the port to be up-to-date with markdown-it v11.0.1 (2020-09-14), applying two fixes:\r\n\r\n- Fix blockquote lazy newlines, [[#696](https://github.com/markdown-it/markdown-it/issues/696)].\r\n- Fix missed mappings for table rows, [[#705](https://github.com/markdown-it/markdown-it/issues/705)].",
+          "timestamp": "2021-01-14T17:51:56Z",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/fa1d3e3c338533e042c327e14d050c7a3a9a7a05",
+          "distinct": true,
+          "tree_id": "81ca0745ed15786e808d739baac63add392fa4c8"
+        },
+        "date": 1610646856577,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.114597924051147,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057686",
+            "group": "packages",
+            "extra": "mean: 243.04 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.258964772250106,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0026317",
+            "group": "packages",
+            "extra": "mean: 75.421 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.4246165261144013,
+            "unit": "iter/sec",
+            "range": "stddev: 0.025981",
+            "group": "packages",
+            "extra": "mean: 412.44 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.0915013095529824,
+            "unit": "iter/sec",
+            "range": "stddev: 0.029240",
+            "group": "packages",
+            "extra": "mean: 916.17 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.9595096342805336,
+            "unit": "iter/sec",
+            "range": "stddev: 0.058085",
+            "group": "packages",
+            "extra": "mean: 1.0422 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.243613106067212,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0097831",
+            "group": "packages",
+            "extra": "mean: 235.65 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.0238872800036092,
+            "unit": "iter/sec",
+            "range": "stddev: 0.064356",
+            "group": "packages",
+            "extra": "mean: 976.67 msec\nrounds: 20"
           }
         ]
       }
