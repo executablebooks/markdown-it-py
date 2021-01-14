@@ -1,32 +1,32 @@
 """Tokenizes paragraph content.
 """
-from typing import List
+from typing import List, Tuple
 
-from .ruler import Ruler
+from .ruler import Ruler, RuleFunc
 from .token import Token
 from .rules_inline.state_inline import StateInline
 from . import rules_inline
 
 # Parser rules
-_rules = [
-    ["text", rules_inline.text],
-    ["newline", rules_inline.newline],
-    ["escape", rules_inline.escape],
-    ["backticks", rules_inline.backtick],
-    ["strikethrough", rules_inline.strikethrough.tokenize],
-    ["emphasis", rules_inline.emphasis.tokenize],
-    ["link", rules_inline.link],
-    ["image", rules_inline.image],
-    ["autolink", rules_inline.autolink],
-    ["html_inline", rules_inline.html_inline],
-    ["entity", rules_inline.entity],
+_rules: List[Tuple[str, RuleFunc]] = [
+    ("text", rules_inline.text),
+    ("newline", rules_inline.newline),
+    ("escape", rules_inline.escape),
+    ("backticks", rules_inline.backtick),
+    ("strikethrough", rules_inline.strikethrough.tokenize),
+    ("emphasis", rules_inline.emphasis.tokenize),
+    ("link", rules_inline.link),
+    ("image", rules_inline.image),
+    ("autolink", rules_inline.autolink),
+    ("html_inline", rules_inline.html_inline),
+    ("entity", rules_inline.entity),
 ]
 
-_rules2 = [
-    ["balance_pairs", rules_inline.link_pairs],
-    ["strikethrough", rules_inline.strikethrough.postProcess],
-    ["emphasis", rules_inline.emphasis.postProcess],
-    ["text_collapse", rules_inline.text_collapse],
+_rules2: List[Tuple[str, RuleFunc]] = [
+    ("balance_pairs", rules_inline.link_pairs),
+    ("strikethrough", rules_inline.strikethrough.postProcess),
+    ("emphasis", rules_inline.emphasis.postProcess),
+    ("text_collapse", rules_inline.text_collapse),
 ]
 
 
@@ -40,7 +40,7 @@ class ParserInline:
         for name, rule2 in _rules2:
             self.ruler2.push(name, rule2)
 
-    def skipToken(self, state: StateInline):
+    def skipToken(self, state: StateInline) -> None:
         """Skip single token by running all rules in validation mode;
         returns `True` if any rule reported success
         """
@@ -82,7 +82,7 @@ class ParserInline:
             state.pos += 1
         cache[pos] = state.pos
 
-    def tokenize(self, state: StateInline):
+    def tokenize(self, state: StateInline) -> None:
         """Generate tokens for input range."""
         ok = False
         rules = self.ruler.getRules("")
@@ -114,7 +114,7 @@ class ParserInline:
         if state.pending:
             state.pushPending()
 
-    def parse(self, src: str, md, env, tokens: List[Token]):
+    def parse(self, src: str, md, env, tokens: List[Token]) -> List[Token]:
         """Process input string and push inline tokens into `tokens`"""
         state = StateInline(src, md, env, tokens)
         self.tokenize(state)

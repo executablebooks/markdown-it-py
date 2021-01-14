@@ -6,6 +6,7 @@ Parse one or more markdown files, convert each to HTML, and print to stdout.
 """
 import argparse
 import sys
+from typing import Iterable, Optional, Sequence
 
 from markdown_it import __version__
 from markdown_it.main import MarkdownIt
@@ -14,7 +15,7 @@ from markdown_it.main import MarkdownIt
 version_str = "markdown-it-py [version {}]".format(__version__)
 
 
-def main(args=None):
+def main(args: Optional[Sequence[str]] = None) -> bool:
     namespace = parse_args(args)
     if namespace.filenames:
         convert(namespace.filenames)
@@ -23,12 +24,12 @@ def main(args=None):
     return True
 
 
-def convert(filenames):
+def convert(filenames: Iterable[str]) -> None:
     for filename in filenames:
         convert_file(filename)
 
 
-def convert_file(filename):
+def convert_file(filename: str) -> None:
     """
     Parse a Markdown file and dump the output to stdout.
     """
@@ -40,7 +41,7 @@ def convert_file(filename):
         sys.exit('Cannot open file "{}".'.format(filename))
 
 
-def interactive():
+def interactive() -> None:
     """
     Parse user input, dump to stdout, rinse and repeat.
     Python REPL style.
@@ -61,7 +62,7 @@ def interactive():
             break
 
 
-def parse_args(args):
+def parse_args(args: Optional[Sequence[str]]) -> argparse.Namespace:
     """Parse input CLI arguments."""
     parser = argparse.ArgumentParser(
         description="Parse one or more markdown files, "
@@ -96,7 +97,7 @@ Batch:
     return parser.parse_args(args)
 
 
-def print_heading():
+def print_heading() -> None:
     print("{} (interactive)".format(version_str))
     print("Type Ctrl-D to complete input, or Ctrl-C to exit.")
 
