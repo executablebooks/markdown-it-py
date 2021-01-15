@@ -273,6 +273,96 @@ bar|bar
 .
 
 
+Should not be terminated via row without "|" symbol:
+.
+foo|foo
+---|---
+paragraph
+.
+<table>
+<thead>
+<tr>
+<th>foo</th>
+<th>foo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>paragraph</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+.
+
+
+Delimiter escaping:
+.
+| Heading 1 \\\\| Heading 2
+| --------- | ---------
+| Cell\|1\|| Cell\|2
+\| Cell\\\|3 \\| Cell\|4
+.
+<p>| Heading 1 \\| Heading 2
+| --------- | ---------
+| Cell|1|| Cell|2
+| Cell\|3 \| Cell|4</p>
+.
+
+Pipes inside backticks split cells:
+.
+| Heading 1 | Heading 2
+| --------- | ---------
+| Cell 1 | Cell 2
+| `Cell|3` | Cell 4
+.
+<table>
+<thead>
+<tr>
+<th>Heading 1</th>
+<th>Heading 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cell 1</td>
+<td>Cell 2</td>
+</tr>
+<tr>
+<td>`Cell</td>
+<td>3`</td>
+</tr>
+</tbody>
+</table>
+.
+
+Unclosed backticks don't count
+.
+| Heading 1 | Heading 2
+| --------- | ---------
+| Cell 1 | Cell 2
+| `Cell 3| Cell 4
+.
+<table>
+<thead>
+<tr>
+<th>Heading 1</th>
+<th>Heading 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cell 1</td>
+<td>Cell 2</td>
+</tr>
+<tr>
+<td>`Cell 3</td>
+<td>Cell 4</td>
+</tr>
+</tbody>
+</table>
+.
+
 Another complicated backticks case
 .
 | Heading 1 | Heading 2
