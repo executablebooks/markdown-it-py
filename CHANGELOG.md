@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.6.2 - 2021-02-07
+
+This release brings Markdown-It-Py inline with Markdown-It v11.0.1 (2020-09-14), applying two fixes:
+
+- Fix blockquote lazy newlines, [[#696](markdown-it/markdown-it#696)].
+- Fix missed mappings for table rows, [[#705](markdown-it/markdown-it#705)].
+
+Thanks to [@hukkinj1](https://github.com/hukkinj1)!
+
 ## 0.6.1 - 2021-01-01
 
 This release provides some improvements to the code base:
