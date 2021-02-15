@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1613390343681,
+  "lastUpdate": 1613390419834,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -12997,6 +12997,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0084345",
             "group": "packages",
             "extra": "mean: 987.68 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.7"
+        },
+        "commit": {
+          "id": "2afb7cc5a824cf8340e405704cc996208ae33d0e",
+          "message": "🐛 FIX: cli.parse: return 0 for non-error (#124)\n\nCo-authored-by: Taneli Hukkinen <hukkinj1@users.noreply.github.com>\r\nCo-authored-by: Wes Turner <wes@wrd.nu>\r\nCo-authored-by: Wes Turner <50891+westurner@users.noreply.github.com>\r\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2021-02-15T12:59:04+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/2afb7cc5a824cf8340e405704cc996208ae33d0e",
+          "distinct": true,
+          "tree_id": "d5ab31962bf07cef9b67639e3e0efe4e44a27dc6"
+        },
+        "date": 1613390419145,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.769984183829507,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0068171",
+            "group": "plugins",
+            "extra": "mean: 209.64 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.6249877863321975,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0092404",
+            "group": "plugins",
+            "extra": "mean: 216.22 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.968576011897994,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0063662",
+            "group": "plugins",
+            "extra": "mean: 251.98 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 4.617207603311058,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0052910",
+            "group": "plugins",
+            "extra": "mean: 216.58 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.637731028605973,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0080408",
+            "group": "plugins",
+            "extra": "mean: 215.62 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.5601635862923136,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011050",
+            "group": "plugins",
+            "extra": "mean: 219.29 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 4.6849145877937675,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058165",
+            "group": "plugins",
+            "extra": "mean: 213.45 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 4.574562946942238,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0082432",
+            "group": "plugins",
+            "extra": "mean: 218.60 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 4.576680821598286,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0075419",
+            "group": "plugins",
+            "extra": "mean: 218.50 msec\nrounds: 20"
           }
         ]
       }
