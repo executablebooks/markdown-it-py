@@ -15,13 +15,13 @@ from markdown_it.main import MarkdownIt
 version_str = "markdown-it-py [version {}]".format(__version__)
 
 
-def main(args: Optional[Sequence[str]] = None) -> bool:
+def main(args: Optional[Sequence[str]] = None) -> int:
     namespace = parse_args(args)
     if namespace.filenames:
         convert(namespace.filenames)
     else:
         interactive()
-    return True
+    return 0
 
 
 def convert(filenames: Iterable[str]) -> None:
@@ -38,7 +38,8 @@ def convert_file(filename: str) -> None:
             rendered = MarkdownIt().render(fin.read())
             print(rendered, end="")
     except OSError:
-        sys.exit('Cannot open file "{}".'.format(filename))
+        sys.stderr.write(f'Cannot open file "{filename}".\n')
+        sys.exit(1)
 
 
 def interactive() -> None:
@@ -103,4 +104,5 @@ def print_heading() -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    exit_code = main(sys.argv[1:])
+    sys.exit(exit_code)
