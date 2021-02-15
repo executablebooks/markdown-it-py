@@ -104,4 +104,5 @@ def print_heading() -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    exit_code = main(sys.argv[1:])
+    sys.exit(exit_code)
