@@ -69,11 +69,11 @@ def parse_args(args: Optional[Sequence[str]]) -> argparse.Namespace:
         "convert each to HTML, and print to stdout",
         # NOTE: Remember to update README.md w/ the output of `markdown-it -h`
         epilog=(
-            """
+            f"""
 Interactive:
 
   $ markdown-it
-  markdown-it-py [version 0.0.0] (interactive)
+  markdown-it-py [version {__version__}] (interactive)
   Type Ctrl-D to complete input, or Ctrl-C to exit.
   >>> # Example
   ... > markdown *input*
