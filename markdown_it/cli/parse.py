@@ -6,6 +6,7 @@ Parse one or more markdown files, convert each to HTML, and print to stdout.
 """
 import argparse
 import sys
+from typing import Iterable, Optional, Sequence
 
 from markdown_it import __version__
 from markdown_it.main import MarkdownIt
@@ -14,21 +15,21 @@ from markdown_it.main import MarkdownIt
 version_str = "markdown-it-py [version {}]".format(__version__)
 
 
-def main(args=None):
+def main(args: Optional[Sequence[str]] = None) -> int:
     namespace = parse_args(args)
     if namespace.filenames:
         convert(namespace.filenames)
     else:
         interactive()
-    return True
+    return 0
 
 
-def convert(filenames):
+def convert(filenames: Iterable[str]) -> None:
     for filename in filenames:
         convert_file(filename)
 
 
-def convert_file(filename):
+def convert_file(filename: str) -> None:
     """
     Parse a Markdown file and dump the output to stdout.
     """
@@ -37,10 +38,11 @@ def convert_file(filename):
             rendered = MarkdownIt().render(fin.read())
             print(rendered, end="")
     except OSError:
-        sys.exit('Cannot open file "{}".'.format(filename))
+        sys.stderr.write(f'Cannot open file "{filename}".\n')
+        sys.exit(1)
 
 
-def interactive():
+def interactive() -> None:
     """
     Parse user input, dump to stdout, rinse and repeat.
     Python REPL style.
@@ -61,18 +63,18 @@ def interactive():
             break
 
 
-def parse_args(args):
+def parse_args(args: Optional[Sequence[str]]) -> argparse.Namespace:
     """Parse input CLI arguments."""
     parser = argparse.ArgumentParser(
         description="Parse one or more markdown files, "
         "convert each to HTML, and print to stdout",
         # NOTE: Remember to update README.md w/ the output of `markdown-it -h`
         epilog=(
-            """
+            f"""
 Interactive:
 
   $ markdown-it
-  markdown-it-py [version 0.0.0] (interactive)
+  markdown-it-py [version {__version__}] (interactive)
   Type Ctrl-D to complete input, or Ctrl-C to exit.
   >>> # Example
   ... > markdown *input*
@@ -96,10 +98,11 @@ Batch:
     return parser.parse_args(args)
 
 
-def print_heading():
+def print_heading() -> None:
     print("{} (interactive)".format(version_str))
     print("Type Ctrl-D to complete input, or Ctrl-C to exit.")
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    exit_code = main(sys.argv[1:])
+    sys.exit(exit_code)

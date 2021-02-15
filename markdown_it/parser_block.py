@@ -1,6 +1,6 @@
 """Block-level tokenizer."""
 import logging
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from .ruler import Ruler
 from .token import Token
@@ -10,24 +10,24 @@ from . import rules_block
 LOGGER = logging.getLogger(__name__)
 
 
-_rules = [
+_rules: List[Tuple] = [
     # First 2 params - rule name & source. Secondary array - list of rules,
     # which can be terminated by this one.
-    ["table", rules_block.table, ["paragraph", "reference"]],
-    ["code", rules_block.code],
-    ["fence", rules_block.fence, ["paragraph", "reference", "blockquote", "list"]],
-    [
+    ("table", rules_block.table, ["paragraph", "reference"]),
+    ("code", rules_block.code),
+    ("fence", rules_block.fence, ["paragraph", "reference", "blockquote", "list"]),
+    (
         "blockquote",
         rules_block.blockquote,
         ["paragraph", "reference", "blockquote", "list"],
-    ],
-    ["hr", rules_block.hr, ["paragraph", "reference", "blockquote", "list"]],
-    ["list", rules_block.list_block, ["paragraph", "reference", "blockquote"]],
-    ["reference", rules_block.reference],
-    ["heading", rules_block.heading, ["paragraph", "reference", "blockquote"]],
-    ["lheading", rules_block.lheading],
-    ["html_block", rules_block.html_block, ["paragraph", "reference", "blockquote"]],
-    ["paragraph", rules_block.paragraph],
+    ),
+    ("hr", rules_block.hr, ["paragraph", "reference", "blockquote", "list"]),
+    ("list", rules_block.list_block, ["paragraph", "reference", "blockquote"]),
+    ("reference", rules_block.reference),
+    ("heading", rules_block.heading, ["paragraph", "reference", "blockquote"]),
+    ("lheading", rules_block.lheading),
+    ("html_block", rules_block.html_block, ["paragraph", "reference", "blockquote"]),
+    ("paragraph", rules_block.paragraph),
 ]
 
 
@@ -47,7 +47,7 @@ class ParserBlock:
 
     def tokenize(
         self, state: StateBlock, startLine: int, endLine: int, silent: bool = False
-    ):
+    ) -> None:
         """Generate tokens for input range."""
         rules = self.ruler.getRules("")
         line = startLine
@@ -98,11 +98,11 @@ class ParserBlock:
         md,
         env,
         outTokens: List[Token],
-        ords: Optional[List[int]] = None,
-    ):
+        ords: Optional[Tuple[int, ...]] = None,
+    ) -> Optional[List[Token]]:
         """Process input string and push block tokens into `outTokens`."""
         if not src:
-            return
+            return None
         state = StateBlock(src, md, env, outTokens, ords)
         self.tokenize(state, state.line, state.lineMax)
         return state.tokens
