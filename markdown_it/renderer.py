@@ -43,7 +43,7 @@ class RendererType(Protocol):
         ...
 
 
-class RendererHTML:
+class RendererHTML(RendererProtocol):
     """Contains render rules for tokens. Can be updated and extended.
 
     Example:
