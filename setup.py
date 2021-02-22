@@ -40,7 +40,11 @@ setup(
     ],
     keywords="markdown lexer parser development",
     python_requires="~=3.6",
-    install_requires=["attrs>=19,<21", "mdit-py-plugins~=0.2.1"],
+    install_requires=[
+        "attrs>=19,<21",
+        "mdit-py-plugins~=0.2.1",
+        "typing_extensions>=3.7.4; python_version<'3.8'",
+    ],
     extras_require={
         "code_style": ["pre-commit==2.6"],
         "testing": [

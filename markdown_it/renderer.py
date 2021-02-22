@@ -6,10 +6,44 @@ copy of rules. Those can be rewritten with ease. Also, you can add new
 rules if you create plugin and adds new token types.
 """
 import inspect
-from typing import Optional, Sequence
+import sys
+from typing import (
+    Any,
+    ClassVar,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Sequence,
+    TYPE_CHECKING,
+)
 
 from .common.utils import unescapeAll, escapeHtml
 from .token import Token
+
+if TYPE_CHECKING:
+    from .main import MarkdownIt
+
+if sys.version_info < (3, 8):
+    from typing_extensions import Protocol
+else:
+    from typing import Protocol
+
+
+class RendererProtocol(Protocol):
+    __output__: ClassVar[str]
+
+    def __init__(self, parser: "MarkdownIt") -> None:
+        ...
+
+    def render(
+        self, tokens: Sequence[Token], options: Mapping[str, Any], env: MutableMapping
+    ) -> str:
+        ...
+
+
+class RendererProtocolType(Protocol):
+    def __call__(self, parser: "MarkdownIt") -> RendererProtocol:
+        ...
 
 
 class RendererHTML:

@@ -18,7 +18,7 @@ from .parser_core import ParserCore  # noqa F401
 from .parser_block import ParserBlock  # noqa F401
 from .parser_inline import ParserInline  # noqa F401
 from .rules_core.state_core import StateCore
-from .renderer import RendererHTML
+from .renderer import RendererHTML, RendererProtocolType
 from .utils import AttrDict
 
 try:
@@ -38,7 +38,9 @@ _PRESETS = AttrDict(
 
 class MarkdownIt:
     def __init__(
-        self, config: Union[str, Mapping] = "commonmark", renderer_cls=RendererHTML
+        self,
+        config: Union[str, Mapping] = "commonmark",
+        renderer_cls: RendererProtocolType = RendererHTML,
     ):
         """Main parser class
 
