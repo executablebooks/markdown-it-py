@@ -14,14 +14,10 @@ from typing import (
     MutableMapping,
     Optional,
     Sequence,
-    TYPE_CHECKING,
 )
 
 from .common.utils import unescapeAll, escapeHtml
 from .token import Token
-
-if TYPE_CHECKING:
-    from .main import MarkdownIt
 
 if sys.version_info < (3, 8):
     from typing_extensions import Protocol
@@ -35,11 +31,6 @@ class RendererProtocol(Protocol):
     def render(
         self, tokens: Sequence[Token], options: Mapping[str, Any], env: MutableMapping
     ) -> str:
-        ...
-
-
-class RendererType(Protocol):
-    def __call__(self, parser: "MarkdownIt") -> RendererProtocol:
         ...
 
 
