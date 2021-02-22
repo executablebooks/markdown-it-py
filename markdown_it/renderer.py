@@ -32,16 +32,13 @@ else:
 class RendererProtocol(Protocol):
     __output__: ClassVar[str]
 
-    def __init__(self, parser: "MarkdownIt") -> None:
-        ...
-
     def render(
         self, tokens: Sequence[Token], options: Mapping[str, Any], env: MutableMapping
     ) -> str:
         ...
 
 
-class RendererProtocolType(Protocol):
+class RendererType(Protocol):
     def __call__(self, parser: "MarkdownIt") -> RendererProtocol:
         ...
 
