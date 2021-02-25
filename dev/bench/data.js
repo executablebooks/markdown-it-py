@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1613390486877,
+  "lastUpdate": 1614213276354,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -13169,6 +13169,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.014775",
             "group": "packages",
             "extra": "mean: 942.25 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.7"
+        },
+        "commit": {
+          "id": "031b329a30c84f9552ed27cbf7d431d70c982db9",
+          "message": "👌 IMPROVE: Make `NestedTokens.closing` not optional (#118)\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2021-02-25T01:33:06+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/031b329a30c84f9552ed27cbf7d431d70c982db9",
+          "distinct": true,
+          "tree_id": "8ebbb6a4df0291ae19bdf952d754e020a027d4e9"
+        },
+        "date": 1614213275587,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 3.9012568027531658,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0050640",
+            "group": "plugins",
+            "extra": "mean: 256.33 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 3.8398082086452114,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0047714",
+            "group": "plugins",
+            "extra": "mean: 260.43 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.2483792604327832,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0079150",
+            "group": "plugins",
+            "extra": "mean: 307.85 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 3.860760460925758,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0052276",
+            "group": "plugins",
+            "extra": "mean: 259.02 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 3.860120293627374,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057767",
+            "group": "plugins",
+            "extra": "mean: 259.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 3.8557747932137674,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0051193",
+            "group": "plugins",
+            "extra": "mean: 259.35 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 3.862796778874528,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0047235",
+            "group": "plugins",
+            "extra": "mean: 258.88 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 3.7678019325422394,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0067053",
+            "group": "plugins",
+            "extra": "mean: 265.41 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 3.8541745761555335,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058215",
+            "group": "plugins",
+            "extra": "mean: 259.46 msec\nrounds: 20"
           }
         ]
       }
