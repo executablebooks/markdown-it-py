@@ -203,10 +203,12 @@ class SyntaxTreeNode:
 
     @property
     def tag(self) -> str:
+        """html tag name, e.g. \"p\""""
         return self._attribute_token().tag
 
     @property
     def attrs(self) -> Dict[str, Any]:
+        """Html attributes."""
         token_attrs = self._attribute_token().attrs
         if token_attrs is None:
             return {}
@@ -215,6 +217,7 @@ class SyntaxTreeNode:
 
     @property
     def map(self) -> Optional[Tuple[int, int]]:
+        """Source map info. Format: `Tuple[ line_begin, line_end ]`"""
         map_ = self._attribute_token().map
         if map_:
             # Type ignore because `Token`s attribute types are not perfect
@@ -223,28 +226,37 @@ class SyntaxTreeNode:
 
     @property
     def level(self) -> int:
+        """nesting level, the same as `state.level`"""
         return self._attribute_token().level
 
     @property
     def content(self) -> str:
+        """In a case of self-closing tag (code, html, fence, etc.), it
+        has contents of this tag."""
         return self._attribute_token().content
 
     @property
     def markup(self) -> str:
+        """'*' or '_' for emphasis, fence string for fence, etc."""
         return self._attribute_token().markup
 
     @property
     def info(self) -> str:
+        """fence infostring"""
         return self._attribute_token().info
 
     @property
     def meta(self) -> dict:
+        """A place for plugins to store an arbitrary data."""
         return self._attribute_token().meta
 
     @property
     def block(self) -> bool:
+        """True for block-level tokens, false for inline tokens."""
         return self._attribute_token().block
 
     @property
     def hidden(self) -> bool:
+        """If it's true, ignore this element when rendering.
+        Used for tight lists to hide paragraphs."""
         return self._attribute_token().hidden
