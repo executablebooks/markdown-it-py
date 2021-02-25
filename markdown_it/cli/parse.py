@@ -15,13 +15,13 @@ from markdown_it.main import MarkdownIt
 version_str = "markdown-it-py [version {}]".format(__version__)
 
 
-def main(args: Optional[Sequence[str]] = None) -> bool:
+def main(args: Optional[Sequence[str]] = None) -> int:
     namespace = parse_args(args)
     if namespace.filenames:
         convert(namespace.filenames)
     else:
         interactive()
-    return True
+    return 0
 
 
 def convert(filenames: Iterable[str]) -> None:
@@ -38,7 +38,8 @@ def convert_file(filename: str) -> None:
             rendered = MarkdownIt().render(fin.read())
             print(rendered, end="")
     except OSError:
-        sys.exit('Cannot open file "{}".'.format(filename))
+        sys.stderr.write(f'Cannot open file "{filename}".\n')
+        sys.exit(1)
 
 
 def interactive() -> None:
@@ -69,11 +70,11 @@ def parse_args(args: Optional[Sequence[str]]) -> argparse.Namespace:
         "convert each to HTML, and print to stdout",
         # NOTE: Remember to update README.md w/ the output of `markdown-it -h`
         epilog=(
-            """
+            f"""
 Interactive:
 
   $ markdown-it
-  markdown-it-py [version 0.0.0] (interactive)
+  markdown-it-py [version {__version__}] (interactive)
   Type Ctrl-D to complete input, or Ctrl-C to exit.
   >>> # Example
   ... > markdown *input*
@@ -103,4 +104,5 @@ def print_heading() -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    exit_code = main(sys.argv[1:])
+    sys.exit(exit_code)
