@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1614213643288,
+  "lastUpdate": 1614285060182,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -13513,6 +13513,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.024948",
             "group": "packages",
             "extra": "mean: 1.0013 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.7"
+        },
+        "commit": {
+          "id": "888636c972fa415466b221253e957756796f7b71",
+          "message": "✨ NEW: Add SyntaxTreeNode (#129)\n\nThis is a more comprehensive replacement for\r\n`nest_tokens` and `NestedTokens` (which are now deprecated).\r\nIt allows for the `Token` stream to be converted to/from\r\na nested tree structure, with opening/closing tokens collapsed into a single\r\n`SyntaxTreeNode` and the intermediate tokens set as children.",
+          "timestamp": "2021-02-25T21:29:52+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/888636c972fa415466b221253e957756796f7b71",
+          "distinct": true,
+          "tree_id": "6db12890be798219172f0e74ab77e7e191ed579c"
+        },
+        "date": 1614285059578,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.745550778140485,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059907",
+            "group": "plugins",
+            "extra": "mean: 210.72 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.703043909911157,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0052626",
+            "group": "plugins",
+            "extra": "mean: 212.63 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 4.12606426791414,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014161",
+            "group": "plugins",
+            "extra": "mean: 242.36 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 5.338666601475196,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058440",
+            "group": "plugins",
+            "extra": "mean: 187.31 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 5.362985854172873,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0053100",
+            "group": "plugins",
+            "extra": "mean: 186.46 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 5.341423130897686,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0054062",
+            "group": "plugins",
+            "extra": "mean: 187.22 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 5.342911429600261,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0052539",
+            "group": "plugins",
+            "extra": "mean: 187.16 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 5.222679765354373,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058382",
+            "group": "plugins",
+            "extra": "mean: 191.47 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 5.352226994348112,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0055350",
+            "group": "plugins",
+            "extra": "mean: 186.84 msec\nrounds: 20"
           }
         ]
       }
