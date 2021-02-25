@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1614285060182,
+  "lastUpdate": 1614285105379,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -13607,6 +13607,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0055350",
             "group": "plugins",
             "extra": "mean: 186.84 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.7"
+        },
+        "commit": {
+          "id": "888636c972fa415466b221253e957756796f7b71",
+          "message": "✨ NEW: Add SyntaxTreeNode (#129)\n\nThis is a more comprehensive replacement for\r\n`nest_tokens` and `NestedTokens` (which are now deprecated).\r\nIt allows for the `Token` stream to be converted to/from\r\na nested tree structure, with opening/closing tokens collapsed into a single\r\n`SyntaxTreeNode` and the intermediate tokens set as children.",
+          "timestamp": "2021-02-25T21:29:52+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/888636c972fa415466b221253e957756796f7b71",
+          "distinct": true,
+          "tree_id": "6db12890be798219172f0e74ab77e7e191ed579c"
+        },
+        "date": 1614285104747,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 5.483123910592621,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0064352",
+            "group": "packages",
+            "extra": "mean: 182.38 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 17.62579167289861,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0027647",
+            "group": "packages",
+            "extra": "mean: 56.735 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.8290325166417354,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012751",
+            "group": "packages",
+            "extra": "mean: 353.48 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.3232356946651185,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015875",
+            "group": "packages",
+            "extra": "mean: 755.72 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.1648769321875312,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010035",
+            "group": "packages",
+            "extra": "mean: 858.46 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 5.585716667611401,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0051935",
+            "group": "packages",
+            "extra": "mean: 179.03 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.3265494526447168,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013252",
+            "group": "packages",
+            "extra": "mean: 753.84 msec\nrounds: 20"
           }
         ]
       }
