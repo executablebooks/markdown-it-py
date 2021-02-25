@@ -1,4 +1,4 @@
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 import attr
 
@@ -15,7 +15,7 @@ class Token:
     # - `-1` means the tag is closing
     nesting: int = attr.ib()
     # Html attributes. Format: `[ [ name1, value1 ], [ name2, value2 ] ]`
-    attrs: Optional[list] = attr.ib(default=None)
+    attrs: Optional[List[list]] = attr.ib(default=None)
     # Source map info. Format: `[ line_begin, line_end ]`
     map: Optional[List[int]] = attr.ib(default=None)
     # nesting level, the same as `state.level`
@@ -46,14 +46,14 @@ class Token:
                 return i
         return -1
 
-    def attrPush(self, attrData: List[str]):
+    def attrPush(self, attrData: list) -> None:
         """Add `[ name, value ]` attribute to list. Init attrs if necessary."""
         if self.attrs:
             self.attrs.append(attrData)
         else:
             self.attrs = [attrData]
 
-    def attrSet(self, name: str, value: str):
+    def attrSet(self, name: str, value: Any) -> None:
         """Set `name` attribute to `value`. Override old value if exists."""
         idx = self.attrIndex(name)
         if idx < 0:
@@ -62,7 +62,7 @@ class Token:
             assert self.attrs is not None
             self.attrs[idx] = [name, value]
 
-    def attrGet(self, name: str) -> Optional[str]:
+    def attrGet(self, name: str) -> Any:
         """ Get the value of attribute `name`, or null if it does not exist."""
         idx = self.attrIndex(name)
         if idx >= 0:
