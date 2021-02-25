@@ -50,7 +50,9 @@ class SyntaxTreeNode:
         return root
 
     def to_tokens(self) -> List[Token]:
-        def recursive_collect_tokens(node: "SyntaxTreeNode", token_list: list) -> None:
+        def recursive_collect_tokens(
+            node: "SyntaxTreeNode", token_list: List[Token]
+        ) -> None:
             if node.type == "root":
                 for child in node.children:
                     recursive_collect_tokens(child, token_list)
