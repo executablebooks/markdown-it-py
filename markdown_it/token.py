@@ -117,7 +117,7 @@ class NestedTokens:
     """
 
     opening: Token = attr.ib()
-    closing: Optional[Token] = attr.ib()
+    closing: Token = attr.ib()
     children: List[Union[Token, "NestedTokens"]] = attr.ib(factory=list)
 
     def __getattr__(self, name):
@@ -144,6 +144,9 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
             token = token.copy()
             output.append(token)
             if token.children:
+                # Ignore type checkers because `nest_tokens` doesn't respect
+                # typing of `Token.children`. We add `NestedTokens` into a
+                # `List[Token]` here.
                 token.children = nest_tokens(token.children)  # type: ignore
             continue
 
