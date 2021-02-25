@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1614213276354,
+  "lastUpdate": 1614213314619,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -13263,6 +13263,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0058215",
             "group": "plugins",
             "extra": "mean: 259.46 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.7"
+        },
+        "commit": {
+          "id": "031b329a30c84f9552ed27cbf7d431d70c982db9",
+          "message": "👌 IMPROVE: Make `NestedTokens.closing` not optional (#118)\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2021-02-25T01:33:06+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/031b329a30c84f9552ed27cbf7d431d70c982db9",
+          "distinct": true,
+          "tree_id": "8ebbb6a4df0291ae19bdf952d754e020a027d4e9"
+        },
+        "date": 1614213313977,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.815451015616474,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057011",
+            "group": "packages",
+            "extra": "mean: 207.66 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 15.698995830921689,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0022566",
+            "group": "packages",
+            "extra": "mean: 63.698 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.534646578977786,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014918",
+            "group": "packages",
+            "extra": "mean: 394.53 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.1816397261287372,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0093531",
+            "group": "packages",
+            "extra": "mean: 846.28 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.026184426816662,
+            "unit": "iter/sec",
+            "range": "stddev: 0.021065",
+            "group": "packages",
+            "extra": "mean: 974.48 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.837289541664603,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058240",
+            "group": "packages",
+            "extra": "mean: 206.73 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.2518528964210898,
+            "unit": "iter/sec",
+            "range": "stddev: 0.046857",
+            "group": "packages",
+            "extra": "mean: 798.82 msec\nrounds: 20"
           }
         ]
       }
