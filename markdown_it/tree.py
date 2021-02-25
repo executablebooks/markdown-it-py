@@ -44,13 +44,13 @@ class SyntaxTreeNode:
         # children (i.e. inline or img)
         self.children: List["SyntaxTreeNode"] = []
 
-    @staticmethod
-    def from_tokens(tokens: Sequence[Token]) -> "SyntaxTreeNode":
+    @classmethod
+    def from_tokens(cls, tokens: Sequence[Token]) -> "SyntaxTreeNode":
         """Instantiate a `SyntaxTreeNode` from a token stream.
 
         This is the standard method for instantiating `SyntaxTreeNode`.
         """
-        root = SyntaxTreeNode()
+        root = cls()
         root._set_children_from_tokens(tokens)
         return root
 
@@ -143,7 +143,7 @@ class SyntaxTreeNode:
         """Make and return a child node for `self`."""
         if token and nester_tokens or not token and not nester_tokens:
             raise ValueError("must specify either `token` or `nester_tokens`")
-        child = SyntaxTreeNode()
+        child = type(self)()
         if token:
             child.token = token
         else:
