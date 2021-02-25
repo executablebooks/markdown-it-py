@@ -1,5 +1,5 @@
 from markdown_it import MarkdownIt
-from markdown_it.token import SyntaxTreeNode
+from markdown_it.tree import SyntaxTreeNode
 
 EXAMPLE_MARKDOWN = """
 ## Heading here
