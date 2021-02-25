@@ -12,7 +12,8 @@ class SyntaxTreeNode:
     """A Markdown syntax tree node.
 
     A class that can be used to construct a tree representation of a linear
-    `markdown-it-py` token stream.
+    `markdown-it-py` token stream. Use `SyntaxTreeNode.from_tokens` to
+    initialize instead of the `__init__` method.
 
     Each node in the tree represents either:
       - root of the Markdown document
@@ -45,11 +46,17 @@ class SyntaxTreeNode:
 
     @staticmethod
     def from_tokens(tokens: Sequence[Token]) -> "SyntaxTreeNode":
+        """Instantiate a `SyntaxTreeNode` from a token stream.
+
+        This is the standard method for instantiating `SyntaxTreeNode`.
+        """
         root = SyntaxTreeNode()
         root._set_children_from_tokens(tokens)
         return root
 
     def to_tokens(self) -> List[Token]:
+        """Recover the linear token stream."""
+
         def recursive_collect_tokens(
             node: "SyntaxTreeNode", token_list: List[Token]
         ) -> None:
@@ -70,13 +77,34 @@ class SyntaxTreeNode:
         return tokens
 
     @property
+    def is_nested(self) -> bool:
+        """Is this node nested?.
+
+        Returns `True` if the node represents a `Token` pair and tokens in the
+        sequence between them, where `Token.nesting` of the first `Token` in
+        the pair is 1 and nesting of the other `Token` is -1.
+        """
+        return bool(self.nester_tokens)
+
+    @property
     def siblings(self) -> Sequence["SyntaxTreeNode"]:
+        """Get siblings of the node.
+
+        Gets the whole group of siblings, including self.
+        """
         if not self.parent:
             return [self]
         return self.parent.children
 
     @property
     def type(self) -> str:
+        """Get a string type of the represented syntax.
+
+        - "root" for root nodes
+        - `Token.type` if the node represents an unnested token
+        - `Token.type` of the opening token, with "_open" suffix stripped, if
+            the node represents a nester token pair
+        """
         if not self.token and not self.nester_tokens:
             return "root"
         if self.token:
@@ -86,6 +114,10 @@ class SyntaxTreeNode:
 
     @property
     def next_sibling(self) -> Optional["SyntaxTreeNode"]:
+        """Get the next node in the sequence of siblings.
+
+        Returns `None` if this is the last sibling.
+        """
         self_index = self.siblings.index(self)
         if self_index + 1 < len(self.siblings):
             return self.siblings[self_index + 1]
@@ -93,6 +125,10 @@ class SyntaxTreeNode:
 
     @property
     def previous_sibling(self) -> Optional["SyntaxTreeNode"]:
+        """Get the previous node in the sequence of siblings.
+
+        Returns `None` if this is the first sibling.
+        """
         self_index = self.siblings.index(self)
         if self_index - 1 >= 0:
             return self.siblings[self_index - 1]
@@ -104,6 +140,7 @@ class SyntaxTreeNode:
         token: Optional[Token] = None,
         nester_tokens: Optional[_NesterTokens] = None,
     ) -> "SyntaxTreeNode":
+        """Make and return a child node for `self`."""
         if token and nester_tokens or not token and not nester_tokens:
             raise ValueError("must specify either `token` or `nester_tokens`")
         child = SyntaxTreeNode()
@@ -116,7 +153,8 @@ class SyntaxTreeNode:
         return child
 
     def _set_children_from_tokens(self, tokens: Sequence[Token]) -> None:
-        """Convert the token stream to a tree structure."""
+        """Convert the token stream to a tree structure and set the resulting
+        nodes as children of `self`."""
         reversed_tokens = list(reversed(tokens))
         while reversed_tokens:
             token = reversed_tokens.pop()
@@ -151,11 +189,12 @@ class SyntaxTreeNode:
     # object, so calling these property getters on a root node will raise an
     # `AttributeError`.
     #
-    # There is no mapping for `Token.nesting` because getting a `bool` of
-    # `SyntaxTreeNode.nester_tokens` provides that data, and can be called on
-    # any node type, including root.
+    # There is no mapping for `Token.nesting` because the `is_nested` property
+    # provides that data, and can be called on any node type, including root.
 
     def _attribute_token(self) -> Token:
+        """Return the `Token` that is used as the data source for the
+        properties defined below."""
         if self.token:
             return self.token
         if self.nester_tokens:
