@@ -2,13 +2,27 @@
 
 This module is not part of upstream JavaScript markdown-it.
 """
-from typing import NamedTuple, Sequence, Tuple, Dict, List, Optional, Any
+from typing import (
+    NamedTuple,
+    Sequence,
+    Tuple,
+    Dict,
+    List,
+    Optional,
+    Any,
+    TypeVar,
+    Type,
+    Generic,
+)
 
 from .token import Token
 from .utils import _removesuffix
 
 
-class SyntaxTreeNode:
+_T = TypeVar("_T", bound="SyntaxTreeNodeBase")
+
+
+class SyntaxTreeNodeBase(Generic[_T]):
     """A Markdown syntax tree node.
 
     A class that can be used to construct a tree representation of a linear
@@ -35,17 +49,17 @@ class SyntaxTreeNode:
         self.token: Optional[Token] = None
 
         # Only containers have nester tokens
-        self.nester_tokens: Optional[SyntaxTreeNode._NesterTokens] = None
+        self.nester_tokens: Optional[SyntaxTreeNodeBase._NesterTokens] = None
 
         # Root node does not have self.parent
-        self.parent: Optional["SyntaxTreeNode"] = None
+        self.parent: Optional[_T] = None
 
         # Empty list unless a non-empty container, or unnested token that has
         # children (i.e. inline or img)
-        self.children: List["SyntaxTreeNode"] = []
+        self.children: List[_T] = []
 
     @classmethod
-    def from_tokens(cls, tokens: Sequence[Token]) -> "SyntaxTreeNode":
+    def from_tokens(cls: Type[_T], tokens: Sequence[Token]) -> _T:
         """Instantiate a `SyntaxTreeNode` from a token stream.
 
         This is the standard method for instantiating `SyntaxTreeNode`.
@@ -54,12 +68,10 @@ class SyntaxTreeNode:
         root._set_children_from_tokens(tokens)
         return root
 
-    def to_tokens(self) -> List[Token]:
+    def to_tokens(self: _T) -> List[Token]:
         """Recover the linear token stream."""
 
-        def recursive_collect_tokens(
-            node: "SyntaxTreeNode", token_list: List[Token]
-        ) -> None:
+        def recursive_collect_tokens(node: _T, token_list: List[Token]) -> None:
             if node.type == "root":
                 for child in node.children:
                     recursive_collect_tokens(child, token_list)
@@ -87,7 +99,7 @@ class SyntaxTreeNode:
         return bool(self.nester_tokens)
 
     @property
-    def siblings(self) -> Sequence["SyntaxTreeNode"]:
+    def siblings(self: _T) -> Sequence[_T]:
         """Get siblings of the node.
 
         Gets the whole group of siblings, including self.
@@ -113,7 +125,7 @@ class SyntaxTreeNode:
         return _removesuffix(self.nester_tokens.opening.type, "_open")
 
     @property
-    def next_sibling(self) -> Optional["SyntaxTreeNode"]:
+    def next_sibling(self: _T) -> Optional[_T]:
         """Get the next node in the sequence of siblings.
 
         Returns `None` if this is the last sibling.
@@ -124,7 +136,7 @@ class SyntaxTreeNode:
         return None
 
     @property
-    def previous_sibling(self) -> Optional["SyntaxTreeNode"]:
+    def previous_sibling(self: _T) -> Optional[_T]:
         """Get the previous node in the sequence of siblings.
 
         Returns `None` if this is the first sibling.
@@ -135,11 +147,11 @@ class SyntaxTreeNode:
         return None
 
     def _make_child(
-        self,
+        self: _T,
         *,
         token: Optional[Token] = None,
         nester_tokens: Optional[_NesterTokens] = None,
-    ) -> "SyntaxTreeNode":
+    ) -> _T:
         """Make and return a child node for `self`."""
         if token and nester_tokens or not token and not nester_tokens:
             raise ValueError("must specify either `token` or `nester_tokens`")
@@ -177,7 +189,7 @@ class SyntaxTreeNode:
                 raise ValueError(f"unclosed tokens starting {nested_tokens[0]}")
 
             child = self._make_child(
-                nester_tokens=SyntaxTreeNode._NesterTokens(
+                nester_tokens=SyntaxTreeNodeBase._NesterTokens(
                     nested_tokens[0], nested_tokens[-1]
                 )
             )
@@ -260,3 +272,7 @@ class SyntaxTreeNode:
         """If it's true, ignore this element when rendering.
         Used for tight lists to hide paragraphs."""
         return self._attribute_token().hidden
+
+
+class SyntaxTreeNode(SyntaxTreeNodeBase["SyntaxTreeNode"]):
+    pass
