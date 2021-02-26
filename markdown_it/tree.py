@@ -212,8 +212,7 @@ class SyntaxTreeNode:
         token_attrs = self._attribute_token().attrs
         if token_attrs is None:
             return {}
-        # Type ignore because `Token`s attribute types are not perfect
-        return dict(token_attrs)  # type: ignore
+        return dict(token_attrs)
 
     @property
     def map(self) -> Optional[Tuple[int, int]]:
