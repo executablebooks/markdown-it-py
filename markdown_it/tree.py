@@ -12,17 +12,16 @@ from typing import (
     Any,
     TypeVar,
     Type,
-    Generic,
 )
 
 from .token import Token
 from .utils import _removesuffix
 
 
-_T = TypeVar("_T", bound="SyntaxTreeNodeBase")
+_T = TypeVar("_T", bound="SyntaxTreeNode")
 
 
-class SyntaxTreeNodeBase(Generic[_T]):
+class SyntaxTreeNode:
     """A Markdown syntax tree node.
 
     A class that can be used to construct a tree representation of a linear
@@ -49,14 +48,14 @@ class SyntaxTreeNodeBase(Generic[_T]):
         self.token: Optional[Token] = None
 
         # Only containers have nester tokens
-        self.nester_tokens: Optional[SyntaxTreeNodeBase._NesterTokens] = None
+        self.nester_tokens: Optional[SyntaxTreeNode._NesterTokens] = None
 
         # Root node does not have self.parent
-        self.parent: Optional[_T] = None
+        self._parent: Any = None  # Optional[_T]
 
         # Empty list unless a non-empty container, or unnested token that has
         # children (i.e. inline or img)
-        self.children: List[_T] = []
+        self._children: list = []  # List[_T]
 
     @classmethod
     def from_tokens(cls: Type[_T], tokens: Sequence[Token]) -> _T:
@@ -87,6 +86,14 @@ class SyntaxTreeNodeBase(Generic[_T]):
         tokens: List[Token] = []
         recursive_collect_tokens(self, tokens)
         return tokens
+
+    @property
+    def children(self: _T) -> Sequence[_T]:
+        return self._children
+
+    @property
+    def parent(self: _T) -> Optional[_T]:
+        return self._parent
 
     @property
     def is_nested(self) -> bool:
@@ -160,8 +167,8 @@ class SyntaxTreeNodeBase(Generic[_T]):
             child.token = token
         else:
             child.nester_tokens = nester_tokens
-        child.parent = self
-        self.children.append(child)
+        child._parent = self
+        self._children.append(child)
         return child
 
     def _set_children_from_tokens(self, tokens: Sequence[Token]) -> None:
@@ -189,7 +196,7 @@ class SyntaxTreeNodeBase(Generic[_T]):
                 raise ValueError(f"unclosed tokens starting {nested_tokens[0]}")
 
             child = self._make_child(
-                nester_tokens=SyntaxTreeNodeBase._NesterTokens(
+                nester_tokens=SyntaxTreeNode._NesterTokens(
                     nested_tokens[0], nested_tokens[-1]
                 )
             )
@@ -272,7 +279,3 @@ class SyntaxTreeNodeBase(Generic[_T]):
         """If it's true, ignore this element when rendering.
         Used for tight lists to hide paragraphs."""
         return self._attribute_token().hidden
-
-
-class SyntaxTreeNode(SyntaxTreeNodeBase["SyntaxTreeNode"]):
-    pass
