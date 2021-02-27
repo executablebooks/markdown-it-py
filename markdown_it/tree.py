@@ -18,6 +18,11 @@ from .token import Token
 from .utils import _removesuffix
 
 
+class _NesterTokens(NamedTuple):
+    opening: Token
+    closing: Token
+
+
 _T = TypeVar("_T", bound="SyntaxTreeNode")
 
 
@@ -35,10 +40,6 @@ class SyntaxTreeNode:
           between
     """
 
-    class _NesterTokens(NamedTuple):
-        opening: Token
-        closing: Token
-
     def __init__(self) -> None:
         """Initialize a root node with no children.
 
@@ -48,7 +49,7 @@ class SyntaxTreeNode:
         self.token: Optional[Token] = None
 
         # Only containers have nester tokens
-        self.nester_tokens: Optional[SyntaxTreeNode._NesterTokens] = None
+        self.nester_tokens: Optional[_NesterTokens] = None
 
         # Root node does not have self.parent
         self._parent: Any = None  # Optional[_T]
@@ -196,9 +197,7 @@ class SyntaxTreeNode:
                 raise ValueError(f"unclosed tokens starting {nested_tokens[0]}")
 
             child = self._make_child(
-                nester_tokens=SyntaxTreeNode._NesterTokens(
-                    nested_tokens[0], nested_tokens[-1]
-                )
+                nester_tokens=_NesterTokens(nested_tokens[0], nested_tokens[-1])
             )
             child._set_children_from_tokens(nested_tokens[1:-1])
 
