@@ -65,11 +65,11 @@ class SyntaxTreeNode:
                 " Set `create_root=True`."
             )
         elif len(tokens) == 1:
-            tkn = tokens[0]
-            assert not tkn.nesting
-            self.token = tkn
-            if tkn.children:
-                self._set_children_from_tokens(tkn.children)
+            inline_token = tokens[0]
+            assert not inline_token.nesting
+            self.token = inline_token
+            if inline_token.children:
+                self._set_children_from_tokens(inline_token.children)
         else:
             self.nester_tokens = _NesterTokens(tokens[0], tokens[-1])
             self._set_children_from_tokens(tokens[1:-1])
@@ -184,19 +184,19 @@ class SyntaxTreeNode:
         while reversed_tokens:
             token = reversed_tokens.pop()
 
-            if token.nesting == 0:
+            if not token.nesting:
                 self._add_child([token])
                 continue
-
-            assert token.nesting == 1
+            if token.nesting != 1:
+                raise ValueError("Invalid token nesting")
 
             nested_tokens = [token]
             nesting = 1
-            while reversed_tokens and nesting != 0:
+            while reversed_tokens and nesting:
                 token = reversed_tokens.pop()
                 nested_tokens.append(token)
                 nesting += token.nesting
-            if nesting != 0:
+            if nesting:
                 raise ValueError(f"unclosed tokens starting {nested_tokens[0]}")
 
             self._add_child(nested_tokens)
