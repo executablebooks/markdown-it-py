@@ -11,7 +11,6 @@ from typing import (
     Optional,
     Any,
     TypeVar,
-    Type,
 )
 
 from .token import Token
@@ -30,8 +29,7 @@ class SyntaxTreeNode:
     """A Markdown syntax tree node.
 
     A class that can be used to construct a tree representation of a linear
-    `markdown-it-py` token stream. Use `SyntaxTreeNode.from_tokens` to
-    initialize instead of the `__init__` method.
+    `markdown-it-py` token stream.
 
     Each node in the tree represents either:
       - root of the Markdown document
@@ -40,33 +38,39 @@ class SyntaxTreeNode:
           between
     """
 
-    def __init__(self) -> None:
-        """Initialize a root node with no children.
+    def __init__(
+        self, tokens: Sequence[Token] = (), *, create_root: bool = True
+    ) -> None:
+        """Initialize a `SyntaxTreeNode` from a token stream.
 
-        You probably need `SyntaxTreeNode.from_tokens` instead.
+        If `create_root` is True, crete a root node for the document.
         """
         # Only nodes representing an unnested token have self.token
         self.token: Optional[Token] = None
-
         # Only containers have nester tokens
         self.nester_tokens: Optional[_NesterTokens] = None
-
         # Root node does not have self.parent
         self.parent = None
-
         # Empty list unless a non-empty container, or unnested token that has
         # children (i.e. inline or img)
         self.children = []
 
-    @classmethod
-    def from_tokens(cls: Type[_T], tokens: Sequence[Token]) -> _T:
-        """Instantiate a `SyntaxTreeNode` from a token stream.
+        if create_root:
+            self._set_children_from_tokens(tokens)
+            return
 
-        This is the standard method for instantiating `SyntaxTreeNode`.
-        """
-        root = cls()
-        root._set_children_from_tokens(tokens)
-        return root
+        if not tokens:
+            raise ValueError("can only create root from empty token sequence")
+        elif len(tokens) == 1:
+            tkn = tokens[0]
+            assert not tkn.nesting
+            self.token = tkn
+            if tkn.children:
+                self._set_children_from_tokens(tkn.children)
+            return
+        else:
+            self.nester_tokens = _NesterTokens(tokens[0], tokens[-1])
+            self._set_children_from_tokens(tokens[1:-1])
 
     def to_tokens(self: _T) -> List[Token]:
         """Recover the linear token stream."""
@@ -162,23 +166,14 @@ class SyntaxTreeNode:
             return self.siblings[self_index - 1]
         return None
 
-    def _make_child(
-        self: _T,
-        *,
-        token: Optional[Token] = None,
-        nester_tokens: Optional[_NesterTokens] = None,
-    ) -> _T:
-        """Make and return a child node for `self`."""
-        if token and nester_tokens or not token and not nester_tokens:
-            raise ValueError("must specify either `token` or `nester_tokens`")
-        child = type(self)()
-        if token:
-            child.token = token
-        else:
-            child.nester_tokens = nester_tokens
+    def _add_child(
+        self,
+        tokens: Sequence[Token],
+    ) -> None:
+        """Make a child node for `self`."""
+        child = type(self)(tokens, create_root=False)
         child.parent = self
         self.children.append(child)
-        return child
 
     def _set_children_from_tokens(self, tokens: Sequence[Token]) -> None:
         """Convert the token stream to a tree structure and set the resulting
@@ -188,9 +183,7 @@ class SyntaxTreeNode:
             token = reversed_tokens.pop()
 
             if token.nesting == 0:
-                child = self._make_child(token=token)
-                if token.children:
-                    child._set_children_from_tokens(token.children)
+                self._add_child([token])
                 continue
 
             assert token.nesting == 1
@@ -204,10 +197,7 @@ class SyntaxTreeNode:
             if nesting != 0:
                 raise ValueError(f"unclosed tokens starting {nested_tokens[0]}")
 
-            child = self._make_child(
-                nester_tokens=_NesterTokens(nested_tokens[0], nested_tokens[-1])
-            )
-            child._set_children_from_tokens(nested_tokens[1:-1])
+            self._add_child(nested_tokens)
 
     # NOTE:
     # The values of the properties defined below directly map to properties
