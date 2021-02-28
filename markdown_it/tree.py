@@ -52,11 +52,11 @@ class SyntaxTreeNode:
         self.nester_tokens: Optional[_NesterTokens] = None
 
         # Root node does not have self.parent
-        self._parent: Any = None  # Optional[_T]
+        self.parent = None
 
         # Empty list unless a non-empty container, or unnested token that has
         # children (i.e. inline or img)
-        self._children: list = []  # List[_T]
+        self.children = []
 
     @classmethod
     def from_tokens(cls: Type[_T], tokens: Sequence[Token]) -> _T:
@@ -89,12 +89,20 @@ class SyntaxTreeNode:
         return tokens
 
     @property
-    def children(self: _T) -> Sequence[_T]:
+    def children(self: _T) -> List[_T]:
         return self._children
+
+    @children.setter
+    def children(self: _T, value: List[_T]) -> None:
+        self._children = value
 
     @property
     def parent(self: _T) -> Optional[_T]:
         return self._parent
+
+    @parent.setter
+    def parent(self: _T, value: Optional[_T]) -> None:
+        self._parent = value
 
     @property
     def is_nested(self) -> bool:
@@ -168,8 +176,8 @@ class SyntaxTreeNode:
             child.token = token
         else:
             child.nester_tokens = nester_tokens
-        child._parent = self
-        self._children.append(child)
+        child.parent = self
+        self.children.append(child)
         return child
 
     def _set_children_from_tokens(self, tokens: Sequence[Token]) -> None:
