@@ -60,14 +60,16 @@ class SyntaxTreeNode:
             return
 
         if not tokens:
-            raise ValueError("can only create root from empty token sequence")
+            raise ValueError(
+                "Can only create root from empty token sequence."
+                " Set `create_root=True`."
+            )
         elif len(tokens) == 1:
             tkn = tokens[0]
             assert not tkn.nesting
             self.token = tkn
             if tkn.children:
                 self._set_children_from_tokens(tkn.children)
-            return
         else:
             self.nester_tokens = _NesterTokens(tokens[0], tokens[-1])
             self._set_children_from_tokens(tokens[1:-1])
