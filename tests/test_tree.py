@@ -37,6 +37,7 @@ def test_type():
     assert tree.type == "root"
     # "_open" suffix must be stripped from nested token type
     assert tree.children[0].type == "heading"
+    assert tree[0].type == "heading"
     # For unnested tokens, node type must remain same as token type
     assert tree.children[0].children[0].type == "inline"
 
@@ -54,3 +55,20 @@ def test_sibling_traverse():
     assert another_text_node.next_sibling is None
     assert another_text_node.previous_sibling.previous_sibling == text_node
     assert text_node.previous_sibling is None
+
+
+def test_pretty(file_regression):
+    md = MarkdownIt("commonmark")
+    tokens = md.parse(
+        """
+# Header
+
+Here's some text and an image ![title](image.png)
+
+1. a **list**
+
+> a *quote*
+    """
+    )
+    node = SyntaxTreeNode.from_tokens(tokens)
+    file_regression.check(node.pretty(indent=2, show_text=True), extension=".xml")

@@ -2,6 +2,7 @@
 
 This module is not part of upstream JavaScript markdown-it.
 """
+import textwrap
 from typing import NamedTuple, Sequence, Tuple, Dict, List, Optional, Any
 
 from .token import Token
@@ -44,6 +45,12 @@ class SyntaxTreeNode:
         # children (i.e. inline or img)
         self.children: List["SyntaxTreeNode"] = []
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}({self.type})"
+
+    def __getitem__(self, item: int) -> "SyntaxTreeNode":
+        return self.children[item]
+
     @classmethod
     def from_tokens(cls, tokens: Sequence[Token]) -> "SyntaxTreeNode":
         """Instantiate a `SyntaxTreeNode` from a token stream.
@@ -75,6 +82,11 @@ class SyntaxTreeNode:
         tokens: List[Token] = []
         recursive_collect_tokens(self, tokens)
         return tokens
+
+    @property
+    def is_root(self) -> bool:
+        """Is the node a special root node?"""
+        return not (self.token or self.nester_tokens)
 
     @property
     def is_nested(self) -> bool:
@@ -182,6 +194,23 @@ class SyntaxTreeNode:
                 )
             )
             child._set_children_from_tokens(nested_tokens[1:-1])
+
+    def pretty(
+        self, *, indent: int = 2, show_text: bool = False, _current: int = 0
+    ) -> str:
+        """Create an XML style string of the tree."""
+        prefix = " " * _current
+        text = prefix + f"<{self.type}"
+        if not self.is_root and self.attrs:
+            text += " " + " ".join(f"{k}={v!r}" for k, v in self.attrs.items())
+        text += ">"
+        if show_text and not self.is_root and self.type == "text" and self.content:
+            text += "\n" + textwrap.indent(self.content, prefix + " " * indent)
+        for child in self.children:
+            text += "\n" + child.pretty(
+                indent=indent, show_text=show_text, _current=_current + indent
+            )
+        return text
 
     # NOTE:
     # The values of the properties defined below directly map to properties

@@ -28,6 +28,7 @@ then these are converted to other formats using 'renderers'.
 The simplest way to understand how text will be parsed is using:
 
 ```{code-cell}
+from pprint import pprint
 from markdown_it import MarkdownIt
 ```
 
@@ -48,8 +49,15 @@ for token in md.parse("some *text*"):
 
 The `MarkdownIt` class is instantiated with parsing configuration options,
 dictating the syntax rules and additional options for the parser and renderer.
-You can define this configuration *via* a preset name (`'zero'`, `'commonmark'` or `'default'`),
-or by directly supplying a dictionary.
+You can define this configuration *via* directly supplying a dictionary or a preset name:
+
+- `zero`: This configures the minimum components to parse text (i.e. just paragraphs and text)
+- `commonmark` (default): This configures the parser to strictly comply with the [CommonMark specification](http://spec.commonmark.org/).
+- `js-default`: This is the default in the JavaScript version.
+  Compared to `commonmark`, it disables HTML parsing and enables the table and strikethrough components.
+- `gfm-like`: This configures the parser to approximately comply with the [GitHub Flavored Markdown specification](https://github.github.com/gfm/).
+  Compared to `commonmark`, it disables HTML parsing and enables the table, strikethrough and linkify components.
+  **Important**, to use this configuration you must have `linkify-it-py` installed.
 
 ```{code-cell}
 from markdown_it.presets import zero
@@ -61,18 +69,26 @@ md = MarkdownIt("zero")
 md.options
 ```
 
+You can also override specific options:
+
 ```{code-cell}
-print(md.get_active_rules())
+md = MarkdownIt("zero", {"maxNesting": 99})
+md.options
 ```
 
 ```{code-cell}
-print(md.get_all_rules())
+pprint(md.get_active_rules())
 ```
 
 You can find all the parsing rules in the source code:
 `parser_core.py`, `parser_block.py`,
 `parser_inline.py`.
-Any of the parsing rules can be enabled/disabled, and these methods are chainable:
+
+```{code-cell}
+pprint(md.get_all_rules())
+```
+
+Any of the parsing rules can be enabled/disabled, and these methods are "chainable":
 
 ```{code-cell}
 md.render("- __*emphasise this*__")
@@ -95,6 +111,50 @@ Additionally `renderInline` runs the parser with all block syntax rules disabled
 
 ```{code-cell}
 md.renderInline("__*emphasise this*__")
+```
+
+### Typographic components
+
+The `smartquotes` and `replacements` components are intended to improve typography:
+
+`smartquotes` will convert basic quote marks to their opening and closing variants:
+
+- 'single quotes' -> ‘single quotes’
+- "double quotes" -> “double quotes”
+
+`replacements` will replace particular text constructs:
+
+- ``(c)``, ``(C)`` → ©
+- ``(tm)``, ``(TM)`` → ™
+- ``(r)``, ``(R)`` → ®
+- ``(p)``, ``(P)`` → §
+- ``+-`` → ±
+- ``...`` → …
+- ``?....`` → ?..
+- ``!....`` → !..
+- ``????????`` → ???
+- ``!!!!!`` → !!!
+- ``,,,`` → ,
+- ``--`` → &ndash
+- ``---`` → &mdash
+
+Both of these components require typography to be turned on, as well as the components enabled:
+
+```{code-cell}
+md = MarkdownIt("commonmark", {"typographer": True})
+md.enable(["replacements", "smartquotes"])
+md.render("'single quotes' (c)")
+```
+
+### Linkify
+
+The `linkify` component requires that [linkify-it-py](https://github.com/tsutsu3/linkify-it-py) be installed (e.g. *via* `pip install markdown-it-py[linkify]`).
+This allows URL links to be identified, without the need for enclosing in `<>` brackets:
+
+```{code-cell}
+md = MarkdownIt("commonmark", {"linkify": True})
+md.enable(["linkify"])
+md.render("github.com")
 ```
 
 ### Plugins load
@@ -129,7 +189,6 @@ md.render(text)
 ```
 
 ## The Token Stream
-
 
 +++
 
@@ -183,21 +242,44 @@ This dictionary can also be deserialized:
 Token.from_dict(tokens[1].as_dict())
 ```
 
-In some use cases `nest_tokens` may be useful, to collapse the opening/closing tokens into single tokens:
+### Creating a syntax tree
 
-```{code-cell}
-from markdown_it.token import nest_tokens
-nested_tokens = nest_tokens(tokens)
-[t.type for t in nested_tokens]
+```{versionchanged} 0.7.0
+`nest_tokens` and `NestedTokens` are deprecated and replaced by `SyntaxTreeNode`.
 ```
 
-This introduces a single additional class `NestedTokens`,
-containing an `opening`, `closing` and `children`, which can be a list of mixed
-`Token` and `NestedTokens`.
+In some use cases it may be useful to convert the token stream into a syntax tree,
+with opening/closing tokens collapsed into a single token that contains children.
 
 ```{code-cell}
-nested_tokens[0]
+from markdown_it.tree import SyntaxTreeNode
+
+md = MarkdownIt("commonmark")
+tokens = md.parse("""
+# Header
+
+Here's some text and an image ![title](image.png)
+
+1. a **list**
+
+> a *quote*
+""")
+
+node = SyntaxTreeNode.from_tokens(tokens)
+print(node.pretty(indent=2, show_text=True))
 ```
+
+You can then use methods to traverse the tree
+
+```{code-cell}
+node.children
+```
+
+```{code-cell}
+print(node[0])
+node[0].next_sibling
+```
+
 
 ## Renderers
 
