@@ -20,16 +20,6 @@
       the JS dependencies [mdurl](https://www.npmjs.com/package/mdurl)
       and [punycode](https://www.npmjs.com/package/punycode)
     - |
-      Remove indirect references within `MarkdownIt`;
-
-        self.validateLink = validateLink
-        self.normalizeLink = normalizeLink
-        self.normalizeLinkText = normalizeLinkText
-
-      in favour of using them directly through:
-
-        from markdown_it.common.normalize_url import normalizeLinkText
-    - |
       In markdown_it/rules_block/reference.py,
       record line range in state.env["references"] and add state.env["duplicate_refs"]
       This is to allow renderers to report on issues regarding references

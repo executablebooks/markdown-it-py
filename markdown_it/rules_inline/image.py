@@ -5,7 +5,6 @@ from typing import List
 from .state_inline import StateInline
 from ..token import Token
 from ..common.utils import isSpace, normalizeReference
-from ..common.normalize_url import normalizeLink, validateLink
 
 
 def image(state: StateInline, silent: bool):
@@ -53,8 +52,8 @@ def image(state: StateInline, silent: bool):
         start = pos
         res = state.md.helpers.parseLinkDestination(state.src, pos, state.posMax)
         if res.ok:
-            href = normalizeLink(res.str)
-            if validateLink(href):
+            href = state.md.normalizeLink(res.str)
+            if state.md.validateLink(href):
                 pos = res.pos
             else:
                 href = ""

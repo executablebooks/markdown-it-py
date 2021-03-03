@@ -1,15 +1,18 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, TYPE_CHECKING
 
 from ..token import Token
 from ..ruler import StateBase
 from ..common.utils import isSpace
+
+if TYPE_CHECKING:
+    from markdown_it.main import MarkdownIt
 
 
 class StateBlock(StateBase):
     def __init__(
         self,
         src: str,
-        md,
+        md: "MarkdownIt",
         env,
         tokens: List[Token],
         srcCharCode: Optional[Tuple[int, ...]] = None,
