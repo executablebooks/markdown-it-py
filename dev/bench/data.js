@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1614771419679,
+  "lastUpdate": 1614774918655,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -14029,6 +14029,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.020531",
             "group": "packages",
             "extra": "mean: 1.0467 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "a70db2a8b4860445745c6398251589e3a8fb1aa2",
+          "message": "👌 IMPROVE: Make link functions overridable (#135)\n\n`validateLink`,  `normalizeLink` and `normalizeLinkText` are now methods of `MarkdownIt`,\r\nmeaning that they can be overriden by subclassing\r\n`MarkdownIt`.",
+          "timestamp": "2021-03-03T13:33:54+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/a70db2a8b4860445745c6398251589e3a8fb1aa2",
+          "distinct": true,
+          "tree_id": "639e520e372834c79a86515e7719768152524b51"
+        },
+        "date": 1614774917989,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.234709028227239,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0068779",
+            "group": "plugins",
+            "extra": "mean: 236.14 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.232820239583506,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0062738",
+            "group": "plugins",
+            "extra": "mean: 236.25 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.110481047231671,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010026",
+            "group": "plugins",
+            "extra": "mean: 321.49 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 4.164428568277756,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010049",
+            "group": "plugins",
+            "extra": "mean: 240.13 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.204472142335249,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0084400",
+            "group": "plugins",
+            "extra": "mean: 237.84 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.181871269305348,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0056991",
+            "group": "plugins",
+            "extra": "mean: 239.13 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 4.1689121930283735,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0091626",
+            "group": "plugins",
+            "extra": "mean: 239.87 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 4.088356404052516,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0086920",
+            "group": "plugins",
+            "extra": "mean: 244.60 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 4.245612113285312,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0073419",
+            "group": "plugins",
+            "extra": "mean: 235.54 msec\nrounds: 20"
           }
         ]
       }
