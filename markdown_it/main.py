@@ -29,12 +29,11 @@ except ModuleNotFoundError:
 
 _PRESETS = {
     "default": presets.default.make(),
+    "js-default": presets.js_default.make(),
     "zero": presets.zero.make(),
     "commonmark": presets.commonmark.make(),
+    "gfm-like": presets.gfm_like.make(),
 }
-_PRESETS["js-default"] = _PRESETS["default"]
-_PRESETS["gfm-like"] = presets.default.make()
-_PRESETS["gfm-like"]["options"]["linkify"] = True
 
 
 class MarkdownIt:

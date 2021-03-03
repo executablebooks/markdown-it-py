@@ -56,7 +56,7 @@ You can define this configuration *via* directly supplying a dictionary or a pre
 - `js-default`: This is the default in the JavaScript version.
   Compared to `commonmark`, it disables HTML parsing and enables the table and strikethrough components.
 - `gfm-like`: This configures the parser to approximately comply with the [GitHub Flavored Markdown specification](https://github.github.com/gfm/).
-  Compared to `commonmark`, it disables HTML parsing and enables the table, strikethrough and linkify components.
+  Compared to `commonmark`, it enables the table, strikethrough and linkify components.
   **Important**, to use this configuration you must have `linkify-it-py` installed.
 
 ```{code-cell}
@@ -279,7 +279,6 @@ node.children
 print(node[0])
 node[0].next_sibling
 ```
-
 
 ## Renderers
 
