@@ -117,7 +117,7 @@ class SyntaxTreeNode:
         - `Token.type` of the opening token, with "_open" suffix stripped, if
             the node represents a nester token pair
         """
-        if not self.token and not self.nester_tokens:
+        if self.is_root:
             return "root"
         if self.token:
             return self.token.type
