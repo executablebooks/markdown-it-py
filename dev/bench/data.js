@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1614774918655,
+  "lastUpdate": 1614774981987,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -14123,6 +14123,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0073419",
             "group": "plugins",
             "extra": "mean: 235.54 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.40",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "a70db2a8b4860445745c6398251589e3a8fb1aa2",
+          "message": "👌 IMPROVE: Make link functions overridable (#135)\n\n`validateLink`,  `normalizeLink` and `normalizeLinkText` are now methods of `MarkdownIt`,\r\nmeaning that they can be overriden by subclassing\r\n`MarkdownIt`.",
+          "timestamp": "2021-03-03T13:33:54+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/a70db2a8b4860445745c6398251589e3a8fb1aa2",
+          "distinct": true,
+          "tree_id": "639e520e372834c79a86515e7719768152524b51"
+        },
+        "date": 1614774981316,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.946845333955803,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010144",
+            "group": "packages",
+            "extra": "mean: 253.37 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.807673495087013,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0025996",
+            "group": "packages",
+            "extra": "mean: 92.527 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.5218386350599318,
+            "unit": "iter/sec",
+            "range": "stddev: 0.022562",
+            "group": "packages",
+            "extra": "mean: 657.10 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 0.9899385458614071,
+            "unit": "iter/sec",
+            "range": "stddev: 0.045203",
+            "group": "packages",
+            "extra": "mean: 1.0102 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.8998229709837683,
+            "unit": "iter/sec",
+            "range": "stddev: 0.033563",
+            "group": "packages",
+            "extra": "mean: 1.1113 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.314092684448682,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059054",
+            "group": "packages",
+            "extra": "mean: 231.80 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.0815371801006786,
+            "unit": "iter/sec",
+            "range": "stddev: 0.026861",
+            "group": "packages",
+            "extra": "mean: 924.61 msec\nrounds: 20"
           }
         ]
       }
