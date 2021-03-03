@@ -1,7 +1,6 @@
 # Process autolinks '<protocol:...>'
 import re
 from .state_inline import StateInline
-from ..common.normalize_url import normalizeLinkText, normalizeLink, validateLink
 
 EMAIL_RE = re.compile(
     r"^([a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$"  # noqa: E501
@@ -34,8 +33,8 @@ def autolink(state: StateInline, silent: bool) -> bool:
     url = state.src[start + 1 : pos]
 
     if AUTOLINK_RE.search(url) is not None:
-        fullUrl = normalizeLink(url)
-        if not validateLink(fullUrl):
+        fullUrl = state.md.normalizeLink(url)
+        if not state.md.validateLink(fullUrl):
             return False
 
         if not silent:
@@ -45,7 +44,7 @@ def autolink(state: StateInline, silent: bool) -> bool:
             token.info = "auto"
 
             token = state.push("text", "", 0)
-            token.content = normalizeLinkText(url)
+            token.content = state.md.normalizeLinkText(url)
 
             token = state.push("link_close", "a", -1)
             token.markup = "autolink"
@@ -55,8 +54,8 @@ def autolink(state: StateInline, silent: bool) -> bool:
         return True
 
     if EMAIL_RE.search(url) is not None:
-        fullUrl = normalizeLink("mailto:" + url)
-        if not validateLink(fullUrl):
+        fullUrl = state.md.normalizeLink("mailto:" + url)
+        if not state.md.validateLink(fullUrl):
             return False
 
         if not silent:
@@ -66,7 +65,7 @@ def autolink(state: StateInline, silent: bool) -> bool:
             token.info = "auto"
 
             token = state.push("text", "", 0)
-            token.content = normalizeLinkText(url)
+            token.content = state.md.normalizeLinkText(url)
 
             token = state.push("link_close", "a", -1)
             token.markup = "autolink"

@@ -1,7 +1,6 @@
 # Process [link](<to> "stuff")
 
 from ..common.utils import normalizeReference, isSpace
-from ..common.normalize_url import normalizeLink, validateLink
 from .state_inline import StateInline
 
 
@@ -52,8 +51,8 @@ def link(state: StateInline, silent: bool):
         start = pos
         res = state.md.helpers.parseLinkDestination(state.src, pos, state.posMax)
         if res.ok:
-            href = normalizeLink(res.str)
-            if validateLink(href):
+            href = state.md.normalizeLink(res.str)
+            if state.md.validateLink(href):
                 pos = res.pos
             else:
                 href = ""

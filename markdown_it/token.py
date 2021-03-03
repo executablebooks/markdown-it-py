@@ -1,4 +1,5 @@
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
+import warnings
 
 import attr
 
@@ -15,7 +16,7 @@ class Token:
     # - `-1` means the tag is closing
     nesting: int = attr.ib()
     # Html attributes. Format: `[ [ name1, value1 ], [ name2, value2 ] ]`
-    attrs: Optional[list] = attr.ib(default=None)
+    attrs: Optional[List[list]] = attr.ib(default=None)
     # Source map info. Format: `[ line_begin, line_end ]`
     map: Optional[List[int]] = attr.ib(default=None)
     # nesting level, the same as `state.level`
@@ -46,14 +47,14 @@ class Token:
                 return i
         return -1
 
-    def attrPush(self, attrData: List[str]):
+    def attrPush(self, attrData: list) -> None:
         """Add `[ name, value ]` attribute to list. Init attrs if necessary."""
         if self.attrs:
             self.attrs.append(attrData)
         else:
             self.attrs = [attrData]
 
-    def attrSet(self, name: str, value: str):
+    def attrSet(self, name: str, value: Any) -> None:
         """Set `name` attribute to `value`. Override old value if exists."""
         idx = self.attrIndex(name)
         if idx < 0:
@@ -62,7 +63,7 @@ class Token:
             assert self.attrs is not None
             self.attrs[idx] = [name, value]
 
-    def attrGet(self, name: str) -> Optional[str]:
+    def attrGet(self, name: str) -> Any:
         """ Get the value of attribute `name`, or null if it does not exist."""
         idx = self.attrIndex(name)
         if idx >= 0:
@@ -117,7 +118,7 @@ class NestedTokens:
     """
 
     opening: Token = attr.ib()
-    closing: Optional[Token] = attr.ib()
+    closing: Token = attr.ib()
     children: List[Union[Token, "NestedTokens"]] = attr.ib(factory=list)
 
     def __getattr__(self, name):
@@ -134,6 +135,12 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
     ``NestedTokens`` contain the open and close tokens and a list of children
     of all tokens in between (recursively nested)
     """
+    warnings.warn(
+        "`markdown_it.token.nest_tokens` and `markdown_it.token.NestedTokens`"
+        " are deprecated. Please migrate to `markdown_it.tree.SyntaxTreeNode`",
+        DeprecationWarning,
+    )
+
     output: List[Union[Token, NestedTokens]] = []
 
     tokens = list(reversed(tokens))
@@ -144,6 +151,9 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
             token = token.copy()
             output.append(token)
             if token.children:
+                # Ignore type checkers because `nest_tokens` doesn't respect
+                # typing of `Token.children`. We add `NestedTokens` into a
+                # `List[Token]` here.
                 token.children = nest_tokens(token.children)  # type: ignore
             continue
 
