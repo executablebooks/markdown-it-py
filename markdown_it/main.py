@@ -12,7 +12,7 @@ from typing import (
 )
 
 from . import helpers, presets  # noqa F401
-from .common import utils  # noqa F401
+from .common import normalize_url, utils  # noqa F401
 from .token import Token
 from .parser_core import ParserCore  # noqa F401
 from .parser_block import ParserBlock  # noqa F401
@@ -288,3 +288,35 @@ class MarkdownIt:
         """
         env = AttrDict() if env is None else env
         return self.renderer.render(self.parseInline(src, env), self.options, env)
+
+    # link methods
+
+    def validateLink(self, url: str) -> bool:
+        """Validate if the URL link is allowed in output.
+
+        This validator can prohibit more than really needed to prevent XSS.
+        It's a tradeoff to keep code simple and to be secure by default.
+
+        Note: the url should be normalized at this point, and existing entities decoded.
+        """
+        return normalize_url.validateLink(url)
+
+    def normalizeLink(self, url: str) -> str:
+        """Normalize destination URLs in links
+
+        ::
+
+            [label]:   destination   'title'
+                    ^^^^^^^^^^^
+        """
+        return normalize_url.normalizeLink(url)
+
+    def normalizeLinkText(self, link: str) -> str:
+        """Normalize autolink content
+
+        ::
+
+            <destination>
+            ~~~~~~~~~~~
+        """
+        return normalize_url.normalizeLinkText(link)
