@@ -149,7 +149,7 @@ md.render("'single quotes' (c)")
 ### Linkify
 
 The `linkify` component requires that [linkify-it-py](https://github.com/tsutsu3/linkify-it-py) be installed (e.g. *via* `pip install markdown-it-py[linkify]`).
-This allows URL links to be identified, without the need for enclosing in `<>` brackets:
+This allows URI autolinks to be identified, without the need for enclosing in `<>` brackets:
 
 ```{code-cell}
 md = MarkdownIt("commonmark", {"linkify": True})

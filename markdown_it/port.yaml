@@ -27,7 +27,7 @@
       The `MarkdownIt.__init__` signature is slightly different for updating options,
       since you must always specify the config first, e.g.
       use `MarkdownIt("commonmark", {"html": False})` instead of `MarkdownIt({"html": False})`
-    - The default configuration preset for `MarkdownIt` if "commonmark" not "default"
+    - The default configuration preset for `MarkdownIt` is "commonmark" not "default"
     - Allow custom renderer to be passed to `MarkdownIt`
     - |
       change render method signatures

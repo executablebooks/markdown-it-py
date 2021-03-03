@@ -106,9 +106,9 @@ class MarkdownIt:
         That will give better compatibility with next versions.
         """
         if isinstance(presets, str):
-            config = _PRESETS.get(presets, None)
-            if not config:
+            if presets not in _PRESETS:
                 raise KeyError(f"Wrong `markdown-it` preset '{presets}', check name")
+            config = _PRESETS[presets]
         else:
             config = presets
 

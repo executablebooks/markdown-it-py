@@ -46,7 +46,7 @@ class SyntaxTreeNode:
         self.children: List["SyntaxTreeNode"] = []
 
     def __repr__(self) -> str:
-        return f"{self.__class__.__name__}({self.type})"
+        return f"{type(self).__name__}({self.type})"
 
     def __getitem__(self, item: int) -> "SyntaxTreeNode":
         return self.children[item]
