@@ -24,7 +24,7 @@ class _NesterTokens(NamedTuple):
     closing: Token
 
 
-_T = TypeVar("_T", bound="SyntaxTreeNode")
+_NodeType = TypeVar("_NodeType", bound="SyntaxTreeNode")
 
 
 class SyntaxTreeNode:
@@ -53,11 +53,11 @@ class SyntaxTreeNode:
         self.nester_tokens: Optional[_NesterTokens] = None
 
         # Root node does not have self.parent
-        self.parent = None
+        self._parent: Any = None
 
         # Empty list unless a non-empty container, or unnested token that has
         # children (i.e. inline or img)
-        self.children = []
+        self._children: list = []
 
     def __repr__(self) -> str:
         return f"{type(self).__name__}({self.type})"
@@ -66,7 +66,7 @@ class SyntaxTreeNode:
         return self.children[item]
 
     @classmethod
-    def from_tokens(cls: Type[_T], tokens: Sequence[Token]) -> _T:
+    def from_tokens(cls: Type[_NodeType], tokens: Sequence[Token]) -> _NodeType:
         """Instantiate a `SyntaxTreeNode` from a token stream.
 
         This is the standard method for instantiating `SyntaxTreeNode`.
@@ -75,10 +75,10 @@ class SyntaxTreeNode:
         root._set_children_from_tokens(tokens)
         return root
 
-    def to_tokens(self: _T) -> List[Token]:
+    def to_tokens(self: _NodeType) -> List[Token]:
         """Recover the linear token stream."""
 
-        def recursive_collect_tokens(node: _T, token_list: List[Token]) -> None:
+        def recursive_collect_tokens(node: _NodeType, token_list: List[Token]) -> None:
             if node.type == "root":
                 for child in node.children:
                     recursive_collect_tokens(child, token_list)
@@ -96,19 +96,19 @@ class SyntaxTreeNode:
         return tokens
 
     @property
-    def children(self: _T) -> List[_T]:
+    def children(self: _NodeType) -> List[_NodeType]:
         return self._children
 
     @children.setter
-    def children(self: _T, value: List[_T]) -> None:
+    def children(self: _NodeType, value: List[_NodeType]) -> None:
         self._children = value
 
     @property
-    def parent(self: _T) -> Optional[_T]:
+    def parent(self: _NodeType) -> Optional[_NodeType]:
         return self._parent
 
     @parent.setter
-    def parent(self: _T, value: Optional[_T]) -> None:
+    def parent(self: _NodeType, value: Optional[_NodeType]) -> None:
         self._parent = value
 
     @property
@@ -127,7 +127,7 @@ class SyntaxTreeNode:
         return bool(self.nester_tokens)
 
     @property
-    def siblings(self: _T) -> Sequence[_T]:
+    def siblings(self: _NodeType) -> Sequence[_NodeType]:
         """Get siblings of the node.
 
         Gets the whole group of siblings, including self.
@@ -153,7 +153,7 @@ class SyntaxTreeNode:
         return _removesuffix(self.nester_tokens.opening.type, "_open")
 
     @property
-    def next_sibling(self: _T) -> Optional[_T]:
+    def next_sibling(self: _NodeType) -> Optional[_NodeType]:
         """Get the next node in the sequence of siblings.
 
         Returns `None` if this is the last sibling.
@@ -164,7 +164,7 @@ class SyntaxTreeNode:
         return None
 
     @property
-    def previous_sibling(self: _T) -> Optional[_T]:
+    def previous_sibling(self: _NodeType) -> Optional[_NodeType]:
         """Get the previous node in the sequence of siblings.
 
         Returns `None` if this is the first sibling.
@@ -175,11 +175,11 @@ class SyntaxTreeNode:
         return None
 
     def _make_child(
-        self: _T,
+        self: _NodeType,
         *,
         token: Optional[Token] = None,
         nester_tokens: Optional[_NesterTokens] = None,
-    ) -> _T:
+    ) -> _NodeType:
         """Make and return a child node for `self`."""
         if token and nester_tokens or not token and not nester_tokens:
             raise ValueError("must specify either `token` or `nester_tokens`")
