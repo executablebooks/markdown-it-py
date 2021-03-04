@@ -12,6 +12,8 @@ from typing import (
     Optional,
     Any,
     TypeVar,
+    overload,
+    Union,
 )
 
 from .token import Token
@@ -79,7 +81,17 @@ class SyntaxTreeNode:
     def __repr__(self) -> str:
         return f"{type(self).__name__}({self.type})"
 
-    def __getitem__(self, item: int) -> "SyntaxTreeNode":
+    @overload
+    def __getitem__(self: _NodeType, item: int) -> _NodeType:
+        ...
+
+    @overload
+    def __getitem__(self: _NodeType, item: slice) -> List[_NodeType]:
+        ...
+
+    def __getitem__(
+        self: _NodeType, item: Union[int, slice]
+    ) -> Union[_NodeType, List[_NodeType]]:
         return self.children[item]
 
     def to_tokens(self: _NodeType) -> List[Token]:
