@@ -1,0 +1,30 @@
+<root>
+  <heading>
+    <inline>
+      <text>
+        Header
+  <paragraph>
+    <inline>
+      <text>
+        Here's some text and an image 
+      <image src='image.png' alt=''>
+        <text>
+          title
+  <ordered_list>
+    <list_item>
+      <paragraph>
+        <inline>
+          <text>
+            a 
+          <strong>
+            <text>
+              list
+          <text>
+  <blockquote>
+    <paragraph>
+      <inline>
+        <text>
+          a 
+        <em>
+          <text>
+            quote

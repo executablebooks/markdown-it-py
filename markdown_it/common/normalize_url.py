@@ -67,7 +67,7 @@ def unescape_normalize_uri(x: str) -> str:
     return normalize_uri(unescape_string(x))
 
 
-def normalizeLink(url):
+def normalizeLink(url: str) -> str:
     """Normalize destination URLs in links
 
     ::
@@ -117,7 +117,7 @@ def unescape_unquote(x: str) -> str:
     return unquote(unescape_string(x))
 
 
-def normalizeLinkText(link):
+def normalizeLinkText(link: str) -> str:
     """Normalize autolink content
 
     ::
@@ -171,9 +171,6 @@ def validateLink(url: str, validator: Optional[Callable] = None) -> bool:
 
     This validator can prohibit more than really needed to prevent XSS.
     It's a tradeoff to keep code simple and to be secure by default.
-
-    If you need different setup - override validator method as you wish.
-    Or replace it with dummy function and use external sanitizer.
 
     Note: url should be normalized at this point, and existing entities decoded.
     """

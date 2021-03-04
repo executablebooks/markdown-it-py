@@ -1,4 +1,5 @@
 from typing import Any, List, Optional, Union
+import warnings
 
 import attr
 
@@ -134,6 +135,12 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
     ``NestedTokens`` contain the open and close tokens and a list of children
     of all tokens in between (recursively nested)
     """
+    warnings.warn(
+        "`markdown_it.token.nest_tokens` and `markdown_it.token.NestedTokens`"
+        " are deprecated. Please migrate to `markdown_it.tree.SyntaxTreeNode`",
+        DeprecationWarning,
+    )
+
     output: List[Union[Token, NestedTokens]] = []
 
     tokens = list(reversed(tokens))
