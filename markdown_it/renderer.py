@@ -34,7 +34,7 @@ class RendererHTML:
             def strong_close(self, tokens, idx, options, env):
                 return '</b>'
 
-        md = MarkdownIt(renderer=CustomRenderer)
+        md = MarkdownIt(renderer_cls=CustomRenderer)
 
         result = md.render(...)
 

@@ -81,11 +81,11 @@ class ParserBlock:
             # i.e. latest empty line should not count
             state.tight = not hasEmptyLines
 
-            # paragraph might "eat" one newline after it in nested lists
-            if state.isEmpty(state.line - 1):
-                hasEmptyLines = True
-
             line = state.line
+
+            # paragraph might "eat" one newline after it in nested lists
+            if (line - 1) < endLine and state.isEmpty(line - 1):
+                hasEmptyLines = True
 
             if line < endLine and state.isEmpty(line):
                 hasEmptyLines = True

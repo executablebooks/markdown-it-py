@@ -85,6 +85,13 @@ def test_load_presets():
     }
 
 
+def test_override_options():
+    md = MarkdownIt("zero")
+    assert md.options["maxNesting"] == 20
+    md = MarkdownIt("zero", {"maxNesting": 99})
+    assert md.options["maxNesting"] == 99
+
+
 def test_enable():
     md = MarkdownIt("zero").enable("heading")
     assert md.get_active_rules() == {

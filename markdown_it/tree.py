@@ -2,6 +2,7 @@
 
 This module is not part of upstream JavaScript markdown-it.
 """
+import textwrap
 from typing import (
     NamedTuple,
     Sequence,
@@ -22,7 +23,7 @@ class _NesterTokens(NamedTuple):
     closing: Token
 
 
-_T = TypeVar("_T", bound="SyntaxTreeNode")
+_NodeType = TypeVar("_NodeType", bound="SyntaxTreeNode")
 
 
 class SyntaxTreeNode:
@@ -50,10 +51,11 @@ class SyntaxTreeNode:
         # Only containers have nester tokens
         self.nester_tokens: Optional[_NesterTokens] = None
         # Root node does not have self.parent
-        self.parent = None
+        self._parent: Any = None
+
         # Empty list unless a non-empty container, or unnested token that has
         # children (i.e. inline or img)
-        self.children = []
+        self._children: list = []
 
         if create_root:
             self._set_children_from_tokens(tokens)
@@ -74,10 +76,16 @@ class SyntaxTreeNode:
             self.nester_tokens = _NesterTokens(tokens[0], tokens[-1])
             self._set_children_from_tokens(tokens[1:-1])
 
-    def to_tokens(self: _T) -> List[Token]:
+    def __repr__(self) -> str:
+        return f"{type(self).__name__}({self.type})"
+
+    def __getitem__(self, item: int) -> "SyntaxTreeNode":
+        return self.children[item]
+
+    def to_tokens(self: _NodeType) -> List[Token]:
         """Recover the linear token stream."""
 
-        def recursive_collect_tokens(node: _T, token_list: List[Token]) -> None:
+        def recursive_collect_tokens(node: _NodeType, token_list: List[Token]) -> None:
             if node.type == "root":
                 for child in node.children:
                     recursive_collect_tokens(child, token_list)
@@ -95,20 +103,25 @@ class SyntaxTreeNode:
         return tokens
 
     @property
-    def children(self: _T) -> List[_T]:
+    def children(self: _NodeType) -> List[_NodeType]:
         return self._children
 
     @children.setter
-    def children(self: _T, value: List[_T]) -> None:
+    def children(self: _NodeType, value: List[_NodeType]) -> None:
         self._children = value
 
     @property
-    def parent(self: _T) -> Optional[_T]:
+    def parent(self: _NodeType) -> Optional[_NodeType]:
         return self._parent
 
     @parent.setter
-    def parent(self: _T, value: Optional[_T]) -> None:
+    def parent(self: _NodeType, value: Optional[_NodeType]) -> None:
         self._parent = value
+
+    @property
+    def is_root(self) -> bool:
+        """Is the node a special root node?"""
+        return not (self.token or self.nester_tokens)
 
     @property
     def is_nested(self) -> bool:
@@ -121,7 +134,7 @@ class SyntaxTreeNode:
         return bool(self.nester_tokens)
 
     @property
-    def siblings(self: _T) -> Sequence[_T]:
+    def siblings(self: _NodeType) -> Sequence[_NodeType]:
         """Get siblings of the node.
 
         Gets the whole group of siblings, including self.
@@ -139,7 +152,7 @@ class SyntaxTreeNode:
         - `Token.type` of the opening token, with "_open" suffix stripped, if
             the node represents a nester token pair
         """
-        if not self.token and not self.nester_tokens:
+        if self.is_root:
             return "root"
         if self.token:
             return self.token.type
@@ -147,7 +160,7 @@ class SyntaxTreeNode:
         return _removesuffix(self.nester_tokens.opening.type, "_open")
 
     @property
-    def next_sibling(self: _T) -> Optional[_T]:
+    def next_sibling(self: _NodeType) -> Optional[_NodeType]:
         """Get the next node in the sequence of siblings.
 
         Returns `None` if this is the last sibling.
@@ -158,7 +171,7 @@ class SyntaxTreeNode:
         return None
 
     @property
-    def previous_sibling(self: _T) -> Optional[_T]:
+    def previous_sibling(self: _NodeType) -> Optional[_NodeType]:
         """Get the previous node in the sequence of siblings.
 
         Returns `None` if this is the first sibling.
@@ -200,6 +213,23 @@ class SyntaxTreeNode:
                 raise ValueError(f"unclosed tokens starting {nested_tokens[0]}")
 
             self._add_child(nested_tokens)
+
+    def pretty(
+        self, *, indent: int = 2, show_text: bool = False, _current: int = 0
+    ) -> str:
+        """Create an XML style string of the tree."""
+        prefix = " " * _current
+        text = prefix + f"<{self.type}"
+        if not self.is_root and self.attrs:
+            text += " " + " ".join(f"{k}={v!r}" for k, v in self.attrs.items())
+        text += ">"
+        if show_text and not self.is_root and self.type == "text" and self.content:
+            text += "\n" + textwrap.indent(self.content, prefix + " " * indent)
+        for child in self.children:
+            text += "\n" + child.pretty(
+                indent=indent, show_text=show_text, _current=_current + indent
+            )
+        return text
 
     # NOTE:
     # The values of the properties defined below directly map to properties

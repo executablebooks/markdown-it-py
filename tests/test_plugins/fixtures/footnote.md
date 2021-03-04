@@ -298,3 +298,31 @@ hij</p>
 </ol>
 </section>
 .
+
+issue-133
+.
+> b [^1]
+
+Some text
+
+> c
+
+[^1]: d
+
+
+.
+<blockquote>
+<p>b <sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+</blockquote>
+<p>Some text</p>
+<blockquote>
+<p>c</p>
+</blockquote>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>d <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+.
