@@ -37,3 +37,14 @@ def read_fixture_file(path: Union[str, Path]) -> List[list]:
 
             last_pos = i
     return tests
+
+
+def _removesuffix(string: str, suffix: str) -> str:
+    """Remove a suffix from a string.
+
+    Replace this with str.removesuffix() from stdlib when minimum Python
+    version is 3.9.
+    """
+    if suffix and string.endswith(suffix):
+        return string[: -len(suffix)]
+    return string
