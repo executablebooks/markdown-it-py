@@ -70,5 +70,5 @@ Here's some text and an image ![title](image.png)
 > a *quote*
     """
     )
-    node = SyntaxTreeNode.from_tokens(tokens)
+    node = SyntaxTreeNode(tokens)
     file_regression.check(node.pretty(indent=2, show_text=True), extension=".xml")

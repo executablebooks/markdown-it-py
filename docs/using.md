@@ -265,7 +265,7 @@ Here's some text and an image ![title](image.png)
 > a *quote*
 """)
 
-node = SyntaxTreeNode.from_tokens(tokens)
+node = SyntaxTreeNode(tokens)
 print(node.pretty(indent=2, show_text=True))
 ```
 
