@@ -45,7 +45,13 @@ templates_path = ["_templates"]
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
-nitpick_ignore = [("py:class", "Match"), ("py:class", "x in the interval [0, 1).")]
+nitpick_ignore = [
+    ("py:class", "Match"),
+    ("py:class", "x in the interval [0, 1)."),
+    ("py:class", "markdown_it.helpers.parse_link_destination._Result"),
+    ("py:class", "markdown_it.helpers.parse_link_title._Result"),
+    ("py:class", "MarkdownIt"),
+]
 
 
 # -- Options for HTML output -------------------------------------------------
