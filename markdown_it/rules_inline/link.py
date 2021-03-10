@@ -7,6 +7,7 @@ from .state_inline import StateInline
 def link(state: StateInline, silent: bool):
 
     href = ""
+    title = ""
     label = None
     oldPos = state.pos
     maximum = state.posMax
@@ -56,31 +57,29 @@ def link(state: StateInline, silent: bool):
             else:
                 href = ""
 
-        # [link](  <href>  "title"  )
-        #                ^^ skipping these spaces
-        start = pos
-        while pos < maximum:
-            code = state.srcCharCode[pos]
-            if not isSpace(code) and code != 0x0A:
-                break
-            pos += 1
-
-        # [link](  <href>  "title"  )
-        #                  ^^^^^^^ parsing link title
-        res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax)
-        if pos < maximum and start != pos and res.ok:
-            title = res.str
-            pos = res.pos
-
             # [link](  <href>  "title"  )
-            #                         ^^ skipping these spaces
+            #                ^^ skipping these spaces
+            start = pos
             while pos < maximum:
                 code = state.srcCharCode[pos]
                 if not isSpace(code) and code != 0x0A:
                     break
                 pos += 1
-        else:
-            title = ""
+
+            # [link](  <href>  "title"  )
+            #                  ^^^^^^^ parsing link title
+            res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax)
+            if pos < maximum and start != pos and res.ok:
+                title = res.str
+                pos = res.pos
+
+                # [link](  <href>  "title"  )
+                #                         ^^ skipping these spaces
+                while pos < maximum:
+                    code = state.srcCharCode[pos]
+                    if not isSpace(code) and code != 0x0A:
+                        break
+                    pos += 1
 
         if pos >= maximum or state.srcCharCode[pos] != 0x29:  # /* ) */
             # parsing a valid shortcut link failed, fallback to reference
