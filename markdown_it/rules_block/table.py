@@ -10,7 +10,7 @@ enclosingPipesRe = re.compile(r"^\||\|$")
 
 
 def getLine(state: StateBlock, line: int):
-    pos = state.bMarks[line] + state.blkIndent
+    pos = state.bMarks[line] + state.tShift[line]
     maximum = state.eMarks[line]
 
     # return state.src.substr(pos, max - pos)
@@ -125,7 +125,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
     # header row will define an amount of columns in the entire table,
     # and align row should be exactly the same (the rest of the rows can differ)
     columnCount = len(columns)
-    if columnCount != len(aligns):
+    if columnCount == 0 or columnCount != len(aligns):
         return False
 
     if silent:
