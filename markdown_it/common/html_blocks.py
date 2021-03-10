@@ -45,7 +45,6 @@ block_names = [
     "main",
     "menu",
     "menuitem",
-    "meta",
     "nav",
     "noframes",
     "ol",

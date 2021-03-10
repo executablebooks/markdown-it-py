@@ -3,9 +3,9 @@ import re
 from .state_inline import StateInline
 
 EMAIL_RE = re.compile(
-    r"^<([a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)>"  # noqa: E501
+    r"^([a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*)$"  # noqa: E501
 )
-AUTOLINK_RE = re.compile(r"^<([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)>")
+AUTOLINK_RE = re.compile(r"^([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)$")
 
 
 def autolink(state: StateInline, silent: bool) -> bool:
@@ -15,15 +15,24 @@ def autolink(state: StateInline, silent: bool) -> bool:
     if state.srcCharCode[pos] != 0x3C:  # /* < */
         return False
 
-    tail = state.src[pos:]
+    start = state.pos
+    maximum = state.posMax
 
-    if ">" not in tail:
-        return False
+    while True:
+        pos += 1
+        if pos >= maximum:
+            return False
 
-    linkMatch = AUTOLINK_RE.search(tail)
-    if linkMatch is not None:
+        ch = state.srcCharCode[pos]
 
-        url = linkMatch.group(0)[1:-1]
+        if ch == 0x3C:  # /* < */
+            return False
+        if ch == 0x3E:  # /* > */
+            break
+
+    url = state.src[start + 1 : pos]
+
+    if AUTOLINK_RE.search(url) is not None:
         fullUrl = state.md.normalizeLink(url)
         if not state.md.validateLink(fullUrl):
             return False
@@ -41,13 +50,10 @@ def autolink(state: StateInline, silent: bool) -> bool:
             token.markup = "autolink"
             token.info = "auto"
 
-        state.pos += len(linkMatch.group(0))
+        state.pos += len(url) + 2
         return True
 
-    emailMatch = EMAIL_RE.search(tail)
-    if emailMatch is not None:
-
-        url = emailMatch.group(0)[1:-1]
+    if EMAIL_RE.search(url) is not None:
         fullUrl = state.md.normalizeLink("mailto:" + url)
         if not state.md.validateLink(fullUrl):
             return False
@@ -65,7 +71,7 @@ def autolink(state: StateInline, silent: bool) -> bool:
             token.markup = "autolink"
             token.info = "auto"
 
-        state.pos += len(emailMatch.group(0))
+        state.pos += len(url) + 2
         return True
 
     return False
