@@ -222,7 +222,6 @@ class RendererHTML:
         langAttrs = ""
 
         if info:
-            langName = info.split()[0]
             arr = info.split(maxsplit=1)
             langName = arr[0]
             if len(arr) == 2:
