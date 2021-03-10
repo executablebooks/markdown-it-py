@@ -28,9 +28,15 @@ def processDelimiters(state: StateInline, delimiters, *args):
             openersBottom[closer.marker] = [-1, -1, -1]
 
         minOpenerIdx = openersBottom[closer.marker][closer.length % 3]
-        newMinOpenerIdx = -1
 
         openerIdx = closerIdx - closer.jump - 1
+
+        # avoid crash if `closer.jump` is pointing outside of the array,
+        # e.g. for strikethrough
+        if openerIdx < -1:
+            openerIdx = -1
+
+        newMinOpenerIdx = openerIdx
 
         while openerIdx > minOpenerIdx:
             opener = delimiters[openerIdx]
@@ -38,9 +44,6 @@ def processDelimiters(state: StateInline, delimiters, *args):
             if opener.marker != closer.marker:
                 openerIdx -= opener.jump + 1
                 continue
-
-            if newMinOpenerIdx == -1:
-                newMinOpenerIdx = openerIdx
 
             if opener.open and opener.end < 0:
 
