@@ -50,9 +50,7 @@
   hidden: false
   info: ''
   level: 3
-  map:
-  - 1
-  - 2
+  map: null
   markup: ''
   meta: {}
   nesting: 1
@@ -106,9 +104,7 @@
   hidden: false
   info: ''
   level: 3
-  map:
-  - 1
-  - 2
+  map: null
   markup: ''
   meta: {}
   nesting: 1
@@ -203,7 +199,9 @@
   hidden: false
   info: ''
   level: 2
-  map: null
+  map:
+  - 3
+  - 4
   markup: ''
   meta: {}
   nesting: 1
@@ -216,9 +214,7 @@
   hidden: false
   info: ''
   level: 3
-  map:
-  - 3
-  - 4
+  map: null
   markup: ''
   meta: {}
   nesting: 1
@@ -272,9 +268,7 @@
   hidden: false
   info: ''
   level: 3
-  map:
-  - 3
-  - 4
+  map: null
   markup: ''
   meta: {}
   nesting: 1
@@ -341,7 +335,9 @@
   hidden: false
   info: ''
   level: 2
-  map: null
+  map:
+  - 4
+  - 5
   markup: ''
   meta: {}
   nesting: 1
@@ -354,9 +350,7 @@
   hidden: false
   info: ''
   level: 3
-  map:
-  - 4
-  - 5
+  map: null
   markup: ''
   meta: {}
   nesting: 1
@@ -410,9 +404,7 @@
   hidden: false
   info: ''
   level: 3
-  map:
-  - 4
-  - 5
+  map: null
   markup: ''
   meta: {}
   nesting: 1

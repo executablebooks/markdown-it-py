@@ -39,3 +39,4 @@
       rather than `MarkdownIt.renderer.rules[name] = function`
       and renderers should declare a class property `__output__ = "html"`.
       This allows for extensability to more than just HTML renderers
+    - inline tokens in tables are assigned a map (this is helpful for propagation to children)
