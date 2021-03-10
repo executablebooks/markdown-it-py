@@ -1,4 +1,4 @@
-# GFM table, non-standard
+# GFM table, https://github.github.com/gfm/#tables-extension-
 import re
 
 from .state_block import StateBlock
@@ -21,48 +21,35 @@ def escapedSplit(string):
     result = []
     pos = 0
     max = len(string)
-    escapes = 0
+    isEscaped = False
     lastPos = 0
-    backTicked = False
-    lastBackTick = 0
+    current = ""
     ch = charCodeAt(string, pos)
 
     while pos < max:
-        if ch == 0x60:  # /* ` */
-            if backTicked:
-                # make \` close code sequence, but not open it;
-                # the reason is: `\` is correct code block
-                backTicked = False
-                lastBackTick = pos
-            elif escapes % 2 == 0:
-                backTicked = True
-                lastBackTick = pos
-        # /* | */
-        elif ch == 0x7C and (escapes % 2 == 0) and not backTicked:
-            result.append(string[lastPos:pos])
-            lastPos = pos + 1
+        if ch == 0x7C:  # /* | */
+            if not isEscaped:
+                # pipe separating cells, '|'
+                result.append(current + string[lastPos:pos])
+                current = ""
+                lastPos = pos + 1
+            else:
+                # escaped pipe, '\|'
+                current += string[lastPos : pos - 1]
+                lastPos = pos
 
-        if ch == 0x5C:  # /* \ */
-            escapes += 1
-        else:
-            escapes = 0
-
+        isEscaped = ch == 0x5C  # /* \ */
         pos += 1
-
-        # If there was an un-closed backtick, go back to just after
-        # the last backtick, but as if it was a normal character
-        if pos == max and backTicked:
-            backTicked = False
-            pos = lastBackTick + 1
 
         ch = charCodeAt(string, pos)
 
-    result.append(string[lastPos:])
+    result.append(current + string[lastPos:])
 
     return result
 
 
 def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
+    tbodyLines = None
 
     # should have at least two lines
     if startLine + 2 > endLine:
@@ -129,16 +116,27 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
         return False
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
-    columns = escapedSplit(enclosingPipesRe.sub("", lineText))
+    columns = escapedSplit(lineText)
+    if columns and columns[0] == "":
+        columns.pop(0)
+    if columns and columns[-1] == "":
+        columns.pop()
 
     # header row will define an amount of columns in the entire table,
-    # and align row shouldn't be smaller than that (the rest of the rows can)
+    # and align row should be exactly the same (the rest of the rows can differ)
     columnCount = len(columns)
-    if columnCount > len(aligns):
+    if columnCount != len(aligns):
         return False
 
     if silent:
         return True
+
+    oldParentType = state.parentType
+    state.parentType = "table"
+
+    # use 'blockquote' lists for termination because it's
+    # the most similar to tables
+    terminatorRules = state.md.block.ruler.getRules("blockquote")
 
     token = state.push("table_open", "table", 1)
     token.map = tableLines = [startLine, 0]
@@ -166,20 +164,33 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
     token = state.push("tr_close", "tr", -1)
     token = state.push("thead_close", "thead", -1)
 
-    token = state.push("tbody_open", "tbody", 1)
-    token.map = tbodyLines = [startLine + 2, 0]
-
     nextLine = startLine + 2
     while nextLine < endLine:
         if state.sCount[nextLine] < state.blkIndent:
             break
 
+        terminate = False
+        for i in range(len(terminatorRules)):
+            if terminatorRules[i](state, nextLine, endLine, True):
+                terminate = True
+                break
+
+        if terminate:
+            break
         lineText = getLine(state, nextLine).strip()
-        if "|" not in lineText:
+        if not lineText:
             break
         if state.sCount[nextLine] - state.blkIndent >= 4:
             break
-        columns = escapedSplit(enclosingPipesRe.sub("", lineText))
+        columns = escapedSplit(lineText)
+        if columns and columns[0] == "":
+            columns.pop(0)
+        if columns and columns[-1] == "":
+            columns.pop()
+
+        if nextLine == startLine + 2:
+            token = state.push("tbody_open", "tbody", 1)
+            token.map = tbodyLines = [startLine + 2, 0]
 
         token = state.push("tr_open", "tr", 1)
         token.map = [nextLine, nextLine + 1]
@@ -205,9 +216,13 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
         nextLine += 1
 
-    token = state.push("tbody_close", "tbody", -1)
+    if tbodyLines:
+        token = state.push("tbody_close", "tbody", -1)
+        tbodyLines[1] = nextLine
+
     token = state.push("table_close", "table", -1)
 
-    tableLines[1] = tbodyLines[1] = nextLine
+    tableLines[1] = nextLine
+    state.parentType = oldParentType
     state.line = nextLine
     return True

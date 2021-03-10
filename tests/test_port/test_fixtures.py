@@ -49,10 +49,14 @@ def test_typographer(line, title, input, expected):
 @pytest.mark.parametrize(
     "line,title,input,expected", read_fixture_file(FIXTURE_PATH.joinpath("tables.md"))
 )
-def test_title(line, title, input, expected):
+def test_table(line, title, input, expected):
     md = MarkdownIt().enable("table")
     text = md.render(input)
-    assert text.rstrip() == expected.rstrip()
+    try:
+        assert text.rstrip() == expected.rstrip()
+    except AssertionError:
+        print(text)
+        raise
 
 
 @pytest.mark.parametrize(

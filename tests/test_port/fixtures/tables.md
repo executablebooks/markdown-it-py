@@ -273,7 +273,7 @@ bar|bar
 .
 
 
-Should be terminated via row without "|" symbol:
+Table no longer terminated via row without "|" symbol:
 .
 foo|foo
 ---|---
@@ -286,44 +286,34 @@ paragraph
 <th>foo</th>
 </tr>
 </thead>
-<tbody></tbody>
+<tbody>
+<tr>
+<td>paragraph</td>
+<td></td>
+</tr>
+</tbody>
 </table>
-<p>paragraph</p>
 .
 
 
-Delimiter escaping:
+Delimiter escaping (deprecated):
 .
 | Heading 1 \\\\| Heading 2
 | --------- | ---------
 | Cell\|1\|| Cell\|2
 \| Cell\\\|3 \\| Cell\|4
 .
-<table>
-<thead>
-<tr>
-<th>Heading 1 \\</th>
-<th>Heading 2</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Cell|1|</td>
-<td>Cell|2</td>
-</tr>
-<tr>
-<td>| Cell\|3 \</td>
-<td>Cell|4</td>
-</tr>
-</tbody>
-</table>
+<p>| Heading 1 \\| Heading 2
+| --------- | ---------
+| Cell|1|| Cell|2
+| Cell\|3 \| Cell|4</p>
 .
 
-Pipes inside backticks don't split cells:
+Pipes inside backticks DO split cells, unless `\` escaped:
 .
 | Heading 1 | Heading 2
 | --------- | ---------
-| Cell 1 | Cell 2
+| `Cell\|1` | Cell 2
 | `Cell|3` | Cell 4
 .
 <table>
@@ -335,12 +325,12 @@ Pipes inside backticks don't split cells:
 </thead>
 <tbody>
 <tr>
-<td>Cell 1</td>
+<td><code>Cell|1</code></td>
 <td>Cell 2</td>
 </tr>
 <tr>
-<td><code>Cell|3</code></td>
-<td>Cell 4</td>
+<td>`Cell</td>
+<td>3`</td>
 </tr>
 </tbody>
 </table>
@@ -449,10 +439,10 @@ x | \`\` | `x`
 .
 
 
-An amount of rows might be different across the table (issue #171):
+An amount of rows might be different across table (issue #171), but header and alignment rows must be equal (#697):
 .
 | 1 | 2 |
-| :-----: |  :-----: |  :-----: |
+| :-----: |  :-----: |
 | 3 | 4 | 5 | 6 |
 .
 <table>
@@ -581,7 +571,6 @@ Tables should not be indented more than 4 spaces (3rd line):
 <th>Col2a</th>
 </tr>
 </thead>
-<tbody></tbody>
 </table>
 <pre><code>| Col1b | Col2b |
 </code></pre>
@@ -600,7 +589,6 @@ Allow tables with empty body:
 <th>Col2a</th>
 </tr>
 </thead>
-<tbody></tbody>
 </table>
 .
 
@@ -614,4 +602,234 @@ Col2a | Col2b | Col2c
 <p>Col1a | Col1b | Col1c
 ----- | -----
 Col2a | Col2b | Col2c</p>
+.
+
+Escaped pipes inside backticks don't split cells:
+.
+| Heading 1 | Heading 2
+| --------- | ---------
+| Cell 1 | Cell 2
+| `Cell 3\|` | Cell 4
+.
+<table>
+<thead>
+<tr>
+<th>Heading 1</th>
+<th>Heading 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cell 1</td>
+<td>Cell 2</td>
+</tr>
+<tr>
+<td><code>Cell 3|</code></td>
+<td>Cell 4</td>
+</tr>
+</tbody>
+</table>
+.
+
+Escape before escaped Pipes inside backticks don't split cells:
+.
+| Heading 1 | Heading 2
+| --------- | ---------
+| Cell 1 | Cell 2
+| `Cell 3\\|` | Cell 4
+.
+<table>
+<thead>
+<tr>
+<th>Heading 1</th>
+<th>Heading 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cell 1</td>
+<td>Cell 2</td>
+</tr>
+<tr>
+<td><code>Cell 3\|</code></td>
+<td>Cell 4</td>
+</tr>
+</tbody>
+</table>
+.
+
+GFM 4.10 Tables (extension), Example 198
+.
+| foo | bar |
+| --- | --- |
+| baz | bim |
+.
+<table>
+<thead>
+<tr>
+<th>foo</th>
+<th>bar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>baz</td>
+<td>bim</td>
+</tr>
+</tbody>
+</table>
+.
+
+GFM 4.10 Tables (extension), Example 199
+.
+| abc | defghi |
+:-: | -----------:
+bar | baz
+.
+<table>
+<thead>
+<tr>
+<th style="text-align:center">abc</th>
+<th style="text-align:right">defghi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">bar</td>
+<td style="text-align:right">baz</td>
+</tr>
+</tbody>
+</table>
+.
+
+GFM 4.10 Tables (extension), Example 200
+.
+| f\|oo  |
+| ------ |
+| b `\|` az |
+| b **\|** im |
+.
+<table>
+<thead>
+<tr>
+<th>f|oo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b <code>|</code> az</td>
+</tr>
+<tr>
+<td>b <strong>|</strong> im</td>
+</tr>
+</tbody>
+</table>
+.
+
+GFM 4.10 Tables (extension), Example 201
+.
+| abc | def |
+| --- | --- |
+| bar | baz |
+> bar
+.
+<table>
+<thead>
+<tr>
+<th>abc</th>
+<th>def</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bar</td>
+<td>baz</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>bar</p>
+</blockquote>
+.
+
+GFM 4.10 Tables (extension), Example 202
+.
+| abc | def |
+| --- | --- |
+| bar | baz |
+bar
+
+bar
+.
+<table>
+<thead>
+<tr>
+<th>abc</th>
+<th>def</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bar</td>
+<td>baz</td>
+</tr>
+<tr>
+<td>bar</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>bar</p>
+.
+
+GFM 4.10 Tables (extension), Example 203
+.
+| abc | def |
+| --- |
+| bar |
+.
+<p>| abc | def |
+| --- |
+| bar |</p>
+.
+GFM 4.10 Tables (extension), Example 204
+.
+| abc | def |
+| --- | --- |
+| bar |
+| bar | baz | boo |
+.
+<table>
+<thead>
+<tr>
+<th>abc</th>
+<th>def</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bar</td>
+<td></td>
+</tr>
+<tr>
+<td>bar</td>
+<td>baz</td>
+</tr>
+</tbody>
+</table>
+.
+
+GFM 4.10 Tables (extension), Example 205
+.
+| abc | def |
+| --- | --- |
+.
+<table>
+<thead>
+<tr>
+<th>abc</th>
+<th>def</th>
+</tr>
+</thead>
+</table>
 .
