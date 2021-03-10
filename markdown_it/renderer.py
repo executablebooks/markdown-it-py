@@ -219,14 +219,19 @@ class RendererHTML:
         token = tokens[idx]
         info = unescapeAll(token.info).strip() if token.info else ""
         langName = ""
+        langAttrs = ""
 
         if info:
             langName = info.split()[0]
+            arr = info.split(maxsplit=1)
+            langName = arr[0]
+            if len(arr) == 2:
+                langAttrs = arr[1]
 
         if options.highlight:
-            highlighted = options.highlight(token.content, langName) or escapeHtml(
-                token.content
-            )
+            highlighted = options.highlight(
+                token.content, langName, langAttrs
+            ) or escapeHtml(token.content)
         else:
             highlighted = escapeHtml(token.content)
 
