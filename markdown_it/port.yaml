@@ -1,6 +1,7 @@
 - package: markdown-it/markdown-it
-  commit: 331ae117e09115366db12b517ca526b1b7fee1e8
-  date: Sep 14, 2020
+  version: 12.0.4
+  commit: 7b8969ce5cb2edc54f2c1aa39a85a3a08076337d
+  date: Dec 20, 2020
   notes:
     - Rename variables that use python built-in names, e.g.
       - `max` -> `maximum`
@@ -20,19 +21,14 @@
       the JS dependencies [mdurl](https://www.npmjs.com/package/mdurl)
       and [punycode](https://www.npmjs.com/package/punycode)
     - |
-      Remove indirect references within `MarkdownIt`;
-
-        self.validateLink = validateLink
-        self.normalizeLink = normalizeLink
-        self.normalizeLinkText = normalizeLinkText
-
-      in favour of using them directly through:
-
-        from markdown_it.common.normalize_url import normalizeLinkText
-    - |
       In markdown_it/rules_block/reference.py,
       record line range in state.env["references"] and add state.env["duplicate_refs"]
       This is to allow renderers to report on issues regarding references
+    - |
+      The `MarkdownIt.__init__` signature is slightly different for updating options,
+      since you must always specify the config first, e.g.
+      use `MarkdownIt("commonmark", {"html": False})` instead of `MarkdownIt({"html": False})`
+    - The default configuration preset for `MarkdownIt` is "commonmark" not "default"
     - Allow custom renderer to be passed to `MarkdownIt`
     - |
       change render method signatures
@@ -44,3 +40,4 @@
       rather than `MarkdownIt.renderer.rules[name] = function`
       and renderers should declare a class property `__output__ = "html"`.
       This allows for extensability to more than just HTML renderers
+    - inline tokens in tables are assigned a map (this is helpful for propagation to children)

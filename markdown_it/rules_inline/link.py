@@ -1,13 +1,13 @@
 # Process [link](<to> "stuff")
 
 from ..common.utils import normalizeReference, isSpace
-from ..common.normalize_url import normalizeLink, validateLink
 from .state_inline import StateInline
 
 
 def link(state: StateInline, silent: bool):
 
     href = ""
+    title = ""
     label = None
     oldPos = state.pos
     maximum = state.posMax
@@ -51,37 +51,35 @@ def link(state: StateInline, silent: bool):
         start = pos
         res = state.md.helpers.parseLinkDestination(state.src, pos, state.posMax)
         if res.ok:
-            href = normalizeLink(res.str)
-            if validateLink(href):
+            href = state.md.normalizeLink(res.str)
+            if state.md.validateLink(href):
                 pos = res.pos
             else:
                 href = ""
 
-        # [link](  <href>  "title"  )
-        #                ^^ skipping these spaces
-        start = pos
-        while pos < maximum:
-            code = state.srcCharCode[pos]
-            if not isSpace(code) and code != 0x0A:
-                break
-            pos += 1
-
-        # [link](  <href>  "title"  )
-        #                  ^^^^^^^ parsing link title
-        res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax)
-        if pos < maximum and start != pos and res.ok:
-            title = res.str
-            pos = res.pos
-
             # [link](  <href>  "title"  )
-            #                         ^^ skipping these spaces
+            #                ^^ skipping these spaces
+            start = pos
             while pos < maximum:
                 code = state.srcCharCode[pos]
                 if not isSpace(code) and code != 0x0A:
                     break
                 pos += 1
-        else:
-            title = ""
+
+            # [link](  <href>  "title"  )
+            #                  ^^^^^^^ parsing link title
+            res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax)
+            if pos < maximum and start != pos and res.ok:
+                title = res.str
+                pos = res.pos
+
+                # [link](  <href>  "title"  )
+                #                         ^^ skipping these spaces
+                while pos < maximum:
+                    code = state.srcCharCode[pos]
+                    if not isSpace(code) and code != 0x0A:
+                        break
+                    pos += 1
 
         if pos >= maximum or state.srcCharCode[pos] != 0x29:  # /* ) */
             # parsing a valid shortcut link failed, fallback to reference

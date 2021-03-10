@@ -1,7 +1,6 @@
 import re
 
 from ..common.utils import arrayReplaceAt
-from ..common.normalize_url import normalizeLinkText, normalizeLink, validateLink
 from .state_core import StateCore
 from ..token import Token
 
@@ -82,8 +81,8 @@ def linkify(state: StateCore) -> None:
 
                 for ln in range(len(links)):
                     url = links[ln].url
-                    fullUrl = normalizeLink(url)
-                    if not validateLink(fullUrl):
+                    fullUrl = state.md.normalizeLink(url)
+                    if not state.md.validateLink(fullUrl):
                         continue
 
                     urlText = links[ln].text
@@ -93,16 +92,16 @@ def linkify(state: StateCore) -> None:
                     # and remove it afterwards.
                     if not links[ln].schema:
                         urlText = HTTP_RE.sub(
-                            "", normalizeLinkText("http://" + urlText)
+                            "", state.md.normalizeLinkText("http://" + urlText)
                         )
                     elif links[ln].schema == "mailto:" and TEST_MAILTO_RE.search(
                         urlText
                     ):
                         urlText = MAILTO_RE.sub(
-                            "", normalizeLinkText("mailto:" + urlText)
+                            "", state.md.normalizeLinkText("mailto:" + urlText)
                         )
                     else:
-                        urlText = normalizeLinkText(urlText)
+                        urlText = state.md.normalizeLinkText(urlText)
 
                     pos = links[ln].index
 

@@ -14,6 +14,14 @@ Encode link destination, decode text inside it:
 .
 
 
+Keep %25 as is because decoding it may break urls, #720
+.
+<https://www.google.com/search?q=hello%2E%252Ehello>
+.
+<p><a href="https://www.google.com/search?q=hello%2E%252Ehello">https://www.google.com/search?q=hello.%252Ehello</a></p>
+.
+
+
 Don't encode domains in unknown schemas:
 
 .
