@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1615386159074,
+  "lastUpdate": 1615386476475,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -14889,6 +14889,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.018784",
             "group": "packages",
             "extra": "mean: 1.0381 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "de09ccf6014701ff8c43b5a77c2e35c1f0733cab",
+          "message": "👌 IMPROVE: Make SyntaxTreeNode type annotations work when subclassing (#131)\n\nThis commit makes `SyntaxTreeNode.children` and `SyntaxTreeNode.parent`\r\n`@property` s, so that they can be type annotated\r\nin a way where the getter return type is automatically bound to type of `self`.",
+          "timestamp": "2021-03-10T15:26:19+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/de09ccf6014701ff8c43b5a77c2e35c1f0733cab",
+          "distinct": true,
+          "tree_id": "3555d2da628dc5e7948b44d0f6c3b8bf594f7444"
+        },
+        "date": 1615386475747,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 4.0503262120782475,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015588",
+            "group": "plugins",
+            "extra": "mean: 246.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 4.0790602320191445,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015786",
+            "group": "plugins",
+            "extra": "mean: 245.15 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.1773945989758374,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018079",
+            "group": "plugins",
+            "extra": "mean: 314.72 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 3.954572647121732,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010816",
+            "group": "plugins",
+            "extra": "mean: 252.87 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 4.0664318345928265,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016582",
+            "group": "plugins",
+            "extra": "mean: 245.92 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 4.163367764105116,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016704",
+            "group": "plugins",
+            "extra": "mean: 240.19 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 4.043861731715079,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015896",
+            "group": "plugins",
+            "extra": "mean: 247.29 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 3.8718777613560422,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015869",
+            "group": "plugins",
+            "extra": "mean: 258.27 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 3.9021963755406026,
+            "unit": "iter/sec",
+            "range": "stddev: 0.019573",
+            "group": "plugins",
+            "extra": "mean: 256.27 msec\nrounds: 20"
           }
         ]
       }
