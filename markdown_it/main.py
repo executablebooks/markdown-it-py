@@ -27,36 +27,50 @@ except ModuleNotFoundError:
     linkify_it = None
 
 
-_PRESETS = AttrDict(
-    {
-        "default": presets.default.make(),
-        "zero": presets.zero.make(),
-        "commonmark": presets.commonmark.make(),
-    }
-)
+_PRESETS = {
+    "default": presets.default.make(),
+    "js-default": presets.js_default.make(),
+    "zero": presets.zero.make(),
+    "commonmark": presets.commonmark.make(),
+    "gfm-like": presets.gfm_like.make(),
+}
 
 
 class MarkdownIt:
     def __init__(
-        self, config: Union[str, Mapping] = "commonmark", renderer_cls=RendererHTML
+        self,
+        config: Union[str, Mapping] = "commonmark",
+        options_update: Optional[Mapping] = None,
+        *,
+        renderer_cls=RendererHTML,
     ):
         """Main parser class
 
         :param config: name of configuration to load or a pre-defined dictionary
+        :param options_update: dictionary that will be merged into ``config["options"]``
         :param renderer_cls: the class to load as the renderer:
             ``self.renderer = renderer_cls(self)
         """
+        # add modules
+        self.utils = utils
+        self.helpers: Any = helpers
+
+        # initialise classes
         self.inline = ParserInline()
         self.block = ParserBlock()
         self.core = ParserCore()
         self.renderer = renderer_cls(self)
-
-        self.utils = utils
-        self.helpers: Any = helpers
-        self.options = AttrDict()
-        self.configure(config)
-
         self.linkify = linkify_it.LinkifyIt() if linkify_it else None
+
+        # set the configuration
+        if options_update and not isinstance(options_update, Mapping):
+            # catch signature change where renderer_cls was not used as a key-word
+            raise TypeError(
+                f"options_update should be a mapping: {options_update}"
+                "\n(Perhaps you intended this to be the renderer_cls?)"
+            )
+        self.options = AttrDict()
+        self.configure(config, options_update=options_update)
 
     def __repr__(self) -> str:
         return f"{self.__class__.__module__}.{self.__class__.__name__}()"
@@ -79,7 +93,9 @@ class MarkdownIt:
         """
         self.options = options
 
-    def configure(self, presets: Union[str, Mapping]) -> "MarkdownIt":
+    def configure(
+        self, presets: Union[str, Mapping], options_update: Optional[Mapping] = None
+    ) -> "MarkdownIt":
         """Batch load of all options and component settings.
         This is an internal method, and you probably will not need it.
         But if you will - see available presets and data structure
@@ -89,21 +105,24 @@ class MarkdownIt:
         That will give better compatibility with next versions.
         """
         if isinstance(presets, str):
-            presetName = presets
-            presets = _PRESETS.get(presetName, None)
-            if not presets:
-                raise KeyError(
-                    'Wrong `markdown-it` preset "' + presetName + '", check name'
-                )
-        if not presets:
-            raise ValueError("Wrong `markdown-it` preset, can't be empty")
-        config = AttrDict(presets)
+            if presets not in _PRESETS:
+                raise KeyError(f"Wrong `markdown-it` preset '{presets}', check name")
+            config = _PRESETS[presets]
+        else:
+            config = presets
 
-        if "options" in config:
-            self.set(config.options)
+        if not config:
+            raise ValueError("Wrong `markdown-it` config, can't be empty")
+
+        options = config.get("options", {}) or {}
+        if options_update:
+            options = {**options, **options_update}
+
+        if options:
+            self.set(AttrDict(options))
 
         if "components" in config:
-            for name, component in config.components.items():
+            for name, component in config["components"].items():
                 rules = component.get("rules", None)
                 if rules:
                     self[name].ruler.enableOnly(rules)
