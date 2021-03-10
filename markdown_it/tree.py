@@ -46,7 +46,7 @@ class SyntaxTreeNode:
     ) -> None:
         """Initialize a `SyntaxTreeNode` from a token stream.
 
-        If `create_root` is True, crete a root node for the document.
+        If `create_root` is True, create a root node for the document.
         """
         # Only nodes representing an unnested token have self.token
         self.token: Optional[Token] = None
@@ -72,7 +72,10 @@ class SyntaxTreeNode:
             )
         elif len(tokens) == 1:
             inline_token = tokens[0]
-            assert not inline_token.nesting
+            if inline_token.nesting:
+                raise ValueError(
+                    "Unequal nesting level at the start and end of token stream."
+                )
             self.token = inline_token
             if inline_token.children:
                 self._set_children_from_tokens(inline_token.children)
