@@ -839,6 +839,7 @@ GFM 4.10 Tables (extension), Example 203
 | --- |
 | bar |</p>
 .
+
 GFM 4.10 Tables (extension), Example 204
 .
 | abc | def |
