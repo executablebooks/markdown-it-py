@@ -219,14 +219,18 @@ class RendererHTML:
         token = tokens[idx]
         info = unescapeAll(token.info).strip() if token.info else ""
         langName = ""
+        langAttrs = ""
 
         if info:
-            langName = info.split()[0]
+            arr = info.split(maxsplit=1)
+            langName = arr[0]
+            if len(arr) == 2:
+                langAttrs = arr[1]
 
         if options.highlight:
-            highlighted = options.highlight(token.content, langName) or escapeHtml(
-                token.content
-            )
+            highlighted = options.highlight(
+                token.content, langName, langAttrs
+            ) or escapeHtml(token.content)
         else:
             highlighted = escapeHtml(token.content)
 
@@ -234,7 +238,7 @@ class RendererHTML:
             return highlighted + "\n"
 
         # If language exists, inject class gently, without modifying original token.
-        # May be, one day we will add .clone() for token and simplify this part, but
+        # May be, one day we will add .deepClone() for token and simplify this part, but
         # now we prefer to keep things local.
         if info:
             i = token.attrIndex("class")
@@ -243,6 +247,7 @@ class RendererHTML:
             if i < 0:
                 tmpAttrs.append(["class", options.langPrefix + langName])
             else:
+                tmpAttrs[i] = tmpAttrs[i][:]
                 tmpAttrs[i][1] += " " + options.langPrefix + langName
 
             # Fake token just to render attributes

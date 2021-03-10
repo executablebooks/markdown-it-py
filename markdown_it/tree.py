@@ -50,8 +50,10 @@ class SyntaxTreeNode:
         """
         # Only nodes representing an unnested token have self.token
         self.token: Optional[Token] = None
+
         # Only containers have nester tokens
         self.nester_tokens: Optional[_NesterTokens] = None
+
         # Root node does not have self.parent
         self._parent: Any = None
 

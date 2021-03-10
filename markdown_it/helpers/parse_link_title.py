@@ -46,6 +46,8 @@ def parseLinkTitle(string: str, pos: int, maximum: int) -> _Result:
             result.str = title
             result.ok = True
             return result
+        elif code == 0x28 and marker == 0x29:  # /* ( */  /* ) */
+            return result
         elif code == 0x0A:
             lines += 1
         elif code == 0x5C and pos + 1 < maximum:  # /* \ */
