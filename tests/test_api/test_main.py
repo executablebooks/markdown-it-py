@@ -278,3 +278,16 @@ def test_empty_env():
     env = AttrDict()
     md.parse("[foo]: /url\n[foo]", env)
     assert "references" in env
+
+
+def test_table_tokens(data_regression):
+    md = MarkdownIt("js-default")
+    tokens = md.parse(
+        """
+| Heading 1 | Heading 2
+| --------- | ---------
+| Cell 1    | Cell 2
+| Cell 3    | Cell 4
+    """
+    )
+    data_regression.check([t.as_dict() for t in tokens])
