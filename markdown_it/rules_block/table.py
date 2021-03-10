@@ -153,6 +153,9 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
             token.attrs = [["style", "text-align:" + aligns[i]]]
 
         token = state.push("inline", "", 0)
+        # note in markdown-it this map was removed in v12.0.0 however, we keep it,
+        # since it is helpful to propagate to children tokens
+        token.map = [startLine, startLine + 1]
         token.content = columns[i].strip()
         token.children = []
 
@@ -194,11 +197,12 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
         for i in range(columnCount):
             token = state.push("td_open", "td", 1)
-            token.map = [nextLine, nextLine + 1]
             if aligns[i]:
                 token.attrs = [["style", "text-align:" + aligns[i]]]
 
             token = state.push("inline", "", 0)
+            # note in markdown-it this map was removed in v12.0.0 however, we keep it,
+            # since it is helpful to propagate to children tokens
             token.map = [nextLine, nextLine + 1]
             try:
                 token.content = columns[i].strip() if columns[i] else ""
@@ -217,8 +221,8 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
         tbodyLines[1] = nextLine
 
     token = state.push("table_close", "table", -1)
-    tableLines[1] = nextLine
 
+    tableLines[1] = nextLine
     state.parentType = oldParentType
     state.line = nextLine
     return True

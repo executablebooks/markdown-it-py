@@ -255,6 +255,12 @@ List item terminating quote should not be paragraph continuation
 </ol>
 .
 
+Escaped space is not allowed in link destination, commonmark/CommonMark#493.
+.
+[link](a\ b)
+.
+<p>[link](a\ b)</p>
+.
 
 Link destination cannot contain '<'
 .
@@ -266,7 +272,6 @@ Link destination cannot contain '<'
 <p><a href="foo%3Cbar"></a></p>
 .
 
-
 Link title cannot contain '(' when opened with it
 .
 [](url (xxx())
@@ -277,15 +282,6 @@ Link title cannot contain '(' when opened with it
 <p><a href="url" title="xxx("></a></p>
 .
 
-
-Escaped space is not allowed in link destination, commonmark/CommonMark#493.
-.
-[link](a\ b)
-.
-<p>[link](a\ b)</p>
-.
-
-
 Allow EOL in processing instructions, commonmark/commonmark.js#196.
 .
 a <?
@@ -294,7 +290,6 @@ a <?
 <p>a <?
 ?></p>
 .
-
 
 Allow meta tag in an inline context, commonmark/commonmark-spec#527.
 .
@@ -308,7 +303,6 @@ City:
 <meta itemprop="name" content="Springfield">
 </span></p>
 .
-
 
 Coverage. Directive can terminate paragraph.
 .

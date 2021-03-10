@@ -273,7 +273,7 @@ bar|bar
 .
 
 
-Should not be terminated via row without "|" symbol:
+Table no longer terminated via row without "|" symbol:
 .
 foo|foo
 ---|---
@@ -296,7 +296,7 @@ paragraph
 .
 
 
-Delimiter escaping:
+Delimiter escaping (deprecated):
 .
 | Heading 1 \\\\| Heading 2
 | --------- | ---------
@@ -309,11 +309,11 @@ Delimiter escaping:
 | Cell\|3 \| Cell|4</p>
 .
 
-Pipes inside backticks split cells:
+Pipes inside backticks DO split cells, unless `\` escaped:
 .
 | Heading 1 | Heading 2
 | --------- | ---------
-| Cell 1 | Cell 2
+| `Cell\|1` | Cell 2
 | `Cell|3` | Cell 4
 .
 <table>
@@ -325,7 +325,7 @@ Pipes inside backticks split cells:
 </thead>
 <tbody>
 <tr>
-<td>Cell 1</td>
+<td><code>Cell|1</code></td>
 <td>Cell 2</td>
 </tr>
 <tr>
@@ -439,7 +439,7 @@ x | \`\` | `x`
 .
 
 
-An amount of rows might be different across the table (issue #171):
+An amount of rows might be different across table (issue #171), but header and alignment rows must be equal (#697):
 .
 | 1 | 2 |
 | :-----: |  :-----: |
@@ -694,7 +694,6 @@ Regression test for #721, table in a list indented with tabs:
 </ul>
 .
 
-
 Table without any columns is not a table, #724
 .
 |
@@ -705,7 +704,6 @@ Table without any columns is not a table, #724
 |
 |</p>
 .
-
 
 GFM 4.10 Tables (extension), Example 198
 .

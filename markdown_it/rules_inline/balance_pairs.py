@@ -31,7 +31,8 @@ def processDelimiters(state: StateInline, delimiters, *args):
 
         openerIdx = closerIdx - closer.jump - 1
 
-        # avoid crash if `closer.jump` is pointing outside of the array, see #742
+        # avoid crash if `closer.jump` is pointing outside of the array,
+        # e.g. for strikethrough
         if openerIdx < -1:
             openerIdx = -1
 
