@@ -255,6 +255,19 @@ List item terminating quote should not be paragraph continuation
 </ol>
 .
 
+Allow meta tag in an inline context, commonmark/commonmark-spec#527.
+.
+City:
+<span itemprop="contentLocation" itemscope itemtype="https://schema.org/City">
+  <meta itemprop="name" content="Springfield">
+</span>
+.
+<p>City:
+<span itemprop="contentLocation" itemscope itemtype="https://schema.org/City">
+<meta itemprop="name" content="Springfield">
+</span></p>
+.
+
 Coverage. Directive can terminate paragraph.
 .
 a
