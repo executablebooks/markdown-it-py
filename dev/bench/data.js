@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1615386476475,
+  "lastUpdate": 1615386554506,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -14983,6 +14983,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.019573",
             "group": "plugins",
             "extra": "mean: 256.27 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "de09ccf6014701ff8c43b5a77c2e35c1f0733cab",
+          "message": "👌 IMPROVE: Make SyntaxTreeNode type annotations work when subclassing (#131)\n\nThis commit makes `SyntaxTreeNode.children` and `SyntaxTreeNode.parent`\r\n`@property` s, so that they can be type annotated\r\nin a way where the getter return type is automatically bound to type of `self`.",
+          "timestamp": "2021-03-10T15:26:19+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/de09ccf6014701ff8c43b5a77c2e35c1f0733cab",
+          "distinct": true,
+          "tree_id": "3555d2da628dc5e7948b44d0f6c3b8bf594f7444"
+        },
+        "date": 1615386553786,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.4778784843864567,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012835",
+            "group": "packages",
+            "extra": "mean: 287.53 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 9.769533128089801,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058232",
+            "group": "packages",
+            "extra": "mean: 102.36 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.3646565023697863,
+            "unit": "iter/sec",
+            "range": "stddev: 0.044210",
+            "group": "packages",
+            "extra": "mean: 732.79 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 0.9180978375666762,
+            "unit": "iter/sec",
+            "range": "stddev: 0.020102",
+            "group": "packages",
+            "extra": "mean: 1.0892 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.8055401454953739,
+            "unit": "iter/sec",
+            "range": "stddev: 0.031936",
+            "group": "packages",
+            "extra": "mean: 1.2414 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 3.6505871782474624,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0094644",
+            "group": "packages",
+            "extra": "mean: 273.93 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 0.9276163395620576,
+            "unit": "iter/sec",
+            "range": "stddev: 0.026788",
+            "group": "packages",
+            "extra": "mean: 1.0780 sec\nrounds: 20"
           }
         ]
       }
