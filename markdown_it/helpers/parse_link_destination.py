@@ -26,6 +26,8 @@ def parseLinkDestination(string: str, pos: int, maximum: int) -> _Result:
             code = charCodeAt(string, pos)
             if code == 0x0A:  # /* \n */)
                 return result
+            if code == 0x3C:  # / * < * /
+                return result
             if code == 0x3E:  # /* > */) {
                 result.pos = pos + 1
                 result.str = unescapeAll(string[start + 1 : pos])
@@ -55,6 +57,8 @@ def parseLinkDestination(string: str, pos: int, maximum: int) -> _Result:
             break
 
         if code == 0x5C and pos + 1 < maximum:
+            if charCodeAt(string, pos + 1) == 0x20:
+                break
             pos += 2
             continue
 

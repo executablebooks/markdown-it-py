@@ -255,6 +255,33 @@ List item terminating quote should not be paragraph continuation
 </ol>
 .
 
+Escaped space is not allowed in link destination, commonmark/CommonMark#493.
+.
+[link](a\ b)
+.
+<p>[link](a\ b)</p>
+.
+
+Link destination cannot contain '<'
+.
+[](<foo<bar>)
+
+[](<foo\<bar>)
+.
+<p>[](&lt;foo<bar>)</p>
+<p><a href="foo%3Cbar"></a></p>
+.
+
+Link title cannot contain '(' when opened with it
+.
+[](url (xxx())
+
+[](url (xxx\())
+.
+<p>[](url (xxx())</p>
+<p><a href="url" title="xxx("></a></p>
+.
+
 Allow EOL in processing instructions, commonmark/commonmark.js#196.
 .
 a <?
