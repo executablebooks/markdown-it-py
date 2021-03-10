@@ -255,6 +255,15 @@ List item terminating quote should not be paragraph continuation
 </ol>
 .
 
+Allow EOL in processing instructions, commonmark/commonmark.js#196.
+.
+a <?
+?>
+.
+<p>a <?
+?></p>
+.
+
 Allow meta tag in an inline context, commonmark/commonmark-spec#527.
 .
 City:
