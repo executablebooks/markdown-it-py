@@ -113,18 +113,18 @@ def linkify(state: StateCore) -> None:
 
                     token = Token("link_open", "a", 1)
                     token.attrs = [["href", fullUrl]]
-                    token.level = level + 1
+                    token.level = level
                     token.markup = "linkify"
                     token.info = "auto"
                     nodes.append(token)
 
                     token = Token("text", "", 0)
                     token.content = urlText
-                    token.level = level
+                    token.level = level + 1
                     nodes.append(token)
 
                     token = Token("link_close", "a", -1)
-                    token.level = level - 1
+                    token.level = level
                     token.markup = "linkify"
                     token.info = "auto"
                     nodes.append(token)
