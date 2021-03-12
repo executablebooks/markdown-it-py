@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1615386554506,
+  "lastUpdate": 1615592794291,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -15061,6 +15061,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.026788",
             "group": "packages",
             "extra": "mean: 1.0780 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "ab287be3997f6186a64ad7213f9c8ffe3ae05c30",
+          "message": "🐛 FIX: Linkify link nesting levels (#142)\n\nDue to a porting error, linkify link tokens have incorrect nesting levels.",
+          "timestamp": "2021-03-13T00:45:08+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/ab287be3997f6186a64ad7213f9c8ffe3ae05c30",
+          "distinct": true,
+          "tree_id": "4b3499b4f1709d0ac67b86a0e320784db631eafb"
+        },
+        "date": 1615592793557,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 3.9039581562021883,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057050",
+            "group": "plugins",
+            "extra": "mean: 256.15 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 3.8663825738966975,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0055960",
+            "group": "plugins",
+            "extra": "mean: 258.64 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.2817326490356313,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0063564",
+            "group": "plugins",
+            "extra": "mean: 304.72 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 3.8776058611900024,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059695",
+            "group": "plugins",
+            "extra": "mean: 257.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 3.892695773969079,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0067012",
+            "group": "plugins",
+            "extra": "mean: 256.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 3.8827452706599432,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0055861",
+            "group": "plugins",
+            "extra": "mean: 257.55 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 3.880933803924834,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0056322",
+            "group": "plugins",
+            "extra": "mean: 257.67 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 3.803467869300271,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0061928",
+            "group": "plugins",
+            "extra": "mean: 262.92 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 3.8935683611533225,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058879",
+            "group": "plugins",
+            "extra": "mean: 256.83 msec\nrounds: 20"
           }
         ]
       }
