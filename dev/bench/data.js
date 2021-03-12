@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1615592794291,
+  "lastUpdate": 1615592848591,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -15155,6 +15155,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0058879",
             "group": "plugins",
             "extra": "mean: 256.83 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.40",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "ab287be3997f6186a64ad7213f9c8ffe3ae05c30",
+          "message": "🐛 FIX: Linkify link nesting levels (#142)\n\nDue to a porting error, linkify link tokens have incorrect nesting levels.",
+          "timestamp": "2021-03-13T00:45:08+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/ab287be3997f6186a64ad7213f9c8ffe3ae05c30",
+          "distinct": true,
+          "tree_id": "4b3499b4f1709d0ac67b86a0e320784db631eafb"
+        },
+        "date": 1615592847855,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.2438685856122325,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0087954",
+            "group": "packages",
+            "extra": "mean: 235.63 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.026466186148943,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0046386",
+            "group": "packages",
+            "extra": "mean: 90.691 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.5655560980864989,
+            "unit": "iter/sec",
+            "range": "stddev: 0.020625",
+            "group": "packages",
+            "extra": "mean: 638.75 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.027050484890636,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018021",
+            "group": "packages",
+            "extra": "mean: 973.66 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.9120232830387445,
+            "unit": "iter/sec",
+            "range": "stddev: 0.024971",
+            "group": "packages",
+            "extra": "mean: 1.0965 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.235981908647358,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0094773",
+            "group": "packages",
+            "extra": "mean: 236.07 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.0871670011110826,
+            "unit": "iter/sec",
+            "range": "stddev: 0.028795",
+            "group": "packages",
+            "extra": "mean: 919.82 msec\nrounds: 20"
           }
         ]
       }
