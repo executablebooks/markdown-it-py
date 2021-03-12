@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1615593291031,
+  "lastUpdate": 1615593363549,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -15327,6 +15327,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0067889",
             "group": "plugins",
             "extra": "mean: 282.02 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.40",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "00a28a6c72b2a659327573d3a4f87ae516da010b",
+          "message": "👌 IMPROVE: Use regular __init__ to create SyntaxTreeNodes (#132)\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2021-03-13T00:53:17+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/00a28a6c72b2a659327573d3a4f87ae516da010b",
+          "distinct": true,
+          "tree_id": "179b93222987e07ba645500ce97e6ec72a360943"
+        },
+        "date": 1615593362632,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.22145165128977,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010241",
+            "group": "packages",
+            "extra": "mean: 236.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.950479766859175,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0046271",
+            "group": "packages",
+            "extra": "mean: 83.679 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.6662082394613293,
+            "unit": "iter/sec",
+            "range": "stddev: 0.019921",
+            "group": "packages",
+            "extra": "mean: 600.17 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.0430704072429964,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012364",
+            "group": "packages",
+            "extra": "mean: 958.71 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.9350463711303048,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017689",
+            "group": "packages",
+            "extra": "mean: 1.0695 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.257241133888047,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013931",
+            "group": "packages",
+            "extra": "mean: 234.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.1128450719889573,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0084577",
+            "group": "packages",
+            "extra": "mean: 898.60 msec\nrounds: 20"
           }
         ]
       }
