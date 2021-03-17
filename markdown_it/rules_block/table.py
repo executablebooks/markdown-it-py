@@ -150,7 +150,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
     for i in range(len(columns)):
         token = state.push("th_open", "th", 1)
         if aligns[i]:
-            token.attrs = [["style", "text-align:" + aligns[i]]]
+            token.attrs = {"style": "text-align:" + aligns[i]}
 
         token = state.push("inline", "", 0)
         # note in markdown-it this map was removed in v12.0.0 however, we keep it,
@@ -198,7 +198,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
         for i in range(columnCount):
             token = state.push("td_open", "td", 1)
             if aligns[i]:
-                token.attrs = [["style", "text-align:" + aligns[i]]]
+                token.attrs = {"style": "text-align:" + aligns[i]}
 
             token = state.push("inline", "", 0)
             # note in markdown-it this map was removed in v12.0.0 however, we keep it,

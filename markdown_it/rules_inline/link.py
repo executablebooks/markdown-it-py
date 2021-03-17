@@ -130,10 +130,10 @@ def link(state: StateInline, silent: bool):
         state.posMax = labelEnd
 
         token = state.push("link_open", "a", 1)
-        token.attrs = [["href", href]]
+        token.attrs = {"href": href}
 
         if title:
-            token.attrs.append(["title", title])
+            token.attrSet("title", title)
 
         # note, this is not part of markdown-it JS, but is useful for renderers
         if label and state.md.options.get("store_labels", False):

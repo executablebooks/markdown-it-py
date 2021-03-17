@@ -136,12 +136,12 @@ def image(state: StateInline, silent: bool):
         state.md.inline.parse(content, state.md, state.env, tokens)
 
         token = state.push("image", "img", 0)
-        token.attrs = [["src", href], ["alt", ""]]
+        token.attrs = {"src": href, "alt": ""}
         token.children = tokens or None
         token.content = content
 
         if title:
-            token.attrs.append(["title", title])
+            token.attrSet("title", title)
 
         # note, this is not part of markdown-it JS, but is useful for renderers
         if label and state.md.options.get("store_labels", False):

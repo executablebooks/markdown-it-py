@@ -1,7 +1,29 @@
-from typing import Any, List, Optional, Union
+from typing import (
+    Any,
+    Callable,
+    Dict,
+    List,
+    MutableMapping,
+    Optional,
+    Tuple,
+    Type,
+    Union,
+)
 import warnings
 
 import attr
+
+
+def convert_attrs(value: Any) -> Any:
+    """Convert Token.attrs set as ``None`` or ``[[key, value], ...]`` to a dict.
+
+    This improves compatibility with upstream markdown-it.
+    """
+    if not value:
+        return {}
+    if isinstance(value, list):
+        return dict(value)
+    return value
 
 
 @attr.s(slots=True)
@@ -15,8 +37,10 @@ class Token:
     # -  `0` means the tag is self-closing
     # - `-1` means the tag is closing
     nesting: int = attr.ib()
-    # Html attributes. Format: `[ [ name1, value1 ], [ name2, value2 ] ]`
-    attrs: Optional[List[list]] = attr.ib(default=None)
+    # Html attributes. Note this differs from the upstream "list of lists" format
+    attrs: Dict[str, Union[str, int, float]] = attr.ib(
+        factory=dict, converter=convert_attrs
+    )
     # Source map info. Format: `[ line_begin, line_end ]`
     map: Optional[List[int]] = attr.ib(default=None)
     # nesting level, the same as `state.level`
@@ -28,9 +52,9 @@ class Token:
     content: str = attr.ib(default="")
     # '*' or '_' for emphasis, fence string for fence, etc.
     markup: str = attr.ib(default="")
-    # fence infostring
+    # fence info string
     info: str = attr.ib(default="")
-    # A place for plugins to store an arbitrary data
+    # A place for plugins to store any arbitrary data
     meta: dict = attr.ib(factory=dict)
     # True for block-level tokens, false for inline tokens.
     # Used in renderer to calculate line breaks
@@ -40,74 +64,103 @@ class Token:
     hidden: bool = attr.ib(default=False)
 
     def attrIndex(self, name: str) -> int:
-        if not self.attrs:
+        warnings.warn(
+            "Token.attrIndex should not be used, since Token.attrs is a dictionary",
+            UserWarning,
+        )
+        if name not in self.attrs:
             return -1
-        for i, at in enumerate(self.attrs):
-            if at[0] == name:
-                return i
-        return -1
+        return list(self.attrs.keys()).index(name)
 
-    def attrPush(self, attrData: list) -> None:
+    def attrItems(self) -> List[Tuple[str, Any]]:
+        """Get (key, value) list of attrs."""
+        return list(self.attrs.items())
+
+    def attrPush(self, attrData: Tuple[str, str]) -> None:
         """Add `[ name, value ]` attribute to list. Init attrs if necessary."""
-        if self.attrs:
-            self.attrs.append(attrData)
-        else:
-            self.attrs = [attrData]
+        name, value = attrData
+        self.attrSet(name, value)
 
-    def attrSet(self, name: str, value: Any) -> None:
+    def attrSet(self, name: str, value: str) -> None:
         """Set `name` attribute to `value`. Override old value if exists."""
-        idx = self.attrIndex(name)
-        if idx < 0:
-            self.attrPush([name, value])
-        else:
-            assert self.attrs is not None
-            self.attrs[idx] = [name, value]
+        self.attrs[name] = value
 
     def attrGet(self, name: str) -> Any:
-        """ Get the value of attribute `name`, or null if it does not exist."""
-        idx = self.attrIndex(name)
-        if idx >= 0:
-            assert self.attrs is not None
-            return self.attrs[idx][1]
-        return None
+        """Get the value of attribute `name`, or null if it does not exist."""
+        return self.attrs.get(name, None)
 
-    def attrJoin(self, name, value):
+    def attrJoin(self, name: str, value: str) -> None:
         """Join value to existing attribute via space.
         Or create new attribute if not exists.
         Useful to operate with token classes.
         """
-        idx = self.attrIndex(name)
-        if idx < 0:
-            self.attrPush([name, value])
+        if name in self.attrs:
+            current = self.attrs[name]
+            if not isinstance(current, str):
+                raise TypeError(
+                    f"existing attr 'name' is not a str: {self.attrs[name]}"
+                )
+            self.attrs[name] = f"{current} {value}"
         else:
-            self.attrs[idx][1] = self.attrs[idx][1] + " " + value
+            self.attrs[name] = value
 
     def copy(self) -> "Token":
         """Return a shallow copy of the instance."""
         return attr.evolve(self)
 
-    def as_dict(self, children=True, filter=None, dict_factory=dict):
-        """Return the token as a dict.
+    def as_dict(
+        self,
+        *,
+        children: bool = True,
+        as_upstream: bool = True,
+        meta_serializer: Optional[Callable[[dict], Any]] = None,
+        filter: Optional[Callable[[attr.Attribute, Any], bool]] = None,
+        dict_factory: Type[MutableMapping[str, Any]] = dict,
+    ) -> MutableMapping[str, Any]:
+        """Return the token as a dictionary.
 
-        :param bool children: Also convert children to dicts
+        :param children: Also convert children to dicts
+        :param as_upstream: Ensure the output dictionary is equal to that created by markdown-it
+            For example, attrs are converted to null or lists
+        :param meta_serializer: hook for serializing ``Token.meta``
         :param filter: A callable whose return code determines whether an
-            attribute or element is included (``True``) or dropped (``False``).  Is
-            called with the `attr.Attribute` as the first argument and the
+            attribute or element is included (``True``) or dropped (``False``).
+            Is called with the `attr.Attribute` as the first argument and the
             value as the second argument.
-        :param dict_factory: A callable to produce dictionaries from.  For
-            example, to produce ordered dictionaries instead of normal Python
+        :param dict_factory: A callable to produce dictionaries from.
+            For example, to produce ordered dictionaries instead of normal Python
             dictionaries, pass in ``collections.OrderedDict``.
 
         """
-        return attr.asdict(
-            self, recurse=children, filter=filter, dict_factory=dict_factory
+        mapping = attr.asdict(
+            self, recurse=False, filter=filter, dict_factory=dict_factory
         )
+        if as_upstream and "attrs" in mapping:
+            mapping["attrs"] = (
+                None
+                if not mapping["attrs"]
+                else [[k, v] for k, v in mapping["attrs"].items()]
+            )
+        if meta_serializer and "meta" in mapping:
+            mapping["meta"] = meta_serializer(mapping["meta"])
+        if children and mapping.get("children", None):
+            mapping["children"] = [
+                child.as_dict(
+                    children=children,
+                    filter=filter,
+                    dict_factory=dict_factory,
+                    as_upstream=as_upstream,
+                )
+                for child in mapping["children"]
+            ]
+        return mapping
 
     @classmethod
-    def from_dict(cls, dct):
+    def from_dict(cls, dct: MutableMapping[str, Any]) -> "Token":
+        """Convert a dict to a Token."""
         token = cls(**dct)
         if token.children:
-            token.children = [cls.from_dict(c) for c in token.children]
+            token.children = [cls.from_dict(c) for c in token.children]  # type: ignore[arg-type]
         return token
 
 

@@ -39,7 +39,7 @@ def autolink(state: StateInline, silent: bool) -> bool:
 
         if not silent:
             token = state.push("link_open", "a", 1)
-            token.attrs = [["href", fullUrl]]
+            token.attrs = {"href": fullUrl}
             token.markup = "autolink"
             token.info = "auto"
 
@@ -60,7 +60,7 @@ def autolink(state: StateInline, silent: bool) -> bool:
 
         if not silent:
             token = state.push("link_open", "a", 1)
-            token.attrs = [["href", fullUrl]]
+            token.attrs = {"href": fullUrl}
             token.markup = "autolink"
             token.info = "auto"
 

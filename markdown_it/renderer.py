@@ -5,6 +5,7 @@ Generates HTML from parsed token stream. Each instance has independent
 copy of rules. Those can be rewritten with ease. Also, you can add new
 rules if you create plugin and adds new token types.
 """
+import copy
 import inspect
 from typing import Optional, Sequence
 
@@ -153,19 +154,10 @@ class RendererHTML:
     @staticmethod
     def renderAttrs(token: Token) -> str:
         """Render token attributes to string."""
-        if not token.attrs:
-            return ""
-
         result = ""
 
-        for token_attr in token.attrs:
-            result += (
-                " "
-                + escapeHtml(str(token_attr[0]))
-                + '="'
-                + escapeHtml(str(token_attr[1]))
-                + '"'
-            )
+        for key, value in token.attrItems():
+            result += " " + escapeHtml(str(key)) + '="' + escapeHtml(str(value)) + '"'
 
         return result
 
@@ -241,17 +233,9 @@ class RendererHTML:
         # May be, one day we will add .deepClone() for token and simplify this part, but
         # now we prefer to keep things local.
         if info:
-            i = token.attrIndex("class")
-            tmpAttrs = token.attrs[:] if token.attrs else []
-
-            if i < 0:
-                tmpAttrs.append(["class", options.langPrefix + langName])
-            else:
-                tmpAttrs[i] = tmpAttrs[i][:]
-                tmpAttrs[i][1] += " " + options.langPrefix + langName
-
             # Fake token just to render attributes
-            tmpToken = Token(type="", tag="", nesting=0, attrs=tmpAttrs)
+            tmpToken = Token(type="", tag="", nesting=0, attrs=copy.copy(token.attrs))
+            tmpToken.attrJoin("class", options.langPrefix + langName)
 
             return (
                 "<pre><code"
@@ -271,16 +255,17 @@ class RendererHTML:
 
     def image(self, tokens: Sequence[Token], idx: int, options, env) -> str:
         token = tokens[idx]
-        assert token.attrs is not None, '"image" token\'s attrs must not be `None`'
 
         # "alt" attr MUST be set, even if empty. Because it's mandatory and
         # should be placed on proper position for tests.
-        #
+
+        assert (
+            token.attrs and "alt" in token.attrs
+        ), '"image" token\'s attrs must contain `alt`'
+
         # Replace content with actual value
 
-        token.attrs[token.attrIndex("alt")][1] = self.renderInlineAsText(
-            token.children, options, env
-        )
+        token.attrSet("alt", self.renderInlineAsText(token.children, options, env))
 
         return self.renderToken(tokens, idx, options, env)
 

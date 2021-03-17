@@ -118,10 +118,10 @@ vimeoRE = re.compile(r'^https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)')
 
 def render_vimeo(self, tokens, idx, options, env):
     token = tokens[idx]
-    aIndex = token.attrIndex('src')
-    if (vimeoRE.match(token.attrs[aIndex][1])):
 
-        ident = vimeoRE.match(token.attrs[aIndex][1])[2]
+    if vimeoRE.match(token.attrs["src"]):
+
+        ident = vimeoRE.match(token.attrs["src"])[2]
 
         return ('<div class="embed-responsive embed-responsive-16by9">\n' +
                '  <iframe class="embed-responsive-item" src="//player.vimeo.com/video/' +
@@ -140,11 +140,7 @@ Here is another example, how to add `target="_blank"` to all links:
 from markdown_it import MarkdownIt
 
 def render_blank_link(self, tokens, idx, options, env):
-    aIndex = tokens[idx].attrIndex('target')
-    if (aIndex < 0):
-        tokens[idx].attrPush(['target', '_blank']) # add new attribute
-    else:
-        tokens[idx].attrs[aIndex][1] = '_blank'  # replace value of existing attr
+    tokens[idx].attrSet("target", "_blank")
 
     # pass token to default renderer.
     return self.renderToken(tokens, idx, options, env)
