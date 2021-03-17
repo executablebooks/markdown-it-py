@@ -76,12 +76,12 @@ class Token:
         """Get (key, value) list of attrs."""
         return list(self.attrs.items())
 
-    def attrPush(self, attrData: Tuple[str, str]) -> None:
+    def attrPush(self, attrData: Tuple[str, Union[str, int, float]]) -> None:
         """Add `[ name, value ]` attribute to list. Init attrs if necessary."""
         name, value = attrData
         self.attrSet(name, value)
 
-    def attrSet(self, name: str, value: str) -> None:
+    def attrSet(self, name: str, value: Union[str, int, float]) -> None:
         """Set `name` attribute to `value`. Override old value if exists."""
         self.attrs[name] = value
 

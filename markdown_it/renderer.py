@@ -157,7 +157,7 @@ class RendererHTML:
         result = ""
 
         for key, value in token.attrItems():
-            result += " " + escapeHtml(str(key)) + '="' + escapeHtml(str(value)) + '"'
+            result += " " + escapeHtml(key) + '="' + escapeHtml(str(value)) + '"'
 
         return result
 
