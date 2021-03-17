@@ -150,6 +150,7 @@ class Token:
                     filter=filter,
                     dict_factory=dict_factory,
                     as_upstream=as_upstream,
+                    meta_serializer=meta_serializer,
                 )
                 for child in mapping["children"]
             ]
