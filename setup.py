@@ -42,7 +42,7 @@ setup(
     python_requires="~=3.6",
     install_requires=[
         "attrs>=19,<21",
-        "mdit-py-plugins~=0.2.1",
+        "mdit-py-plugins~=0.2.6",
         "typing_extensions>=3.7.4; python_version<'3.8'",
     ],
     extras_require={

@@ -175,19 +175,10 @@ class RendererHTML(RendererProtocol):
     @staticmethod
     def renderAttrs(token: Token) -> str:
         """Render token attributes to string."""
-        if not token.attrs:
-            return ""
-
         result = ""
 
-        for token_attr in token.attrs:
-            result += (
-                " "
-                + escapeHtml(str(token_attr[0]))
-                + '="'
-                + escapeHtml(str(token_attr[1]))
-                + '"'
-            )
+        for key, value in token.attrItems():
+            result += " " + escapeHtml(key) + '="' + escapeHtml(str(value)) + '"'
 
         return result
 
@@ -241,14 +232,18 @@ class RendererHTML(RendererProtocol):
         token = tokens[idx]
         info = unescapeAll(token.info).strip() if token.info else ""
         langName = ""
+        langAttrs = ""
 
         if info:
-            langName = info.split()[0]
+            arr = info.split(maxsplit=1)
+            langName = arr[0]
+            if len(arr) == 2:
+                langAttrs = arr[1]
 
         if options.highlight:
-            highlighted = options.highlight(token.content, langName) or escapeHtml(
-                token.content
-            )
+            highlighted = options.highlight(
+                token.content, langName, langAttrs
+            ) or escapeHtml(token.content)
         else:
             highlighted = escapeHtml(token.content)
 
@@ -256,19 +251,12 @@ class RendererHTML(RendererProtocol):
             return highlighted + "\n"
 
         # If language exists, inject class gently, without modifying original token.
-        # May be, one day we will add .clone() for token and simplify this part, but
+        # May be, one day we will add .deepClone() for token and simplify this part, but
         # now we prefer to keep things local.
         if info:
-            i = token.attrIndex("class")
-            tmpAttrs = token.attrs[:] if token.attrs else []
-
-            if i < 0:
-                tmpAttrs.append(["class", options.langPrefix + langName])
-            else:
-                tmpAttrs[i][1] += " " + options.langPrefix + langName
-
             # Fake token just to render attributes
-            tmpToken = Token(type="", tag="", nesting=0, attrs=tmpAttrs)
+            tmpToken = Token(type="", tag="", nesting=0, attrs=token.attrs.copy())
+            tmpToken.attrJoin("class", options.langPrefix + langName)
 
             return (
                 "<pre><code"
@@ -288,16 +276,17 @@ class RendererHTML(RendererProtocol):
 
     def image(self, tokens: Sequence[Token], idx: int, options, env) -> str:
         token = tokens[idx]
-        assert token.attrs is not None, '"image" token\'s attrs must not be `None`'
 
         # "alt" attr MUST be set, even if empty. Because it's mandatory and
         # should be placed on proper position for tests.
-        #
+
+        assert (
+            token.attrs and "alt" in token.attrs
+        ), '"image" token\'s attrs must contain `alt`'
+
         # Replace content with actual value
 
-        token.attrs[token.attrIndex("alt")][1] = self.renderInlineAsText(
-            token.children, options, env
-        )
+        token.attrSet("alt", self.renderInlineAsText(token.children, options, env))
 
         return self.renderToken(tokens, idx, options, env)
 

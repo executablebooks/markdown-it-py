@@ -19,25 +19,37 @@ def backtick(state: StateInline, silent: bool) -> bool:
     pos += 1
     maximum = state.posMax
 
-    # /* ` */
-    while pos < maximum and (state.srcCharCode[pos] == 0x60):
+    # scan marker length
+    while pos < maximum and (state.srcCharCode[pos] == 0x60):  # /* ` */
         pos += 1
 
     marker = state.src[start:pos]
+    openerLength = len(marker)
+
+    if state.backticksScanned and state.backticks.get(openerLength, 0) <= start:
+        if not silent:
+            state.pending += marker
+        state.pos += openerLength
+        return True
 
     matchStart = matchEnd = pos
 
+    # Nothing found in the cache, scan until the end of the line (or until marker is found)
     while True:
         try:
             matchStart = state.src.index("`", matchEnd)
         except ValueError:
             break
         matchEnd = matchStart + 1
-        # /* ` */
-        while matchEnd < maximum and (state.srcCharCode[matchEnd] == 0x60):
+
+        # scan marker length
+        while matchEnd < maximum and (state.srcCharCode[matchEnd] == 0x60):  # /* ` */
             matchEnd += 1
 
-        if matchEnd - matchStart == len(marker):
+        closerLength = matchEnd - matchStart
+
+        if closerLength == openerLength:
+            # Found matching closer length.
             if not silent:
                 token = state.push("code_inline", "code", 0)
                 token.markup = marker
@@ -51,7 +63,13 @@ def backtick(state: StateInline, silent: bool) -> bool:
             state.pos = matchEnd
             return True
 
+        # Some different length found, put it in cache as upper limit of where closer can be found
+        state.backticks[closerLength] = matchStart
+
+    # Scanned through the end, didn't find anything
+    state.backticksScanned = True
+
     if not silent:
         state.pending += marker
-    state.pos += len(marker)
+    state.pos += openerLength
     return True
