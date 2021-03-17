@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1615593363549,
+  "lastUpdate": 1615980205219,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -15405,6 +15405,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0084577",
             "group": "packages",
             "extra": "mean: 898.60 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "62046741e10df2404a874c3a1711349a9ca69f5e",
+          "message": "‼️ BREAKING: Change `Token.attrs` to a dict (#144)\n\nInstead of storing `attrs` as `[[\"key1\", \"value1\"], [\"key2\", \"value2\"]]`,\r\nuse `{\"key1\": \"value1\", \"key2\": \"value2\"}`.\r\n\r\nUpstream the list format is only used to guarantee order: https://github.com/markdown-it/markdown-it/issues/142,\r\nbut in Python 3.7+ dictionary order is now guaranteed by the specification\r\n(in Python 3.6 it is also preserved as an implementation detail).\r\nThis change improves typing and performance.\r\n\r\nOne should anyhow generally use the `attrGet`, `attrSet`, `attrPush` and `attrJoin` methods\r\nto manipulate `Token.attrs`, which all have an identical signature to those upstream.\r\n\r\nTo minimize how breaking this change is,\r\nauto-conversion is done on `Token` initiation,\r\ni.e. you can still use `Token(\"type\", \"tag\", 0, attrs=[[\"key\", \"value\"]])`,\r\nand also `Token.as_dict(as_upstream=True)` converts the dict back to `null`/`list`, \r\no that they can still be directly compared to those produced in the `debug` tab of https://markdown-it.github.io/.\r\n\r\nThe `meta_serializer` option has also been added to `Token.as_dict`,\r\nwhich now ensures that this method is always able to produce valid JSON.",
+          "timestamp": "2021-03-17T12:21:30+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/62046741e10df2404a874c3a1711349a9ca69f5e",
+          "distinct": true,
+          "tree_id": "b078245aea62b7e8734ff395f570485140f60253"
+        },
+        "date": 1615980204295,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 3.853604784334703,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016450",
+            "group": "plugins",
+            "extra": "mean: 259.50 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 3.88784192124635,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014686",
+            "group": "plugins",
+            "extra": "mean: 257.21 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.049403549747616,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010399",
+            "group": "plugins",
+            "extra": "mean: 327.93 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 3.9371280269477587,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010288",
+            "group": "plugins",
+            "extra": "mean: 253.99 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 3.946877600856873,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011498",
+            "group": "plugins",
+            "extra": "mean: 253.36 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 3.8848762749683794,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0096085",
+            "group": "plugins",
+            "extra": "mean: 257.41 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 3.9417964855541867,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010743",
+            "group": "plugins",
+            "extra": "mean: 253.69 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 3.7790341167041834,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016846",
+            "group": "plugins",
+            "extra": "mean: 264.62 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 3.959904867902925,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010090",
+            "group": "plugins",
+            "extra": "mean: 252.53 msec\nrounds: 20"
           }
         ]
       }
