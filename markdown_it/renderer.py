@@ -5,7 +5,6 @@ Generates HTML from parsed token stream. Each instance has independent
 copy of rules. Those can be rewritten with ease. Also, you can add new
 rules if you create plugin and adds new token types.
 """
-import copy
 import inspect
 from typing import Optional, Sequence
 
@@ -234,7 +233,7 @@ class RendererHTML:
         # now we prefer to keep things local.
         if info:
             # Fake token just to render attributes
-            tmpToken = Token(type="", tag="", nesting=0, attrs=copy.copy(token.attrs))
+            tmpToken = Token(type="", tag="", nesting=0, attrs=token.attrs.copy())
             tmpToken.attrJoin("class", options.langPrefix + langName)
 
             return (
