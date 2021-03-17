@@ -1,3 +1,5 @@
+import warnings
+
 from markdown_it.token import Token, nest_tokens, NestedTokens
 
 
@@ -24,9 +26,11 @@ def test_token():
     assert token.attrGet("a") == "b c"
     token.attrPush(["x", "y"])
     assert token.attrGet("x") == "y"
-    assert token.attrIndex("a") == 0
-    assert token.attrIndex("x") == 1
-    assert token.attrIndex("j") == -1
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        assert token.attrIndex("a") == 0
+        assert token.attrIndex("x") == 1
+        assert token.attrIndex("j") == -1
 
 
 def test_serialization():

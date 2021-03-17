@@ -27,17 +27,17 @@ then these are converted to other formats using 'renderers'.
 
 The simplest way to understand how text will be parsed is using:
 
-```{code-cell}
+```{code-cell} python
 from pprint import pprint
 from markdown_it import MarkdownIt
 ```
 
-```{code-cell}
+```{code-cell} python
 md = MarkdownIt()
 md.render("some *text*")
 ```
 
-```{code-cell}
+```{code-cell} python
 for token in md.parse("some *text*"):
     print(token)
     print()
@@ -59,24 +59,24 @@ You can define this configuration *via* directly supplying a dictionary or a pre
   Compared to `commonmark`, it enables the table, strikethrough and linkify components.
   **Important**, to use this configuration you must have `linkify-it-py` installed.
 
-```{code-cell}
+```{code-cell} python
 from markdown_it.presets import zero
 zero.make()
 ```
 
-```{code-cell}
+```{code-cell} python
 md = MarkdownIt("zero")
 md.options
 ```
 
 You can also override specific options:
 
-```{code-cell}
+```{code-cell} python
 md = MarkdownIt("zero", {"maxNesting": 99})
 md.options
 ```
 
-```{code-cell}
+```{code-cell} python
 pprint(md.get_active_rules())
 ```
 
@@ -84,23 +84,23 @@ You can find all the parsing rules in the source code:
 `parser_core.py`, `parser_block.py`,
 `parser_inline.py`.
 
-```{code-cell}
+```{code-cell} python
 pprint(md.get_all_rules())
 ```
 
 Any of the parsing rules can be enabled/disabled, and these methods are "chainable":
 
-```{code-cell}
+```{code-cell} python
 md.render("- __*emphasise this*__")
 ```
 
-```{code-cell}
+```{code-cell} python
 md.enable(["list", "emphasis"]).render("- __*emphasise this*__")
 ```
 
 You can temporarily modify rules with the `reset_rules` context manager.
 
-```{code-cell}
+```{code-cell} python
 with md.reset_rules():
     md.disable("emphasis")
     print(md.render("__*emphasise this*__"))
@@ -109,7 +109,7 @@ md.render("__*emphasise this*__")
 
 Additionally `renderInline` runs the parser with all block syntax rules disabled.
 
-```{code-cell}
+```{code-cell} python
 md.renderInline("__*emphasise this*__")
 ```
 
@@ -140,7 +140,7 @@ The `smartquotes` and `replacements` components are intended to improve typograp
 
 Both of these components require typography to be turned on, as well as the components enabled:
 
-```{code-cell}
+```{code-cell} python
 md = MarkdownIt("commonmark", {"typographer": True})
 md.enable(["replacements", "smartquotes"])
 md.render("'single quotes' (c)")
@@ -151,7 +151,7 @@ md.render("'single quotes' (c)")
 The `linkify` component requires that [linkify-it-py](https://github.com/tsutsu3/linkify-it-py) be installed (e.g. *via* `pip install markdown-it-py[linkify]`).
 This allows URI autolinks to be identified, without the need for enclosing in `<>` brackets:
 
-```{code-cell}
+```{code-cell} python
 md = MarkdownIt("commonmark", {"linkify": True})
 md.enable(["linkify"])
 md.render("github.com")
@@ -161,7 +161,7 @@ md.render("github.com")
 
 Plugins load collections of additional syntax rules and render methods into the parser
 
-```{code-cell}
+```{code-cell} python
 from markdown_it import MarkdownIt
 from markdown_it.extensions.front_matter import front_matter_plugin
 from markdown_it.extensions.footnote import footnote_plugin
@@ -194,7 +194,7 @@ md.render(text)
 
 Before rendering, the text is parsed to a flat token stream of block level syntax elements, with nesting defined by opening (1) and closing (-1) attributes:
 
-```{code-cell}
+```{code-cell} python
 md = MarkdownIt("commonmark")
 tokens = md.parse("""
 Here's some *text*
@@ -208,17 +208,17 @@ Here's some *text*
 Naturally all openings should eventually be closed,
 such that:
 
-```{code-cell}
+```{code-cell} python
 sum([t.nesting for t in tokens]) == 0
 ```
 
 All tokens are the same class, which can also be created outside the parser:
 
-```{code-cell}
+```{code-cell} python
 tokens[0]
 ```
 
-```{code-cell}
+```{code-cell} python
 from markdown_it.token import Token
 token = Token("paragraph_open", "p", 1, block=True, map=[1, 2])
 token == tokens[0]
@@ -226,19 +226,19 @@ token == tokens[0]
 
 The `'inline'` type token contain the inline tokens as children:
 
-```{code-cell}
+```{code-cell} python
 tokens[1]
 ```
 
 You can serialize a token (and its children) to a JSONable dictionary using:
 
-```{code-cell}
+```{code-cell} python
 print(tokens[1].as_dict())
 ```
 
 This dictionary can also be deserialized:
 
-```{code-cell}
+```{code-cell} python
 Token.from_dict(tokens[1].as_dict())
 ```
 
@@ -251,7 +251,7 @@ Token.from_dict(tokens[1].as_dict())
 In some use cases it may be useful to convert the token stream into a syntax tree,
 with opening/closing tokens collapsed into a single token that contains children.
 
-```{code-cell}
+```{code-cell} python
 from markdown_it.tree import SyntaxTreeNode
 
 md = MarkdownIt("commonmark")
@@ -271,11 +271,11 @@ print(node.pretty(indent=2, show_text=True))
 
 You can then use methods to traverse the tree
 
-```{code-cell}
+```{code-cell} python
 node.children
 ```
 
-```{code-cell}
+```{code-cell} python
 print(node[0])
 node[0].next_sibling
 ```
@@ -299,7 +299,7 @@ def function(renderer, tokens, idx, options, env):
 
 You can inject render methods into the instantiated render class.
 
-```{code-cell}
+```{code-cell} python
 md = MarkdownIt("commonmark")
 
 def render_em_open(self, tokens, idx, options, env):
@@ -316,7 +316,7 @@ Also `add_render_rule` method is specific to Python, rather than adding directly
 
 You can also subclass a render and add the method there:
 
-```{code-cell}
+```{code-cell} python
 from markdown_it.renderer import RendererHTML
 
 class MyRenderer(RendererHTML):
@@ -329,7 +329,7 @@ md.render("*a*")
 
 Plugins can support multiple render types, using the `__ouput__` attribute (this is currently a Python only feature).
 
-```{code-cell}
+```{code-cell} python
 from markdown_it.renderer import RendererHTML
 
 class MyRenderer1(RendererHTML):
@@ -355,7 +355,7 @@ print(md.render("*a*"))
 
 Here's a more concrete example; let's replace images with vimeo links to player's iframe:
 
-```{code-cell}
+```{code-cell} python
 import re
 from markdown_it import MarkdownIt
 
@@ -363,10 +363,10 @@ vimeoRE = re.compile(r'^https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)')
 
 def render_vimeo(self, tokens, idx, options, env):
     token = tokens[idx]
-    aIndex = token.attrIndex('src')
-    if (vimeoRE.match(token.attrs[aIndex][1])):
 
-        ident = vimeoRE.match(token.attrs[aIndex][1])[2]
+    if vimeoRE.match(token.attrs["src"]):
+
+        ident = vimeoRE.match(token.attrs["src"])[2]
 
         return ('<div class="embed-responsive embed-responsive-16by9">\n' +
                '  <iframe class="embed-responsive-item" src="//player.vimeo.com/video/' +
@@ -381,15 +381,11 @@ print(md.render("![](https://www.vimeo.com/123)"))
 
 Here is another example, how to add `target="_blank"` to all links:
 
-```{code-cell}
+```{code-cell} python
 from markdown_it import MarkdownIt
 
 def render_blank_link(self, tokens, idx, options, env):
-    aIndex = tokens[idx].attrIndex('target')
-    if (aIndex < 0):
-        tokens[idx].attrPush(['target', '_blank']) # add new attribute
-    else:
-        tokens[idx].attrs[aIndex][1] = '_blank'  # replace value of existing attr
+    tokens[idx].attrSet("target", "_blank")
 
     # pass token to default renderer.
     return self.renderToken(tokens, idx, options, env)

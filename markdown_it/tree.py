@@ -272,13 +272,13 @@ class SyntaxTreeNode:
         return self._attribute_token().tag
 
     @property
-    def attrs(self) -> Dict[str, Any]:
+    def attrs(self) -> Dict[str, Union[str, int, float]]:
         """Html attributes."""
-        token_attrs = self._attribute_token().attrs
-        if token_attrs is None:
-            return {}
-        # Type ignore because `Token`s attribute types are not perfect
-        return dict(token_attrs)  # type: ignore
+        return self._attribute_token().attrs
+
+    def attrGet(self, name: str) -> Union[None, str, int, float]:
+        """Get the value of attribute `name`, or null if it does not exist."""
+        return self._attribute_token().attrGet(name)
 
     @property
     def map(self) -> Optional[Tuple[int, int]]:
