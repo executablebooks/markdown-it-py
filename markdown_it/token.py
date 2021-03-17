@@ -72,7 +72,7 @@ class Token:
             return -1
         return list(self.attrs.keys()).index(name)
 
-    def attrItems(self) -> List[Tuple[str, Any]]:
+    def attrItems(self) -> List[Tuple[str, Union[str, int, float]]]:
         """Get (key, value) list of attrs."""
         return list(self.attrs.items())
 
@@ -85,7 +85,7 @@ class Token:
         """Set `name` attribute to `value`. Override old value if exists."""
         self.attrs[name] = value
 
-    def attrGet(self, name: str) -> Any:
+    def attrGet(self, name: str) -> Union[None, str, int, float]:
         """Get the value of attribute `name`, or null if it does not exist."""
         return self.attrs.get(name, None)
 
@@ -178,7 +178,7 @@ class NestedTokens:
     def __getattr__(self, name):
         return getattr(self.opening, name)
 
-    def attrGet(self, name: str) -> Optional[str]:
+    def attrGet(self, name: str) -> Union[None, str, int, float]:
         """ Get the value of attribute `name`, or null if it does not exist."""
         return self.opening.attrGet(name)
 

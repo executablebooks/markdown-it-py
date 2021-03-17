@@ -276,7 +276,7 @@ class SyntaxTreeNode:
         """Html attributes."""
         return self._attribute_token().attrs
 
-    def attrGet(self, name: str) -> Any:
+    def attrGet(self, name: str) -> Union[None, str, int, float]:
         """Get the value of attribute `name`, or null if it does not exist."""
         return self._attribute_token().attrGet(name)
 
