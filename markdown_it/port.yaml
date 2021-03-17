@@ -16,7 +16,7 @@
       Upstream the list format is only used to guarantee order: https://github.com/markdown-it/markdown-it/issues/142,
       but in Python 3.7+ order of dictionaries is guaranteed.
       One should anyhow use the `attrGet`, `attrSet`, `attrPush` and `attrJoin` methods
-      to manpipulate `Token.attrs`, which have an identical signature to those upstream.
+      to manipulate `Token.attrs`, which have an identical signature to those upstream.
     - Use python version of `charCodeAt`
     - |
       Reduce use of charCodeAt() by storing char codes in a srcCharCodes attribute for state
