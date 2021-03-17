@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1615980205219,
+  "lastUpdate": 1615980329871,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -15499,6 +15499,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.010090",
             "group": "plugins",
             "extra": "mean: 252.53 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "62046741e10df2404a874c3a1711349a9ca69f5e",
+          "message": "‼️ BREAKING: Change `Token.attrs` to a dict (#144)\n\nInstead of storing `attrs` as `[[\"key1\", \"value1\"], [\"key2\", \"value2\"]]`,\r\nuse `{\"key1\": \"value1\", \"key2\": \"value2\"}`.\r\n\r\nUpstream the list format is only used to guarantee order: https://github.com/markdown-it/markdown-it/issues/142,\r\nbut in Python 3.7+ dictionary order is now guaranteed by the specification\r\n(in Python 3.6 it is also preserved as an implementation detail).\r\nThis change improves typing and performance.\r\n\r\nOne should anyhow generally use the `attrGet`, `attrSet`, `attrPush` and `attrJoin` methods\r\nto manipulate `Token.attrs`, which all have an identical signature to those upstream.\r\n\r\nTo minimize how breaking this change is,\r\nauto-conversion is done on `Token` initiation,\r\ni.e. you can still use `Token(\"type\", \"tag\", 0, attrs=[[\"key\", \"value\"]])`,\r\nand also `Token.as_dict(as_upstream=True)` converts the dict back to `null`/`list`, \r\no that they can still be directly compared to those produced in the `debug` tab of https://markdown-it.github.io/.\r\n\r\nThe `meta_serializer` option has also been added to `Token.as_dict`,\r\nwhich now ensures that this method is always able to produce valid JSON.",
+          "timestamp": "2021-03-17T12:21:30+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/62046741e10df2404a874c3a1711349a9ca69f5e",
+          "distinct": true,
+          "tree_id": "b078245aea62b7e8734ff395f570485140f60253"
+        },
+        "date": 1615980329060,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.432025002376213,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0072515",
+            "group": "packages",
+            "extra": "mean: 291.37 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.014638642663378,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0029436",
+            "group": "packages",
+            "extra": "mean: 99.854 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.3754186284569958,
+            "unit": "iter/sec",
+            "range": "stddev: 0.022205",
+            "group": "packages",
+            "extra": "mean: 727.05 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 0.8738655250276027,
+            "unit": "iter/sec",
+            "range": "stddev: 0.032842",
+            "group": "packages",
+            "extra": "mean: 1.1443 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.8162502222441734,
+            "unit": "iter/sec",
+            "range": "stddev: 0.060893",
+            "group": "packages",
+            "extra": "mean: 1.2251 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 3.749659026162499,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0094865",
+            "group": "packages",
+            "extra": "mean: 266.69 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 0.9396946216972594,
+            "unit": "iter/sec",
+            "range": "stddev: 0.023074",
+            "group": "packages",
+            "extra": "mean: 1.0642 sec\nrounds: 20"
           }
         ]
       }
