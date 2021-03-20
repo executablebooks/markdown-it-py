@@ -159,12 +159,15 @@ md.render("github.com")
 
 ### Plugins load
 
-Plugins load collections of additional syntax rules and render methods into the parser
+Plugins load collections of additional syntax rules and render methods into the parser.
+A number of useful plugins are available in [`mdit_py_plugins`](https://github.com/executablebooks/mdit-py-plugins) (see [the plugin list](./plugins.md)),
+or you can create your own (following the [markdown-it design principles](./architecture.md)).
 
 ```{code-cell} python
 from markdown_it import MarkdownIt
-from markdown_it.extensions.front_matter import front_matter_plugin
-from markdown_it.extensions.footnote import footnote_plugin
+import mdit_py_plugins
+from mdit_py_plugins.front_matter import front_matter_plugin
+from mdit_py_plugins.footnote import footnote_plugin
 
 md = (
     MarkdownIt()
