@@ -116,7 +116,7 @@ class Ruler:
         if index == -1:
             raise KeyError(f"Parser rule not found: {ruleName}")
         self.__rules__[index].fn = fn
-        self.__rules__[index].alt = options["alt"] or []
+        self.__rules__[index].alt = options.get("alt", [])
         self.__cache__ = None
 
     def before(self, beforeName: str, ruleName: str, fn: RuleFunc, options=None):
