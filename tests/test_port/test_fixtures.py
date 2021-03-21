@@ -67,7 +67,7 @@ def test_commonmark_extras(line, title, input, expected):
     if line in [74, 88]:
         # TODO fix failing escaping tests
         # probably requires a fix of common.utils.stripEscape
-        pytest.skip("escaping entities in link titles / fence.info")
+        pytest.xfail("escaping entities in link titles / fence.info")
     md = MarkdownIt("commonmark")
     md.options["langPrefix"] = ""
     text = md.render(input)
@@ -83,7 +83,7 @@ def test_commonmark_extras(line, title, input, expected):
 def test_normalize_url(line, title, input, expected):
     if "Keep %25" in title:
         # TODO fix failing url escaping test
-        pytest.skip("url normalisation")
+        pytest.xfail("url normalisation")
     md = MarkdownIt("commonmark")
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
@@ -95,7 +95,7 @@ def test_normalize_url(line, title, input, expected):
 def test_fatal(line, title, input, expected):
     if line in [1, 17]:
         # TODO fix failing url escaping tests
-        pytest.skip("url normalisation")
+        pytest.xfail("url normalisation")
     md = MarkdownIt("commonmark").enable("replacements")
     md.options["typographer"] = True
     text = md.render(input)
