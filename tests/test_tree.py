@@ -72,3 +72,22 @@ Here's some text and an image ![title](image.png)
     )
     node = SyntaxTreeNode(tokens)
     file_regression.check(node.pretty(indent=2, show_text=True), extension=".xml")
+
+
+def test_walk():
+    tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
+    tree = SyntaxTreeNode(tokens)
+    expected_node_types = (
+        "root",
+        "heading",
+        "inline",
+        "text",
+        "paragraph",
+        "inline",
+        "text",
+        "strong",
+        "text",
+        "text",
+    )
+    for node, expected_type in zip(tree.walk(), expected_node_types):
+        assert node.type == expected_type
