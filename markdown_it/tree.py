@@ -4,6 +4,7 @@ This module is not part of upstream JavaScript markdown-it.
 """
 import textwrap
 from typing import (
+    Generator,
     NamedTuple,
     Sequence,
     Tuple,
@@ -247,6 +248,19 @@ class SyntaxTreeNode:
                 indent=indent, show_text=show_text, _current=_current + indent
             )
         return text
+
+    def walk(
+        self: _NodeType, *, include_self: bool = True
+    ) -> Generator[_NodeType, None, None]:
+        """Recursively yield all descendant nodes in the tree starting at self.
+
+        The order mimics the order of the underlying linear token
+        stream (i.e. depth first).
+        """
+        if include_self:
+            yield self
+        for child in self.children:
+            yield from child.walk(include_self=True)
 
     # NOTE:
     # The values of the properties defined below directly map to properties
