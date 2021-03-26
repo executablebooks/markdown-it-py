@@ -71,11 +71,31 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
     pos = state.bMarks[nextLine] + state.tShift[nextLine]
     if pos >= state.eMarks[nextLine]:
         return False
-
-    ch = state.srcCharCode[pos]
+    first_ch = state.srcCharCode[pos]
     pos += 1
-    # /* | */ /* - */ /* : */
-    if ch != 0x7C and ch != 0x2D and ch != 0x3A:
+
+    if pos >= state.eMarks[nextLine]:
+        return False
+    second_ch = state.srcCharCode[pos]
+    pos += 1
+
+    # if first character is '-', then second character must not be a space
+    # (due to parsing ambiguity with list)
+    if first_ch == 0x2D:
+        # not "|" and not "-" and not ":"
+        if second_ch != 0x7C and second_ch != 0x2D and second_ch != 0x3A:
+            return False
+    # "|" or ":"
+    elif first_ch == 0x7C or first_ch == 0x3A:
+        # not "|" and not "-" and not ":" and not space
+        if (
+            second_ch != 0x7C
+            and second_ch != 0x2D
+            and second_ch != 0x3A
+            and not isSpace(second_ch)
+        ):
+            return False
+    else:
         return False
 
     while pos < state.eMarks[nextLine]:
