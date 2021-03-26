@@ -83,17 +83,12 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
     # (due to parsing ambiguity with list)
     if first_ch == 0x2D:
         # not "|" and not "-" and not ":"
-        if second_ch != 0x7C and second_ch != 0x2D and second_ch != 0x3A:
+        if second_ch not in {0x7C, 0x2D, 0x3A}:
             return False
     # "|" or ":"
-    elif first_ch == 0x7C or first_ch == 0x3A:
+    elif first_ch in {0x7C, 0x3A}:
         # not "|" and not "-" and not ":" and not space
-        if (
-            second_ch != 0x7C
-            and second_ch != 0x2D
-            and second_ch != 0x3A
-            and not isSpace(second_ch)
-        ):
+        if second_ch not in {0x7C, 0x2D, 0x3A} and not isSpace(second_ch):
             return False
     else:
         return False
@@ -102,7 +97,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
         ch = state.srcCharCode[pos]
 
         # /* | */  /* - */ /* : */
-        if ch != 0x7C and ch != 0x2D and ch != 0x3A and not isSpace(ch):
+        if ch not in {0x7C, 0x2D, 0x3A} and not isSpace(ch):
             return False
 
         pos += 1
