@@ -73,24 +73,20 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
         return False
     first_ch = state.srcCharCode[pos]
     pos += 1
+    if first_ch not in {0x7C, 0x2D, 0x3A}:  # not in {"|", "-", ":"}
+        return False
 
     if pos >= state.eMarks[nextLine]:
         return False
     second_ch = state.srcCharCode[pos]
     pos += 1
+    # not in {"|", "-", ":"} and not space
+    if second_ch not in {0x7C, 0x2D, 0x3A} and not isSpace(second_ch):
+        return False
 
     # if first character is '-', then second character must not be a space
     # (due to parsing ambiguity with list)
-    if first_ch == 0x2D:
-        # not "|" and not "-" and not ":"
-        if second_ch not in {0x7C, 0x2D, 0x3A}:
-            return False
-    # "|" or ":"
-    elif first_ch in {0x7C, 0x3A}:
-        # not "|" and not "-" and not ":" and not space
-        if second_ch not in {0x7C, 0x2D, 0x3A} and not isSpace(second_ch):
-            return False
-    else:
+    if first_ch == 0x2D and isSpace(second_ch):
         return False
 
     while pos < state.eMarks[nextLine]:
