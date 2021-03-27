@@ -43,8 +43,8 @@ with and without plugins and features:
 
 ```python
 from markdown_it import MarkdownIt
-from markdown_it.extensions.front_matter import front_matter_plugin
-from markdown_it.extensions.footnote import footnote_plugin
+from mdit_py_plugins.front_matter import front_matter_plugin
+from mdit_py_plugins.footnote import footnote_plugin
 
 md = (
     MarkdownIt()
@@ -68,6 +68,11 @@ A footnote [^1]
 """)
 tokens = md.parse(text)
 html_text = md.render(text)
+
+## To export the html to a file, uncomment the lines below:
+#text_file = open("output.html", "w")
+#text_file.write(html_text)
+#text_file.close()
 ```
 
 ### Command-line Usage
