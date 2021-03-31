@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1617167400159,
+  "lastUpdate": 1617167455494,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -16359,6 +16359,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0085144",
             "group": "plugins",
             "extra": "mean: 246.53 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "9ecda044ab58572d6e4a40359b31563eae463ff5",
+          "message": "‼️ BREAKING: Replace use of AttrDict for env/options (#151)\n\nFor `env` any Python mutable mapping is now allowed,\r\nand so attribute access to keys is not allowed.\r\nFor `MarkdownIt.options` it is now set as an `OptionsDict`,\r\nwhich is a dictionary sub-class, with attribute access\r\nonly for core markdownit configuration keys.",
+          "timestamp": "2021-03-31T07:08:36+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/9ecda044ab58572d6e4a40359b31563eae463ff5",
+          "distinct": true,
+          "tree_id": "cf49f92a73b36ca2eba88cddb507e3eb223a8764"
+        },
+        "date": 1617167454659,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.980101373333221,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0077877",
+            "group": "packages",
+            "extra": "mean: 251.25 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.127106335280802,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0024192",
+            "group": "packages",
+            "extra": "mean: 76.178 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.263309555762867,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017121",
+            "group": "packages",
+            "extra": "mean: 441.83 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.0120204378618396,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012383",
+            "group": "packages",
+            "extra": "mean: 988.12 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.8810616467061463,
+            "unit": "iter/sec",
+            "range": "stddev: 0.022844",
+            "group": "packages",
+            "extra": "mean: 1.1350 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.300611794196272,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0050228",
+            "group": "packages",
+            "extra": "mean: 232.53 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.0415066628730396,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014009",
+            "group": "packages",
+            "extra": "mean: 960.15 msec\nrounds: 20"
           }
         ]
       }
