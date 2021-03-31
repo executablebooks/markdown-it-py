@@ -1,5 +1,36 @@
 # Change Log
 
+## 1.0.0b1 - 2021-03-31
+
+[Full commit log](https://github.com/executablebooks/markdown-it-py/compare/v0.6.2...9ecda04)
+
+This is the first beta release of the stable v1.x series.
+
+There are four notable (and breaking) changes:
+
+1. The code has been synchronised with the upstream Markdown-It v12.0.4.
+   In particular, this update alters the parsing of tables to be consistent with the GFM specification: <https://github.github.com/gfm/#tables-extension->
+   A number of parsing performance and validation improvements are also included.
+2. `Token.attrs` are now stored as dictionaries, rather than a list of lists.
+   This is a departure from upstream Markdown-It, allowed by Pythons guarantee of ordered dictionaries (see [#142](https://github.com/markdown-it/markdown-it/issues/142)), and is the more natural representation.
+   Note `attrGet`, `attrSet`, `attrPush` and `attrJoin` methods remain identical to those upstream,
+   and `Token.as_dict(as_upstream=True)` will convert the token back to a directly comparable dict.
+3. The use of `AttrDict` has been replaced:
+   For `env` any Python mutable mapping is now allowed, and so attribute access to keys is not (differing from the Javascript dictionary).
+   For `MarkdownIt.options` it is now set as an `OptionsDict`, which is a dictionary sub-class, with attribute access only for core MarkdownIt configuration keys.
+4. Introduction of the `SyntaxTreeNode`.
+   This is a more comprehensive replacement for `nest_tokens` and `NestedTokens` (which are now deprecated).
+   It allows for the `Token` stream to be converted to/from a nested tree structure, with opening/closing tokens collapsed into a single `SyntaxTreeNode` and the intermediate tokens set as children.
+   See [Creating a syntax tree](https://markdown-it-py.readthedocs.io/en/latest/using.html#creating-a-syntax-tree) documentation for details.
+
+### Additional Fixes 🐛
+
+- Fix exception due to empty lines after blockquote+footnote
+- Fix linkify link nesting levels
+- Fix the use of `Ruler.at` for plugins
+- Avoid fenced token mutations during rendering
+- Fix CLI version info and correct return of exit codes
+
 ## 0.6.2 - 2021-02-07
 
 This release brings Markdown-It-Py inline with Markdown-It v11.0.1 (2020-09-14), applying two fixes:

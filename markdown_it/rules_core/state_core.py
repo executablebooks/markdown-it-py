@@ -1,6 +1,5 @@
-from typing import List, Optional, TYPE_CHECKING
+from typing import List, MutableMapping, Optional, TYPE_CHECKING
 
-from ..utils import AttrDict
 from ..token import Token
 from ..ruler import StateBase
 
@@ -13,7 +12,7 @@ class StateCore(StateBase):
         self,
         src: str,
         md: "MarkdownIt",
-        env: AttrDict,
+        env: MutableMapping,
         tokens: Optional[List[Token]] = None,
     ):
         self.src = src

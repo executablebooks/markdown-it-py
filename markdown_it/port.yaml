@@ -1,7 +1,7 @@
 - package: markdown-it/markdown-it
   version: 12.0.4
-  commit: 7b8969ce5cb2edc54f2c1aa39a85a3a08076337d
-  date: Dec 20, 2020
+  commit: cd5296f1e7de2b978526178631859c18bb9d9928
+  date: Mar 27, 2021
   notes:
     - Rename variables that use python built-in names, e.g.
       - `max` -> `maximum`
@@ -11,6 +11,10 @@
       Convert JS `for` loops to `while` loops
       this is generally the main difference between the codes,
       because in python you can't do e.g. `for {i=1;i<x;i++} {}`
+    - |
+      `env` is a common Python dictionary, and so does not have attribute access to keys,
+      as with JavaScript dictionaries.
+      `options` have attribute access only to core markdownit configuration options
     - |
       `Token.attrs` is a dictionary, instead of a list of lists.
       Upstream the list format is only used to guarantee order: https://github.com/markdown-it/markdown-it/issues/142,

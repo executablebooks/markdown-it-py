@@ -1,7 +1,6 @@
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
 from markdown_it.rules_core import StateCore
-from markdown_it.utils import AttrDict
 
 
 def test_get_rules():
@@ -271,11 +270,11 @@ def test_empty_env():
     """Test that an empty `env` is mutated, not copied and mutated."""
     md = MarkdownIt()
 
-    env = AttrDict()
+    env = {}
     md.render("[foo]: /url\n[foo]", env)
     assert "references" in env
 
-    env = AttrDict()
+    env = {}
     md.parse("[foo]: /url\n[foo]", env)
     assert "references" in env
 

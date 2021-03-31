@@ -52,7 +52,9 @@ class Token:
     content: str = attr.ib(default="")
     # '*' or '_' for emphasis, fence string for fence, etc.
     markup: str = attr.ib(default="")
-    # fence info string
+    # Additional information:
+    #   - Info string for "fence" tokens
+    #   - The value "auto" for autolink "link_open" and "link_close" tokens
     info: str = attr.ib(default="")
     # A place for plugins to store any arbitrary data
     meta: dict = attr.ib(factory=dict)
