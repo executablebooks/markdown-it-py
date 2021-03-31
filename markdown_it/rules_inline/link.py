@@ -113,13 +113,15 @@ def link(state: StateInline, silent: bool):
 
         label = normalizeReference(label)
 
-        ref = state.env.references[label] if label in state.env.references else None
+        ref = (
+            state.env["references"][label] if label in state.env["references"] else None
+        )
         if not ref:
             state.pos = oldPos
             return False
 
-        href = ref.href
-        title = ref.title
+        href = ref["href"]
+        title = ref["title"]
 
     #
     # We found the end of the link, and know for a fact it's a valid link

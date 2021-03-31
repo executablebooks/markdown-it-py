@@ -6,10 +6,11 @@ copy of rules. Those can be rewritten with ease. Also, you can add new
 rules if you create plugin and adds new token types.
 """
 import inspect
-from typing import Optional, Sequence
+from typing import MutableMapping, Optional, Sequence
 
 from .common.utils import unescapeAll, escapeHtml
 from .token import Token
+from .utils import OptionsDict
 
 
 class RendererHTML:
@@ -51,7 +52,9 @@ class RendererHTML:
             if not (k.startswith("render") or k.startswith("_"))
         }
 
-    def render(self, tokens: Sequence[Token], options, env) -> str:
+    def render(
+        self, tokens: Sequence[Token], options: OptionsDict, env: MutableMapping
+    ) -> str:
         """Takes token stream and generates HTML.
 
         :param tokens: list on block tokens to render
@@ -73,7 +76,9 @@ class RendererHTML:
 
         return result
 
-    def renderInline(self, tokens: Sequence[Token], options, env) -> str:
+    def renderInline(
+        self, tokens: Sequence[Token], options: OptionsDict, env: MutableMapping
+    ) -> str:
         """The same as ``render``, but for single token of `inline` type.
 
         :param tokens: list on block tokens to render
@@ -91,7 +96,11 @@ class RendererHTML:
         return result
 
     def renderToken(
-        self, tokens: Sequence[Token], idx: int, options: dict, env: dict
+        self,
+        tokens: Sequence[Token],
+        idx: int,
+        options: OptionsDict,
+        env: MutableMapping,
     ) -> str:
         """Default token renderer.
 
@@ -161,7 +170,10 @@ class RendererHTML:
         return result
 
     def renderInlineAsText(
-        self, tokens: Optional[Sequence[Token]], options, env
+        self,
+        tokens: Optional[Sequence[Token]],
+        options: OptionsDict,
+        env: MutableMapping,
     ) -> str:
         """Special kludge for image `alt` attributes to conform CommonMark spec.
 
@@ -195,7 +207,13 @@ class RendererHTML:
             + "</code>"
         )
 
-    def code_block(self, tokens: Sequence[Token], idx: int, options, env) -> str:
+    def code_block(
+        self,
+        tokens: Sequence[Token],
+        idx: int,
+        options: OptionsDict,
+        env: MutableMapping,
+    ) -> str:
         token = tokens[idx]
 
         return (
@@ -206,7 +224,13 @@ class RendererHTML:
             + "</code></pre>\n"
         )
 
-    def fence(self, tokens: Sequence[Token], idx: int, options, env) -> str:
+    def fence(
+        self,
+        tokens: Sequence[Token],
+        idx: int,
+        options: OptionsDict,
+        env: MutableMapping,
+    ) -> str:
         token = tokens[idx]
         info = unescapeAll(token.info).strip() if token.info else ""
         langName = ""
@@ -252,7 +276,13 @@ class RendererHTML:
             + "</code></pre>\n"
         )
 
-    def image(self, tokens: Sequence[Token], idx: int, options, env) -> str:
+    def image(
+        self,
+        tokens: Sequence[Token],
+        idx: int,
+        options: OptionsDict,
+        env: MutableMapping,
+    ) -> str:
         token = tokens[idx]
 
         # "alt" attr MUST be set, even if empty. Because it's mandatory and
@@ -268,10 +298,14 @@ class RendererHTML:
 
         return self.renderToken(tokens, idx, options, env)
 
-    def hardbreak(self, tokens: Sequence[Token], idx: int, options, *args) -> str:
+    def hardbreak(
+        self, tokens: Sequence[Token], idx: int, options: OptionsDict, *args
+    ) -> str:
         return "<br />\n" if options.xhtmlOut else "<br>\n"
 
-    def softbreak(self, tokens: Sequence[Token], idx: int, options, *args) -> str:
+    def softbreak(
+        self, tokens: Sequence[Token], idx: int, options: OptionsDict, *args
+    ) -> str:
         return (
             ("<br />\n" if options.xhtmlOut else "<br>\n") if options.breaks else "\n"
         )
