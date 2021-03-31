@@ -12,6 +12,10 @@
       this is generally the main difference between the codes,
       because in python you can't do e.g. `for {i=1;i<x;i++} {}`
     - |
+      `env` is a common Python dictionary, and so does not have attribute access to keys,
+      as with JavaScript dictionaries.
+      `options` have attribute access only to core markdownit configuration options
+    - |
       `Token.attrs` is a dictionary, instead of a list of lists.
       Upstream the list format is only used to guarantee order: https://github.com/markdown-it/markdown-it/issues/142,
       but in Python 3.7+ order of dictionaries is guaranteed.

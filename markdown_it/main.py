@@ -7,6 +7,7 @@ from typing import (
     Iterable,
     List,
     Mapping,
+    MutableMapping,
     Optional,
     Union,
 )
@@ -19,7 +20,7 @@ from .parser_block import ParserBlock  # noqa F401
 from .parser_inline import ParserInline  # noqa F401
 from .rules_core.state_core import StateCore
 from .renderer import RendererHTML
-from .utils import AttrDict
+from .utils import OptionsDict
 
 try:
     import linkify_it
@@ -69,7 +70,6 @@ class MarkdownIt:
                 f"options_update should be a mapping: {options_update}"
                 "\n(Perhaps you intended this to be the renderer_cls?)"
             )
-        self.options = AttrDict()
         self.configure(config, options_update=options_update)
 
     def __repr__(self) -> str:
@@ -83,7 +83,7 @@ class MarkdownIt:
             "renderer": self.renderer,
         }[name]
 
-    def set(self, options: AttrDict) -> None:
+    def set(self, options: MutableMapping) -> None:
         """Set parser options (in the same format as in constructor).
         Probably, you will never need it, but you can change options after constructor call.
 
@@ -91,7 +91,7 @@ class MarkdownIt:
         `markdown-it` instance options on the fly. If you need multiple configurations
         it's best to create multiple instances and initialize each with separate config.
         """
-        self.options = options
+        self.options = OptionsDict(options)
 
     def configure(
         self, presets: Union[str, Mapping], options_update: Optional[Mapping] = None
@@ -118,8 +118,7 @@ class MarkdownIt:
         if options_update:
             options = {**options, **options_update}
 
-        if options:
-            self.set(AttrDict(options))
+        self.set(options)
 
         if "components" in config:
             for name, component in config["components"].items():
@@ -238,7 +237,7 @@ class MarkdownIt:
         plugin(self, *params, **options)
         return self
 
-    def parse(self, src: str, env: Optional[AttrDict] = None) -> List[Token]:
+    def parse(self, src: str, env: Optional[MutableMapping] = None) -> List[Token]:
         """Parse the source string to a token stream
 
         :param src: source string
@@ -252,16 +251,16 @@ class MarkdownIt:
         inject data in specific cases. Usually, you will be ok to pass `{}`,
         and then pass updated object to renderer.
         """
-        env = AttrDict() if env is None else env
-        if not isinstance(env, AttrDict):  # type: ignore
-            raise TypeError(f"Input data should be an AttrDict, not {type(env)}")
+        env = {} if env is None else env
+        if not isinstance(env, MutableMapping):
+            raise TypeError(f"Input data should be a MutableMapping, not {type(env)}")
         if not isinstance(src, str):
             raise TypeError(f"Input data should be a string, not {type(src)}")
         state = StateCore(src, self, env)
         self.core.process(state)
         return state.tokens
 
-    def render(self, src: str, env: Optional[AttrDict] = None) -> Any:
+    def render(self, src: str, env: Optional[MutableMapping] = None) -> Any:
         """Render markdown string into html. It does all magic for you :).
 
         :param src: source string
@@ -272,11 +271,12 @@ class MarkdownIt:
         But you will not need it with high probability. See also comment
         in [[MarkdownIt.parse]].
         """
-        if env is None:
-            env = AttrDict()
+        env = {} if env is None else env
         return self.renderer.render(self.parse(src, env), self.options, env)
 
-    def parseInline(self, src: str, env: Optional[AttrDict] = None) -> List[Token]:
+    def parseInline(
+        self, src: str, env: Optional[MutableMapping] = None
+    ) -> List[Token]:
         """The same as [[MarkdownIt.parse]] but skip all block rules.
 
         :param src: source string
@@ -286,9 +286,9 @@ class MarkdownIt:
         block tokens list with the single `inline` element, containing parsed inline
         tokens in `children` property. Also updates `env` object.
         """
-        env = AttrDict() if env is None else env
-        if not isinstance(env, AttrDict):  # type: ignore
-            raise TypeError(f"Input data should be an AttrDict, not {type(env)}")
+        env = {} if env is None else env
+        if not isinstance(env, MutableMapping):
+            raise TypeError(f"Input data should be an MutableMapping, not {type(env)}")
         if not isinstance(src, str):
             raise TypeError(f"Input data should be a string, not {type(src)}")
         state = StateCore(src, self, env)
@@ -296,7 +296,7 @@ class MarkdownIt:
         self.core.process(state)
         return state.tokens
 
-    def renderInline(self, src: str, env: Optional[AttrDict] = None) -> Any:
+    def renderInline(self, src: str, env: Optional[MutableMapping] = None) -> Any:
         """Similar to [[MarkdownIt.render]] but for single paragraph content.
 
         :param src: source string
@@ -305,7 +305,7 @@ class MarkdownIt:
         Similar to [[MarkdownIt.render]] but for single paragraph content. Result
         will NOT be wrapped into `<p>` tags.
         """
-        env = AttrDict() if env is None else env
+        env = {} if env is None else env
         return self.renderer.render(self.parseInline(src, env), self.options, env)
 
     # link methods
