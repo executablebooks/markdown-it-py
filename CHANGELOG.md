@@ -16,7 +16,7 @@ There are four notable (and breaking) changes:
    Note `attrGet`, `attrSet`, `attrPush` and `attrJoin` methods remain identical to those upstream,
    and `Token.as_dict(as_upstream=True)` will convert the token back to a directly comparable dict.
 3. The use of `AttrDict` has been replaced:
-   For `env` any Python mutable mapping is now allowed, and so attribute access to keys is not.
+   For `env` any Python mutable mapping is now allowed, and so attribute access to keys is not (differing from the Javascript dictionary).
    For `MarkdownIt.options` it is now set as an `OptionsDict`, which is a dictionary sub-class, with attribute access only for core MarkdownIt configuration keys.
 4. Introduction of the `SyntaxTreeNode`.
    This is a more comprehensive replacement for `nest_tokens` and `NestedTokens` (which are now deprecated).
