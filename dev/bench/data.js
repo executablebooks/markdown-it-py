@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1616511447102,
+  "lastUpdate": 1617167400159,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -16265,6 +16265,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.019392",
             "group": "packages",
             "extra": "mean: 983.06 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.8"
+        },
+        "commit": {
+          "id": "9ecda044ab58572d6e4a40359b31563eae463ff5",
+          "message": "‼️ BREAKING: Replace use of AttrDict for env/options (#151)\n\nFor `env` any Python mutable mapping is now allowed,\r\nand so attribute access to keys is not allowed.\r\nFor `MarkdownIt.options` it is now set as an `OptionsDict`,\r\nwhich is a dictionary sub-class, with attribute access\r\nonly for core markdownit configuration keys.",
+          "timestamp": "2021-03-31T07:08:36+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/9ecda044ab58572d6e4a40359b31563eae463ff5",
+          "distinct": true,
+          "tree_id": "cf49f92a73b36ca2eba88cddb507e3eb223a8764"
+        },
+        "date": 1617167399395,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 3.994687895993451,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0094460",
+            "group": "plugins",
+            "extra": "mean: 250.33 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 3.9494179629300823,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0087317",
+            "group": "plugins",
+            "extra": "mean: 253.20 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 3.375540648594581,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010491",
+            "group": "plugins",
+            "extra": "mean: 296.25 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 3.966408069619102,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0082665",
+            "group": "plugins",
+            "extra": "mean: 252.12 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 3.9747677427094934,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0082889",
+            "group": "plugins",
+            "extra": "mean: 251.59 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 3.937673701307922,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010148",
+            "group": "plugins",
+            "extra": "mean: 253.96 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 3.9863860324674443,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011508",
+            "group": "plugins",
+            "extra": "mean: 250.85 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 3.973610258486657,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0074292",
+            "group": "plugins",
+            "extra": "mean: 251.66 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 4.056301801623314,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0085144",
+            "group": "plugins",
+            "extra": "mean: 246.53 msec\nrounds: 20"
           }
         ]
       }
