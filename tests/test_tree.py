@@ -10,14 +10,14 @@ Some paragraph text and **emphasis here** and more text here.
 
 def test_tree_to_tokens_conversion():
     tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
-    tokens_after_roundtrip = SyntaxTreeNode.from_tokens(tokens).to_tokens()
+    tokens_after_roundtrip = SyntaxTreeNode(tokens).to_tokens()
     assert tokens == tokens_after_roundtrip
 
 
 def test_property_passthrough():
     tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
     heading_open = tokens[0]
-    tree = SyntaxTreeNode.from_tokens(tokens)
+    tree = SyntaxTreeNode(tokens)
     heading_node = tree.children[0]
     assert heading_open.tag == heading_node.tag
     assert tuple(heading_open.map) == heading_node.map
@@ -32,7 +32,7 @@ def test_property_passthrough():
 
 def test_type():
     tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
-    tree = SyntaxTreeNode.from_tokens(tokens)
+    tree = SyntaxTreeNode(tokens)
     # Root type is "root"
     assert tree.type == "root"
     # "_open" suffix must be stripped from nested token type
@@ -44,7 +44,7 @@ def test_type():
 
 def test_sibling_traverse():
     tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
-    tree = SyntaxTreeNode.from_tokens(tokens)
+    tree = SyntaxTreeNode(tokens)
     paragraph_inline_node = tree.children[1].children[0]
     text_node = paragraph_inline_node.children[0]
     assert text_node.type == "text"
@@ -70,5 +70,24 @@ Here's some text and an image ![title](image.png)
 > a *quote*
     """
     )
-    node = SyntaxTreeNode.from_tokens(tokens)
+    node = SyntaxTreeNode(tokens)
     file_regression.check(node.pretty(indent=2, show_text=True), extension=".xml")
+
+
+def test_walk():
+    tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
+    tree = SyntaxTreeNode(tokens)
+    expected_node_types = (
+        "root",
+        "heading",
+        "inline",
+        "text",
+        "paragraph",
+        "inline",
+        "text",
+        "strong",
+        "text",
+        "text",
+    )
+    for node, expected_type in zip(tree.walk(), expected_node_types):
+        assert node.type == expected_type

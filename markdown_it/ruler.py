@@ -20,14 +20,13 @@ from typing import (
     Dict,
     Iterable,
     List,
+    MutableMapping,
     Optional,
     Tuple,
     TYPE_CHECKING,
     Union,
 )
 import attr
-
-from markdown_it.utils import AttrDict
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
@@ -36,7 +35,7 @@ if TYPE_CHECKING:
 class StateBase:
     srcCharCode: Tuple[int, ...]
 
-    def __init__(self, src: str, md: "MarkdownIt", env: AttrDict):
+    def __init__(self, src: str, md: "MarkdownIt", env: MutableMapping):
         self.src = src
         self.env = env
         self.md = md
@@ -116,7 +115,7 @@ class Ruler:
         if index == -1:
             raise KeyError(f"Parser rule not found: {ruleName}")
         self.__rules__[index].fn = fn
-        self.__rules__[index].alt = options["alt"] or []
+        self.__rules__[index].alt = options.get("alt", [])
         self.__cache__ = None
 
     def before(self, beforeName: str, ruleName: str, fn: RuleFunc, options=None):

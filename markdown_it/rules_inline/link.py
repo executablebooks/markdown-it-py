@@ -7,6 +7,7 @@ from .state_inline import StateInline
 def link(state: StateInline, silent: bool):
 
     href = ""
+    title = ""
     label = None
     oldPos = state.pos
     maximum = state.posMax
@@ -56,31 +57,29 @@ def link(state: StateInline, silent: bool):
             else:
                 href = ""
 
-        # [link](  <href>  "title"  )
-        #                ^^ skipping these spaces
-        start = pos
-        while pos < maximum:
-            code = state.srcCharCode[pos]
-            if not isSpace(code) and code != 0x0A:
-                break
-            pos += 1
-
-        # [link](  <href>  "title"  )
-        #                  ^^^^^^^ parsing link title
-        res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax)
-        if pos < maximum and start != pos and res.ok:
-            title = res.str
-            pos = res.pos
-
             # [link](  <href>  "title"  )
-            #                         ^^ skipping these spaces
+            #                ^^ skipping these spaces
+            start = pos
             while pos < maximum:
                 code = state.srcCharCode[pos]
                 if not isSpace(code) and code != 0x0A:
                     break
                 pos += 1
-        else:
-            title = ""
+
+            # [link](  <href>  "title"  )
+            #                  ^^^^^^^ parsing link title
+            res = state.md.helpers.parseLinkTitle(state.src, pos, state.posMax)
+            if pos < maximum and start != pos and res.ok:
+                title = res.str
+                pos = res.pos
+
+                # [link](  <href>  "title"  )
+                #                         ^^ skipping these spaces
+                while pos < maximum:
+                    code = state.srcCharCode[pos]
+                    if not isSpace(code) and code != 0x0A:
+                        break
+                    pos += 1
 
         if pos >= maximum or state.srcCharCode[pos] != 0x29:  # /* ) */
             # parsing a valid shortcut link failed, fallback to reference
@@ -114,13 +113,15 @@ def link(state: StateInline, silent: bool):
 
         label = normalizeReference(label)
 
-        ref = state.env.references[label] if label in state.env.references else None
+        ref = (
+            state.env["references"][label] if label in state.env["references"] else None
+        )
         if not ref:
             state.pos = oldPos
             return False
 
-        href = ref.href
-        title = ref.title
+        href = ref["href"]
+        title = ref["title"]
 
     #
     # We found the end of the link, and know for a fact it's a valid link
@@ -131,10 +132,10 @@ def link(state: StateInline, silent: bool):
         state.posMax = labelEnd
 
         token = state.push("link_open", "a", 1)
-        token.attrs = [["href", href]]
+        token.attrs = {"href": href}
 
         if title:
-            token.attrs.append(["title", title])
+            token.attrSet("title", title)
 
         # note, this is not part of markdown-it JS, but is useful for renderers
         if label and state.md.options.get("store_labels", False):

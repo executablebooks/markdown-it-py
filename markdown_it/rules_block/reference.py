@@ -1,7 +1,6 @@
 import logging
 
 from ..common.utils import isSpace, normalizeReference, charCodeAt
-from ..utils import AttrDict
 from .state_block import StateBlock
 
 
@@ -189,19 +188,19 @@ def reference(state: StateBlock, startLine, _endLine, silent):
     state.line = startLine + lines + 1
 
     if label not in state.env["references"]:
-        state.env["references"][label] = AttrDict(
-            {"title": title, "href": href, "map": [startLine, state.line]}
-        )
+        state.env["references"][label] = {
+            "title": title,
+            "href": href,
+            "map": [startLine, state.line],
+        }
     else:
         state.env.setdefault("duplicate_refs", []).append(
-            AttrDict(
-                {
-                    "title": title,
-                    "href": href,
-                    "label": label,
-                    "map": [startLine, state.line],
-                }
-            )
+            {
+                "title": title,
+                "href": href,
+                "label": label,
+                "map": [startLine, state.line],
+            }
         )
 
     state.parentType = oldParentType

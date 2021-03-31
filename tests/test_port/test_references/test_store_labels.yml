@@ -1,0 +1,159 @@
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map:
+  - 0
+  - 1
+  markup: ''
+  meta: {}
+  nesting: 1
+  tag: p
+  type: paragraph_open
+- attrs: null
+  block: true
+  children:
+  - attrs:
+    - - href
+      - ijk
+    block: false
+    children: null
+    content: ''
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta:
+      label: A
+    nesting: 1
+    tag: a
+    type: link_open
+  - attrs: null
+    block: false
+    children: null
+    content: a
+    hidden: false
+    info: ''
+    level: 1
+    map: null
+    markup: ''
+    meta: {}
+    nesting: 0
+    tag: ''
+    type: text
+  - attrs: null
+    block: false
+    children: null
+    content: ''
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta: {}
+    nesting: -1
+    tag: a
+    type: link_close
+  content: '[a]'
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 0
+  - 1
+  markup: ''
+  meta: {}
+  nesting: 0
+  tag: ''
+  type: inline
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map: null
+  markup: ''
+  meta: {}
+  nesting: -1
+  tag: p
+  type: paragraph_close
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map:
+  - 2
+  - 3
+  markup: ''
+  meta: {}
+  nesting: 1
+  tag: p
+  type: paragraph_open
+- attrs: null
+  block: true
+  children:
+  - attrs:
+    - - src
+      - ijk
+    - - alt
+      - ''
+    block: false
+    children:
+    - attrs: null
+      block: false
+      children: null
+      content: a
+      hidden: false
+      info: ''
+      level: 0
+      map: null
+      markup: ''
+      meta: {}
+      nesting: 0
+      tag: ''
+      type: text
+    content: a
+    hidden: false
+    info: ''
+    level: 0
+    map: null
+    markup: ''
+    meta:
+      label: A
+    nesting: 0
+    tag: img
+    type: image
+  content: '![a]'
+  hidden: false
+  info: ''
+  level: 1
+  map:
+  - 2
+  - 3
+  markup: ''
+  meta: {}
+  nesting: 0
+  tag: ''
+  type: inline
+- attrs: null
+  block: true
+  children: null
+  content: ''
+  hidden: false
+  info: ''
+  level: 0
+  map: null
+  markup: ''
+  meta: {}
+  nesting: -1
+  tag: p
+  type: paragraph_close

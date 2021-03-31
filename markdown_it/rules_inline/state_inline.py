@@ -1,9 +1,8 @@
 from collections import namedtuple
-from typing import Dict, List, Optional, TYPE_CHECKING
+from typing import Dict, List, MutableMapping, Optional, TYPE_CHECKING
 
 import attr
 
-from ..utils import AttrDict
 from ..token import Token
 from ..ruler import StateBase
 from ..common.utils import isWhiteSpace, isPunctChar, isMdAsciiPunct
@@ -48,7 +47,7 @@ Scanned = namedtuple("Scanned", ["can_open", "can_close", "length"])
 
 class StateInline(StateBase):
     def __init__(
-        self, src: str, md: "MarkdownIt", env: AttrDict, outTokens: List[Token]
+        self, src: str, md: "MarkdownIt", env: MutableMapping, outTokens: List[Token]
     ):
         self.src = src
         self.env = env
@@ -71,6 +70,10 @@ class StateInline(StateBase):
 
         # Stack of delimiter lists for upper level tags
         self._prev_delimiters: List[List[Delimiter]] = []
+
+        # backticklength => last seen position
+        self.backticks: Dict[int, int] = {}
+        self.backticksScanned = False
 
     def __repr__(self):
         return (
