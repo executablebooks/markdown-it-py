@@ -70,9 +70,8 @@ tokens = md.parse(text)
 html_text = md.render(text)
 
 ## To export the html to a file, uncomment the lines below:
-#text_file = open("output.html", "w")
-#text_file.write(html_text)
-#text_file.close()
+# from pathlib import Path
+# Path("output.html").write_text(html_text)
 ```
 
 ### Command-line Usage
