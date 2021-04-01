@@ -44,3 +44,8 @@ repos:
     hooks:
     - id: mypy
       additional_dependencies: [attrs]
+
+  - repo: https://github.com/asottile/setup-cfg-fmt
+    rev: v1.16.0
+    hooks:
+    - id: setup-cfg-fmt
