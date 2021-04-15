@@ -124,19 +124,19 @@ The `smartquotes` and `replacements` components are intended to improve typograp
 
 `replacements` will replace particular text constructs:
 
-- ``(c)``, ``(C)`` → ©
-- ``(tm)``, ``(TM)`` → ™
-- ``(r)``, ``(R)`` → ®
-- ``(p)``, ``(P)`` → §
-- ``+-`` → ±
-- ``...`` → …
-- ``?....`` → ?..
-- ``!....`` → !..
-- ``????????`` → ???
-- ``!!!!!`` → !!!
-- ``,,,`` → ,
-- ``--`` → &ndash
-- ``---`` → &mdash
+- `(c)`, `(C)` → ©
+- `(tm)`, `(TM)` → ™
+- `(r)`, `(R)` → ®
+- `(p)`, `(P)` → §
+- `+-` → ±
+- `...` → …
+- `?....` → ?..
+- `!....` → !..
+- `????????` → ???
+- `!!!!!` → !!!
+- `,,,` → ,
+- `--` → &ndash
+- `---` → &mdash
 
 Both of these components require typography to be turned on, as well as the components enabled:
 
