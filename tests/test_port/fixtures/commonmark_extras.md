@@ -629,3 +629,12 @@ baz</p>
 </blockquote>
 </blockquote>
 .
+
+Newline in image description
+.
+There is a newline in this image ![here
+it is](https://github.com/executablebooks/)
+.
+<p>There is a newline in this image <img src="https://github.com/executablebooks/" alt="here
+it is" /></p>
+.
