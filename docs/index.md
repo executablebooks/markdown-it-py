@@ -28,8 +28,9 @@ Also [John MacFarlane](https://github.com/jgm) for his work on the CommonMark sp
 - <http://talk.commonmark.org> - CommonMark forum, good place to collaborate developers' efforts.
 
 ```{toctree}
-:maxdepth: 2
-
+---
+maxdepth: 2
+---
 using
 architecture
 other
