@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1619317025041,
+  "lastUpdate": 1619317889230,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -17297,6 +17297,100 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.021587",
             "group": "packages",
             "extra": "mean: 1.0388 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.9"
+        },
+        "commit": {
+          "id": "a178448c68b5c09a95ea4331eb9b43452650084e",
+          "message": "🐛 FIX: Newline not rendered in image alt attribute (#157)\n\nThis is a sibling of the upstream commit: https://github.com/markdown-it/markdown-it/commit/272a470ed20ca13654716f9ca741a71cf52135de\r\n\r\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2021-04-25T04:29:50+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/a178448c68b5c09a95ea4331eb9b43452650084e",
+          "distinct": true,
+          "tree_id": "cb4146c3425efdd8a4ea8d154b11b4128de2e2dc"
+        },
+        "date": 1619317886753,
+        "benches": [
+          {
+            "name": "benchmarking/bench_plugins.py::test_base",
+            "value": 3.746224116091345,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015761",
+            "group": "plugins",
+            "extra": "mean: 266.94 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_table",
+            "value": 3.733101373744376,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012147",
+            "group": "plugins",
+            "extra": "mean: 267.87 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_amsmath",
+            "value": 2.8540401163784597,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015749",
+            "group": "plugins",
+            "extra": "mean: 350.38 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_container",
+            "value": 3.673077838482047,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0098292",
+            "group": "plugins",
+            "extra": "mean: 272.25 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_deflist",
+            "value": 3.823829438644666,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013621",
+            "group": "plugins",
+            "extra": "mean: 261.52 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_footnote",
+            "value": 3.657259104314886,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0088852",
+            "group": "plugins",
+            "extra": "mean: 273.43 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_front_matter",
+            "value": 3.699519150873471,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0095713",
+            "group": "plugins",
+            "extra": "mean: 270.31 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_texmath",
+            "value": 3.6595193562064496,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0092750",
+            "group": "plugins",
+            "extra": "mean: 273.26 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_plugins.py::test_dollarmath",
+            "value": 3.721652405532519,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0094135",
+            "group": "plugins",
+            "extra": "mean: 268.70 msec\nrounds: 20"
           }
         ]
       }
