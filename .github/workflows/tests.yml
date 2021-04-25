@@ -9,6 +9,8 @@ on:
     tags:
       - 'v*'
   pull_request:
+  schedule:
+    - cron: '0 0 * * 0'  # every week
 
 jobs:
 
@@ -52,6 +54,29 @@ jobs:
         flags: pytests
         file: ./coverage.xml
         fail_ci_if_error: true
+
+  test-plugins:
+
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.8]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install markdown-it-py
+      run: |
+        python -m pip install --upgrade pip
+        pip install .[testing]
+    - name: clone and install mdit-py-plugins
+      run: |
+        git clone https://github.com/executablebooks/mdit-py-plugins.git
+        pip install --no-deps -e mdit-py-plugins
+    - name: Run pytest for unit tests of mdit-py-plugins
+      run: cd mdit-py-plugins; pytest
 
   benchmark:
 

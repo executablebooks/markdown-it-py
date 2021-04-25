@@ -24,9 +24,9 @@ _rules: List[Tuple] = [
     ("hr", rules_block.hr, ["paragraph", "reference", "blockquote", "list"]),
     ("list", rules_block.list_block, ["paragraph", "reference", "blockquote"]),
     ("reference", rules_block.reference),
+    ("html_block", rules_block.html_block, ["paragraph", "reference", "blockquote"]),
     ("heading", rules_block.heading, ["paragraph", "reference", "blockquote"]),
     ("lheading", rules_block.lheading),
-    ("html_block", rules_block.html_block, ["paragraph", "reference", "blockquote"]),
     ("paragraph", rules_block.paragraph),
 ]
 
