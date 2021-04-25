@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1619317889230,
+  "lastUpdate": 1619317921630,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -17391,6 +17391,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0094135",
             "group": "plugins",
             "extra": "mean: 268.70 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.9"
+        },
+        "commit": {
+          "id": "a178448c68b5c09a95ea4331eb9b43452650084e",
+          "message": "🐛 FIX: Newline not rendered in image alt attribute (#157)\n\nThis is a sibling of the upstream commit: https://github.com/markdown-it/markdown-it/commit/272a470ed20ca13654716f9ca741a71cf52135de\r\n\r\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2021-04-25T04:29:50+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/a178448c68b5c09a95ea4331eb9b43452650084e",
+          "distinct": true,
+          "tree_id": "cb4146c3425efdd8a4ea8d154b11b4128de2e2dc"
+        },
+        "date": 1619317917599,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.882603200109313,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010391",
+            "group": "packages",
+            "extra": "mean: 204.81 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 16.288422644118548,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0034089",
+            "group": "packages",
+            "extra": "mean: 61.393 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.512586981937469,
+            "unit": "iter/sec",
+            "range": "stddev: 0.019676",
+            "group": "packages",
+            "extra": "mean: 398.00 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.0974549166498442,
+            "unit": "iter/sec",
+            "range": "stddev: 0.052342",
+            "group": "packages",
+            "extra": "mean: 911.20 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.0517034083446042,
+            "unit": "iter/sec",
+            "range": "stddev: 0.032101",
+            "group": "packages",
+            "extra": "mean: 950.84 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.945946534259793,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0088170",
+            "group": "packages",
+            "extra": "mean: 202.19 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.2058103180083204,
+            "unit": "iter/sec",
+            "range": "stddev: 0.019587",
+            "group": "packages",
+            "extra": "mean: 829.32 msec\nrounds: 20"
           }
         ]
       }
