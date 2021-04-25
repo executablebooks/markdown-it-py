@@ -32,12 +32,20 @@ conda install -c conda-forge markdown-it-py
 or
 
 ```bash
-pip install markdown-it-py
+pip install markdown-it-py[plugins]
+```
+
+or with extras
+
+```bash
+conda install -c conda-forge markdown-it-py linkify-it-py mdit-py-plugins
+pip install markdown-it-py[linkify,plugins]
 ```
 
 ## Usage
 
 ### Python API Usage
+
 Render markdown to HTML with markdown-it-py and a custom configuration
 with and without plugins and features:
 
@@ -75,6 +83,7 @@ html_text = md.render(text)
 ```
 
 ### Command-line Usage
+
 Render markdown to HTML with markdown-it-py from the
 command-line:
 

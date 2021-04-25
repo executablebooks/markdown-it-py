@@ -192,6 +192,8 @@ class RendererHTML:
             elif token.type == "image":
                 assert token.children is not None
                 result += self.renderInlineAsText(token.children, options, env)
+            elif token.type == "softbreak":
+                result += "\n"
 
         return result
 
