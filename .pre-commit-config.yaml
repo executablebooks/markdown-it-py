@@ -23,7 +23,7 @@ repos:
       additional_dependencies: [mdformat-myst==0.1.2]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.3.0
+    rev: v3.4.0
     hooks:
     - id: check-json
     - id: check-yaml
@@ -31,9 +31,18 @@ repos:
     - id: trailing-whitespace
 
   - repo: https://github.com/mgedmin/check-manifest
-    rev: "0.44"
+    rev: "0.46"
     hooks:
     - id: check-manifest
+      args: [--no-build-isolation]
+      additional_dependencies: [setuptools>=46.4.0]
+
+  # this is not used for now,
+  # since it converts markdown-it-py to markdown_it_py and removes comments
+  # - repo: https://github.com/asottile/setup-cfg-fmt
+  #   rev: v1.17.0
+  #   hooks:
+  #   - id: setup-cfg-fmt
 
   - repo: https://github.com/psf/black
     rev: 20.8b1
@@ -41,18 +50,13 @@ repos:
     - id: black
 
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.8.4
+    rev: 3.9.1
     hooks:
     - id: flake8
       additional_dependencies: [flake8-bugbear==21.3.1]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v0.790
+    rev: v0.812
     hooks:
     - id: mypy
       additional_dependencies: [attrs]
-
-  - repo: https://github.com/asottile/setup-cfg-fmt
-    rev: v1.16.0
-    hooks:
-    - id: setup-cfg-fmt

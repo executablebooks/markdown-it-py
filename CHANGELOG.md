@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.0b2 - 2021-04-25
+
+‼️ BREAKING: Move `mdit-py-plugins` out of the core install requirements and into a `plugins` extra.
+
+Synchronised code with the upstream Markdown-It `v12.0.6`:
+
+- 🐛 FIX: Raise HTML blocks priority to resolve conflict with headings
+- 🐛 FIX: Newline not rendered in image alt attribute
+
 ## 1.0.0b1 - 2021-03-31
 
 [Full commit log](https://github.com/executablebooks/markdown-it-py/compare/v0.6.2...9ecda04)
@@ -8,7 +17,7 @@ This is the first beta release of the stable v1.x series.
 
 There are four notable (and breaking) changes:
 
-1. The code has been synchronised with the upstream Markdown-It v12.0.4.
+1. The code has been synchronised with the upstream Markdown-It `v12.0.4`.
    In particular, this update alters the parsing of tables to be consistent with the GFM specification: <https://github.github.com/gfm/#tables-extension->
    A number of parsing performance and validation improvements are also included.
 2. `Token.attrs` are now stored as dictionaries, rather than a list of lists.
