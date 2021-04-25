@@ -22,9 +22,9 @@ def test_get_rules():
             "hr",
             "list",
             "reference",
+            "html_block",
             "heading",
             "lheading",
-            "html_block",
             "paragraph",
         ],
         "inline": [
@@ -62,9 +62,9 @@ def test_load_presets():
             "hr",
             "list",
             "reference",
+            "html_block",
             "heading",
             "lheading",
-            "html_block",
             "paragraph",
         ],
         "inline": [

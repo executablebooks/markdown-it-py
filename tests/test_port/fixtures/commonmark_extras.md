@@ -629,3 +629,21 @@ baz</p>
 </blockquote>
 </blockquote>
 .
+
+Issue #772. Header rule should not interfere with html tags.
+.
+<!--
+==
+-->
+
+<pre>
+==
+</pre>
+.
+<!--
+==
+-->
+<pre>
+==
+</pre>
+.
