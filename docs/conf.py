@@ -51,6 +51,7 @@ nitpick_ignore = [
     ("py:class", "markdown_it.helpers.parse_link_destination._Result"),
     ("py:class", "markdown_it.helpers.parse_link_title._Result"),
     ("py:class", "MarkdownIt"),
+    ("py:class", "_NodeType"),
 ]
 
 
