@@ -111,7 +111,7 @@ UNESCAPE_ALL_RE = re.compile(
 DIGITAL_ENTITY_TEST_RE = re.compile(r"^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))", re.IGNORECASE)
 
 
-def replaceEntityPattern(match, name: str) -> str:
+def replaceEntityPattern(match: str, name: str) -> str:
     """Convert HTML entity patterns
 
     ::
