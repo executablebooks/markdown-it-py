@@ -19,7 +19,7 @@ from .parser_core import ParserCore  # noqa F401
 from .parser_block import ParserBlock  # noqa F401
 from .parser_inline import ParserInline  # noqa F401
 from .rules_core.state_core import StateCore
-from .renderer import RendererHTML
+from .renderer import RendererHTML, RendererProtocol
 from .utils import OptionsDict
 
 try:
@@ -43,7 +43,7 @@ class MarkdownIt:
         config: Union[str, Mapping] = "commonmark",
         options_update: Optional[Mapping] = None,
         *,
-        renderer_cls=RendererHTML,
+        renderer_cls: Callable[["MarkdownIt"], RendererProtocol] = RendererHTML,
     ):
         """Main parser class
 
