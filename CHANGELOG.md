@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.0.0b3 - 2021-05-01
+
+- 👌 IMPROVE: Add `RendererProtocol` type, for typing renderers (thanks to [@hukkinj1](https://github.com/hukkinj1))
+- 🔧 MAINTAIN: `None` is no longer allowed as a valid `src` input for `StateBase` subclasses
+
 ## 1.0.0b2 - 2021-04-25
 
 ‼️ BREAKING: Move `mdit-py-plugins` out of the core install requirements and into a `plugins` extra.
