@@ -2,13 +2,14 @@
 """
 import html
 import re
+from typing import Any
 
 from .entities import entities
 
 # from .normalize_url import unescape_string
 
 
-def charCodeAt(src: str, pos: int):
+def charCodeAt(src: str, pos: int) -> Any:
     """
     Returns the Unicode value of the character at the specified location.
 
@@ -26,12 +27,11 @@ def charCodeAt(src: str, pos: int):
 # function _class(obj) { return Object.prototype.toString.call(obj); }
 
 
-def isString(obj):
+def isString(obj: object) -> bool:
     return isinstance(obj, str)
 
 
-def has(object, key):
-    return hasattr(object, key)
+has = hasattr
 
 
 # Merge objects
@@ -56,18 +56,18 @@ def assign(obj):
     # return obj
 
 
-def arrayReplaceAt(src: list, pos: int, newElements: list):
+def arrayReplaceAt(src: list, pos: int, newElements: list) -> list:
     """
     Remove element from array and put another array at those position.
     Useful for some operations with tokens
     """
-    return src[0:pos] + newElements + src[pos + 1 :]
+    return src[:pos] + newElements + src[pos + 1 :]
 
 
 ######################################################################
 
 
-def isValidEntityCode(c):
+def isValidEntityCode(c: int) -> bool:
 
     # broken sequence
     if c >= 0xD800 and c <= 0xDFFF:
@@ -111,7 +111,7 @@ UNESCAPE_ALL_RE = re.compile(
 DIGITAL_ENTITY_TEST_RE = re.compile(r"^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))", re.IGNORECASE)
 
 
-def replaceEntityPattern(match, name):
+def replaceEntityPattern(match: str, name: str) -> str:
     """Convert HTML entity patterns
 
     ::
@@ -138,14 +138,14 @@ def replaceEntityPattern(match, name):
 #   return string.replace(ENTITY_RE, replaceEntityPattern)
 
 
-def unescapeMd(string: str):
+def unescapeMd(string: str) -> str:
     raise NotImplementedError
     # if "\\" in string:
     #     return string
     # return string.replace(UNESCAPE_MD_RE, "$1")
 
 
-def unescapeAll(string: str):
+def unescapeAll(string: str) -> str:
     return html.unescape(string)
 
 
@@ -153,7 +153,7 @@ ESCAPABLE = r"""\\!"#$%&'()*+,./:;<=>?@\[\]^`{}|_~-"""
 ESCAPE_CHAR = re.compile(r"\\([" + ESCAPABLE + r"])")
 
 
-def stripEscape(string):
+def stripEscape(string: str) -> str:
     """Strip escape \\ characters"""
     return ESCAPE_CHAR.sub(r"\1", string)
 
@@ -179,7 +179,7 @@ def stripEscape(string):
 #     return string
 
 
-def escapeHtml(raw: str):
+def escapeHtml(raw: str) -> str:
     # return html.escape(html.unescape(raw)).replace("&#x27;", "'")
     return html.escape(raw).replace("&#x27;", "'")
 
@@ -197,7 +197,7 @@ def escapeRE(string: str) -> str:
 # //////////////////////////////////////////////////////////////////////////////
 
 
-def isSpace(code) -> bool:
+def isSpace(code: object) -> bool:
     return code in {0x09, 0x20}
 
 
@@ -271,7 +271,7 @@ MD_ASCII_PUNCT = {
 }
 
 
-def isMdAsciiPunct(ch: int):
+def isMdAsciiPunct(ch: int) -> bool:
     """Markdown ASCII punctuation characters.
 
     ::
