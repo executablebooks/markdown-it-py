@@ -7,6 +7,7 @@ rules if you create plugin and adds new token types.
 """
 import inspect
 from typing import (
+    Any,
     ClassVar,
     MutableMapping,
     Optional,
