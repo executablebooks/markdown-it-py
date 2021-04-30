@@ -28,7 +28,7 @@ class RendererProtocol(Protocol):
 
     def render(
         self, tokens: Sequence[Token], options: OptionsDict, env: MutableMapping
-    ) -> str:
+    ) -> Any:
         ...
 
 
