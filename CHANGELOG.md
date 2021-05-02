@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.0 - 2021-05-02
+
+[Full commit log](https://github.com/executablebooks/markdown-it-py/compare/v0.6.2...v1.0.0)
+
+The first stable release of markdown-it-py 🎉
+
+See the changes in the beta releases below,
+thanks to all the [contributors](https://github.com/executablebooks/markdown-it-py/graphs/contributors?from=2020-03-22&to=2021-05-02&type=c) in the last year!
+
 ## 1.0.0b3 - 2021-05-01
 
 - 👌 IMPROVE: Add `RendererProtocol` type, for typing renderers (thanks to [@hukkinj1](https://github.com/hukkinj1))
