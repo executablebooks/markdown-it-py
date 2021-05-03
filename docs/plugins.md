@@ -25,7 +25,7 @@ md = MarkdownIt("gfm-like")
 See [](using.md)
 ```
 
-Many other plugins are then available *via* the [`mdit-py-plugins` package](mdit-py-plugins:index), including:
+Many other plugins are then available *via* the `mdit-py-plugins` package, including:
 
 - Front-matter
 - Footnotes
@@ -35,6 +35,8 @@ Many other plugins are then available *via* the [`mdit-py-plugins` package](mdit
 - LaTeX math
 - Containers
 - Word count
+
+For full information see: <https://mdit-py-plugins.readthedocs.io>
 
 Or you can write them yourself!
 
