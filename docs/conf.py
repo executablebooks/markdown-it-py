@@ -52,6 +52,7 @@ nitpick_ignore = [
     ("py:class", "markdown_it.helpers.parse_link_title._Result"),
     ("py:class", "MarkdownIt"),
     ("py:class", "_NodeType"),
+    ("py:class", "typing_extensions.Protocol"),
 ]
 
 
@@ -78,6 +79,7 @@ panels_add_boostrap_css = False
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3.7", None),
+    "mdit-py-plugins": ("https://mdit-py-plugins.readthedocs.io/en/latest/", None),
 }
 
 
