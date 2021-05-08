@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.1.0 - 2021-05-08
+
+ ⬆️ UPGRADE: `attrs` -> v21 (#165)
+
+This release has no breaking changes
+(see: <https://github.com/python-attrs/attrs/blob/main/CHANGELOG.rst>)
+
 ## 1.0.0 - 2021-05-02
 
 [Full commit log](https://github.com/executablebooks/markdown-it-py/compare/v0.6.2...v1.0.0)
