@@ -86,9 +86,6 @@ def test_normalize_url(line, title, input, expected):
     "line,title,input,expected", read_fixture_file(FIXTURE_PATH.joinpath("fatal.md"))
 )
 def test_fatal(line, title, input, expected):
-    if line in [1]:
-        # TODO fix failing url escaping tests
-        pytest.xfail("url normalisation")
     md = MarkdownIt("commonmark").enable("replacements")
     md.options["typographer"] = True
     text = md.render(input)
