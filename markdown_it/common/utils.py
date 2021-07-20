@@ -151,7 +151,7 @@ def unescapeAll(string: str) -> str:
         if escaped:
             return escaped
         entity = match.group(2)
-        return replaceEntityPattern(match, entity)
+        return replaceEntityPattern(match.group(), entity)
 
     if "\\" not in string and "&" not in string:
         return string
@@ -159,12 +159,6 @@ def unescapeAll(string: str) -> str:
 
 
 ESCAPABLE = r"""\\!"#$%&'()*+,./:;<=>?@\[\]^`{}|_~-"""
-ESCAPE_CHAR = re.compile(r"\\([" + ESCAPABLE + r"])")
-
-
-def stripEscape(string: str) -> str:
-    """Strip escape \\ characters"""
-    return ESCAPE_CHAR.sub(r"\1", string)
 
 
 # //////////////////////////////////////////////////////////////////////////////
