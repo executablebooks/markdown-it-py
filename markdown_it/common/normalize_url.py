@@ -40,7 +40,7 @@ def normalize_uri(uri: str) -> str:
 ##################
 
 
-RECODE_HOSTNAME_FOR = ("http", "https", "mailto")
+RECODE_HOSTNAME_FOR = ("http:", "https:", "mailto:")
 
 
 def unescape_normalize_uri(x: str) -> str:
