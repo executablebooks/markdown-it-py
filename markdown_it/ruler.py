@@ -41,15 +41,13 @@ class StateBase:
         self.md = md
 
     @property
-    def src(self):
+    def src(self) -> str:
         return self._src
 
     @src.setter
-    def src(self, value):
+    def src(self, value: str) -> None:
         self._src = value
-        self.srcCharCode = (
-            tuple(ord(c) for c in self.src) if self.src is not None else ()
-        )
+        self.srcCharCode = tuple(ord(c) for c in self.src)
 
 
 # The first positional arg is always a subtype of `StateBase`. Other

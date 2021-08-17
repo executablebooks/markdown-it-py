@@ -64,7 +64,10 @@ def test_table(line, title, input, expected):
     read_fixture_file(FIXTURE_PATH.joinpath("commonmark_extras.md")),
 )
 def test_commonmark_extras(line, title, input, expected):
-    if line in [74, 88]:
+    if title in {
+        "Escaping entities in links:",
+        "Checking combination of replaceEntities and unescapeMd:",
+    }:
         # TODO fix failing escaping tests
         # probably requires a fix of common.utils.stripEscape
         pytest.xfail("escaping entities in link titles / fence.info")

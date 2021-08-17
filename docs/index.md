@@ -22,7 +22,7 @@ Big thanks to the authors of [markdown-it]
 
 Also [John MacFarlane](https://github.com/jgm) for his work on the CommonMark spec and reference implementations.
 
-### Related Links
+## Related Links
 
 - <https://github.com/jgm/CommonMark> - reference CommonMark implementations in C & JS, also contains latest spec & online demo.
 - <http://talk.commonmark.org> - CommonMark forum, good place to collaborate developers' efforts.

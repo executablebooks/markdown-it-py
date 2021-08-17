@@ -1,6 +1,5 @@
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
-from markdown_it.rules_core import StateCore
 
 
 def test_get_rules():
@@ -252,18 +251,6 @@ def test_emptyStr():
             hidden=False,
         )
     ]
-
-
-def test_noneState():
-    md = MarkdownIt()
-    state = StateCore(None, md, {}, [])
-
-    # Remove normalizing rule
-    rules = md.core.ruler.get_active_rules()
-    md.core.ruler.enableOnly(rules[rules.index("inline") :])
-
-    # Check that we can process None str with empty env and block_tokens
-    md.core.process(state)
 
 
 def test_empty_env():

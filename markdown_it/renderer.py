@@ -6,14 +6,34 @@ copy of rules. Those can be rewritten with ease. Also, you can add new
 rules if you create plugin and adds new token types.
 """
 import inspect
-from typing import MutableMapping, Optional, Sequence
+from typing import (
+    Any,
+    ClassVar,
+    MutableMapping,
+    Optional,
+    Sequence,
+)
 
 from .common.utils import unescapeAll, escapeHtml
 from .token import Token
 from .utils import OptionsDict
 
+try:
+    from typing import Protocol
+except ImportError:  # Python <3.8 doesn't have `Protocol` in the stdlib
+    from typing_extensions import Protocol  # type: ignore[misc]
 
-class RendererHTML:
+
+class RendererProtocol(Protocol):
+    __output__: ClassVar[str]
+
+    def render(
+        self, tokens: Sequence[Token], options: OptionsDict, env: MutableMapping
+    ) -> Any:
+        ...
+
+
+class RendererHTML(RendererProtocol):
     """Contains render rules for tokens. Can be updated and extended.
 
     Example:
