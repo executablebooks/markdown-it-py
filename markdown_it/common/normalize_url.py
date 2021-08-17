@@ -66,7 +66,7 @@ def normalizeLink(url: str) -> str:
         #
         if not parsed.protocol or parsed.protocol in RECODE_HOSTNAME_FOR:
             try:
-                parsed.hostname = _punycode.to_ascii(parsed.hostname)
+                parsed = parsed._replace(hostname=_punycode.to_ascii(parsed.hostname))
             except Exception:
                 pass
 
@@ -96,7 +96,7 @@ def normalizeLinkText(url: str) -> str:
         #
         if not parsed.protocol or parsed.protocol in RECODE_HOSTNAME_FOR:
             try:
-                parsed.hostname = _punycode.to_unicode(parsed.hostname)
+                parsed = parsed._replace(hostname=_punycode.to_unicode(parsed.hostname))
             except Exception:
                 pass
 
