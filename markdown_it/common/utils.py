@@ -6,8 +6,6 @@ from typing import Any
 
 from .entities import entities
 
-# from .normalize_url import unescape_string
-
 
 def charCodeAt(src: str, pos: int) -> Any:
     """
@@ -156,15 +154,6 @@ def unescapeAll(string: str) -> str:
     if "\\" not in string and "&" not in string:
         return string
     return UNESCAPE_ALL_RE.sub(replacer_func, string)
-
-
-ESCAPABLE = r"""\\!"#$%&'()*+,./:;<=>?@\[\]^`{}|_~-"""
-ESCAPE_CHAR = re.compile(r"\\([" + ESCAPABLE + r"])")
-
-
-def stripEscape(string: str) -> str:
-    """Strip escape \\ characters"""
-    return ESCAPE_CHAR.sub(r"\1", string)
 
 
 # //////////////////////////////////////////////////////////////////////////////
