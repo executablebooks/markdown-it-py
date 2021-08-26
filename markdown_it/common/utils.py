@@ -156,6 +156,15 @@ def unescapeAll(string: str) -> str:
     return UNESCAPE_ALL_RE.sub(replacer_func, string)
 
 
+ESCAPABLE = r"""\\!"#$%&'()*+,./:;<=>?@\[\]^`{}|_~-"""
+ESCAPE_CHAR = re.compile(r"\\([" + ESCAPABLE + r"])")
+
+
+def stripEscape(string: str) -> str:
+    """Strip escape \\ characters"""
+    return ESCAPE_CHAR.sub(r"\1", string)
+
+
 # //////////////////////////////////////////////////////////////////////////////
 
 # TODO This section changed quite a lot, should re-check
