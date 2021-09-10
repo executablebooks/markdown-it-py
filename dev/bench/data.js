@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1629159499520,
+  "lastUpdate": 1631293591431,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -18483,6 +18483,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.020456",
             "group": "packages",
             "extra": "mean: 957.91 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.11"
+        },
+        "commit": {
+          "id": "cde6906489c570fd3912ed0a1a6e21ae058348f7",
+          "message": "📚 DOCS: Fix parameter-names and descriptions (#173)\n\nthis corrects the docstrings of some of class Ruler's methods",
+          "timestamp": "2021-09-10T19:03:41+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/cde6906489c570fd3912ed0a1a6e21ae058348f7",
+          "distinct": true,
+          "tree_id": "0b7bde3f48f864b7f3f14fd02d1d979e5edb72e3"
+        },
+        "date": 1631293590553,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.9391945092563314,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0081344",
+            "group": "packages",
+            "extra": "mean: 253.86 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.207566107716186,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0019145",
+            "group": "packages",
+            "extra": "mean: 75.714 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.1873602629503646,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017167",
+            "group": "packages",
+            "extra": "mean: 457.17 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.009854419513618,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014855",
+            "group": "packages",
+            "extra": "mean: 990.24 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.858566874640249,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011331",
+            "group": "packages",
+            "extra": "mean: 1.1647 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.142234921979598,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0080645",
+            "group": "packages",
+            "extra": "mean: 241.42 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.024649916037337,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013577",
+            "group": "packages",
+            "extra": "mean: 975.94 msec\nrounds: 20"
           }
         ]
       }
