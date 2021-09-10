@@ -103,7 +103,7 @@ class Ruler:
     def at(self, ruleName: str, fn: RuleFunc, options=None):
         """Replace rule by name with new function & options.
 
-        :param name: rule name to replace.
+        :param ruleName: rule name to replace.
         :param fn: new rule function.
         :param options: new rule options (not mandatory).
         :raises: KeyError if name not found
@@ -135,8 +135,8 @@ class Ruler:
     def after(self, afterName: str, ruleName: str, fn: RuleFunc, options=None):
         """Add new rule to chain after one with given name.
 
-        :param beforeName: new rule will be added before this one.
-        :param ruleName: new rule will be added before this one.
+        :param afterName: new rule will be added after this one.
+        :param ruleName: new rule will be added after this one.
         :param fn: new rule function.
         :param options: new rule options (not mandatory).
         :raises: KeyError if name not found
@@ -153,7 +153,7 @@ class Ruler:
     def push(self, ruleName: str, fn: RuleFunc, options=None):
         """Push new rule to the end of chain.
 
-        :param ruleName: new rule will be added before this one.
+        :param ruleName: new rule will be added to the end of chain.
         :param fn: new rule function.
         :param options: new rule options (not mandatory).
 
