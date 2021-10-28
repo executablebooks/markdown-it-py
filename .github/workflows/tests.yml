@@ -119,8 +119,8 @@ jobs:
         python-version: 3.7
     - name: Build package
       run: |
-        pip install wheel
-        python setup.py sdist bdist_wheel
+        pip install build
+        python -m build
     - name: Publish
       uses: pypa/gh-action-pypi-publish@v1.1.0
       with:
