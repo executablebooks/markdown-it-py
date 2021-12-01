@@ -29,3 +29,11 @@ Don't encode domains in unknown schemas:
 .
 <p><a href="skype:%CE%B3%CE%B3%CE%B3"></a></p>
 .
+
+
+Square brackets are allowed
+.
+[foo](https://bar]baz.org)
+.
+<p><a href="https://bar%5Dbaz.org">foo</a></p>
+.
