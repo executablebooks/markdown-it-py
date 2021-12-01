@@ -29,7 +29,7 @@ def code(state: StateBlock, startLine: int, endLine: int, silent: bool = False):
     state.line = last
 
     token = state.push("code_block", "code", 0)
-    token.content = state.getLines(startLine, last, 4 + state.blkIndent, True)
+    token.content = state.getLines(startLine, last, 4 + state.blkIndent, False) + "\n"
     token.map = [startLine, state.line]
 
     return True
