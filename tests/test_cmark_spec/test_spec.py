@@ -23,10 +23,10 @@ def test_spec(entry):
     output = md.render(entry["markdown"])
     expected = entry["html"]
 
-    if entry["example"] == 593:
+    if entry["example"] == 596:
         # this doesn't have any bearing on the output
         output = output.replace("mailto", "MAILTO")
-    if entry["example"] in [187, 209, 210]:
+    if entry["example"] in [218, 239, 240]:
         # this doesn't have any bearing on the output
         output = output.replace(
             "<blockquote></blockquote>", "<blockquote>\n</blockquote>"
