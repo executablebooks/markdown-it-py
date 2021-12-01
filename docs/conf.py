@@ -103,6 +103,15 @@ def run_apidoc(app):
     ignore_paths = [
         os.path.normpath(os.path.join(this_folder, p)) for p in ignore_paths
     ]
+    # functions from these modules are all imported in the __init__.py with __all__
+    for rule in ("block", "core", "inline"):
+        for path in glob(
+            os.path.normpath(
+                os.path.join(this_folder, f"../markdown_it/rules_{rule}/*.py")
+            )
+        ):
+            if os.path.basename(path) not in ("__init__.py", f"state_{rule}.py"):
+                ignore_paths.append(path)
 
     if os.path.exists(api_folder):
         shutil.rmtree(api_folder)
