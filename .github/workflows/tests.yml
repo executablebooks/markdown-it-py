@@ -23,7 +23,7 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: '3.8'
     - uses: pre-commit/action@v2.0.0
 
   tests:
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [pypy-3.6, 3.6, 3.7, 3.8, 3.9]
+        python-version: ['pypy-3.6', '3.6', '3.7', '3.8', '3.9', '3.10']
 
     steps:
     - uses: actions/checkout@v2
@@ -45,9 +45,9 @@ jobs:
         pip install .[testing,linkify]
     - name: Run pytest
       run: |
-        pytest --cov=markdown_it --cov-report=xml --cov-report=term-missing
+        pytest tests/ --cov=markdown_it --cov-report=xml --cov-report=term-missing
     - name: Upload to Codecov
-      if: matrix.python-version == 3.7 && github.repository == 'executablebooks/markdown-it-py'
+      if: matrix.python-version == '3.7' && github.repository == 'executablebooks/markdown-it-py'
       uses: codecov/codecov-action@v1
       with:
         name: markdown-it-py-pytests-py3.7
@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.8]
+        python-version: ['3.8']
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -87,7 +87,7 @@ jobs:
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
-        python-version: 3.8
+        python-version: '3.8'
 
     - name: Install tox
       run: |
@@ -116,7 +116,7 @@ jobs:
     - name: Set up Python 3.7
       uses: actions/setup-python@v2
       with:
-        python-version: 3.7
+        python-version: '3.7'
     - name: Build package
       run: |
         pip install build
