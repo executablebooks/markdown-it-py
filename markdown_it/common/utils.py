@@ -6,8 +6,6 @@ from typing import Any
 
 from .entities import entities
 
-# from .normalize_url import unescape_string
-
 
 def charCodeAt(src: str, pos: int) -> Any:
     """
@@ -105,7 +103,7 @@ def fromCodePoint(c: int) -> str:
 UNESCAPE_MD_RE = re.compile(r'\\([!"#$%&\'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])')
 # ENTITY_RE_g       = re.compile(r'&([a-z#][a-z0-9]{1,31})', re.IGNORECASE)
 UNESCAPE_ALL_RE = re.compile(
-    r'\\([!"#$%&\'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])' + "|" + r"&([a-z#][a-z0-9]{1,31})",
+    r'\\([!"#$%&\'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])' + "|" + r"&([a-z#][a-z0-9]{1,31});",
     re.IGNORECASE,
 )
 DIGITAL_ENTITY_TEST_RE = re.compile(r"^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))", re.IGNORECASE)
@@ -146,7 +144,16 @@ def unescapeMd(string: str) -> str:
 
 
 def unescapeAll(string: str) -> str:
-    return html.unescape(string)
+    def replacer_func(match):
+        escaped = match.group(1)
+        if escaped:
+            return escaped
+        entity = match.group(2)
+        return replaceEntityPattern(match.group(), entity)
+
+    if "\\" not in string and "&" not in string:
+        return string
+    return UNESCAPE_ALL_RE.sub(replacer_func, string)
 
 
 ESCAPABLE = r"""\\!"#$%&'()*+,./:;<=>?@\[\]^`{}|_~-"""
