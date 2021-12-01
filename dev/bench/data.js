@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1638376283354,
+  "lastUpdate": 1638381413437,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -18795,6 +18795,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.031927",
             "group": "packages",
             "extra": "mean: 993.48 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.12"
+        },
+        "commit": {
+          "id": "73763b35f5f9d4509b7f1f33666ea5a34a4ab698",
+          "message": "👌 IMPROVE: Use __all__ to signal re-exports (#120)\n\nCo-authored-by: Taneli Hukkinen <hukkinj1@users.noreply.github.com>\r\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2021-12-01T18:54:18+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/73763b35f5f9d4509b7f1f33666ea5a34a4ab698",
+          "distinct": true,
+          "tree_id": "ed5cfe650b8d5a5e4410208f285aea3e47bb5562"
+        },
+        "date": 1638381412482,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.631491511144586,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0078766",
+            "group": "packages",
+            "extra": "mean: 275.37 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 12.228073305706967,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0020451",
+            "group": "packages",
+            "extra": "mean: 81.779 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.197678883383525,
+            "unit": "iter/sec",
+            "range": "stddev: 0.019253",
+            "group": "packages",
+            "extra": "mean: 455.03 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 0.9503006755994065,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012063",
+            "group": "packages",
+            "extra": "mean: 1.0523 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.8262847813777096,
+            "unit": "iter/sec",
+            "range": "stddev: 0.038791",
+            "group": "packages",
+            "extra": "mean: 1.2102 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 3.923992854848446,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0062771",
+            "group": "packages",
+            "extra": "mean: 254.84 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 0.9510208477870148,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0075112",
+            "group": "packages",
+            "extra": "mean: 1.0515 sec\nrounds: 20"
           }
         ]
       }
