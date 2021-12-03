@@ -1,5 +1,14 @@
 # Change Log
 
+## 2.0.0 - 2021-12-03
+
+- ⬆️ Update: Sync with markdown-it v12.1.0 and CommonMark v0.30
+- ♻️ REFACTOR: Port `mdurl` and `punycode` for URL normalisation (thanks to @hukkin!).
+  This port fixes the outstanding CommonMark compliance tests.
+- ♻️ REFACTOR: Remove `AttrDict`.
+  This is no longer used is core or mdit-py-plugins, instead standard dictionaries are used.
+- 👌 IMPROVE: Use `__all__` to signal re-exports
+
 ## 1.1.0 - 2021-05-08
 
  ⬆️ UPGRADE: `attrs` -> v21 (#165)
