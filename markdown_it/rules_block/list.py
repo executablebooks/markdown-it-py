@@ -200,9 +200,9 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
         while pos < maximum:
             ch = state.srcCharCode[pos]
 
-            if ch == 0x09:
+            if ch == 0x09:  # \t
                 offset += 4 - (offset + state.bsCount[nextLine]) % 4
-            elif ch == 0x20:
+            elif ch == 0x20:  # \s
                 offset += 1
             else:
                 break
