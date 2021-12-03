@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Callable, List, Optional, Union
+from typing import Callable, List, Optional, Union
 
 
 class OptionsDict(dict):
@@ -85,21 +85,6 @@ class OptionsDict(dict):
     @highlight.setter
     def highlight(self, value: Optional[Callable[[str, str, str], str]]):
         self["highlight"] = value
-
-
-if TYPE_CHECKING:
-    AttrDict = Any
-else:
-
-    class AttrDict(dict):
-        def __init__(self, *args, **kwargs):
-            super(AttrDict, self).__init__(*args, **kwargs)
-            self.__dict__ = self
-
-            # recursively apply to all nested dictionaries
-            for key, item in list(self.items()):
-                if isinstance(item, dict):
-                    self[key] = AttrDict(item)
 
 
 def read_fixture_file(path: Union[str, Path]) -> List[list]:

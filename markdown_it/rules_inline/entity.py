@@ -2,7 +2,7 @@
 import re
 
 from ..common.entities import entities
-from ..common.utils import has, isValidEntityCode, fromCodePoint
+from ..common.utils import isValidEntityCode, fromCodePoint
 from .state_inline import StateInline
 
 DIGITAL_RE = re.compile(r"^&#((?:x[a-f0-9]{1,6}|[0-9]{1,7}));", re.IGNORECASE)
@@ -42,7 +42,7 @@ def entity(state: StateInline, silent: bool):
         else:
             match = NAMED_RE.search(state.src[pos:])
             if match:
-                if has(entities, match.group(1)):
+                if match.group(1) in entities:
                     if not silent:
                         state.pending += entities[match.group(1)]
                     state.pos += len(match.group(0))

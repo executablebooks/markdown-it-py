@@ -22,16 +22,6 @@ def charCodeAt(src: str, pos: int) -> Any:
         return None
 
 
-# function _class(obj) { return Object.prototype.toString.call(obj); }
-
-
-def isString(obj: object) -> bool:
-    return isinstance(obj, str)
-
-
-has = hasattr
-
-
 # Merge objects
 #
 def assign(obj):
