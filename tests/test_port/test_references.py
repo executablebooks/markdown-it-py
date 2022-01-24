@@ -43,3 +43,11 @@ def test_store_labels(data_regression):
     src = "[a]\n\n![a]\n\n[a]: ijk"
     tokens = md.parse(src)
     data_regression.check([token.as_dict() for token in tokens])
+
+
+def test_inline_definitions(data_regression):
+    md = MarkdownIt()
+    md.options["inline_definitions"] = True
+    src = '[a]: url "title"\n- [a]: url "title"'
+    tokens = md.parse(src)
+    data_regression.check([token.as_dict() for token in tokens])
