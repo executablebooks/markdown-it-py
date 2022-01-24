@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1643037281408,
+  "lastUpdate": 1643046642030,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -19419,6 +19419,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.024728",
             "group": "packages",
             "extra": "mean: 864.17 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.12"
+        },
+        "commit": {
+          "id": "99cde4362199d760db39fdaa8bac7cd9a8dc5b75",
+          "message": "✨ NEW: Add `inline_definitions` option (#187)\n\nThis option allows for `definition` token to be inserted into the token stream, at the point where the definition is located in the source text\r\n(in addition to the standard extraction to `env`).\r\nIt is not currently part of the Markdown-It JS implementation,\r\nbut is useful for cases where one wishes to capture a \"loseless\"\r\nsyntax tree of the parsed Markdown\r\n(in conjunction with the `store_labels` option).",
+          "timestamp": "2022-01-24T18:47:59+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/99cde4362199d760db39fdaa8bac7cd9a8dc5b75",
+          "distinct": true,
+          "tree_id": "b5d8d9350db9229e6f71bd3fc5d7dfe45dd49157"
+        },
+        "date": 1643046640105,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.8286556572675194,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0090656",
+            "group": "packages",
+            "extra": "mean: 261.19 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.8954709048457,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0034766",
+            "group": "packages",
+            "extra": "mean: 91.781 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.4151741440628984,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018628",
+            "group": "packages",
+            "extra": "mean: 706.63 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 0.9404739661438587,
+            "unit": "iter/sec",
+            "range": "stddev: 0.039232",
+            "group": "packages",
+            "extra": "mean: 1.0633 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.877809964742012,
+            "unit": "iter/sec",
+            "range": "stddev: 0.023794",
+            "group": "packages",
+            "extra": "mean: 1.1392 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 3.7931137165617113,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010718",
+            "group": "packages",
+            "extra": "mean: 263.64 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 0.8988225897035322,
+            "unit": "iter/sec",
+            "range": "stddev: 0.049923",
+            "group": "packages",
+            "extra": "mean: 1.1126 sec\nrounds: 20"
           }
         ]
       }
