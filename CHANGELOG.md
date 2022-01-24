@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.0.1 - 2022-24-01
+
+- 🐛 FIX: Crash when file ends with empty blockquote line.
+- ✨ NEW: Add `inline_definitions` option.
+  This option allows for `definition` token to be inserted into the token stream, at the point where the definition is located in the source text.
+  It is useful for cases where one wishes to capture a "loseless" syntax tree of the parsed Markdown (in conjunction with the `store_labels` option).
+
 ## 2.0.0 - 2021-12-03
 
 - ⬆️ Update: Sync with markdown-it v12.1.0 and CommonMark v0.30
