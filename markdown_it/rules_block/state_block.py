@@ -20,7 +20,7 @@ class StateBlock(StateBase):
 
         if srcCharCode is not None:
             self._src = src
-            self.srcCharCode = srcCharCode
+            self._srcCharCode = srcCharCode
         else:
             self.src = src
 
@@ -78,7 +78,7 @@ class StateBlock(StateBase):
         start = pos = indent = offset = 0
         length = len(self.src)
 
-        for pos, character in enumerate(self.srcCharCode):
+        for pos, character in enumerate(self._srcCharCode):
             if not indent_found:
                 if isSpace(character):
                     indent += 1
