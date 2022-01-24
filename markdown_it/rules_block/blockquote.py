@@ -1,6 +1,5 @@
 # Block quotes
 import logging
-from typing import Optional
 
 from .state_block import StateBlock
 from ..common.utils import isSpace
@@ -35,13 +34,8 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
     # set offset past spaces and ">"
     initial = offset = state.sCount[startLine] + 1
 
-    try:
-        second_char_code: Optional[int] = state.srcCharCodeAt(pos)
-    except IndexError:
-        second_char_code = None
-
     # skip one optional space after '>'
-    if second_char_code == 0x20:  # /* space */
+    if state.srcCharCodeAt(pos) == 0x20:  # /* space */
         # ' >   test '
         #     ^ -- position start of line here:
         pos += 1
@@ -49,7 +43,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
         offset += 1
         adjustTab = False
         spaceAfterMarker = True
-    elif second_char_code == 0x09:  # /* tab */
+    elif state.srcCharCodeAt(pos) == 0x09:  # /* tab */
         spaceAfterMarker = True
 
         if (state.bsCount[startLine] + offset) % 4 == 3:
@@ -154,13 +148,8 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
             # set offset past spaces and ">"
             initial = offset = state.sCount[nextLine] + 1
 
-            try:
-                next_char: Optional[int] = state.srcCharCodeAt(pos)
-            except IndexError:
-                next_char = None
-
             # skip one optional space after '>'
-            if next_char == 0x20:  # /* space */
+            if state.srcCharCodeAt(pos) == 0x20:  # /* space */
                 # ' >   test '
                 #     ^ -- position start of line here:
                 pos += 1
@@ -168,7 +157,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
                 offset += 1
                 adjustTab = False
                 spaceAfterMarker = True
-            elif next_char == 0x09:  # /* tab */
+            elif state.srcCharCodeAt(pos) == 0x09:  # /* tab */
                 spaceAfterMarker = True
 
                 if (state.bsCount[nextLine] + offset) % 4 == 3:

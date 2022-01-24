@@ -1,6 +1,5 @@
 """ Atex heading (#, ##, ...) """
 import logging
-from typing import Optional
 
 from .state_block import StateBlock
 from ..common.utils import isSpace
@@ -19,7 +18,7 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    ch: Optional[int] = state.srcCharCodeAt(pos)
+    ch = state.srcCharCodeAt(pos)
 
     # /* # */
     if ch != 0x23 or pos >= maximum:
@@ -28,18 +27,12 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
     # count heading level
     level = 1
     pos += 1
-    try:
-        ch = state.srcCharCodeAt(pos)
-    except IndexError:
-        ch = None
+    ch = state.srcCharCodeAt(pos)
     # /* # */
     while ch == 0x23 and pos < maximum and level <= 6:
         level += 1
         pos += 1
-        try:
-            ch = state.srcCharCodeAt(pos)
-        except IndexError:
-            ch = None
+        ch = state.srcCharCodeAt(pos)
 
     if level > 6 or (pos < maximum and not isSpace(ch)):
         return False
