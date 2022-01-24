@@ -18,6 +18,7 @@ from markdown_it import MarkdownIt
         ("p", "<p>p</p>\n"),
         ("[reference]: /url", ""),
         ("    indented code block", "<pre><code>indented code block\n</code></pre>\n"),
+        ("> test\n>", "<blockquote>\n<p>test</p>\n</blockquote>\n"),
     ],
 )
 def test_no_end_newline(input, expected):
