@@ -7,7 +7,7 @@ from .state_inline import StateInline, Delimiter
 def tokenize(state: StateInline, silent: bool):
     """Insert each marker as a separate text token, and add it to delimiter list"""
     start = state.pos
-    marker = state.srcCharCode[start]
+    marker = state.srcCharCodeAt(start)
 
     if silent:
         return False

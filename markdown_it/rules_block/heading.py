@@ -19,7 +19,7 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    ch: Optional[int] = state.srcCharCode[pos]
+    ch: Optional[int] = state.srcCharCodeAt(pos)
 
     # /* # */
     if ch != 0x23 or pos >= maximum:
@@ -29,7 +29,7 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
     level = 1
     pos += 1
     try:
-        ch = state.srcCharCode[pos]
+        ch = state.srcCharCodeAt(pos)
     except IndexError:
         ch = None
     # /* # */
@@ -37,7 +37,7 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
         level += 1
         pos += 1
         try:
-            ch = state.srcCharCode[pos]
+            ch = state.srcCharCodeAt(pos)
         except IndexError:
             ch = None
 
@@ -51,7 +51,7 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     maximum = state.skipSpacesBack(maximum, pos)
     tmp = state.skipCharsBack(maximum, 0x23, pos)  # #
-    if tmp > pos and isSpace(state.srcCharCode[tmp - 1]):
+    if tmp > pos and isSpace(state.srcCharCodeAt(tmp - 1)):
         maximum = tmp
 
     state.line = startLine + 1

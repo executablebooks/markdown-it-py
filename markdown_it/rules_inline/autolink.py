@@ -12,7 +12,7 @@ def autolink(state: StateInline, silent: bool) -> bool:
 
     pos = state.pos
 
-    if state.srcCharCode[pos] != 0x3C:  # /* < */
+    if state.srcCharCodeAt(pos) != 0x3C:  # /* < */
         return False
 
     start = state.pos
@@ -23,7 +23,7 @@ def autolink(state: StateInline, silent: bool) -> bool:
         if pos >= maximum:
             return False
 
-        ch = state.srcCharCode[pos]
+        ch = state.srcCharCodeAt(pos)
 
         if ch == 0x3C:  # /* < */
             return False

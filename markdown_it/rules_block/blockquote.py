@@ -23,7 +23,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
         return False
 
     # check the block quote marker
-    if state.srcCharCode[pos] != 0x3E:  # /* > */
+    if state.srcCharCodeAt(pos) != 0x3E:  # /* > */
         return False
     pos += 1
 
@@ -36,7 +36,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
     initial = offset = state.sCount[startLine] + 1
 
     try:
-        second_char_code: Optional[int] = state.srcCharCode[pos]
+        second_char_code: Optional[int] = state.srcCharCodeAt(pos)
     except IndexError:
         second_char_code = None
 
@@ -72,7 +72,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
     state.bMarks[startLine] = pos
 
     while pos < max:
-        ch = state.srcCharCode[pos]
+        ch = state.srcCharCodeAt(pos)
 
         if isSpace(ch):
             if ch == 0x09:  # / tab /
@@ -146,7 +146,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
             # Case 1: line is not inside the blockquote, and this line is empty.
             break
 
-        evaluatesTrue = state.srcCharCode[pos] == 0x3E and not isOutdented  # /* > */
+        evaluatesTrue = state.srcCharCodeAt(pos) == 0x3E and not isOutdented  # /* > */
         pos += 1
         if evaluatesTrue:
             # This line is inside the blockquote.
@@ -155,7 +155,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
             initial = offset = state.sCount[nextLine] + 1
 
             try:
-                next_char: Optional[int] = state.srcCharCode[pos]
+                next_char: Optional[int] = state.srcCharCodeAt(pos)
             except IndexError:
                 next_char = None
 
@@ -191,7 +191,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
             state.bMarks[nextLine] = pos
 
             while pos < max:
-                ch = state.srcCharCode[pos]
+                ch = state.srcCharCodeAt(pos)
 
                 if isSpace(ch):
                     if ch == 0x09:

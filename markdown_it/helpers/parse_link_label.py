@@ -18,7 +18,7 @@ def parseLinkLabel(state: StateInline, start: int, disableNested: bool = False) 
     level = 1
 
     while state.pos < state.posMax:
-        marker = state.srcCharCode[state.pos]
+        marker = state.srcCharCodeAt(state.pos)
         if marker == 0x5D:  # /* ] */)
             level -= 1
             if level == 0:
