@@ -35,7 +35,7 @@ if TYPE_CHECKING:
 
 
 class StateBase:
-    _srcCharCode: Tuple[int, ...]
+    _ords: Tuple[int, ...]
 
     def __init__(self, src: str, md: "MarkdownIt", env: MutableMapping):
         self.src = src
@@ -49,7 +49,7 @@ class StateBase:
     @src.setter
     def src(self, value: str) -> None:
         self._src = value
-        self._srcCharCode = tuple(ord(c) for c in self.src)
+        self._ords = tuple(ord(c) for c in self.src)
 
     @property
     def srcCharCode(self) -> Tuple[int, ...]:
@@ -58,11 +58,11 @@ class StateBase:
             DeprecationWarning,
             stacklevel=2,
         )
-        return self._srcCharCode
+        return self._ords
 
     def srcCharCodeAt(self, idx: int) -> Optional[int]:
         try:
-            return self._srcCharCode[idx]
+            return self._ords[idx]
         except IndexError:
             return None
 
