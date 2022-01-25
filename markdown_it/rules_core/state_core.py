@@ -1,4 +1,7 @@
-from typing import List, MutableMapping, Optional, TYPE_CHECKING
+from __future__ import annotations
+
+from collections.abc import MutableMapping
+from typing import TYPE_CHECKING
 
 from ..token import Token
 from ..ruler import StateBase
@@ -13,10 +16,10 @@ class StateCore(StateBase):
         src: str,
         md: "MarkdownIt",
         env: MutableMapping,
-        tokens: Optional[List[Token]] = None,
+        tokens: list[Token] | None = None,
     ):
         self.src = src
         self.md = md  # link to parser instance
         self.env = env
-        self.tokens: List[Token] = tokens or []
+        self.tokens: list[Token] = tokens or []
         self.inlineMode = False

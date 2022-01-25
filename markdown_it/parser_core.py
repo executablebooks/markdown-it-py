@@ -4,14 +4,14 @@
  * Top-level rules executor. Glues block/inline parsers and does intermediate
  * transformations.
 """
-from typing import List, Tuple
+from __future__ import annotations
 
 from .ruler import Ruler, RuleFunc
 from .rules_core.state_core import StateCore
 from .rules_core import normalize, block, inline, replace, smartquotes, linkify
 
 
-_rules: List[Tuple[str, RuleFunc]] = [
+_rules: list[tuple[str, RuleFunc]] = [
     ("normalize", normalize),
     ("block", block),
     ("inline", inline),

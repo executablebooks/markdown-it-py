@@ -2,19 +2,15 @@
 
 This module is not part of upstream JavaScript markdown-it.
 """
+from __future__ import annotations
+
+from collections.abc import Generator, Sequence
 import textwrap
 from typing import (
-    Generator,
     NamedTuple,
-    Sequence,
-    Tuple,
-    Dict,
-    List,
-    Optional,
     Any,
     TypeVar,
     overload,
-    Union,
 )
 
 from .token import Token
@@ -50,10 +46,10 @@ class SyntaxTreeNode:
         If `create_root` is True, create a root node for the document.
         """
         # Only nodes representing an unnested token have self.token
-        self.token: Optional[Token] = None
+        self.token: Token | None = None
 
         # Only containers have nester tokens
-        self.nester_tokens: Optional[_NesterTokens] = None
+        self.nester_tokens: _NesterTokens | None = None
 
         # Root node does not have self.parent
         self._parent: Any = None
@@ -92,18 +88,16 @@ class SyntaxTreeNode:
         ...
 
     @overload
-    def __getitem__(self: _NodeType, item: slice) -> List[_NodeType]:
+    def __getitem__(self: _NodeType, item: slice) -> list[_NodeType]:
         ...
 
-    def __getitem__(
-        self: _NodeType, item: Union[int, slice]
-    ) -> Union[_NodeType, List[_NodeType]]:
+    def __getitem__(self: _NodeType, item: int | slice) -> _NodeType | list[_NodeType]:
         return self.children[item]
 
-    def to_tokens(self: _NodeType) -> List[Token]:
+    def to_tokens(self: _NodeType) -> list[Token]:
         """Recover the linear token stream."""
 
-        def recursive_collect_tokens(node: _NodeType, token_list: List[Token]) -> None:
+        def recursive_collect_tokens(node: _NodeType, token_list: list[Token]) -> None:
             if node.type == "root":
                 for child in node.children:
                     recursive_collect_tokens(child, token_list)
@@ -116,24 +110,24 @@ class SyntaxTreeNode:
                     recursive_collect_tokens(child, token_list)
                 token_list.append(node.nester_tokens.closing)
 
-        tokens: List[Token] = []
+        tokens: list[Token] = []
         recursive_collect_tokens(self, tokens)
         return tokens
 
     @property
-    def children(self: _NodeType) -> List[_NodeType]:
+    def children(self: _NodeType) -> list[_NodeType]:
         return self._children
 
     @children.setter
-    def children(self: _NodeType, value: List[_NodeType]) -> None:
+    def children(self: _NodeType, value: list[_NodeType]) -> None:
         self._children = value
 
     @property
-    def parent(self: _NodeType) -> Optional[_NodeType]:
+    def parent(self: _NodeType) -> _NodeType | None:
         return self._parent
 
     @parent.setter
-    def parent(self: _NodeType, value: Optional[_NodeType]) -> None:
+    def parent(self: _NodeType, value: _NodeType | None) -> None:
         self._parent = value
 
     @property
@@ -178,7 +172,7 @@ class SyntaxTreeNode:
         return _removesuffix(self.nester_tokens.opening.type, "_open")
 
     @property
-    def next_sibling(self: _NodeType) -> Optional[_NodeType]:
+    def next_sibling(self: _NodeType) -> _NodeType | None:
         """Get the next node in the sequence of siblings.
 
         Returns `None` if this is the last sibling.
@@ -189,7 +183,7 @@ class SyntaxTreeNode:
         return None
 
     @property
-    def previous_sibling(self: _NodeType) -> Optional[_NodeType]:
+    def previous_sibling(self: _NodeType) -> _NodeType | None:
         """Get the previous node in the sequence of siblings.
 
         Returns `None` if this is the first sibling.
@@ -286,17 +280,17 @@ class SyntaxTreeNode:
         return self._attribute_token().tag
 
     @property
-    def attrs(self) -> Dict[str, Union[str, int, float]]:
+    def attrs(self) -> dict[str, str | int | float]:
         """Html attributes."""
         return self._attribute_token().attrs
 
-    def attrGet(self, name: str) -> Union[None, str, int, float]:
+    def attrGet(self, name: str) -> None | str | int | float:
         """Get the value of attribute `name`, or null if it does not exist."""
         return self._attribute_token().attrGet(name)
 
     @property
-    def map(self) -> Optional[Tuple[int, int]]:
-        """Source map info. Format: `Tuple[ line_begin, line_end ]`"""
+    def map(self) -> tuple[int, int] | None:
+        """Source map info. Format: `tuple[ line_begin, line_end ]`"""
         map_ = self._attribute_token().map
         if map_:
             # Type ignore because `Token`s attribute types are not perfect

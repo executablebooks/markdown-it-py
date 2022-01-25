@@ -1,5 +1,8 @@
+from __future__ import annotations
+
 from collections import namedtuple
-from typing import Dict, List, MutableMapping, Optional, TYPE_CHECKING
+from collections.abc import MutableMapping
+from typing import TYPE_CHECKING
 
 import attr
 
@@ -47,13 +50,13 @@ Scanned = namedtuple("Scanned", ["can_open", "can_close", "length"])
 
 class StateInline(StateBase):
     def __init__(
-        self, src: str, md: "MarkdownIt", env: MutableMapping, outTokens: List[Token]
+        self, src: str, md: "MarkdownIt", env: MutableMapping, outTokens: list[Token]
     ):
         self.src = src
         self.env = env
         self.md = md
         self.tokens = outTokens
-        self.tokens_meta: List[Optional[dict]] = [None] * len(outTokens)
+        self.tokens_meta: list[dict | None] = [None] * len(outTokens)
 
         self.pos = 0
         self.posMax = len(self.src)
@@ -63,16 +66,16 @@ class StateInline(StateBase):
 
         # Stores { start: end } pairs. Useful for backtrack
         # optimization of pairs parse (emphasis, strikes).
-        self.cache: Dict[int, int] = {}
+        self.cache: dict[int, int] = {}
 
         # List of emphasis-like delimiters for current tag
-        self.delimiters: List[Delimiter] = []
+        self.delimiters: list[Delimiter] = []
 
         # Stack of delimiter lists for upper level tags
-        self._prev_delimiters: List[List[Delimiter]] = []
+        self._prev_delimiters: list[list[Delimiter]] = []
 
         # backticklength => last seen position
-        self.backticks: Dict[int, int] = {}
+        self.backticks: dict[int, int] = {}
         self.backticksScanned = False
 
     def __repr__(self):
