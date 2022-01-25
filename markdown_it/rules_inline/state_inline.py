@@ -50,7 +50,7 @@ Scanned = namedtuple("Scanned", ["can_open", "can_close", "length"])
 
 class StateInline(StateBase):
     def __init__(
-        self, src: str, md: "MarkdownIt", env: MutableMapping, outTokens: list[Token]
+        self, src: str, md: MarkdownIt, env: MutableMapping, outTokens: list[Token]
     ):
         self.src = src
         self.env = env

@@ -35,7 +35,7 @@ class MarkdownIt:
         config: str | Mapping = "commonmark",
         options_update: Mapping | None = None,
         *,
-        renderer_cls: Callable[["MarkdownIt"], RendererProtocol] = RendererHTML,
+        renderer_cls: Callable[[MarkdownIt], RendererProtocol] = RendererHTML,
     ):
         """Main parser class
 
@@ -87,7 +87,7 @@ class MarkdownIt:
 
     def configure(
         self, presets: str | Mapping, options_update: Mapping | None = None
-    ) -> "MarkdownIt":
+    ) -> MarkdownIt:
         """Batch load of all options and component settings.
         This is an internal method, and you probably will not need it.
         But if you will - see available presets and data structure
@@ -143,7 +143,7 @@ class MarkdownIt:
 
     def enable(
         self, names: str | Iterable[str], ignoreInvalid: bool = False
-    ) -> "MarkdownIt":
+    ) -> MarkdownIt:
         """Enable list or rules. (chainable)
 
         :param names: rule name or list of rule names to enable.
@@ -175,7 +175,7 @@ class MarkdownIt:
 
     def disable(
         self, names: str | Iterable[str], ignoreInvalid: bool = False
-    ) -> "MarkdownIt":
+    ) -> MarkdownIt:
         """The same as [[MarkdownIt.enable]], but turn specified rules off. (chainable)
 
         :param names: rule name or list of rule names to disable.
@@ -214,7 +214,7 @@ class MarkdownIt:
         if self.renderer.__output__ == fmt:
             self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
 
-    def use(self, plugin: Callable, *params, **options) -> "MarkdownIt":
+    def use(self, plugin: Callable, *params, **options) -> MarkdownIt:
         """Load specified plugin with given params into current parser instance. (chainable)
 
         It's just a sugar to call `plugin(md, params)` with curring.

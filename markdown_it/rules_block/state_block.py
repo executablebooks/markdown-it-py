@@ -14,7 +14,7 @@ class StateBlock(StateBase):
     def __init__(
         self,
         src: str,
-        md: "MarkdownIt",
+        md: MarkdownIt,
         env,
         tokens: list[Token],
         srcCharCode: tuple[int, ...] | None = None,

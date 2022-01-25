@@ -98,7 +98,7 @@ class Token:
         else:
             self.attrs[name] = value
 
-    def copy(self) -> "Token":
+    def copy(self) -> Token:
         """Return a shallow copy of the instance."""
         return attr.evolve(self)
 
@@ -151,7 +151,7 @@ class Token:
         return mapping
 
     @classmethod
-    def from_dict(cls, dct: MutableMapping[str, Any]) -> "Token":
+    def from_dict(cls, dct: MutableMapping[str, Any]) -> Token:
         """Convert a dict to a Token."""
         token = cls(**dct)
         if token.children:

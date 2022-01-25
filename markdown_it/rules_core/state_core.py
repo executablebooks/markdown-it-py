@@ -14,7 +14,7 @@ class StateCore(StateBase):
     def __init__(
         self,
         src: str,
-        md: "MarkdownIt",
+        md: MarkdownIt,
         env: MutableMapping,
         tokens: list[Token] | None = None,
     ):

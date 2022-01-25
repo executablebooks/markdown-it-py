@@ -28,7 +28,7 @@ if TYPE_CHECKING:
 class StateBase:
     srcCharCode: tuple[int, ...]
 
-    def __init__(self, src: str, md: "MarkdownIt", env: MutableMapping):
+    def __init__(self, src: str, md: MarkdownIt, env: MutableMapping):
         self.src = src
         self.env = env
         self.md = md
