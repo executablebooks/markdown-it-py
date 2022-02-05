@@ -14,6 +14,7 @@ exclude .circleci
 exclude .circleci/config.yml
 exclude codecov.yml
 exclude .mypy.ini
+exclude profiler.py
 
 include LICENSE
 include LICENSE.markdown-it
