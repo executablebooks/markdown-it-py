@@ -230,6 +230,8 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
         token = state.push("list_item_open", "li", 1)
         token.markup = chr(markerCharCode)
         token.map = itemLines = [startLine, 0]
+        if isOrdered:
+            token.info = state.src[start : posAfterMarker - 1]
 
         # change current state, then restore it after parser subcall
         oldTight = state.tight
@@ -313,6 +315,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
             posAfterMarker = skipOrderedListMarker(state, nextLine)
             if posAfterMarker < 0:
                 break
+            start = state.bMarks[nextLine] + state.tShift[nextLine]
         else:
             posAfterMarker = skipBulletListMarker(state, nextLine)
             if posAfterMarker < 0:
