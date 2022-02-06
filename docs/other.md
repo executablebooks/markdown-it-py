@@ -38,24 +38,22 @@ So, if you decide to use plugins that add extended class syntax or autogeneratin
 
 # Performance
 
-markdown-it-py is the fastest _**CommonMark compliant**_ parser written in python!
-
 You can view our continuous integration benchmarking analysis at: <https://executablebooks.github.io/markdown-it-py/dev/bench/>,
 or you can run it for yourself within the repository:
 
 ```console
 $ tox -e py38-bench-packages -- --benchmark-columns mean,stddev
 
-Name (time in ms)               Mean              StdDev
------------------------------------------------------------------
-test_mistune                 82.0024 (1.0)       10.7779 (1.61)
-test_markdown_it_py         190.9571 (2.33)       6.6946 (1.0)
-test_mistletoe              247.1633 (3.01)      16.3956 (2.45)
-test_commonmark_py          482.6411 (5.89)      67.8219 (10.13)
-test_panflute             1,043.0018 (12.72)    229.1034 (34.22)
-test_pymarkdown             964.6831 (11.76)     77.2787 (11.54)
-test_pymarkdown_extra     1,051.8680 (12.83)     32.2971 (4.82)
------------------------------------------------------------------
+Name (time in ms)             Mean             StdDev
+---------------------------------------------------------------
+test_mistune               70.3272 (1.0)       0.7978 (1.0)
+test_mistletoe            116.0919 (1.65)      6.2870 (7.88)
+test_markdown_it_py       152.9022 (2.17)      4.2988 (5.39)
+test_commonmark_py        326.9506 (4.65)     15.8084 (19.81)
+test_pymarkdown           368.2712 (5.24)      7.5906 (9.51)
+test_pymarkdown_extra     640.4913 (9.11)     15.1769 (19.02)
+test_panflute             678.3547 (9.65)      9.4622 (11.86)
+---------------------------------------------------------------
 ```
 
 As you can see, `markdown-it-py` doesn't pay with speed for it's flexibility.
@@ -63,6 +61,6 @@ As you can see, `markdown-it-py` doesn't pay with speed for it's flexibility.
 ```{note}
 `mistune` is not CommonMark compliant, which is what allows for its
 faster parsing, at the expense of issues, for example, with nested inline parsing.
-See [mistletoes's explanation](https://github.com/miyuchina/mistletoe#performance)
+See [mistletoes's explanation](https://github.com/miyuchina/mistletoe/blob/master/performance.md)
 for further details.
 ```
