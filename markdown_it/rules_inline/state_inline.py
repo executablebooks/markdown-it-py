@@ -131,18 +131,18 @@ class StateInline(StateBase):
         left_flanking = True
         right_flanking = True
         maximum = self.posMax
-        marker = self.srcCharCode[start]
+        marker = self.srcCharCodeAt(start)
 
         # treat beginning of the line as a whitespace
-        lastChar = self.srcCharCode[start - 1] if start > 0 else 0x20
+        lastChar = self.srcCharCodeAt(start - 1) if start > 0 else 0x20
 
-        while pos < maximum and self.srcCharCode[pos] == marker:
+        while pos < maximum and self.srcCharCodeAt(pos) == marker:
             pos += 1
 
         count = pos - start
 
         # treat end of the line as a whitespace
-        nextChar = self.srcCharCode[pos] if pos < maximum else 0x20
+        nextChar = self.srcCharCodeAt(pos) if pos < maximum else 0x20
 
         isLastPunctChar = isMdAsciiPunct(lastChar) or isPunctChar(chr(lastChar))
         isNextPunctChar = isMdAsciiPunct(nextChar) or isPunctChar(chr(nextChar))

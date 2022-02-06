@@ -71,14 +71,14 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
     pos = state.bMarks[nextLine] + state.tShift[nextLine]
     if pos >= state.eMarks[nextLine]:
         return False
-    first_ch = state.srcCharCode[pos]
+    first_ch = state.srcCharCodeAt(pos)
     pos += 1
     if first_ch not in {0x7C, 0x2D, 0x3A}:  # not in {"|", "-", ":"}
         return False
 
     if pos >= state.eMarks[nextLine]:
         return False
-    second_ch = state.srcCharCode[pos]
+    second_ch = state.srcCharCodeAt(pos)
     pos += 1
     # not in {"|", "-", ":"} and not space
     if second_ch not in {0x7C, 0x2D, 0x3A} and not isSpace(second_ch):
@@ -90,7 +90,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
         return False
 
     while pos < state.eMarks[nextLine]:
-        ch = state.srcCharCode[pos]
+        ch = state.srcCharCodeAt(pos)
 
         # /* | */  /* - */ /* : */
         if ch not in {0x7C, 0x2D, 0x3A} and not isSpace(ch):

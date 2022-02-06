@@ -20,7 +20,7 @@ class StateBlock(StateBase):
 
         if srcCharCode is not None:
             self._src = src
-            self.srcCharCode = srcCharCode
+            self._ords = srcCharCode
         else:
             self.src = src
 
@@ -78,7 +78,7 @@ class StateBlock(StateBase):
         start = pos = indent = offset = 0
         length = len(self.src)
 
-        for pos, character in enumerate(self.srcCharCode):
+        for pos, character in enumerate(self._ords):
             if not indent_found:
                 if isSpace(character):
                     indent += 1
@@ -153,7 +153,7 @@ class StateBlock(StateBase):
     def skipSpaces(self, pos: int) -> int:
         """Skip spaces from given position."""
         while pos < len(self.src):
-            if not isSpace(self.srcCharCode[pos]):
+            if not isSpace(self.srcCharCodeAt(pos)):
                 break
             pos += 1
         return pos
@@ -164,14 +164,14 @@ class StateBlock(StateBase):
             return pos
         while pos > minimum:
             pos -= 1
-            if not isSpace(self.srcCharCode[pos]):
+            if not isSpace(self.srcCharCodeAt(pos)):
                 return pos + 1
         return pos
 
     def skipChars(self, pos: int, code: int) -> int:
         """Skip char codes from given position."""
         while pos < len(self.src):
-            if self.srcCharCode[pos] != code:
+            if self.srcCharCodeAt(pos) != code:
                 break
             pos += 1
         return pos
@@ -182,7 +182,7 @@ class StateBlock(StateBase):
             return pos
         while pos > minimum:
             pos -= 1
-            if code != self.srcCharCode[pos]:
+            if code != self.srcCharCodeAt(pos):
                 return pos + 1
         return pos
 
@@ -204,7 +204,7 @@ class StateBlock(StateBase):
                 last = self.eMarks[line]
 
             while (first < last) and (lineIndent < indent):
-                ch = self.srcCharCode[first]
+                ch = self.srcCharCodeAt(first)
                 if isSpace(ch):
                     if ch == 0x09:
                         lineIndent += 4 - (lineIndent + self.bsCount[line]) % 4

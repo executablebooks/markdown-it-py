@@ -26,6 +26,8 @@ from typing import (
     TYPE_CHECKING,
     Union,
 )
+import warnings
+
 import attr
 
 if TYPE_CHECKING:
@@ -33,7 +35,7 @@ if TYPE_CHECKING:
 
 
 class StateBase:
-    srcCharCode: Tuple[int, ...]
+    _ords: Tuple[int, ...]
 
     def __init__(self, src: str, md: "MarkdownIt", env: MutableMapping):
         self.src = src
@@ -47,7 +49,22 @@ class StateBase:
     @src.setter
     def src(self, value: str) -> None:
         self._src = value
-        self.srcCharCode = tuple(ord(c) for c in self.src)
+        self._ords = tuple(ord(c) for c in self.src)
+
+    @property
+    def srcCharCode(self) -> Tuple[int, ...]:
+        warnings.warn(
+            "`StateBase.srcCharCode` is deprecated. Use `StateBase.srcCharCodeAt`",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self._ords
+
+    def srcCharCodeAt(self, idx: int) -> Optional[int]:
+        try:
+            return self._ords[idx]
+        except IndexError:
+            return None
 
 
 # The first positional arg is always a subtype of `StateBase`. Other

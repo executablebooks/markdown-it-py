@@ -9,7 +9,7 @@ regex = re.compile("^ (.+) $")
 def backtick(state: StateInline, silent: bool) -> bool:
 
     pos = state.pos
-    ch = state.srcCharCode[pos]
+    ch = state.srcCharCodeAt(pos)
 
     # /* ` */
     if ch != 0x60:
@@ -20,7 +20,7 @@ def backtick(state: StateInline, silent: bool) -> bool:
     maximum = state.posMax
 
     # scan marker length
-    while pos < maximum and (state.srcCharCode[pos] == 0x60):  # /* ` */
+    while pos < maximum and (state.srcCharCodeAt(pos) == 0x60):  # /* ` */
         pos += 1
 
     marker = state.src[start:pos]
@@ -43,7 +43,7 @@ def backtick(state: StateInline, silent: bool) -> bool:
         matchEnd = matchStart + 1
 
         # scan marker length
-        while matchEnd < maximum and (state.srcCharCode[matchEnd] == 0x60):  # /* ` */
+        while matchEnd < maximum and (state.srcCharCodeAt(matchEnd) == 0x60):  # /* ` */
             matchEnd += 1
 
         closerLength = matchEnd - matchStart
