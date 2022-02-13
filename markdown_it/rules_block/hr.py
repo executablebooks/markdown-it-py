@@ -22,18 +22,18 @@ def hr(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    marker = state.srcCharCode[pos]
+    marker = state.src[pos]
     pos += 1
 
-    # Check hr marker: /* * */ /* - */ /* _ */
-    if marker != 0x2A and marker != 0x2D and marker != 0x5F:
+    # Check hr marker
+    if marker != "*" and marker != "-" and marker != "_":
         return False
 
     # markers can be mixed with spaces, but there should be at least 3 of them
 
     cnt = 1
     while pos < maximum:
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
         pos += 1
         if ch != marker and not isSpace(ch):
             return False
@@ -50,6 +50,6 @@ def hr(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     token = state.push("hr", "hr", 0)
     token.map = [startLine, state.line]
-    token.markup = chr(marker) * (cnt + 1)
+    token.markup = marker * (cnt + 1)
 
     return True

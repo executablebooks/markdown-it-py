@@ -19,25 +19,23 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    ch: Optional[int] = state.srcCharCode[pos]
+    ch: Optional[str] = state.src[pos]
 
-    # /* # */
-    if ch != 0x23 or pos >= maximum:
+    if ch != "#" or pos >= maximum:
         return False
 
     # count heading level
     level = 1
     pos += 1
     try:
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
     except IndexError:
         ch = None
-    # /* # */
-    while ch == 0x23 and pos < maximum and level <= 6:
+    while ch == "#" and pos < maximum and level <= 6:
         level += 1
         pos += 1
         try:
-            ch = state.srcCharCode[pos]
+            ch = state.src[pos]
         except IndexError:
             ch = None
 
@@ -50,8 +48,8 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
     # Let's cut tails like '    ###  ' from the end of string
 
     maximum = state.skipSpacesBack(maximum, pos)
-    tmp = state.skipCharsBack(maximum, 0x23, pos)  # #
-    if tmp > pos and isSpace(state.srcCharCode[tmp - 1]):
+    tmp = state.skipCharsBack(maximum, "#", pos)
+    if tmp > pos and isSpace(state.src[tmp - 1]):
         maximum = tmp
 
     state.line = startLine + 1

@@ -1,4 +1,5 @@
-from typing import List, Optional, Tuple, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, Union
+import warnings
 
 from ..token import Token
 from ..ruler import StateBase
@@ -15,14 +16,8 @@ class StateBlock(StateBase):
         md: "MarkdownIt",
         env,
         tokens: List[Token],
-        srcCharCode: Optional[Tuple[int, ...]] = None,
     ):
-
-        if srcCharCode is not None:
-            self._src = src
-            self.srcCharCode = srcCharCode
-        else:
-            self.src = src
+        self.src = src
 
         # link to parser instance
         self.md = md
@@ -78,12 +73,12 @@ class StateBlock(StateBase):
         start = pos = indent = offset = 0
         length = len(self.src)
 
-        for pos, character in enumerate(self.srcCharCode):
+        for pos, character in enumerate(self.src):
             if not indent_found:
                 if isSpace(character):
                     indent += 1
 
-                    if character == 0x09:
+                    if character == "\t":
                         offset += 4 - offset % 4
                     else:
                         offset += 1
@@ -91,8 +86,8 @@ class StateBlock(StateBase):
                 else:
                     indent_found = True
 
-            if character == 0x0A or pos == length - 1:
-                if character != 0x0A:
+            if character == "\n" or pos == length - 1:
+                if character != "\n":
                     pos += 1
                 self.bMarks.append(start)
                 self.eMarks.append(pos)
@@ -153,7 +148,7 @@ class StateBlock(StateBase):
     def skipSpaces(self, pos: int) -> int:
         """Skip spaces from given position."""
         while pos < len(self.src):
-            if not isSpace(self.srcCharCode[pos]):
+            if not isSpace(self.src[pos]):
                 break
             pos += 1
         return pos
@@ -164,25 +159,39 @@ class StateBlock(StateBase):
             return pos
         while pos > minimum:
             pos -= 1
-            if not isSpace(self.srcCharCode[pos]):
+            if not isSpace(self.src[pos]):
                 return pos + 1
         return pos
 
-    def skipChars(self, pos: int, code: int) -> int:
+    def skipChars(self, pos: int, code: Union[int, str]) -> int:
         """Skip char codes from given position."""
+        if isinstance(code, int):
+            warnings.warn(
+                "`int`s are deprecated as `skipChars` input",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            code = chr(code)
         while pos < len(self.src):
-            if self.srcCharCode[pos] != code:
+            if self.src[pos] != code:
                 break
             pos += 1
         return pos
 
-    def skipCharsBack(self, pos: int, code: int, minimum: int) -> int:
+    def skipCharsBack(self, pos: int, code: Union[int, str], minimum: int) -> int:
         """Skip char codes reverse from given position - 1."""
+        if isinstance(code, int):
+            warnings.warn(
+                "`int`s are deprecated as `skipCharsBack` input",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            code = chr(code)
         if pos <= minimum:
             return pos
         while pos > minimum:
             pos -= 1
-            if code != self.srcCharCode[pos]:
+            if code != self.src[pos]:
                 return pos + 1
         return pos
 
@@ -204,9 +213,9 @@ class StateBlock(StateBase):
                 last = self.eMarks[line]
 
             while (first < last) and (lineIndent < indent):
-                ch = self.srcCharCode[first]
+                ch = self.src[first]
                 if isSpace(ch):
-                    if ch == 0x09:
+                    if ch == "\t":
                         lineIndent += 4 - (lineIndent + self.bsCount[line]) % 4
                     else:
                         lineIndent += 1

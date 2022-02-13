@@ -26,28 +26,34 @@ from typing import (
     TYPE_CHECKING,
     Union,
 )
+import warnings
+from functools import lru_cache
+
 import attr
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
 
 
-class StateBase:
-    srcCharCode: Tuple[int, ...]
+@lru_cache
+def _str_to_ords(s: str) -> Tuple[int, ...]:
+    return tuple(ord(c) for c in s)
 
+
+class StateBase:
     def __init__(self, src: str, md: "MarkdownIt", env: MutableMapping):
         self.src = src
         self.env = env
         self.md = md
 
     @property
-    def src(self) -> str:
-        return self._src
-
-    @src.setter
-    def src(self, value: str) -> None:
-        self._src = value
-        self.srcCharCode = tuple(ord(c) for c in self.src)
+    def srcCharCode(self) -> Tuple[int, ...]:
+        warnings.warn(
+            "`StateBase.srcCharCode` is deprecated. Use `StateBase.src`.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return _str_to_ords(self.src)
 
 
 # The first positional arg is always a subtype of `StateBase`. Other

@@ -10,8 +10,7 @@ endSpace = re.compile(r" +$")
 def newline(state: StateInline, silent: bool):
     pos = state.pos
 
-    # /* \n */
-    if state.srcCharCode[pos] != 0x0A:
+    if state.src[pos] != "\n":
         return False
 
     pmax = len(state.pending) - 1
@@ -36,7 +35,7 @@ def newline(state: StateInline, silent: bool):
     pos += 1
 
     # skip heading spaces for next line
-    while pos < maximum and isSpace(state.srcCharCode[pos]):
+    while pos < maximum and isSpace(state.src[pos]):
         pos += 1
 
     state.pos = pos

@@ -92,17 +92,10 @@ class ParserBlock:
                 line += 1
                 state.line = line
 
-    def parse(
-        self,
-        src: str,
-        md,
-        env,
-        outTokens: List[Token],
-        ords: Optional[Tuple[int, ...]] = None,
-    ) -> Optional[List[Token]]:
+    def parse(self, src: str, md, env, outTokens: List[Token]) -> Optional[List[Token]]:
         """Process input string and push block tokens into `outTokens`."""
         if not src:
             return None
-        state = StateBlock(src, md, env, outTokens, ords)
+        state = StateBlock(src, md, env, outTokens)
         self.tokenize(state, state.line, state.lineMax)
         return state.tokens

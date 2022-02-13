@@ -6,17 +6,17 @@ from .state_inline import StateInline, Delimiter
 def tokenize(state: StateInline, silent: bool):
     """Insert each marker as a separate text token, and add it to delimiter list"""
     start = state.pos
-    marker = state.srcCharCode[start]
+    marker = state.src[start]
 
     if silent:
         return False
 
-    if marker != 0x7E:  # /* ~ */
+    if marker != "~":
         return False
 
     scanned = state.scanDelims(state.pos, True)
     length = scanned.length
-    ch = chr(marker)
+    ch = marker
 
     if length < 2:
         return False
@@ -33,7 +33,7 @@ def tokenize(state: StateInline, silent: bool):
         state.delimiters.append(
             Delimiter(
                 **{
-                    "marker": marker,
+                    "marker": ord(marker),
                     "length": 0,  # disable "rule of 3" length checks meant for emphasis
                     "jump": i // 2,  # for `~~` 1 marker = 2 characters
                     "token": len(state.tokens) - 1,

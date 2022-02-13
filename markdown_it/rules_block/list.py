@@ -9,19 +9,19 @@ LOGGER = logging.getLogger(__name__)
 
 # Search `[-+*][\n ]`, returns next pos after marker on success
 # or -1 on fail.
-def skipBulletListMarker(state: StateBlock, startLine: int):
+def skipBulletListMarker(state: StateBlock, startLine: int) -> int:
 
     pos = state.bMarks[startLine] + state.tShift[startLine]
     maximum = state.eMarks[startLine]
 
-    marker = state.srcCharCode[pos]
+    marker = state.src[pos]
     pos += 1
-    # Check bullet /* * */ /* - */ /* + */
-    if marker != 0x2A and marker != 0x2D and marker != 0x2B:
+    # Check bullet
+    if marker != "*" and marker != "-" and marker != "+":
         return -1
 
     if pos < maximum:
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
 
         if not isSpace(ch):
             # " -test " - is not a list item
@@ -42,11 +42,10 @@ def skipOrderedListMarker(state: StateBlock, startLine: int):
     if pos + 1 >= maximum:
         return -1
 
-    ch = state.srcCharCode[pos]
+    ch = state.src[pos]
     pos += 1
 
-    # /* 0 */  /* 9 */
-    if ch < 0x30 or ch > 0x39:
+    if ch < "0" or ch > "9":
         return -1
 
     while True:
@@ -54,11 +53,10 @@ def skipOrderedListMarker(state: StateBlock, startLine: int):
         if pos >= maximum:
             return -1
 
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
         pos += 1
 
-        # /* 0 */  /* 9 */
-        if ch >= 0x30 and ch <= 0x39:
+        if ch >= "0" and ch <= "9":
 
             # List marker should have no more than 9 digits
             # (prevents integer overflow in browsers)
@@ -67,14 +65,14 @@ def skipOrderedListMarker(state: StateBlock, startLine: int):
 
             continue
 
-        # found valid marker: /* ) */ /* . */
-        if ch == 0x29 or ch == 0x2E:
+        # found valid marker
+        if ch == ")" or ch == ".":
             break
 
         return -1
 
     if pos < maximum:
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
 
         if not isSpace(ch):
             # " 1.test " - is not a list item
@@ -156,7 +154,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
             return False
 
     # We should terminate list on style change. Remember first one to compare.
-    markerCharCode = state.srcCharCode[posAfterMarker - 1]
+    markerCharCode = state.src[posAfterMarker - 1]
 
     # For validation mode we can terminate immediately
     if silent:
@@ -174,7 +172,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
         token = state.push("bullet_list_open", "ul", 1)
 
     token.map = listLines = [startLine, 0]
-    token.markup = chr(markerCharCode)
+    token.markup = markerCharCode
 
     #
     # Iterate list items
@@ -198,11 +196,11 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
         )
 
         while pos < maximum:
-            ch = state.srcCharCode[pos]
+            ch = state.src[pos]
 
-            if ch == 0x09:  # \t
+            if ch == "\t":
                 offset += 4 - (offset + state.bsCount[nextLine]) % 4
-            elif ch == 0x20:  # \s
+            elif ch == " ":
                 offset += 1
             else:
                 break
@@ -228,7 +226,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
         # Run subparser & write tokens
         token = state.push("list_item_open", "li", 1)
-        token.markup = chr(markerCharCode)
+        token.markup = markerCharCode
         token.map = itemLines = [startLine, 0]
         if isOrdered:
             token.info = state.src[start : posAfterMarker - 1]
@@ -280,7 +278,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
         state.tight = oldTight
 
         token = state.push("list_item_close", "li", -1)
-        token.markup = chr(markerCharCode)
+        token.markup = markerCharCode
 
         nextLine = startLine = state.line
         itemLines[1] = nextLine
@@ -321,7 +319,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
             if posAfterMarker < 0:
                 break
 
-        if markerCharCode != state.srcCharCode[posAfterMarker - 1]:
+        if markerCharCode != state.src[posAfterMarker - 1]:
             break
 
     # Finalize list
@@ -330,7 +328,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
     else:
         token = state.push("bullet_list_close", "ul", -1)
 
-    token.markup = chr(markerCharCode)
+    token.markup = markerCharCode
 
     listLines[1] = nextLine
     state.line = nextLine

@@ -3,6 +3,7 @@
 import html
 import re
 from typing import Any
+import warnings
 
 from .entities import entities
 
@@ -195,7 +196,12 @@ def escapeRE(string: str) -> str:
 
 
 def isSpace(code: object) -> bool:
-    return code in {0x09, 0x20}
+    if isinstance(code, int):
+        warnings.warn(
+            "`int`s are deprecated as `isSpace` input", DeprecationWarning, stacklevel=2
+        )
+        return code in {0x09, 0x20}
+    return code in {"\t", " "}
 
 
 MD_WHITESPACE = {
