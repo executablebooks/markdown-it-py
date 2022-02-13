@@ -1,6 +1,8 @@
 # Skip text characters for text token, place those to pending buffer
 # and increment current pos
 
+import warnings
+
 from .state_inline import StateInline
 
 
@@ -11,38 +13,46 @@ from .state_inline import StateInline
 
 # !!!! Don't confuse with "Markdown ASCII Punctuation" chars
 # http://spec.commonmark.org/0.15/#ascii-punctuation-character
-def isTerminatorChar(ch):
-    return ch in {
-        0x0A,  # /* \n */:
-        0x21,  # /* ! */:
-        0x23,  # /* # */:
-        0x24,  # /* $ */:
-        0x25,  # /* % */:
-        0x26,  # /* & */:
-        0x2A,  # /* * */:
-        0x2B,  # /* + */:
-        0x2D,  # /* - */:
-        0x3A,  # /* : */:
-        0x3C,  # /* < */:
-        0x3D,  # /* = */:
-        0x3E,  # /* > */:
-        0x40,  # /* @ */:
-        0x5B,  # /* [ */:
-        0x5C,  # /* \ */:
-        0x5D,  # /* ] */:
-        0x5E,  # /* ^ */:
-        0x5F,  # /* _ */:
-        0x60,  # /* ` */:
-        0x7B,  # /* { */:
-        0x7D,  # /* } */:
-        0x7E,  # /* ~ */:
+def isTerminatorChar(ch: object) -> bool:
+    terminator_chars = {
+        "\n",
+        "!",
+        "#",
+        "$",
+        "%",
+        "&",
+        "*",
+        "+",
+        "-",
+        ":",
+        "<",
+        "=",
+        ">",
+        "@",
+        "[",
+        "\\",
+        "]",
+        "^",
+        "_",
+        "`",
+        "{",
+        "}",
+        "~",
     }
+    if isinstance(ch, int):
+        warnings.warn(
+            "`int`s are deprecated as `isTerminatorChar` input",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return ch in (ord(c) for c in terminator_chars)
+    return ch in terminator_chars
 
 
 def text(state: StateInline, silent: bool, **args):
     pos = state.pos
     posMax = state.posMax
-    while (pos < posMax) and not isTerminatorChar(ord(state.src[pos])):
+    while (pos < posMax) and not isTerminatorChar(state.src[pos]):
         pos += 1
 
     if pos == state.pos:
