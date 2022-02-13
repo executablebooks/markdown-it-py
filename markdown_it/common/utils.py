@@ -113,7 +113,7 @@ def replaceEntityPattern(match: str, name: str) -> str:
     if name in entities:
         return entities[name]
 
-    if ord(name[0]) == 0x23 and DIGITAL_ENTITY_TEST_RE.search(name):
+    if name[0] == "#" and DIGITAL_ENTITY_TEST_RE.search(name):
         code = int(name[2:], 16) if name[1].lower() == "x" else int(name[1:], 10)
         if isValidEntityCode(code):
             return fromCodePoint(code)
