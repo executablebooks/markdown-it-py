@@ -200,7 +200,7 @@ def isSpace(code: object) -> bool:
         warnings.warn(
             "`int`s are deprecated as `isSpace` input", DeprecationWarning, stacklevel=2
         )
-        return code in {0x09, 0x20}
+        code = chr(code)
     return code in {"\t", " "}
 
 
