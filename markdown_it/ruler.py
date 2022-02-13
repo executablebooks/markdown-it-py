@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from markdown_it import MarkdownIt
 
 
-@lru_cache
+@lru_cache()
 def _str_to_ords(s: str) -> Tuple[int, ...]:
     return tuple(ord(c) for c in s)
 
