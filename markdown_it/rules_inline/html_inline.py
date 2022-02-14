@@ -1,12 +1,21 @@
 # Process html tags
+from typing import Union
+import warnings
+
 from .state_inline import StateInline
 from ..common.html_re import HTML_TAG_RE
 
 
-def isLetter(ch: int):
-    lc = ch | 0x20  # to lower case
-    # /* a */ and /* z */
-    return (lc >= 0x61) and (lc <= 0x7A)
+def isLetter(ch: Union[int, str]) -> bool:
+    if isinstance(ch, int):
+        warnings.warn(
+            "`int`s are deprecated as `isLetter` input",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        ch = chr(ch)
+    lc = ch.lower()
+    return (lc >= "a") and (lc <= "z")
 
 
 def html_inline(state: StateInline, silent: bool):
@@ -23,7 +32,7 @@ def html_inline(state: StateInline, silent: bool):
 
     # Quick fail on second char
     ch = state.src[pos + 1]
-    if ch != "!" and ch != "?" and ch != "/" and not isLetter(ord(ch)):
+    if ch != "!" and ch != "?" and ch != "/" and not isLetter(ch):
         return False
 
     match = HTML_TAG_RE.search(state.src[pos:])
