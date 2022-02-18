@@ -1,6 +1,6 @@
 """Tokenizes paragraph content.
 """
-from typing import List, Tuple
+from __future__ import annotations
 
 from .ruler import Ruler, RuleFunc
 from .token import Token
@@ -8,7 +8,7 @@ from .rules_inline.state_inline import StateInline
 from . import rules_inline
 
 # Parser rules
-_rules: List[Tuple[str, RuleFunc]] = [
+_rules: list[tuple[str, RuleFunc]] = [
     ("text", rules_inline.text),
     ("newline", rules_inline.newline),
     ("escape", rules_inline.escape),
@@ -22,7 +22,7 @@ _rules: List[Tuple[str, RuleFunc]] = [
     ("entity", rules_inline.entity),
 ]
 
-_rules2: List[Tuple[str, RuleFunc]] = [
+_rules2: list[tuple[str, RuleFunc]] = [
     ("balance_pairs", rules_inline.link_pairs),
     ("strikethrough", rules_inline.strikethrough.postProcess),
     ("emphasis", rules_inline.emphasis.postProcess),
@@ -114,7 +114,7 @@ class ParserInline:
         if state.pending:
             state.pushPending()
 
-    def parse(self, src: str, md, env, tokens: List[Token]) -> List[Token]:
+    def parse(self, src: str, md, env, tokens: list[Token]) -> list[Token]:
         """Process input string and push inline tokens into `tokens`"""
         state = StateInline(src, md, env, tokens)
         self.tokenize(state)

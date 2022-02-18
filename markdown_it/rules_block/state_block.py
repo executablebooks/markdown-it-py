@@ -1,4 +1,6 @@
-from typing import List, TYPE_CHECKING, Union
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 import warnings
 
 from ..token import Token
@@ -13,9 +15,9 @@ class StateBlock(StateBase):
     def __init__(
         self,
         src: str,
-        md: "MarkdownIt",
+        md: MarkdownIt,
         env,
-        tokens: List[Token],
+        tokens: list[Token],
     ):
         self.src = src
 
@@ -163,7 +165,7 @@ class StateBlock(StateBase):
                 return pos + 1
         return pos
 
-    def skipChars(self, pos: int, code: Union[int, str]) -> int:
+    def skipChars(self, pos: int, code: int | str) -> int:
         """Skip char codes from given position."""
         if isinstance(code, int):
             warnings.warn(
@@ -178,7 +180,7 @@ class StateBlock(StateBase):
             pos += 1
         return pos
 
-    def skipCharsBack(self, pos: int, code: Union[int, str], minimum: int) -> int:
+    def skipCharsBack(self, pos: int, code: int | str, minimum: int) -> int:
         """Skip char codes reverse from given position - 1."""
         if isinstance(code, int):
             warnings.warn(

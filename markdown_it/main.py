@@ -1,16 +1,8 @@
+from __future__ import annotations
+
 from contextlib import contextmanager
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    Generator,
-    Iterable,
-    List,
-    Mapping,
-    MutableMapping,
-    Optional,
-    Union,
-)
+from collections.abc import Callable, Generator, Iterable, Mapping, MutableMapping
+from typing import Any
 
 from . import helpers, presets  # noqa F401
 from .common import normalize_url, utils  # noqa F401
@@ -40,10 +32,10 @@ _PRESETS = {
 class MarkdownIt:
     def __init__(
         self,
-        config: Union[str, Mapping] = "commonmark",
-        options_update: Optional[Mapping] = None,
+        config: str | Mapping = "commonmark",
+        options_update: Mapping | None = None,
         *,
-        renderer_cls: Callable[["MarkdownIt"], RendererProtocol] = RendererHTML,
+        renderer_cls: Callable[[MarkdownIt], RendererProtocol] = RendererHTML,
     ):
         """Main parser class
 
@@ -94,8 +86,8 @@ class MarkdownIt:
         self.options = OptionsDict(options)
 
     def configure(
-        self, presets: Union[str, Mapping], options_update: Optional[Mapping] = None
-    ) -> "MarkdownIt":
+        self, presets: str | Mapping, options_update: Mapping | None = None
+    ) -> MarkdownIt:
         """Batch load of all options and component settings.
         This is an internal method, and you probably will not need it.
         But if you will - see available presets and data structure
@@ -131,7 +123,7 @@ class MarkdownIt:
 
         return self
 
-    def get_all_rules(self) -> Dict[str, List[str]]:
+    def get_all_rules(self) -> dict[str, list[str]]:
         """Return the names of all active rules."""
         rules = {
             chain: self[chain].ruler.get_all_rules()
@@ -140,7 +132,7 @@ class MarkdownIt:
         rules["inline2"] = self.inline.ruler2.get_all_rules()
         return rules
 
-    def get_active_rules(self) -> Dict[str, List[str]]:
+    def get_active_rules(self) -> dict[str, list[str]]:
         """Return the names of all active rules."""
         rules = {
             chain: self[chain].ruler.get_active_rules()
@@ -150,8 +142,8 @@ class MarkdownIt:
         return rules
 
     def enable(
-        self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False
-    ) -> "MarkdownIt":
+        self, names: str | Iterable[str], ignoreInvalid: bool = False
+    ) -> MarkdownIt:
         """Enable list or rules. (chainable)
 
         :param names: rule name or list of rule names to enable.
@@ -182,8 +174,8 @@ class MarkdownIt:
         return self
 
     def disable(
-        self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False
-    ) -> "MarkdownIt":
+        self, names: str | Iterable[str], ignoreInvalid: bool = False
+    ) -> MarkdownIt:
         """The same as [[MarkdownIt.enable]], but turn specified rules off. (chainable)
 
         :param names: rule name or list of rule names to disable.
@@ -222,7 +214,7 @@ class MarkdownIt:
         if self.renderer.__output__ == fmt:
             self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
 
-    def use(self, plugin: Callable, *params, **options) -> "MarkdownIt":
+    def use(self, plugin: Callable, *params, **options) -> MarkdownIt:
         """Load specified plugin with given params into current parser instance. (chainable)
 
         It's just a sugar to call `plugin(md, params)` with curring.
@@ -237,7 +229,7 @@ class MarkdownIt:
         plugin(self, *params, **options)
         return self
 
-    def parse(self, src: str, env: Optional[MutableMapping] = None) -> List[Token]:
+    def parse(self, src: str, env: MutableMapping | None = None) -> list[Token]:
         """Parse the source string to a token stream
 
         :param src: source string
@@ -260,7 +252,7 @@ class MarkdownIt:
         self.core.process(state)
         return state.tokens
 
-    def render(self, src: str, env: Optional[MutableMapping] = None) -> Any:
+    def render(self, src: str, env: MutableMapping | None = None) -> Any:
         """Render markdown string into html. It does all magic for you :).
 
         :param src: source string
@@ -274,9 +266,7 @@ class MarkdownIt:
         env = {} if env is None else env
         return self.renderer.render(self.parse(src, env), self.options, env)
 
-    def parseInline(
-        self, src: str, env: Optional[MutableMapping] = None
-    ) -> List[Token]:
+    def parseInline(self, src: str, env: MutableMapping | None = None) -> list[Token]:
         """The same as [[MarkdownIt.parse]] but skip all block rules.
 
         :param src: source string
@@ -296,7 +286,7 @@ class MarkdownIt:
         self.core.process(state)
         return state.tokens
 
-    def renderInline(self, src: str, env: Optional[MutableMapping] = None) -> Any:
+    def renderInline(self, src: str, env: MutableMapping | None = None) -> Any:
         """Similar to [[MarkdownIt.render]] but for single paragraph content.
 
         :param src: source string

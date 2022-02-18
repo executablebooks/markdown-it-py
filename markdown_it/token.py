@@ -1,14 +1,7 @@
-from typing import (
-    Any,
-    Callable,
-    Dict,
-    List,
-    MutableMapping,
-    Optional,
-    Tuple,
-    Type,
-    Union,
-)
+from __future__ import annotations
+
+from collections.abc import Callable, MutableMapping
+from typing import Any
 import warnings
 
 import attr
@@ -38,15 +31,13 @@ class Token:
     # - `-1` means the tag is closing
     nesting: int = attr.ib()
     # Html attributes. Note this differs from the upstream "list of lists" format
-    attrs: Dict[str, Union[str, int, float]] = attr.ib(
-        factory=dict, converter=convert_attrs
-    )
+    attrs: dict[str, str | int | float] = attr.ib(factory=dict, converter=convert_attrs)
     # Source map info. Format: `[ line_begin, line_end ]`
-    map: Optional[List[int]] = attr.ib(default=None)
+    map: list[int] | None = attr.ib(default=None)
     # nesting level, the same as `state.level`
     level: int = attr.ib(default=0)
     # An array of child nodes (inline and img tokens)
-    children: Optional[List["Token"]] = attr.ib(default=None)
+    children: list[Token] | None = attr.ib(default=None)
     # In a case of self-closing tag (code, html, fence, etc.),
     # it has contents of this tag.
     content: str = attr.ib(default="")
@@ -75,20 +66,20 @@ class Token:
             return -1
         return list(self.attrs.keys()).index(name)
 
-    def attrItems(self) -> List[Tuple[str, Union[str, int, float]]]:
+    def attrItems(self) -> list[tuple[str, str | int | float]]:
         """Get (key, value) list of attrs."""
         return list(self.attrs.items())
 
-    def attrPush(self, attrData: Tuple[str, Union[str, int, float]]) -> None:
+    def attrPush(self, attrData: tuple[str, str | int | float]) -> None:
         """Add `[ name, value ]` attribute to list. Init attrs if necessary."""
         name, value = attrData
         self.attrSet(name, value)
 
-    def attrSet(self, name: str, value: Union[str, int, float]) -> None:
+    def attrSet(self, name: str, value: str | int | float) -> None:
         """Set `name` attribute to `value`. Override old value if exists."""
         self.attrs[name] = value
 
-    def attrGet(self, name: str) -> Union[None, str, int, float]:
+    def attrGet(self, name: str) -> None | str | int | float:
         """Get the value of attribute `name`, or null if it does not exist."""
         return self.attrs.get(name, None)
 
@@ -107,7 +98,7 @@ class Token:
         else:
             self.attrs[name] = value
 
-    def copy(self) -> "Token":
+    def copy(self) -> Token:
         """Return a shallow copy of the instance."""
         return attr.evolve(self)
 
@@ -116,9 +107,9 @@ class Token:
         *,
         children: bool = True,
         as_upstream: bool = True,
-        meta_serializer: Optional[Callable[[dict], Any]] = None,
-        filter: Optional[Callable[[attr.Attribute, Any], bool]] = None,
-        dict_factory: Type[MutableMapping[str, Any]] = dict,
+        meta_serializer: Callable[[dict], Any] | None = None,
+        filter: Callable[[attr.Attribute, Any], bool] | None = None,
+        dict_factory: Callable[..., MutableMapping[str, Any]] = dict,
     ) -> MutableMapping[str, Any]:
         """Return the token as a dictionary.
 
@@ -136,7 +127,7 @@ class Token:
 
         """
         mapping = attr.asdict(
-            self, recurse=False, filter=filter, dict_factory=dict_factory
+            self, recurse=False, filter=filter, dict_factory=dict_factory  # type: ignore[arg-type]
         )
         if as_upstream and "attrs" in mapping:
             mapping["attrs"] = (
@@ -160,7 +151,7 @@ class Token:
         return mapping
 
     @classmethod
-    def from_dict(cls, dct: MutableMapping[str, Any]) -> "Token":
+    def from_dict(cls, dct: MutableMapping[str, Any]) -> Token:
         """Convert a dict to a Token."""
         token = cls(**dct)
         if token.children:
@@ -176,17 +167,17 @@ class NestedTokens:
 
     opening: Token = attr.ib()
     closing: Token = attr.ib()
-    children: List[Union[Token, "NestedTokens"]] = attr.ib(factory=list)
+    children: list[Token | NestedTokens] = attr.ib(factory=list)
 
     def __getattr__(self, name):
         return getattr(self.opening, name)
 
-    def attrGet(self, name: str) -> Union[None, str, int, float]:
+    def attrGet(self, name: str) -> None | str | int | float:
         """ Get the value of attribute `name`, or null if it does not exist."""
         return self.opening.attrGet(name)
 
 
-def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
+def nest_tokens(tokens: list[Token]) -> list[Token | NestedTokens]:
     """Convert the token stream to a list of tokens and nested tokens.
 
     ``NestedTokens`` contain the open and close tokens and a list of children
@@ -198,7 +189,7 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
         DeprecationWarning,
     )
 
-    output: List[Union[Token, NestedTokens]] = []
+    output: list[Token | NestedTokens] = []
 
     tokens = list(reversed(tokens))
     while tokens:
@@ -210,7 +201,7 @@ def nest_tokens(tokens: List[Token]) -> List[Union[Token, NestedTokens]]:
             if token.children:
                 # Ignore type checkers because `nest_tokens` doesn't respect
                 # typing of `Token.children`. We add `NestedTokens` into a
-                # `List[Token]` here.
+                # `list[Token]` here.
                 token.children = nest_tokens(token.children)  # type: ignore
             continue
 

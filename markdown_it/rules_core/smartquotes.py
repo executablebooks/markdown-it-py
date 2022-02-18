@@ -1,7 +1,9 @@
 """Convert straight quotation marks to typographic ones
 """
+from __future__ import annotations
+
 import re
-from typing import Any, Dict, List
+from typing import Any
 
 from .state_core import StateCore
 from ..common.utils import charCodeAt
@@ -21,8 +23,8 @@ def replaceAt(string: str, index: int, ch: str) -> str:
     return string[:index] + ch + string[index + 1 :]
 
 
-def process_inlines(tokens: List[Token], state: StateCore) -> None:
-    stack: List[Dict[str, Any]] = []
+def process_inlines(tokens: list[Token], state: StateCore) -> None:
+    stack: list[dict[str, Any]] = []
 
     for i in range(len(tokens)):
         token = tokens[i]

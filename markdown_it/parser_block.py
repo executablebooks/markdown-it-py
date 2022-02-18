@@ -1,6 +1,7 @@
 """Block-level tokenizer."""
+from __future__ import annotations
+
 import logging
-from typing import List, Optional, Tuple
 
 from .ruler import Ruler
 from .token import Token
@@ -10,7 +11,7 @@ from . import rules_block
 LOGGER = logging.getLogger(__name__)
 
 
-_rules: List[Tuple] = [
+_rules: list[tuple] = [
     # First 2 params - rule name & source. Secondary array - list of rules,
     # which can be terminated by this one.
     ("table", rules_block.table, ["paragraph", "reference"]),
@@ -92,7 +93,7 @@ class ParserBlock:
                 line += 1
                 state.line = line
 
-    def parse(self, src: str, md, env, outTokens: List[Token]) -> Optional[List[Token]]:
+    def parse(self, src: str, md, env, outTokens: list[Token]) -> list[Token] | None:
         """Process input string and push block tokens into `outTokens`."""
         if not src:
             return None
