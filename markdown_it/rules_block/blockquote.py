@@ -1,6 +1,7 @@
 # Block quotes
+from __future__ import annotations
+
 import logging
-from typing import Optional
 
 from .state_block import StateBlock
 from ..common.utils import isSpace
@@ -36,7 +37,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
     initial = offset = state.sCount[startLine] + 1
 
     try:
-        second_char_code: Optional[int] = state.srcCharCode[pos]
+        second_char_code: int | None = state.srcCharCode[pos]
     except IndexError:
         second_char_code = None
 
@@ -155,7 +156,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
             initial = offset = state.sCount[nextLine] + 1
 
             try:
-                next_char: Optional[int] = state.srcCharCode[pos]
+                next_char: int | None = state.srcCharCode[pos]
             except IndexError:
                 next_char = None
 

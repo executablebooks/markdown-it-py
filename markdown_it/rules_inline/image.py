@@ -1,6 +1,5 @@
 # Process ![image](<src> "title")
-
-from typing import List
+from __future__ import annotations
 
 from .state_inline import StateInline
 from ..token import Token
@@ -132,7 +131,7 @@ def image(state: StateInline, silent: bool):
     if not silent:
         content = state.src[labelStart:labelEnd]
 
-        tokens: List[Token] = []
+        tokens: list[Token] = []
         state.md.inline.parse(content, state.md, state.env, tokens)
 
         token = state.push("image", "img", 0)

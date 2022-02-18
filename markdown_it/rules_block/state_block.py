@@ -1,4 +1,6 @@
-from typing import List, Optional, Tuple, TYPE_CHECKING
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
 
 from ..token import Token
 from ..ruler import StateBase
@@ -12,10 +14,10 @@ class StateBlock(StateBase):
     def __init__(
         self,
         src: str,
-        md: "MarkdownIt",
+        md: MarkdownIt,
         env,
-        tokens: List[Token],
-        srcCharCode: Optional[Tuple[int, ...]] = None,
+        tokens: list[Token],
+        srcCharCode: tuple[int, ...] | None = None,
     ):
 
         if srcCharCode is not None:

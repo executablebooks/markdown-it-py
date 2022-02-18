@@ -4,9 +4,11 @@ CLI interface to markdown-it-py
 
 Parse one or more markdown files, convert each to HTML, and print to stdout.
 """
+from __future__ import annotations
+
 import argparse
+from collections.abc import Iterable, Sequence
 import sys
-from typing import Iterable, Optional, Sequence
 
 from markdown_it import __version__
 from markdown_it.main import MarkdownIt
@@ -15,7 +17,7 @@ from markdown_it.main import MarkdownIt
 version_str = "markdown-it-py [version {}]".format(__version__)
 
 
-def main(args: Optional[Sequence[str]] = None) -> int:
+def main(args: Sequence[str] | None = None) -> int:
     namespace = parse_args(args)
     if namespace.filenames:
         convert(namespace.filenames)
@@ -63,7 +65,7 @@ def interactive() -> None:
             break
 
 
-def parse_args(args: Optional[Sequence[str]]) -> argparse.Namespace:
+def parse_args(args: Sequence[str] | None) -> argparse.Namespace:
     """Parse input CLI arguments."""
     parser = argparse.ArgumentParser(
         description="Parse one or more markdown files, "

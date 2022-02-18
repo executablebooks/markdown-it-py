@@ -1,5 +1,6 @@
 # ~~strike through~~
-from typing import List
+from __future__ import annotations
+
 from .state_inline import StateInline, Delimiter
 
 
@@ -51,7 +52,7 @@ def tokenize(state: StateInline, silent: bool):
     return True
 
 
-def _postProcess(state: StateInline, delimiters: List[Delimiter]):
+def _postProcess(state: StateInline, delimiters: list[Delimiter]):
 
     loneMarkers = []
     maximum = len(delimiters)

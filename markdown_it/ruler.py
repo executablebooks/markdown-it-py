@@ -15,17 +15,10 @@ You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 [[MarkdownIt.use]].
 """
-from typing import (
-    Callable,
-    Dict,
-    Iterable,
-    List,
-    MutableMapping,
-    Optional,
-    Tuple,
-    TYPE_CHECKING,
-    Union,
-)
+from __future__ import annotations
+
+from collections.abc import Callable, Iterable, MutableMapping
+from typing import TYPE_CHECKING
 import attr
 
 if TYPE_CHECKING:
@@ -33,9 +26,9 @@ if TYPE_CHECKING:
 
 
 class StateBase:
-    srcCharCode: Tuple[int, ...]
+    srcCharCode: tuple[int, ...]
 
-    def __init__(self, src: str, md: "MarkdownIt", env: MutableMapping):
+    def __init__(self, src: str, md: MarkdownIt, env: MutableMapping):
         self.src = src
         self.env = env
         self.md = md
@@ -62,17 +55,17 @@ class Rule:
     name: str = attr.ib()
     enabled: bool = attr.ib()
     fn: RuleFunc = attr.ib(repr=False)
-    alt: List[str] = attr.ib()
+    alt: list[str] = attr.ib()
 
 
 class Ruler:
     def __init__(self):
         # List of added rules.
-        self.__rules__: List[Rule] = []
+        self.__rules__: list[Rule] = []
         # Cached rule chains.
         # First level - chain name, '' for default.
         # Second level - diginal anchor for fast filtering by charcodes.
-        self.__cache__: Optional[Dict[str, List[RuleFunc]]] = None
+        self.__cache__: dict[str, list[RuleFunc]] | None = None
 
     def __find__(self, name: str) -> int:
         """Find rule index by name"""
@@ -161,7 +154,7 @@ class Ruler:
         self.__rules__.append(Rule(ruleName, True, fn, (options or {}).get("alt", [])))
         self.__cache__ = None
 
-    def enable(self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False):
+    def enable(self, names: str | Iterable[str], ignoreInvalid: bool = False):
         """Enable rules with given names.
 
         :param names: name or list of rule names to enable.
@@ -183,7 +176,7 @@ class Ruler:
         self.__cache__ = None
         return result
 
-    def enableOnly(self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False):
+    def enableOnly(self, names: str | Iterable[str], ignoreInvalid: bool = False):
         """Enable rules with given names, and disable everything else.
 
         :param names: name or list of rule names to enable.
@@ -197,7 +190,7 @@ class Ruler:
             rule.enabled = False
         self.enable(names, ignoreInvalid)
 
-    def disable(self, names: Union[str, Iterable[str]], ignoreInvalid: bool = False):
+    def disable(self, names: str | Iterable[str], ignoreInvalid: bool = False):
         """Disable rules with given names.
 
         :param names: name or list of rule names to enable.
@@ -219,7 +212,7 @@ class Ruler:
         self.__cache__ = None
         return result
 
-    def getRules(self, chainName: str) -> List[RuleFunc]:
+    def getRules(self, chainName: str) -> list[RuleFunc]:
         """Return array of active functions (rules) for given chain name.
         It analyzes rules configuration, compiles caches if not exists and returns result.
 
@@ -233,10 +226,10 @@ class Ruler:
         # Chain can be empty, if rules disabled. But we still have to return Array.
         return self.__cache__.get(chainName, []) or []
 
-    def get_all_rules(self) -> List[str]:
+    def get_all_rules(self) -> list[str]:
         """Return all available rule names."""
         return [r.name for r in self.__rules__]
 
-    def get_active_rules(self) -> List[str]:
+    def get_active_rules(self) -> list[str]:
         """Return the active rule names."""
         return [r.name for r in self.__rules__ if r.enabled]

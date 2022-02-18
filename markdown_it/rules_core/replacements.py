@@ -14,9 +14,10 @@
 * ``--`` → &ndash
 * ``---`` → &mdash
 """
+from __future__ import annotations
+
 import logging
 import re
-from typing import List, Match
 
 from .state_core import StateCore
 from ..token import Token
@@ -55,11 +56,11 @@ EN_DASH_INDENT_RE = re.compile(r"(^|[^-\s])--(?=[^-\s]|$)", flags=re.MULTILINE)
 SCOPED_ABBR = {"c": "©", "r": "®", "p": "§", "tm": "™"}
 
 
-def replaceFn(match: Match[str]):
+def replaceFn(match: re.Match[str]):
     return SCOPED_ABBR[match.group(1).lower()]
 
 
-def replace_scoped(inlineTokens: List[Token]) -> None:
+def replace_scoped(inlineTokens: list[Token]) -> None:
     inside_autolink = 0
 
     for token in inlineTokens:
@@ -73,7 +74,7 @@ def replace_scoped(inlineTokens: List[Token]) -> None:
             inside_autolink += 1
 
 
-def replace_rare(inlineTokens: List[Token]) -> None:
+def replace_rare(inlineTokens: list[Token]) -> None:
     inside_autolink = 0
 
     for token in inlineTokens:
