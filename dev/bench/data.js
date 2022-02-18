@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1644134931790,
+  "lastUpdate": 1645208478841,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -19809,6 +19809,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.017517",
             "group": "packages",
             "extra": "mean: 989.56 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.12"
+        },
+        "commit": {
+          "id": "32097fb8cf95b7e84ad4348aefe79a4743b225ff",
+          "message": "⬆️ UPGRADE: Drop support for EOL Python 3.6 (#194)",
+          "timestamp": "2022-02-18T19:18:49+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/32097fb8cf95b7e84ad4348aefe79a4743b225ff",
+          "distinct": true,
+          "tree_id": "409eb0ad368be53e762273fba04607c71b7c718f"
+        },
+        "date": 1645208477793,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.581714967720359,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0081786",
+            "group": "packages",
+            "extra": "mean: 279.20 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 7.9369584502380395,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013497",
+            "group": "packages",
+            "extra": "mean: 125.99 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.4437726228977916,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017215",
+            "group": "packages",
+            "extra": "mean: 692.63 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.8007724839812838,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015596",
+            "group": "packages",
+            "extra": "mean: 555.32 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.9753585672003279,
+            "unit": "iter/sec",
+            "range": "stddev: 0.020517",
+            "group": "packages",
+            "extra": "mean: 1.0253 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 5.10289600702341,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013822",
+            "group": "packages",
+            "extra": "mean: 195.97 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 0.9315063884031626,
+            "unit": "iter/sec",
+            "range": "stddev: 0.027477",
+            "group": "packages",
+            "extra": "mean: 1.0735 sec\nrounds: 20"
           }
         ]
       }
