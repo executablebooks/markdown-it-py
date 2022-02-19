@@ -1,4 +1,4 @@
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -17,7 +17,7 @@
   nesting: 0
   tag: ''
   type: definition
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -32,7 +32,7 @@
   nesting: 1
   tag: ul
   type: bullet_list_open
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -47,7 +47,7 @@
   nesting: 1
   tag: li
   type: list_item_open
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -66,7 +66,7 @@
   nesting: 0
   tag: ''
   type: definition
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -79,7 +79,7 @@
   nesting: -1
   tag: li
   type: list_item_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''

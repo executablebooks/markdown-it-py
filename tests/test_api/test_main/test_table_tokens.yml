@@ -1,4 +1,4 @@
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -13,7 +13,7 @@
   nesting: 1
   tag: table
   type: table_open
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -28,7 +28,7 @@
   nesting: 1
   tag: thead
   type: thead_open
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -43,7 +43,7 @@
   nesting: 1
   tag: tr
   type: tr_open
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -56,10 +56,10 @@
   nesting: 1
   tag: th
   type: th_open
-- attrs: null
+- attrs: {}
   block: true
   children:
-  - attrs: null
+  - attrs: {}
     block: false
     children: null
     content: Heading 1
@@ -84,7 +84,7 @@
   nesting: 0
   tag: ''
   type: inline
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -97,7 +97,7 @@
   nesting: -1
   tag: th
   type: th_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -110,10 +110,10 @@
   nesting: 1
   tag: th
   type: th_open
-- attrs: null
+- attrs: {}
   block: true
   children:
-  - attrs: null
+  - attrs: {}
     block: false
     children: null
     content: Heading 2
@@ -138,7 +138,7 @@
   nesting: 0
   tag: ''
   type: inline
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -151,7 +151,7 @@
   nesting: -1
   tag: th
   type: th_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -164,7 +164,7 @@
   nesting: -1
   tag: tr
   type: tr_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -177,7 +177,7 @@
   nesting: -1
   tag: thead
   type: thead_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -192,7 +192,7 @@
   nesting: 1
   tag: tbody
   type: tbody_open
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -207,7 +207,7 @@
   nesting: 1
   tag: tr
   type: tr_open
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -220,10 +220,10 @@
   nesting: 1
   tag: td
   type: td_open
-- attrs: null
+- attrs: {}
   block: true
   children:
-  - attrs: null
+  - attrs: {}
     block: false
     children: null
     content: Cell 1
@@ -248,7 +248,7 @@
   nesting: 0
   tag: ''
   type: inline
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -261,7 +261,7 @@
   nesting: -1
   tag: td
   type: td_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -274,10 +274,10 @@
   nesting: 1
   tag: td
   type: td_open
-- attrs: null
+- attrs: {}
   block: true
   children:
-  - attrs: null
+  - attrs: {}
     block: false
     children: null
     content: Cell 2
@@ -302,7 +302,7 @@
   nesting: 0
   tag: ''
   type: inline
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -315,7 +315,7 @@
   nesting: -1
   tag: td
   type: td_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -328,7 +328,7 @@
   nesting: -1
   tag: tr
   type: tr_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -343,7 +343,7 @@
   nesting: 1
   tag: tr
   type: tr_open
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -356,10 +356,10 @@
   nesting: 1
   tag: td
   type: td_open
-- attrs: null
+- attrs: {}
   block: true
   children:
-  - attrs: null
+  - attrs: {}
     block: false
     children: null
     content: Cell 3
@@ -384,7 +384,7 @@
   nesting: 0
   tag: ''
   type: inline
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -397,7 +397,7 @@
   nesting: -1
   tag: td
   type: td_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -410,10 +410,10 @@
   nesting: 1
   tag: td
   type: td_open
-- attrs: null
+- attrs: {}
   block: true
   children:
-  - attrs: null
+  - attrs: {}
     block: false
     children: null
     content: Cell 4
@@ -438,7 +438,7 @@
   nesting: 0
   tag: ''
   type: inline
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -451,7 +451,7 @@
   nesting: -1
   tag: td
   type: td_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -464,7 +464,7 @@
   nesting: -1
   tag: tr
   type: tr_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -477,7 +477,7 @@
   nesting: -1
   tag: tbody
   type: tbody_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''

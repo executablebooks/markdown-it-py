@@ -1,4 +1,4 @@
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -13,12 +13,11 @@
   nesting: 1
   tag: p
   type: paragraph_open
-- attrs: null
+- attrs: {}
   block: true
   children:
   - attrs:
-    - - href
-      - ijk
+      href: ijk
     block: false
     children: null
     content: ''
@@ -32,7 +31,7 @@
     nesting: 1
     tag: a
     type: link_open
-  - attrs: null
+  - attrs: {}
     block: false
     children: null
     content: a
@@ -45,7 +44,7 @@
     nesting: 0
     tag: ''
     type: text
-  - attrs: null
+  - attrs: {}
     block: false
     children: null
     content: ''
@@ -70,7 +69,7 @@
   nesting: 0
   tag: ''
   type: inline
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -83,7 +82,7 @@
   nesting: -1
   tag: p
   type: paragraph_close
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
@@ -98,17 +97,15 @@
   nesting: 1
   tag: p
   type: paragraph_open
-- attrs: null
+- attrs: {}
   block: true
   children:
   - attrs:
-    - - src
-      - ijk
-    - - alt
-      - ''
+      alt: ''
+      src: ijk
     block: false
     children:
-    - attrs: null
+    - attrs: {}
       block: false
       children: null
       content: a
@@ -144,7 +141,7 @@
   nesting: 0
   tag: ''
   type: inline
-- attrs: null
+- attrs: {}
   block: true
   children: null
   content: ''
