@@ -9,7 +9,7 @@ def test_token():
         "type": "name",
         "tag": "tag",
         "nesting": 0,
-        "attrs": None,
+        "attrs": {},
         "map": None,
         "level": 0,
         "children": None,

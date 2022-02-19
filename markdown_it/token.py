@@ -1,10 +1,13 @@
 from __future__ import annotations
 
 from collections.abc import Callable, MutableMapping
+import copy
+import dataclasses
+from dataclasses import dataclass, field
 from typing import Any
 import warnings
 
-import attr
+from markdown_it._compat import dataclass_kwargs
 
 
 def convert_attrs(value: Any) -> Any:
@@ -19,43 +22,46 @@ def convert_attrs(value: Any) -> Any:
     return value
 
 
-@attr.s(slots=True)
+@dataclass(**dataclass_kwargs)
 class Token:
     # Type of the token (string, e.g. "paragraph_open")
-    type: str = attr.ib()
+    type: str
     # html tag name, e.g. "p"
-    tag: str = attr.ib()
+    tag: str
     # Level change (number in {-1, 0, 1} set), where:
     # -  `1` means the tag is opening
     # -  `0` means the tag is self-closing
     # - `-1` means the tag is closing
-    nesting: int = attr.ib()
+    nesting: int
     # Html attributes. Note this differs from the upstream "list of lists" format
-    attrs: dict[str, str | int | float] = attr.ib(factory=dict, converter=convert_attrs)
+    attrs: dict[str, str | int | float] = field(default_factory=dict)
     # Source map info. Format: `[ line_begin, line_end ]`
-    map: list[int] | None = attr.ib(default=None)
+    map: list[int] | None = None
     # nesting level, the same as `state.level`
-    level: int = attr.ib(default=0)
+    level: int = 0
     # An array of child nodes (inline and img tokens)
-    children: list[Token] | None = attr.ib(default=None)
+    children: list[Token] | None = None
     # In a case of self-closing tag (code, html, fence, etc.),
     # it has contents of this tag.
-    content: str = attr.ib(default="")
+    content: str = ""
     # '*' or '_' for emphasis, fence string for fence, etc.
-    markup: str = attr.ib(default="")
+    markup: str = ""
     # Additional information:
     #   - Info string for "fence" tokens
     #   - The value "auto" for autolink "link_open" and "link_close" tokens
     #   - The string value of the item marker for ordered-list "list_item_open" tokens
-    info: str = attr.ib(default="")
+    info: str = ""
     # A place for plugins to store any arbitrary data
-    meta: dict = attr.ib(factory=dict)
+    meta: dict = field(default_factory=dict)
     # True for block-level tokens, false for inline tokens.
     # Used in renderer to calculate line breaks
-    block: bool = attr.ib(default=False)
+    block: bool = False
     # If it's true, ignore this element when rendering.
     # Used for tight lists to hide paragraphs.
-    hidden: bool = attr.ib(default=False)
+    hidden: bool = False
+
+    def __post_init__(self):
+        self.attrs = convert_attrs(self.attrs)
 
     def attrIndex(self, name: str) -> int:
         warnings.warn(
@@ -100,55 +106,13 @@ class Token:
 
     def copy(self) -> Token:
         """Return a shallow copy of the instance."""
-        return attr.evolve(self)
+        return copy.copy(self)
 
     def as_dict(
-        self,
-        *,
-        children: bool = True,
-        as_upstream: bool = True,
-        meta_serializer: Callable[[dict], Any] | None = None,
-        filter: Callable[[attr.Attribute, Any], bool] | None = None,
-        dict_factory: Callable[..., MutableMapping[str, Any]] = dict,
+        self, *, dict_factory: Callable[..., MutableMapping[str, Any]] = dict
     ) -> MutableMapping[str, Any]:
-        """Return the token as a dictionary.
-
-        :param children: Also convert children to dicts
-        :param as_upstream: Ensure the output dictionary is equal to that created by markdown-it
-            For example, attrs are converted to null or lists
-        :param meta_serializer: hook for serializing ``Token.meta``
-        :param filter: A callable whose return code determines whether an
-            attribute or element is included (``True``) or dropped (``False``).
-            Is called with the `attr.Attribute` as the first argument and the
-            value as the second argument.
-        :param dict_factory: A callable to produce dictionaries from.
-            For example, to produce ordered dictionaries instead of normal Python
-            dictionaries, pass in ``collections.OrderedDict``.
-
-        """
-        mapping = attr.asdict(
-            self, recurse=False, filter=filter, dict_factory=dict_factory  # type: ignore[arg-type]
-        )
-        if as_upstream and "attrs" in mapping:
-            mapping["attrs"] = (
-                None
-                if not mapping["attrs"]
-                else [[k, v] for k, v in mapping["attrs"].items()]
-            )
-        if meta_serializer and "meta" in mapping:
-            mapping["meta"] = meta_serializer(mapping["meta"])
-        if children and mapping.get("children", None):
-            mapping["children"] = [
-                child.as_dict(
-                    children=children,
-                    filter=filter,
-                    dict_factory=dict_factory,
-                    as_upstream=as_upstream,
-                    meta_serializer=meta_serializer,
-                )
-                for child in mapping["children"]
-            ]
-        return mapping
+        """Return the token as a dictionary."""
+        return dataclasses.asdict(self, dict_factory=dict_factory)
 
     @classmethod
     def from_dict(cls, dct: MutableMapping[str, Any]) -> Token:
@@ -159,15 +123,15 @@ class Token:
         return token
 
 
-@attr.s(slots=True)
+@dataclass(**dataclass_kwargs)
 class NestedTokens:
     """A class that closely resembles a Token,
     but for a an opening/closing Token pair, and their containing children.
     """
 
-    opening: Token = attr.ib()
-    closing: Token = attr.ib()
-    children: list[Token | NestedTokens] = attr.ib(factory=list)
+    opening: Token
+    closing: Token
+    children: list[Token | NestedTokens] = field(default_factory=list)
 
     def __getattr__(self, name):
         return getattr(self.opening, name)

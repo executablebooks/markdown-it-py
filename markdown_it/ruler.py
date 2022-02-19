@@ -18,8 +18,10 @@ rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 from __future__ import annotations
 
 from collections.abc import Callable, Iterable, MutableMapping
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
-import attr
+
+from markdown_it._compat import dataclass_kwargs
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
@@ -50,12 +52,12 @@ class StateBase:
 RuleFunc = Callable
 
 
-@attr.s(slots=True)
+@dataclass(**dataclass_kwargs)
 class Rule:
-    name: str = attr.ib()
-    enabled: bool = attr.ib()
-    fn: RuleFunc = attr.ib(repr=False)
-    alt: list[str] = attr.ib()
+    name: str
+    enabled: bool
+    fn: RuleFunc = field(repr=False)
+    alt: list[str]
 
 
 class Ruler:
@@ -105,7 +107,7 @@ class Ruler:
         options = options or {}
         if index == -1:
             raise KeyError(f"Parser rule not found: {ruleName}")
-        self.__rules__[index].fn = fn
+        self.__rules__[index].fn = fn  # type: ignore[assignment]
         self.__rules__[index].alt = options.get("alt", [])
         self.__cache__ = None
 
