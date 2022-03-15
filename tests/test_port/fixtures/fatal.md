@@ -1,4 +1,4 @@
-Should not throw exception on invalid chars in URL (`*` not allowed in path) [mailformed URI]
+Should not throw exception on invalid chars in URL (`*` not allowed in path) [malformed URI]
 .
 [foo](<&#x25;test>)
 .
@@ -6,7 +6,7 @@ Should not throw exception on invalid chars in URL (`*` not allowed in path) [ma
 .
 
 
-Should not throw exception on broken utf-8 sequence in URL [mailformed URI]
+Should not throw exception on broken utf-8 sequence in URL [malformed URI]
 .
 [foo](%C3)
 .
@@ -14,7 +14,7 @@ Should not throw exception on broken utf-8 sequence in URL [mailformed URI]
 .
 
 
-Should not throw exception on broken utf-16 surrogates sequence in URL [mailformed URI]
+Should not throw exception on broken utf-16 surrogates sequence in URL [malformed URI]
 .
 [foo](&#xD800;)
 .

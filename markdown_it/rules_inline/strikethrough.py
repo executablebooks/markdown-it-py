@@ -94,7 +94,7 @@ def _postProcess(state: StateInline, delimiters: list[Delimiter]):
 
         i += 1
 
-    # If a marker sequence has an odd number of characters, it's splitted
+    # If a marker sequence has an odd number of characters, it's split
     # like this: `~~~~~` -> `~` + `~~` + `~~`, leaving one marker at the
     # start of the sequence.
     #
