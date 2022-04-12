@@ -9,7 +9,7 @@ Helper class, used by [[MarkdownIt#core]], [[MarkdownIt#block]] and
 - enable/disable rules
 - add/replace rules
 - allow assign rules to additional named chains (in the same)
-- cacheing lists of active rules
+- caching lists of active rules
 
 You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and

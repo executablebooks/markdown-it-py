@@ -5,7 +5,7 @@ from .state_inline import StateInline
 
 
 # Rule to skip pure text
-# '{}$%@~+=:' reserved for extentions
+# '{}$%@~+=:' reserved for extensions
 
 # !, ", #, $, %, &, ', (, ), *, +, ,, -, ., /, :, ;, <, =, >, ?, @, [, \, ], ^, _, `, {, |, }, or ~
 
