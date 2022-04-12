@@ -663,3 +663,13 @@ Issue #772. Header rule should not interfere with html tags.
 ==
 </pre>
 .
+
+Issue #205.  Space in link destination generates IndexError
+.
+[Contact](http:// mail.com)
+
+[Contact](mailto: mail@mail.com)
+.
+<p>[Contact](http:// mail.com)</p>
+<p>[Contact](mailto: mail@mail.com)</p>
+.
