@@ -673,3 +673,24 @@ Issue #205.  Space in link destination generates IndexError
 <p>[Contact](http:// mail.com)</p>
 <p>[Contact](mailto: mail@mail.com)</p>
 .
+
+Issue #204. Combination of blockquotes, list and newlines causes an IndexError
+.
+> QUOTE
++ UNORDERED LIST ITEM
+  > INDENTED QUOTE
+
+
+
+.
+<blockquote>
+<p>QUOTE</p>
+</blockquote>
+<ul>
+<li>UNORDERED LIST ITEM
+<blockquote>
+<p>INDENTED QUOTE</p>
+</blockquote>
+</li>
+</ul>
+.

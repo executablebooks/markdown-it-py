@@ -296,6 +296,4 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
 
     state.blkIndent = oldIndent
 
-    state.lineMax += 1
-
     return True
