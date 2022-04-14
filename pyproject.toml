@@ -1,6 +1,96 @@
 [build-system]
-requires = ["setuptools>=46.4.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["flit_core >=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "markdown-it-py"
+dynamic = ["version"]
+description = "Python port of markdown-it. Markdown parsing, done right!"
+readme = "README.md"
+authors = [{name = "Chris Sewell", email = "chrisj_sewell@hotmail.com"}]
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: Markup",
+]
+keywords = ["markdown lexer parser development"]
+requires-python = ">=3.7"
+dependencies = [
+    "attrs>=19,<22",
+    "mdurl~=0.1",
+    "typing_extensions>=3.7.4;python_version<'3.8'",
+]
+
+[project.urls]
+Homepage = "https://github.com/executablebooks/markdown-it-py"
+Documentation = "https://markdown-it-py.readthedocs.io"
+
+[project.optional-dependencies]
+code_style = ["pre-commit==2.6"]
+compare = [
+    "commonmark~=0.9.1",
+    "markdown~=3.3.6",
+    "mistletoe~=0.8.1",
+    "mistune~=2.0.2",
+    "panflute~=2.1.3",
+]
+linkify = ["linkify-it-py~=1.0"]
+plugins = ["mdit-py-plugins"]
+rtd = [
+    "myst-nb==0.13.0a1",
+    "pyyaml",
+    "sphinx>=2,<4",
+    "sphinx-copybutton",
+    "sphinx-panels~=0.4.0",
+    "sphinx_book_theme",
+]
+testing = [
+    "coverage",
+    "pytest",
+    "pytest-cov",
+    "pytest-regressions",
+]
+benchmarking = [
+    "psutil",
+    "pytest",
+    "pytest-benchmark~=3.2",
+]
+profiling = ["gprof2dot"]
+
+[project.scripts]
+markdown-it = "markdown_it.cli.parse:main"
+
+[tool.flit.module]
+name = "markdown_it"
+
+[tool.flit.sdist]
+exclude = [
+    "docs/",
+    "tests/",
+    "benchmarking/"
+]
+
+[tool.mypy]
+show_error_codes = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+strict_equality = true
+implicit_reexport = false
+
+[[tool.mypy.overrides]]
+module = ["tests.test_plugins.*"]
+ignore_errors = true
 
 [tool.pytest.ini_options]
 xfail_strict = true

@@ -23,20 +23,6 @@ repos:
     - id: end-of-file-fixer
     - id: trailing-whitespace
 
-  - repo: https://github.com/mgedmin/check-manifest
-    rev: "0.46"
-    hooks:
-    - id: check-manifest
-      args: [--no-build-isolation]
-      additional_dependencies: [setuptools>=46.4.0]
-
-  # this is not used for now,
-  # since it converts markdown-it-py to markdown_it_py and removes comments
-  # - repo: https://github.com/asottile/setup-cfg-fmt
-  #   rev: v1.17.0
-  #   hooks:
-  #   - id: setup-cfg-fmt
-
   - repo: https://github.com/psf/black
     rev: 20.8b1
     hooks:

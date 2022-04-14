@@ -7,7 +7,7 @@ on:
   push:
     branches: [master]
     tags:
-      - 'v*'
+      - "v[0-9]+.[0-9]+.[0-9]+*"
   pull_request:
   schedule:
     - cron: '0 0 * * 0'  # every week
@@ -113,19 +113,19 @@ jobs:
     steps:
     - name: Checkout source
       uses: actions/checkout@v2
-    - name: Set up Python 3.7
+    - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
-        python-version: '3.7'
-    - name: Build package
+        python-version: '3.8'
+    - name: install flit
       run: |
-        pip install build
-        python -m build
-    - name: Publish
-      uses: pypa/gh-action-pypi-publish@v1.1.0
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_KEY }}
+        pip install flit~=3.4
+    - name: Build and publish
+      run: |
+        flit publish
+      env:
+        FLIT_USERNAME: __token__
+        FLIT_PASSWORD: ${{ secrets.PYPI_KEY }}
 
   allgood:
     runs-on: ubuntu-latest
