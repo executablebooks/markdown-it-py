@@ -1,8 +1,8 @@
 # Proceess '\n'
 import re
 
-from .state_inline import StateInline
 from ..common.utils import charCodeAt, isSpace
+from .state_inline import StateInline
 
 endSpace = re.compile(r" +$")
 

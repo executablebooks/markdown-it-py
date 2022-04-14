@@ -6,10 +6,9 @@
 """
 from __future__ import annotations
 
-from .ruler import Ruler, RuleFunc
+from .ruler import RuleFunc, Ruler
+from .rules_core import block, inline, linkify, normalize, replace, smartquotes
 from .rules_core.state_core import StateCore
-from .rules_core import normalize, block, inline, replace, smartquotes, linkify
-
 
 _rules: list[tuple[str, RuleFunc]] = [
     ("normalize", normalize),

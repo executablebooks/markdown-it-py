@@ -1,17 +1,17 @@
 from __future__ import annotations
 
-from contextlib import contextmanager
 from collections.abc import Callable, Generator, Iterable, Mapping, MutableMapping
+from contextlib import contextmanager
 from typing import Any
 
 from . import helpers, presets  # noqa F401
 from .common import normalize_url, utils  # noqa F401
-from .token import Token
-from .parser_core import ParserCore  # noqa F401
 from .parser_block import ParserBlock  # noqa F401
+from .parser_core import ParserCore  # noqa F401
 from .parser_inline import ParserInline  # noqa F401
-from .rules_core.state_core import StateCore
 from .renderer import RendererHTML, RendererProtocol
+from .rules_core.state_core import StateCore
+from .token import Token
 from .utils import OptionsDict
 
 try:

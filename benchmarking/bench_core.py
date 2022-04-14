@@ -1,4 +1,5 @@
 from pathlib import Path
+
 import pytest
 
 import markdown_it

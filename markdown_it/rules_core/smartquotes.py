@@ -5,11 +5,9 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from .state_core import StateCore
-from ..common.utils import charCodeAt
-from ..common.utils import isWhiteSpace, isPunctChar, isMdAsciiPunct
+from ..common.utils import charCodeAt, isMdAsciiPunct, isPunctChar, isWhiteSpace
 from ..token import Token
-
+from .state_core import StateCore
 
 QUOTE_TEST_RE = re.compile(r"['\"]")
 QUOTE_RE = re.compile(r"['\"]")

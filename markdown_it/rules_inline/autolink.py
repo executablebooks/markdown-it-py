@@ -1,5 +1,6 @@
 # Process autolinks '<protocol:...>'
 import re
+
 from .state_inline import StateInline
 
 EMAIL_RE = re.compile(

@@ -4,9 +4,9 @@ from __future__ import annotations
 import logging
 import re
 
-from .state_block import StateBlock
 from ..common.html_blocks import block_names
 from ..common.html_re import HTML_OPEN_CLOSE_TAG_STR
+from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
 

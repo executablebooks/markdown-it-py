@@ -6,9 +6,9 @@ from typing import TYPE_CHECKING
 
 import attr
 
-from ..token import Token
+from ..common.utils import isMdAsciiPunct, isPunctChar, isWhiteSpace
 from ..ruler import StateBase
-from ..common.utils import isWhiteSpace, isPunctChar, isMdAsciiPunct
+from ..token import Token
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt

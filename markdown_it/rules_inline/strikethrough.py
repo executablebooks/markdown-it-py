@@ -1,7 +1,7 @@
 # ~~strike through~~
 from __future__ import annotations
 
-from .state_inline import StateInline, Delimiter
+from .state_inline import Delimiter, StateInline
 
 
 def tokenize(state: StateInline, silent: bool):

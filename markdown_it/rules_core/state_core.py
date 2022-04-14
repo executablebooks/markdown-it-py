@@ -3,8 +3,8 @@ from __future__ import annotations
 from collections.abc import MutableMapping
 from typing import TYPE_CHECKING
 
-from ..token import Token
 from ..ruler import StateBase
+from ..token import Token
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
