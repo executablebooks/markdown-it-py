@@ -147,7 +147,7 @@ class StateBlock(StateBase):
                 ]:
                     break
             except IndexError:
-                break
+                pass
             from_pos += 1
         return from_pos
 
