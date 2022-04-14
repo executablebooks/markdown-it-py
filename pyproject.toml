@@ -23,7 +23,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Text Processing :: Markup",
 ]
-keywords = ["markdown lexer parser development"]
+keywords = ["markdown", "lexer", "parser", "commonmark", "markdown-it"]
 requires-python = ">=3.7"
 dependencies = [
     "attrs>=19,<22",
@@ -93,7 +93,7 @@ module = ["tests.test_plugins.*", "markdown.*"]
 ignore_errors = true
 
 [[tool.mypy.overrides]]
-module = [ "markdown.*"]
+module = ["markdown.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
