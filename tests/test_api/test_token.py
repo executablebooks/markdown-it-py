@@ -1,6 +1,6 @@
 import warnings
 
-from markdown_it.token import Token, nest_tokens, NestedTokens
+from markdown_it.token import NestedTokens, Token, nest_tokens
 
 
 def test_token():

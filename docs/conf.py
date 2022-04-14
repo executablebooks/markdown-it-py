@@ -92,6 +92,7 @@ def run_apidoc(app):
     """
     import os
     import shutil
+
     import sphinx
     from sphinx.ext import apidoc
 

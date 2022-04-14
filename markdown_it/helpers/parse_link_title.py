@@ -1,6 +1,6 @@
 """Parse link title
 """
-from ..common.utils import unescapeAll, charCodeAt
+from ..common.utils import charCodeAt, unescapeAll
 
 
 class _Result:

@@ -19,8 +19,8 @@ from __future__ import annotations
 import logging
 import re
 
-from .state_core import StateCore
 from ..token import Token
+from .state_core import StateCore
 
 LOGGER = logging.getLogger(__name__)
 
