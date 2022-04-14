@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from collections import namedtuple
 from collections.abc import MutableMapping
+from dataclasses import dataclass
 from typing import TYPE_CHECKING
-
-import attr
 
 from ..common.utils import isMdAsciiPunct, isPunctChar, isWhiteSpace
 from ..ruler import StateBase
@@ -14,13 +13,13 @@ if TYPE_CHECKING:
     from markdown_it import MarkdownIt
 
 
-@attr.s(slots=True)
+@dataclass()
 class Delimiter:
     # Char code of the starting marker (number).
-    marker: int = attr.ib()
+    marker: int
 
     # Total length of these series of delimiters.
-    length: int = attr.ib()
+    length: int
 
     # An amount of characters before this one that's equivalent to
     # current one. In plain English: if this delimiter does not open
@@ -28,21 +27,21 @@ class Delimiter:
     #
     # Used to skip sequences like "*****" in one step, for 1st asterisk
     # value will be 0, for 2nd it's 1 and so on.
-    jump: int = attr.ib()
+    jump: int
 
     # A position of the token this delimiter corresponds to.
-    token: int = attr.ib()
+    token: int
 
     # If this delimiter is matched as a valid opener, `end` will be
     # equal to its position, otherwise it's `-1`.
-    end: int = attr.ib()
+    end: int
 
     # Boolean flags that determine if this delimiter could open or close
     # an emphasis.
-    open: bool = attr.ib()
-    close: bool = attr.ib()
+    open: bool
+    close: bool
 
-    level: bool = attr.ib(default=None)
+    level: bool | None = None
 
 
 Scanned = namedtuple("Scanned", ["can_open", "can_close", "length"])
