@@ -47,11 +47,11 @@ compare = [
 linkify = ["linkify-it-py~=1.0"]
 plugins = ["mdit-py-plugins"]
 rtd = [
-    "myst-nb==0.13.0a1",
+    "myst-parser",
     "pyyaml",
-    "sphinx>=2,<4",
+    "sphinx",
     "sphinx-copybutton",
-    "sphinx-panels~=0.4.0",
+    "sphinx-design",
     "sphinx_book_theme",
 ]
 testing = [
