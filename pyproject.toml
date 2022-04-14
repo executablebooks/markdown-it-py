@@ -89,8 +89,12 @@ strict_equality = true
 implicit_reexport = false
 
 [[tool.mypy.overrides]]
-module = ["tests.test_plugins.*"]
+module = ["tests.test_plugins.*", "markdown.*"]
 ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = [ "markdown.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 xfail_strict = true

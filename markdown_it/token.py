@@ -173,7 +173,7 @@ class NestedTokens:
         return getattr(self.opening, name)
 
     def attrGet(self, name: str) -> None | str | int | float:
-        """ Get the value of attribute `name`, or null if it does not exist."""
+        """Get the value of attribute `name`, or null if it does not exist."""
         return self.opening.attrGet(name)
 
 
