@@ -7,7 +7,6 @@ import logging
 from ..common.utils import isSpace
 from .state_block import StateBlock
 
-
 LOGGER = logging.getLogger(__name__)
 
 

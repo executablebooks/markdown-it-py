@@ -13,7 +13,6 @@ import sys
 from markdown_it import __version__
 from markdown_it.main import MarkdownIt
 
-
 version_str = "markdown-it-py [version {}]".format(__version__)
 
 

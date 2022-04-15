@@ -1,6 +1,6 @@
 import warnings
 
-from markdown_it.token import Token, nest_tokens, NestedTokens
+from markdown_it.token import Token
 
 
 def test_token():
@@ -36,33 +36,3 @@ def test_token():
 def test_serialization():
     token = Token("name", "tag", 0, children=[Token("other", "tag2", 0)])
     assert token == Token.from_dict(token.as_dict())
-
-
-def test_nest_tokens():
-    tokens = nest_tokens(
-        [
-            Token("start", "", 0),
-            Token("open", "", 1),
-            Token("open_inner", "", 1),
-            Token("inner", "", 0),
-            Token("close_inner", "", -1),
-            Token("close", "", -1),
-            Token("end", "", 0),
-        ]
-    )
-    assert [t.type for t in tokens] == ["start", "open", "end"]
-    assert isinstance(tokens[0], Token)
-    assert isinstance(tokens[1], NestedTokens)
-    assert isinstance(tokens[2], Token)
-
-    nested = tokens[1]
-    assert nested.opening.type == "open"
-    assert nested.closing.type == "close"
-    assert len(nested.children) == 1
-    assert nested.children[0].type == "open_inner"
-
-    nested2 = nested.children[0]
-    assert nested2.opening.type == "open_inner"
-    assert nested2.closing.type == "close_inner"
-    assert len(nested2.children) == 1
-    assert nested2.children[0].type == "inner"
