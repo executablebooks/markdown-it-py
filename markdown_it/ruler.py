@@ -17,11 +17,11 @@ rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 """
 from __future__ import annotations
 
-import warnings
-from functools import lru_cache
 from collections.abc import Callable, Iterable, MutableMapping
 from dataclasses import dataclass, field
+from functools import lru_cache
 from typing import TYPE_CHECKING
+import warnings
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
