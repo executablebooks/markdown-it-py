@@ -1,5 +1,19 @@
 # Change Log
 
+## 2.1.0 - 2022-04-15
+
+This release is primarily to replace the `attrs` package dependency,
+with the built-in Python `dataclasses` package.
+
+This should not be a breaking change, for most use cases.
+
+- ⬆️ UPGRADE: Drop support for EOL Python 3.6 (#194)
+- ♻️ REFACTOR: Move `Rule`/`Delimiter` classes from `attrs` to `dataclass` (#211)
+- ♻️ REFACTOR: Move `Token` class from `attrs` to `dataclass` (#211)
+- ‼️ Remove deprecated `NestedTokens` and `nest_tokens`
+- ✨ NEW: Save ordered list numbering (#192)
+- 🐛 FIX: Combination of blockquotes, list and newlines causes `IndexError` (#207)
+
 ## 2.0.1 - 2022-24-01
 
 - 🐛 FIX: Crash when file ends with empty blockquote line.
