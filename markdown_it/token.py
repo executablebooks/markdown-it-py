@@ -5,6 +5,8 @@ import dataclasses as dc
 from typing import Any
 import warnings
 
+from markdown_it._compat import DATACLASS_KWARGS
+
 
 def convert_attrs(value: Any) -> Any:
     """Convert Token.attrs set as ``None`` or ``[[key, value], ...]`` to a dict.
@@ -18,7 +20,7 @@ def convert_attrs(value: Any) -> Any:
     return value
 
 
-@dc.dataclass()
+@dc.dataclass(**DATACLASS_KWARGS)
 class Token:
 
     type: str
