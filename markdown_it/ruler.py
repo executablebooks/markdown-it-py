@@ -9,7 +9,7 @@ Helper class, used by [[MarkdownIt#core]], [[MarkdownIt#block]] and
 - enable/disable rules
 - add/replace rules
 - allow assign rules to additional named chains (in the same)
-- cacheing lists of active rules
+- caching lists of active rules
 
 You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
@@ -20,9 +20,8 @@ from __future__ import annotations
 import warnings
 from functools import lru_cache
 from collections.abc import Callable, Iterable, MutableMapping
+from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
-
-import attr
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
@@ -56,12 +55,12 @@ class StateBase:
 RuleFunc = Callable
 
 
-@attr.s(slots=True)
+@dataclass()
 class Rule:
-    name: str = attr.ib()
-    enabled: bool = attr.ib()
-    fn: RuleFunc = attr.ib(repr=False)
-    alt: list[str] = attr.ib()
+    name: str
+    enabled: bool
+    fn: RuleFunc = field(repr=False)
+    alt: list[str]
 
 
 class Ruler:

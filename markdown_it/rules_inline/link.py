@@ -1,6 +1,6 @@
 # Process [link](<to> "stuff")
 
-from ..common.utils import normalizeReference, isSpace
+from ..common.utils import isSpace, normalizeReference
 from .state_inline import StateInline
 
 

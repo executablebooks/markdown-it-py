@@ -3,9 +3,9 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 import warnings
 
-from ..token import Token
-from ..ruler import StateBase
 from ..common.utils import isSpace
+from ..ruler import StateBase
+from ..token import Token
 
 if TYPE_CHECKING:
     from markdown_it.main import MarkdownIt
@@ -142,8 +142,7 @@ class StateBlock(StateBase):
                 ]:
                     break
             except IndexError:
-                from_pos += 1
-                break
+                pass
             from_pos += 1
         return from_pos
 

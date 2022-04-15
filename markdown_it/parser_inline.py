@@ -2,10 +2,10 @@
 """
 from __future__ import annotations
 
-from .ruler import Ruler, RuleFunc
-from .token import Token
-from .rules_inline.state_inline import StateInline
 from . import rules_inline
+from .ruler import RuleFunc, Ruler
+from .rules_inline.state_inline import StateInline
+from .token import Token
 
 # Parser rules
 _rules: list[tuple[str, RuleFunc]] = [

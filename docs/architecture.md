@@ -2,6 +2,7 @@
 
 # markdown-it design principles
 
+(md/data-flow)=
 ## Data flow
 
 Input data is parsed via nested chains of rules. There are 3 nested chains -
@@ -157,10 +158,9 @@ renderer override, but can be more simple.
 You also can write your own renderer to generate other formats than HTML, such as
 JSON/XML... You can even use it to generate AST.
 
-
 ## Summary
 
-This was mentioned in [Data flow](#data-flow), but let's repeat sequence again:
+This was mentioned in [Data flow](md/data-flow), but let's repeat sequence again:
 
 1. Blocks are parsed, and top level of token stream filled with block tokens.
 2. Content on inline containers is parsed, filling `.children` properties.

@@ -2,7 +2,7 @@
 Parse link destination
 """
 
-from ..common.utils import unescapeAll, charCodeAt
+from ..common.utils import charCodeAt, unescapeAll
 
 
 class _Result:

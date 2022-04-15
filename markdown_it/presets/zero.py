@@ -26,7 +26,7 @@ def make():
             "breaks": False,  # Convert '\n' in paragraphs into <br>
             "langPrefix": "language-",  # CSS language prefix for fenced blocks
             # Highlighter function. Should return escaped HTML,
-            # or '' if the source string is not changed and should be escaped externaly.
+            # or '' if the source string is not changed and should be escaped externally.
             # If result starts with <pre... internal wrapper is skipped.
             # function (/*str, lang, attrs*/) { return ''; }
             "highlight": None,

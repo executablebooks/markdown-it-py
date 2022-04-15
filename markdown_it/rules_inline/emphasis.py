@@ -1,7 +1,7 @@
 # Process *this* and _that_
 #
 
-from .state_inline import StateInline, Delimiter
+from .state_inline import Delimiter, StateInline
 
 
 def tokenize(state: StateInline, silent: bool):

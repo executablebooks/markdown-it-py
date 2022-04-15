@@ -2,7 +2,7 @@
 import re
 
 from ..common.entities import entities
-from ..common.utils import isValidEntityCode, fromCodePoint
+from ..common.utils import fromCodePoint, isValidEntityCode
 from .state_inline import StateInline
 
 DIGITAL_RE = re.compile(r"^&#((?:x[a-f0-9]{1,6}|[0-9]{1,7}));", re.IGNORECASE)

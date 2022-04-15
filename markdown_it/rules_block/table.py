@@ -1,9 +1,8 @@
 # GFM table, https://github.github.com/gfm/#tables-extension-
 import re
 
+from ..common.utils import charCodeAt, isSpace
 from .state_block import StateBlock
-from ..common.utils import isSpace, charCodeAt
-
 
 headerLineRe = re.compile(r"^:?-+:?$")
 enclosingPipesRe = re.compile(r"^\||\|$")

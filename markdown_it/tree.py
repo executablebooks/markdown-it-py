@@ -6,12 +6,7 @@ from __future__ import annotations
 
 from collections.abc import Generator, Sequence
 import textwrap
-from typing import (
-    NamedTuple,
-    Any,
-    TypeVar,
-    overload,
-)
+from typing import Any, NamedTuple, TypeVar, overload
 
 from .token import Token
 from .utils import _removesuffix
@@ -276,7 +271,7 @@ class SyntaxTreeNode:
 
     @property
     def tag(self) -> str:
-        """html tag name, e.g. \"p\""""
+        """html tag name, e.g. \"p\" """
         return self._attribute_token().tag
 
     @property

@@ -3,10 +3,10 @@ from __future__ import annotations
 
 import logging
 
-from .ruler import Ruler
-from .token import Token
-from .rules_block.state_block import StateBlock
 from . import rules_block
+from .ruler import Ruler
+from .rules_block.state_block import StateBlock
+from .token import Token
 
 LOGGER = logging.getLogger(__name__)
 

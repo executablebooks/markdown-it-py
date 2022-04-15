@@ -1,9 +1,9 @@
 # Process ![image](<src> "title")
 from __future__ import annotations
 
-from .state_inline import StateInline
-from ..token import Token
 from ..common.utils import isSpace, normalizeReference
+from ..token import Token
+from .state_inline import StateInline
 
 
 def image(state: StateInline, silent: bool):

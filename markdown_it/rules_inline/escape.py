@@ -1,9 +1,8 @@
 """
 Process escaped chars and hardbreaks
 """
-from .state_inline import StateInline
 from ..common.utils import isSpace
-
+from .state_inline import StateInline
 
 ESCAPED = [0 for _ in range(256)]
 for ch in "\\!\"#$%&'()*+,./:;<=>?@[]^_`{|}~-":

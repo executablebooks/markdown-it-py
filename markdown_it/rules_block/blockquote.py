@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import logging
 
-from .state_block import StateBlock
 from ..common.utils import isSpace
+from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
 
@@ -295,7 +295,5 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
         state.bsCount[i + startLine] = oldBSCount[i]
 
     state.blkIndent = oldIndent
-
-    state.lineMax += 1
 
     return True

@@ -1,9 +1,6 @@
 # Process html tags
-from typing import Union
-import warnings
-
-from .state_inline import StateInline
 from ..common.html_re import HTML_TAG_RE
+from .state_inline import StateInline
 
 
 def isLetter(ch: Union[int, str]) -> bool:

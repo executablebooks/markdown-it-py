@@ -11,7 +11,7 @@ from collections.abc import MutableMapping, Sequence
 import inspect
 from typing import Any, ClassVar
 
-from .common.utils import unescapeAll, escapeHtml
+from .common.utils import escapeHtml, unescapeAll
 from .token import Token
 from .utils import OptionsDict
 
