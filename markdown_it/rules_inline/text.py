@@ -10,6 +10,7 @@ from .state_inline import StateInline
 
 # !, ", #, $, %, &, ', (, ), *, +, ,, -, ., /, :, ;, <, =, >, ?, @, [, \, ], ^, _, `, {, |, }, or ~
 
+
 # !!!! Don't confuse with "Markdown ASCII Punctuation" chars
 # http://spec.commonmark.org/0.15/#ascii-punctuation-character
 def isTerminatorChar(ch: object) -> bool:

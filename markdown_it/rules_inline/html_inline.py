@@ -1,9 +1,13 @@
 # Process html tags
+from __future__ import annotations
+
+import warnings
+
 from ..common.html_re import HTML_TAG_RE
 from .state_inline import StateInline
 
 
-def isLetter(ch: Union[int, str]) -> bool:
+def isLetter(ch: int | str) -> bool:
     if isinstance(ch, int):
         warnings.warn(
             "`int`s are deprecated as `isLetter` input",
