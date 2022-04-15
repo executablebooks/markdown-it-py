@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 from collections.abc import Callable, MutableMapping
+import dataclasses as dc
 from typing import Any
 import warnings
-
-import attr
 
 
 def convert_attrs(value: Any) -> Any:
@@ -19,43 +18,65 @@ def convert_attrs(value: Any) -> Any:
     return value
 
 
-@attr.s(slots=True)
+@dc.dataclass()
 class Token:
-    # Type of the token (string, e.g. "paragraph_open")
-    type: str = attr.ib()
-    # html tag name, e.g. "p"
-    tag: str = attr.ib()
-    # Level change (number in {-1, 0, 1} set), where:
-    # -  `1` means the tag is opening
-    # -  `0` means the tag is self-closing
-    # - `-1` means the tag is closing
-    nesting: int = attr.ib()
-    # Html attributes. Note this differs from the upstream "list of lists" format
-    attrs: dict[str, str | int | float] = attr.ib(factory=dict, converter=convert_attrs)
-    # Source map info. Format: `[ line_begin, line_end ]`
-    map: list[int] | None = attr.ib(default=None)
-    # nesting level, the same as `state.level`
-    level: int = attr.ib(default=0)
-    # An array of child nodes (inline and img tokens)
-    children: list[Token] | None = attr.ib(default=None)
-    # In a case of self-closing tag (code, html, fence, etc.),
-    # it has contents of this tag.
-    content: str = attr.ib(default="")
-    # '*' or '_' for emphasis, fence string for fence, etc.
-    markup: str = attr.ib(default="")
-    # Additional information:
-    #   - Info string for "fence" tokens
-    #   - The value "auto" for autolink "link_open" and "link_close" tokens
-    #   - The string value of the item marker for ordered-list "list_item_open" tokens
-    info: str = attr.ib(default="")
-    # A place for plugins to store any arbitrary data
-    meta: dict = attr.ib(factory=dict)
-    # True for block-level tokens, false for inline tokens.
-    # Used in renderer to calculate line breaks
-    block: bool = attr.ib(default=False)
-    # If it's true, ignore this element when rendering.
-    # Used for tight lists to hide paragraphs.
-    hidden: bool = attr.ib(default=False)
+
+    type: str
+    """Type of the token (string, e.g. "paragraph_open")"""
+
+    tag: str
+    """HTML tag name, e.g. 'p'"""
+
+    nesting: int
+    """Level change (number in {-1, 0, 1} set), where:
+    -  `1` means the tag is opening
+    -  `0` means the tag is self-closing
+    - `-1` means the tag is closing
+    """
+
+    attrs: dict[str, str | int | float] = dc.field(default_factory=dict)
+    """HTML attributes.
+    Note this differs from the upstream "list of lists" format,
+    although than an instance can still be initialised with this format.
+    """
+
+    map: list[int] | None = None
+    """Source map info. Format: `[ line_begin, line_end ]`"""
+
+    level: int = 0
+    """Nesting level, the same as `state.level`"""
+
+    children: list[Token] | None = None
+    """Array of child nodes (inline and img tokens)."""
+
+    content: str = ""
+    """Inner content, in the case of a self-closing tag (code, html, fence, etc.),"""
+
+    markup: str = ""
+    """'*' or '_' for emphasis, fence string for fence, etc."""
+
+    info: str = ""
+    """Additional information:
+    - Info string for "fence" tokens
+    - The value "auto" for autolink "link_open" and "link_close" tokens
+    - The string value of the item marker for ordered-list "list_item_open" tokens
+    """
+
+    meta: dict = dc.field(default_factory=dict)
+    """A place for plugins to store any arbitrary data"""
+
+    block: bool = False
+    """True for block-level tokens, false for inline tokens.
+    Used in renderer to calculate line breaks
+    """
+
+    hidden: bool = False
+    """If true, ignore this element when rendering.
+    Used for tight lists to hide paragraphs.
+    """
+
+    def __post_init__(self):
+        self.attrs = convert_attrs(self.attrs)
 
     def attrIndex(self, name: str) -> int:
         warnings.warn(
@@ -98,9 +119,9 @@ class Token:
         else:
             self.attrs[name] = value
 
-    def copy(self) -> Token:
+    def copy(self, **changes: Any) -> Token:
         """Return a shallow copy of the instance."""
-        return attr.evolve(self)
+        return dc.replace(self, **changes)
 
     def as_dict(
         self,
@@ -108,7 +129,7 @@ class Token:
         children: bool = True,
         as_upstream: bool = True,
         meta_serializer: Callable[[dict], Any] | None = None,
-        filter: Callable[[attr.Attribute, Any], bool] | None = None,
+        filter: Callable[[str, Any], bool] | None = None,
         dict_factory: Callable[..., MutableMapping[str, Any]] = dict,
     ) -> MutableMapping[str, Any]:
         """Return the token as a dictionary.
@@ -119,16 +140,15 @@ class Token:
         :param meta_serializer: hook for serializing ``Token.meta``
         :param filter: A callable whose return code determines whether an
             attribute or element is included (``True``) or dropped (``False``).
-            Is called with the `attr.Attribute` as the first argument and the
-            value as the second argument.
+            Is called with the (key, value) pair.
         :param dict_factory: A callable to produce dictionaries from.
             For example, to produce ordered dictionaries instead of normal Python
             dictionaries, pass in ``collections.OrderedDict``.
 
         """
-        mapping = attr.asdict(
-            self, recurse=False, filter=filter, dict_factory=dict_factory  # type: ignore[arg-type]
-        )
+        mapping = dict_factory((f.name, getattr(self, f.name)) for f in dc.fields(self))
+        if filter:
+            mapping = dict_factory((k, v) for k, v in mapping.items() if filter(k, v))
         if as_upstream and "attrs" in mapping:
             mapping["attrs"] = (
                 None

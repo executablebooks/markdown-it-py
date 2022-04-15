@@ -26,7 +26,6 @@ classifiers = [
 keywords = ["markdown", "lexer", "parser", "commonmark", "markdown-it"]
 requires-python = ">=3.7"
 dependencies = [
-    "attrs>=19,<22",
     "mdurl~=0.1",
     "typing_extensions>=3.7.4;python_version<'3.8'",
 ]
