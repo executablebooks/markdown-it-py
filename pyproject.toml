@@ -46,6 +46,7 @@ compare = [
 linkify = ["linkify-it-py~=1.0"]
 plugins = ["mdit-py-plugins"]
 rtd = [
+    "attrs",
     "myst-parser",
     "pyyaml",
     "sphinx",
