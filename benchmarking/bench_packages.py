@@ -1,6 +1,7 @@
 from pathlib import Path
-import pytest
 from shutil import which
+
+import pytest
 
 
 @pytest.fixture

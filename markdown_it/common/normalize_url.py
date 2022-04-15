@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import re
-from urllib.parse import urlparse, urlunparse, quote, unquote  # noqa: F401
+from urllib.parse import quote, unquote, urlparse, urlunparse  # noqa: F401
 
 import mdurl
 
 from .. import _punycode
-
 
 RECODE_HOSTNAME_FOR = ("http:", "https:", "mailto:")
 

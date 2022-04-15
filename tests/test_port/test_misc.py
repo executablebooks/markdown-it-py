@@ -1,5 +1,4 @@
-from markdown_it import MarkdownIt
-from markdown_it import presets
+from markdown_it import MarkdownIt, presets
 
 
 def test_highlight_arguments():

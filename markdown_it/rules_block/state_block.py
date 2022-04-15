@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ..token import Token
-from ..ruler import StateBase
 from ..common.utils import isSpace
+from ..ruler import StateBase
+from ..token import Token
 
 if TYPE_CHECKING:
     from markdown_it.main import MarkdownIt

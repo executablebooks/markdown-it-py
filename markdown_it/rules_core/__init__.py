@@ -8,10 +8,10 @@ __all__ = (
     "linkify",
 )
 
-from .state_core import StateCore
-from .normalize import normalize
 from .block import block
 from .inline import inline
+from .linkify import linkify
+from .normalize import normalize
 from .replacements import replace
 from .smartquotes import smartquotes
-from .linkify import linkify
+from .state_core import StateCore

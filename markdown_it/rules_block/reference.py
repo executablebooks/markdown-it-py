@@ -1,8 +1,7 @@
 import logging
 
-from ..common.utils import isSpace, normalizeReference, charCodeAt
+from ..common.utils import charCodeAt, isSpace, normalizeReference
 from .state_block import StateBlock
-
 
 LOGGER = logging.getLogger(__name__)
 

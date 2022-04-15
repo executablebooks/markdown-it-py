@@ -16,7 +16,7 @@ kernelspec:
 
 > This document can be opened to execute with [Jupytext](https://jupytext.readthedocs.io)!
 
-markdown-it-py may be used as an API *via* the `markdown_it` package.
+markdown-it-py may be used as an API *via* the [`markdown-it-py`](https://pypi.org/project/markdown-it-py/) package.
 
 The raw text is first parsed to syntax 'tokens',
 then these are converted to other formats using 'renderers'.

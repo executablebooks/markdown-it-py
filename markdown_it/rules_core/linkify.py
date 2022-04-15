@@ -1,9 +1,8 @@
 import re
 
 from ..common.utils import arrayReplaceAt
-from .state_core import StateCore
 from ..token import Token
-
+from .state_core import StateCore
 
 LINK_OPEN_RE = re.compile(r"^<a[>\s]", flags=re.IGNORECASE)
 LINK_CLOSE_RE = re.compile(r"^</a\s*>", flags=re.IGNORECASE)
