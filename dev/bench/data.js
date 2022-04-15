@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1649981388265,
+  "lastUpdate": 1649981587182,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -20511,6 +20511,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0042021",
             "group": "packages",
             "extra": "mean: 785.08 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.12"
+        },
+        "commit": {
+          "id": "8928b0e7e9752aa5687e7ea7acac5d6423585c36",
+          "message": "📚 DOCS: Update usage guide to use PyPI package name (#202)\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2022-04-15T02:11:15+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/8928b0e7e9752aa5687e7ea7acac5d6423585c36",
+          "distinct": true,
+          "tree_id": "b1aad7970b3f49356c94d9b86b8004b41763c89c"
+        },
+        "date": 1649981586382,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.4307767908469335,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059595",
+            "group": "packages",
+            "extra": "mean: 225.69 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.709113497405632,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0021834",
+            "group": "packages",
+            "extra": "mean: 93.378 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.6223820427189173,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015257",
+            "group": "packages",
+            "extra": "mean: 381.33 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 2.178545784551096,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016758",
+            "group": "packages",
+            "extra": "mean: 459.02 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.206871580989312,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0048465",
+            "group": "packages",
+            "extra": "mean: 828.59 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 6.700725779028045,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0065046",
+            "group": "packages",
+            "extra": "mean: 149.24 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.1922468421061239,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0024094",
+            "group": "packages",
+            "extra": "mean: 838.75 msec\nrounds: 20"
           }
         ]
       }
