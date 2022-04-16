@@ -21,6 +21,8 @@ from collections.abc import Callable, Iterable, MutableMapping
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
+from markdown_it._compat import DATACLASS_KWARGS
+
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
 
@@ -50,7 +52,7 @@ class StateBase:
 RuleFunc = Callable
 
 
-@dataclass()
+@dataclass(**DATACLASS_KWARGS)
 class Rule:
     name: str
     enabled: bool
