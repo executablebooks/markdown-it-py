@@ -43,4 +43,4 @@ repos:
     rev: v0.942
     hooks:
     - id: mypy
-      additional_dependencies: [attrs]
+      additional_dependencies: [mdurl]
