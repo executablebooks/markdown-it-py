@@ -13,6 +13,27 @@ import sys
 from markdown_it import __version__
 from markdown_it.main import MarkdownIt
 
+try:
+    import shtab
+except ImportError:
+    from markdown_it import _shtab as shtab
+
+# https://github.com/iterative/shtab/blob/5358dda86e8ea98bf801a43a24ad73cd9f820c63/examples/customcomplete.py#L11-L22
+MD_FILE = {
+    "bash": "_shtab_greeter_compgen_md_files",
+    "zsh": "_files -g '*.md'",
+    "tcsh": "f:*.md",
+}
+PREAMBLE = {
+    "bash": """
+# $1=COMP_WORDS[1]
+_shtab_greeter_compgen_md_files() {
+  compgen -d -- $1  # recurse into subdirs
+  compgen -f -X '!*?.md' -- $1
+}
+"""
+}
+
 version_str = "markdown-it-py [version {}]".format(__version__)
 
 
@@ -67,6 +88,7 @@ def interactive() -> None:
 def parse_args(args: Sequence[str] | None) -> argparse.Namespace:
     """Parse input CLI arguments."""
     parser = argparse.ArgumentParser(
+        "markdown-it",
         description="Parse one or more markdown files, "
         "convert each to HTML, and print to stdout",
         # NOTE: Remember to update README.md w/ the output of `markdown-it -h`
@@ -92,10 +114,11 @@ Batch:
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
+    shtab.add_argument_to(parser, preamble=PREAMBLE)
     parser.add_argument("-v", "--version", action="version", version=version_str)
     parser.add_argument(
         "filenames", nargs="*", help="specify an optional list of files to convert"
-    )
+    ).complete = MD_FILE  # type: ignore
     return parser.parse_args(args)
 
 

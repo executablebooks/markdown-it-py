@@ -66,6 +66,7 @@ benchmarking = [
     "pytest-benchmark~=3.2",
 ]
 profiling = ["gprof2dot"]
+completion = ["shtab"]
 
 [project.scripts]
 markdown-it = "markdown_it.cli.parse:main"
