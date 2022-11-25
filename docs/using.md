@@ -397,3 +397,29 @@ md = MarkdownIt("commonmark")
 md.add_render_rule("link_open", render_blank_link)
 print(md.render("[a]\n\n[a]: b"))
 ```
+
+### Markdown renderer
+
+You can also render a token stream directly to markdown via the `MDRenderer` class from [`mdformat`](https://github.com/executablebooks/mdformat):
+
+```{code-cell} python
+from markdown_it import MarkdownIt
+from mdformat.renderer import MDRenderer
+
+md = MarkdownIt("commonmark")
+
+source_markdown = """
+Here's some *text*
+
+1. a list
+
+> a *quote*"""
+
+tokens = md.parse(source_markdown)
+
+renderer = MDRenderer()
+options = {}
+env = {}
+
+output_markdown = renderer.render(tokens, options, env)
+```
