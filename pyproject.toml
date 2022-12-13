@@ -63,7 +63,7 @@ testing = [
 benchmarking = [
     "psutil",
     "pytest",
-    "pytest-benchmark~=3.2",
+    "pytest-benchmark",
 ]
 profiling = ["gprof2dot"]
 
