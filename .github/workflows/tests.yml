@@ -48,7 +48,7 @@ jobs:
         pytest tests/ --cov=markdown_it --cov-report=xml --cov-report=term-missing
     - name: Upload to Codecov
       if: matrix.python-version == '3.7' && github.repository == 'executablebooks/markdown-it-py'
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
       with:
         name: markdown-it-py-pytests-py3.7
         flags: pytests
