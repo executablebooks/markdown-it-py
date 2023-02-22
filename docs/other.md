@@ -21,7 +21,7 @@ for XSS:
 
 So, by default `markdown-it` should be safe. We care about it.
 
-If you find a security problem - contact us via tracker or email.
+If you find a security problem - contact us via <executablebooks@gmail.com>.
 Such reports are fixed with top priority.
 
 ## Plugins
