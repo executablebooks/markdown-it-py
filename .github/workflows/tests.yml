@@ -21,10 +21,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.8'
-    - uses: pre-commit/action@v2.0.0
+    - uses: pre-commit/action@v3.0.0
 
   tests:
 
@@ -36,7 +36,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
@@ -48,7 +48,7 @@ jobs:
         pytest tests/ --cov=markdown_it --cov-report=xml --cov-report=term-missing
     - name: Upload to Codecov
       if: matrix.python-version == '3.7' && github.repository == 'executablebooks/markdown-it-py'
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v3
       with:
         name: markdown-it-py-pytests-py3.7
         flags: pytests
@@ -64,7 +64,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install markdown-it-py
@@ -85,7 +85,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.8'
 
@@ -98,7 +98,7 @@ jobs:
       run: tox -e py38-bench-core -- --benchmark-json bench-core.json
 
     - name: Upload data
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: bench-core
         path: bench-core.json
@@ -114,7 +114,7 @@ jobs:
     - name: Checkout source
       uses: actions/checkout@v2
     - name: Set up Python 3.8
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.8'
     - name: install flit
