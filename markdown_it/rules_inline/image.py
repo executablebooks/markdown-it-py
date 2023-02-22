@@ -7,7 +7,6 @@ from .state_inline import StateInline
 
 
 def image(state: StateInline, silent: bool):
-
     label = None
     href = ""
     oldPos = state.pos

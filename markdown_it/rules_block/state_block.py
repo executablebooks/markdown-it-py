@@ -19,7 +19,6 @@ class StateBlock(StateBase):
         tokens: list[Token],
         srcCharCode: tuple[int, ...] | None = None,
     ):
-
         if srcCharCode is not None:
             self._src = src
             self.srcCharCode = srcCharCode

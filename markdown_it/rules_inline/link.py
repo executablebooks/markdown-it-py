@@ -5,7 +5,6 @@ from .state_inline import StateInline
 
 
 def link(state: StateInline, silent: bool):
-
     href = ""
     title = ""
     label = None
