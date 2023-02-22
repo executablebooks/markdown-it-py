@@ -56,7 +56,6 @@ def arrayReplaceAt(src: list, pos: int, newElements: list) -> list:
 
 
 def isValidEntityCode(c: int) -> bool:
-
     # broken sequence
     if c >= 0xD800 and c <= 0xDFFF:
         return False
