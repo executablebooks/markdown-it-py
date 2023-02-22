@@ -2,7 +2,7 @@
 
 ## 2.2.0 - 2023-02-22
 
-## What's Changed
+### What's Changed
 
 * ⬆️ UPGRADE: Allow linkify-it-py v2 by @hukkin in [#218](https://github.com/executablebooks/markdown-it-py/pull/218)
 * 🐛 FIX: CVE-2023-26303 by @chrisjsewell in [#246](https://github.com/executablebooks/markdown-it-py/pull/246)
@@ -15,7 +15,7 @@
 * 🔧 Bump GH actions by @chrisjsewell in [#244](https://github.com/executablebooks/markdown-it-py/pull/244)
 * 🔧 Update benchmark pkg versions by @chrisjsewell in [#245](https://github.com/executablebooks/markdown-it-py/pull/245)
 
-## New Contributors
+### New Contributors
 
 Thanks to 🎉
 
