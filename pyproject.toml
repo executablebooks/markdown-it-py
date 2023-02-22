@@ -35,7 +35,7 @@ Homepage = "https://github.com/executablebooks/markdown-it-py"
 Documentation = "https://markdown-it-py.readthedocs.io"
 
 [project.optional-dependencies]
-code_style = ["pre-commit==2.6"]
+code_style = ["pre-commit==3.0.4"]
 compare = [
     "commonmark~=0.9.1",
     "markdown~=3.3.6",
