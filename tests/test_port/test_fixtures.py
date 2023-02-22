@@ -111,4 +111,5 @@ def test_strikethrough(line, title, input, expected):
 def test_issue_fixes(line, title, input, expected):
     md = MarkdownIt()
     text = md.render(input)
+    print(text)
     assert text.rstrip() == expected.rstrip()
