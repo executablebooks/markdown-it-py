@@ -10,7 +10,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def heading(state: StateBlock, startLine: int, endLine: int, silent: bool):
-
     LOGGER.debug("entering heading: %s, %s, %s, %s", state, startLine, endLine, silent)
 
     pos = state.bMarks[startLine] + state.tShift[startLine]
