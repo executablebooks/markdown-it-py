@@ -10,7 +10,6 @@ AUTOLINK_RE = re.compile(r"^([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)$")
 
 
 def autolink(state: StateInline, silent: bool) -> bool:
-
     pos = state.pos
 
     if state.srcCharCode[pos] != 0x3C:  # /* < */

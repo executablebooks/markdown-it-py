@@ -330,7 +330,7 @@ md = MarkdownIt("commonmark", renderer_cls=MyRenderer)
 md.render("*a*")
 ```
 
-Plugins can support multiple render types, using the `__ouput__` attribute (this is currently a Python only feature).
+Plugins can support multiple render types, using the `__output__` attribute (this is currently a Python only feature).
 
 ```{code-cell} python
 from markdown_it.renderer import RendererHTML
