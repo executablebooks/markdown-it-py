@@ -3,7 +3,6 @@ from .state_core import StateCore
 
 
 def block(state: StateCore) -> None:
-
     if state.inlineMode:
         token = Token("inline", "", 0)
         token.content = state.src

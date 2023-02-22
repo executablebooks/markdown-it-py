@@ -35,15 +35,15 @@ Homepage = "https://github.com/executablebooks/markdown-it-py"
 Documentation = "https://markdown-it-py.readthedocs.io"
 
 [project.optional-dependencies]
-code_style = ["pre-commit==2.6"]
+code_style = ["pre-commit~=3.0"]
 compare = [
-    "commonmark~=0.9.1",
-    "markdown~=3.3.6",
-    "mistletoe~=0.8.1",
-    "mistune~=2.0.2",
-    "panflute~=2.1.3",
+    "commonmark~=0.9",
+    "markdown~=3.4",
+    "mistletoe~=1.0",
+    "mistune~=2.0",
+    "panflute~=2.3",
 ]
-linkify = ["linkify-it-py~=1.0"]
+linkify = ["linkify-it-py>=1,<3"]
 plugins = ["mdit-py-plugins"]
 rtd = [
     "attrs",
@@ -63,7 +63,7 @@ testing = [
 benchmarking = [
     "psutil",
     "pytest",
-    "pytest-benchmark~=3.2",
+    "pytest-benchmark",
 ]
 profiling = ["gprof2dot"]
 

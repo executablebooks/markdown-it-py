@@ -7,7 +7,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def code(state: StateBlock, startLine: int, endLine: int, silent: bool = False):
-
     LOGGER.debug("entering code: %s, %s, %s, %s", state, startLine, endLine, silent)
 
     if state.sCount[startLine] - state.blkIndent < 4:
