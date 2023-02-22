@@ -20,6 +20,13 @@ def test_parse_fail():
     assert exc_info.value.code == 1
 
 
+def test_non_utf8():
+    with tempfile.TemporaryDirectory() as tempdir:
+        path = pathlib.Path(tempdir).joinpath("test.md")
+        path.write_bytes(b"\x80abc")
+        assert parse.main([str(path)]) == 0
+
+
 def test_print_heading():
     with patch("builtins.print") as patched:
         parse.print_heading()
