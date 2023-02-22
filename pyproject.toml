@@ -39,7 +39,7 @@ code_style = ["pre-commit~=3.0"]
 compare = [
     "commonmark~=0.9.1",
     "markdown~=3.3.6",
-    "mistletoe~=0.8.1",
+    "mistletoe>=0.8.1,<1.1.0",
     "mistune~=2.0.2",
     "panflute~=2.1.3",
 ]
