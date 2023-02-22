@@ -53,7 +53,6 @@ def tokenize(state: StateInline, silent: bool):
 
 
 def _postProcess(state: StateInline, delimiters: list[Delimiter]):
-
     loneMarkers = []
     maximum = len(delimiters)
 
@@ -89,7 +88,6 @@ def _postProcess(state: StateInline, delimiters: list[Delimiter]):
             state.tokens[endDelim.token - 1].type == "text"
             and state.tokens[endDelim.token - 1].content == "~"
         ):
-
             loneMarkers.append(endDelim.token - 1)
 
         i += 1

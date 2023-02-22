@@ -22,7 +22,6 @@ def convert_attrs(value: Any) -> Any:
 
 @dc.dataclass(**DATACLASS_KWARGS)
 class Token:
-
     type: str
     """Type of the token (string, e.g. "paragraph_open")"""
 
