@@ -1,5 +1,30 @@
 # Change Log
 
+## 2.2.0 - 2023-02-22
+
+## What's Changed
+
+* ⬆️ UPGRADE: Allow linkify-it-py v2 by @hukkin in [#218](https://github.com/executablebooks/markdown-it-py/pull/218)
+* 🐛 FIX: CVE-2023-26303 by @chrisjsewell in [#246](https://github.com/executablebooks/markdown-it-py/pull/246)
+* 🐛 FIX: CLI crash on non-utf8 character by @chrisjsewell in [#247](https://github.com/executablebooks/markdown-it-py/pull/247)
+* 📚 DOCS: Update the example by @redstoneleo in [#229](https://github.com/executablebooks/markdown-it-py/pull/229)
+* 📚 DOCS: Add section about markdown renderer by @holamgadol in [#227](https://github.com/executablebooks/markdown-it-py/pull/227)
+* 🔧 Create SECURITY.md by @chrisjsewell in [#248](https://github.com/executablebooks/markdown-it-py/pull/248)
+* 🔧 MAINTAIN: Update mypy's additional dependencies by @hukkin in [#217](https://github.com/executablebooks/markdown-it-py/pull/217)
+* Fix typo by @jwilk in [#230](https://github.com/executablebooks/markdown-it-py/pull/230)
+* 🔧 Bump GH actions by @chrisjsewell in [#244](https://github.com/executablebooks/markdown-it-py/pull/244)
+* 🔧 Update benchmark pkg versions by @chrisjsewell in [#245](https://github.com/executablebooks/markdown-it-py/pull/245)
+
+## New Contributors
+
+Thanks to 🎉
+
+* @jwilk made their first contribution in [#230](https://github.com/executablebooks/markdown-it-py/pull/230)
+* @holamgadol made their first contribution in [#227](https://github.com/executablebooks/markdown-it-py/pull/227)
+* @redstoneleo made their first contribution in [#229](https://github.com/executablebooks/markdown-it-py/pull/229)
+
+**Full Changelog**: <https://github.com/executablebooks/markdown-it-py/compare/v2.1.0...v2.2.0>
+
 ## 2.1.0 - 2022-04-15
 
 This release is primarily to replace the `attrs` package dependency,
