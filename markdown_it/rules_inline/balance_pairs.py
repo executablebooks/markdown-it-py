@@ -4,7 +4,6 @@ from .state_inline import StateInline
 
 
 def processDelimiters(state: StateInline, delimiters, *args):
-
     openersBottom = {}
     maximum = len(delimiters)
 
@@ -50,7 +49,6 @@ def processDelimiters(state: StateInline, delimiters, *args):
                 continue
 
             if opener.open and opener.end < 0:
-
                 isOddMatch = False
 
                 # from spec:

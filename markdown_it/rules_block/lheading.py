@@ -8,7 +8,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool):
-
     LOGGER.debug("entering lheading: %s, %s, %s, %s", state, startLine, endLine, silent)
 
     level = None

@@ -9,7 +9,6 @@ NULL_RE = re.compile(r"\0")
 
 
 def normalize(state: StateCore) -> None:
-
     # Normalize newlines
     string = NEWLINES_RE.sub("\n", state.src)
 

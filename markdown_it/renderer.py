@@ -18,7 +18,7 @@ from .utils import OptionsDict
 try:
     from typing import Protocol
 except ImportError:  # Python <3.8 doesn't have `Protocol` in the stdlib
-    from typing_extensions import Protocol  # type: ignore[misc]
+    from typing_extensions import Protocol  # type: ignore
 
 
 class RendererProtocol(Protocol):
@@ -82,10 +82,9 @@ class RendererHTML(RendererProtocol):
         result = ""
 
         for i, token in enumerate(tokens):
-
             if token.type == "inline":
-                assert token.children is not None
-                result += self.renderInline(token.children, options, env)
+                if token.children:
+                    result += self.renderInline(token.children, options, env)
             elif token.type in self.rules:
                 result += self.rules[token.type](tokens, i, options, env)
             else:
@@ -207,8 +206,8 @@ class RendererHTML(RendererProtocol):
             if token.type == "text":
                 result += token.content
             elif token.type == "image":
-                assert token.children is not None
-                result += self.renderInlineAsText(token.children, options, env)
+                if token.children:
+                    result += self.renderInlineAsText(token.children, options, env)
             elif token.type == "softbreak":
                 result += "\n"
 
@@ -306,14 +305,10 @@ class RendererHTML(RendererProtocol):
 
         # "alt" attr MUST be set, even if empty. Because it's mandatory and
         # should be placed on proper position for tests.
-
-        assert (
-            token.attrs and "alt" in token.attrs
-        ), '"image" token\'s attrs must contain `alt`'
-
-        # Replace content with actual value
-
-        token.attrSet("alt", self.renderInlineAsText(token.children, options, env))
+        if token.children:
+            token.attrSet("alt", self.renderInlineAsText(token.children, options, env))
+        else:
+            token.attrSet("alt", "")
 
         return self.renderToken(tokens, idx, options, env)
 

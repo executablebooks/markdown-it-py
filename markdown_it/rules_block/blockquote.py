@@ -10,7 +10,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
-
     LOGGER.debug(
         "entering blockquote: %s, %s, %s, %s", state, startLine, endLine, silent
     )
@@ -129,7 +128,6 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
     # for (nextLine = startLine + 1; nextLine < endLine; nextLine++) {
     nextLine = startLine + 1
     while nextLine < endLine:
-
         # check if it's outdented, i.e. it's inside list item and indented
         # less than said list item:
         #

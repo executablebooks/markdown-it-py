@@ -20,7 +20,6 @@ def isLetter(ch: int | str) -> bool:
 
 
 def html_inline(state: StateInline, silent: bool):
-
     pos = state.pos
 
     if not state.md.options.get("html", None):

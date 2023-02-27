@@ -10,7 +10,6 @@ NAMED_RE = re.compile(r"^&([a-z][a-z0-9]{1,31});", re.IGNORECASE)
 
 
 def entity(state: StateInline, silent: bool):
-
     pos = state.pos
     maximum = state.posMax
 

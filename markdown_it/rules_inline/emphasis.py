@@ -38,7 +38,6 @@ def tokenize(state: StateInline, silent: bool):
 
 
 def _postProcess(state, delimiters):
-
     i = len(delimiters) - 1
     while i >= 0:
         startDelim = delimiters[i]
