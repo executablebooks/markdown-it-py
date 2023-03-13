@@ -66,8 +66,11 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool):
             #  test
             break
 
-        if state.srcCharCode[pos] != marker:
-            continue
+        try:
+            if state.srcCharCode[pos] != marker:
+                continue
+        except IndexError:
+            break
 
         if state.sCount[nextLine] - state.blkIndent >= 4:
             # closing fence should be indented less than 4 spaces
