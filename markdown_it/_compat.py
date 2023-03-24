@@ -4,7 +4,7 @@ from collections.abc import Mapping
 import sys
 from typing import Any
 
-if sys.version_info >= (3, 10):
+if sys.version_info >= (3, 10, 0, "release"):
     DATACLASS_KWARGS: Mapping[str, Any] = {"slots": True}
 else:
     DATACLASS_KWARGS: Mapping[str, Any] = {}
