@@ -1,0 +1,25 @@
+name: fuzzing
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    - cron: '0 0 * * 0'  # every week
+
+jobs:
+
+  basic:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.8
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install atheris
+        pip install .
+    - name: run fuzzing
+      run: python tests/fuzz/fuzz_markdown.py
