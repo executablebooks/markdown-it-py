@@ -3,23 +3,24 @@ on:
   push:
     branches: [master]
   pull_request:
-  schedule:
-    - cron: '0 0 * * 0'  # every week
 
 jobs:
-
-  basic:
+  Fuzzing:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v4
+    - name: Build Fuzzers
+      id: build
+      uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
       with:
-        python-version: 3.8
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install atheris
-        pip install .
-    - name: run fuzzing
-      run: python tests/fuzz/fuzz_markdown.py
+        oss-fuzz-project-name: 'markdown-it-py'
+    - name: Run Fuzzers
+      uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
+      with:
+        oss-fuzz-project-name: 'markdown-it-py'
+        fuzz-seconds: 600
+    - name: Upload Crash
+      uses: actions/upload-artifact@v3
+      if: failure() && steps.build.outcome == 'success'
+      with:
+        name: artifacts
+        path: ./out/artifacts
