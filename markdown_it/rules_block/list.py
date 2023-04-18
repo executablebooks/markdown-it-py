@@ -102,8 +102,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     isTerminatingParagraph = False
     tight = True
 
-    # if it's indented more than 3 spaces, it should be a code block
-    if state.sCount[startLine] - state.blkIndent >= 4:
+    if state.is_code_block(startLine):
         return False
 
     # Special case:
@@ -295,8 +294,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
         if state.sCount[nextLine] < state.blkIndent:
             break
 
-        # if it's indented more than 3 spaces, it should be a code block
-        if state.sCount[startLine] - state.blkIndent >= 4:
+        if state.is_code_block(startLine):
             break
 
         # fail if terminating block found

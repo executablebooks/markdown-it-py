@@ -15,8 +15,7 @@ def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> b
     ruler: Ruler = state.md.block.ruler
     terminatorRules = ruler.getRules("paragraph")
 
-    # if it's indented more than 3 spaces, it should be a code block
-    if state.sCount[startLine] - state.blkIndent >= 4:
+    if state.is_code_block(startLine):
         return False
 
     oldParentType = state.parentType

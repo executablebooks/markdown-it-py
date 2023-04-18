@@ -61,8 +61,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
     if state.sCount[nextLine] < state.blkIndent:
         return False
 
-    # if it's indented more than 3 spaces, it should be a code block
-    if state.sCount[nextLine] - state.blkIndent >= 4:
+    if state.is_code_block(nextLine):
         return False
 
     # first character of the second line should be '|', '-', ':',
@@ -126,7 +125,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
     lineText = getLine(state, startLine).strip()
     if "|" not in lineText:
         return False
-    if state.sCount[startLine] - state.blkIndent >= 4:
+    if state.is_code_block(startLine):
         return False
     columns = escapedSplit(lineText)
     if columns and columns[0] == "":
@@ -192,7 +191,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
         lineText = getLine(state, nextLine).strip()
         if not lineText:
             break
-        if state.sCount[nextLine] - state.blkIndent >= 4:
+        if state.is_code_block(nextLine):
             break
         columns = escapedSplit(lineText)
         if columns and columns[0] == "":
