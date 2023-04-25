@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1679781479140,
+  "lastUpdate": 1682435975886,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -22227,6 +22227,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0030332",
             "group": "packages",
             "extra": "mean: 788.57 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.16"
+        },
+        "commit": {
+          "id": "2d46a43bd7a55310452b33f9ed2801f7b5cc4dca",
+          "message": "🧪 CI: Add fuzzing workflow for PRs (#262)\n\nThis action runs fuzzing for a brief period of time, only against the actual code added in the PR.\r\nIt is intended as a relatively quick check,\r\nto guard against code introducing crashes in the Markdown parsing, which should in principle always run against any text input. See: https://google.github.io/oss-fuzz/getting-started/continuous-integration/#how-it-works",
+          "timestamp": "2023-04-25T17:16:42+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/2d46a43bd7a55310452b33f9ed2801f7b5cc4dca",
+          "distinct": true,
+          "tree_id": "57c18327a9f6d7fc606bf5f55acfc5183e30c3b5"
+        },
+        "date": 1682435974882,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.5862448898731336,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012482",
+            "group": "packages",
+            "extra": "mean: 278.84 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 8.677674763384383,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0047291",
+            "group": "packages",
+            "extra": "mean: 115.24 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.453789210420739,
+            "unit": "iter/sec",
+            "range": "stddev: 0.021425",
+            "group": "packages",
+            "extra": "mean: 687.86 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.8104009479554863,
+            "unit": "iter/sec",
+            "range": "stddev: 0.023993",
+            "group": "packages",
+            "extra": "mean: 552.36 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.947595242771435,
+            "unit": "iter/sec",
+            "range": "stddev: 0.022708",
+            "group": "packages",
+            "extra": "mean: 1.0553 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 5.337716538049261,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0081881",
+            "group": "packages",
+            "extra": "mean: 187.35 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 0.9680884354454897,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016580",
+            "group": "packages",
+            "extra": "mean: 1.0330 sec\nrounds: 20"
           }
         ]
       }
