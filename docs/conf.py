@@ -102,7 +102,7 @@ def run_apidoc(app):
     this_folder = os.path.abspath(os.path.dirname(os.path.realpath(__file__)))
     api_folder = os.path.join(this_folder, "api")
     module_path = os.path.normpath(os.path.join(this_folder, "../"))
-    ignore_paths = ["../profiler.py", "../conftest.py", "../tests", "../benchmarking"]
+    ignore_paths = ["../scripts", "../conftest.py", "../tests", "../benchmarking"]
     ignore_paths = [
         os.path.normpath(os.path.join(this_folder, p)) for p in ignore_paths
     ]
