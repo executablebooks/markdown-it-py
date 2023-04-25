@@ -10,6 +10,7 @@ name: fuzzing
 
 on:
   pull_request:
+    paths-ignore: ['docs/**', 'tests/**']
 
 jobs:
   Fuzzing:
