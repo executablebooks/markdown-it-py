@@ -13,7 +13,10 @@ def skipBulletListMarker(state: StateBlock, startLine: int):
     pos = state.bMarks[startLine] + state.tShift[startLine]
     maximum = state.eMarks[startLine]
 
-    marker = state.srcCharCode[pos]
+    try:
+        marker = state.srcCharCode[pos]
+    except IndexError:
+        return -1
     pos += 1
     # Check bullet /* * */ /* - */ /* + */
     if marker != 0x2A and marker != 0x2D and marker != 0x2B:

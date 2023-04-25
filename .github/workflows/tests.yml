@@ -54,6 +54,7 @@ jobs:
         flags: pytests
         file: ./coverage.xml
         fail_ci_if_error: true
+        token: ${{ secrets.CODECOV_TOKEN }}
 
   test-plugins:
 

@@ -23,7 +23,10 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
         return False
 
     # check the block quote marker
-    if state.srcCharCode[pos] != 0x3E:  # /* > */
+    try:
+        if state.srcCharCode[pos] != 0x3E:  # /* > */
+            return False
+    except IndexError:
         return False
     pos += 1
 

@@ -20,7 +20,10 @@ def hr(state: StateBlock, startLine: int, endLine: int, silent: bool):
     if state.sCount[startLine] - state.blkIndent >= 4:
         return False
 
-    marker = state.srcCharCode[pos]
+    try:
+        marker = state.srcCharCode[pos]
+    except IndexError:
+        return False
     pos += 1
 
     # Check hr marker: /* * */ /* - */ /* _ */
