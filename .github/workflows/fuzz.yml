@@ -6,9 +6,11 @@ name: fuzzing
 # to guard against code introducing crashes in the Markdown parsing,
 # which should in principle always run against any text input.
 # See: https://google.github.io/oss-fuzz/getting-started/continuous-integration/#how-it-works
+# Note, to reproduce a crash locally, copy to `testcase` file` and run: `tox -e fuzz`
 
 on:
   pull_request:
+    paths-ignore: ['docs/**', 'tests/**']
 
 jobs:
   Fuzzing:
