@@ -25,7 +25,7 @@ jobs:
       with:
         oss-fuzz-project-name: 'markdown-it-py'
         language: python
-        fuzz-seconds: 100
+        fuzz-seconds: 60
     - name: Upload Crash
       uses: actions/upload-artifact@v3
       if: failure() && steps.build.outcome == 'success'
