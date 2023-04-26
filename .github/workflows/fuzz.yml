@@ -1,8 +1,16 @@
 name: fuzzing
+
+# This action runs fuzzing for a brief period of time,
+# only aginst the actual code added in the PR.
+# It is intended a relatively quick check,
+# to guard against code introducing crashes in the Markdown parsing,
+# which should in principle always run against any text input.
+# See: https://google.github.io/oss-fuzz/getting-started/continuous-integration/#how-it-works
+# Note, to reproduce a crash locally, copy to `testcase` file` and run: `tox -e fuzz`
+
 on:
-  push:
-    branches: [master]
   pull_request:
+    paths-ignore: ['docs/**', 'tests/**']
 
 jobs:
   Fuzzing:
@@ -19,7 +27,7 @@ jobs:
       with:
         oss-fuzz-project-name: 'markdown-it-py'
         language: python
-        fuzz-seconds: 600
+        fuzz-seconds: 60
     - name: Upload Crash
       uses: actions/upload-artifact@v3
       if: failure() && steps.build.outcome == 'success'
