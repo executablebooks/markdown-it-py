@@ -9,7 +9,6 @@ import textwrap
 from typing import Any, NamedTuple, TypeVar, overload
 
 from .token import Token
-from .utils import _removesuffix
 
 
 class _NesterTokens(NamedTuple):
@@ -328,3 +327,14 @@ class SyntaxTreeNode:
         """If it's true, ignore this element when rendering.
         Used for tight lists to hide paragraphs."""
         return self._attribute_token().hidden
+
+
+def _removesuffix(string: str, suffix: str) -> str:
+    """Remove a suffix from a string.
+
+    Replace this with str.removesuffix() from stdlib when minimum Python
+    version is 3.9.
+    """
+    if suffix and string.endswith(suffix):
+        return string[: -len(suffix)]
+    return string
