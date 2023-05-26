@@ -1,4 +1,6 @@
 # GFM table, https://github.github.com/gfm/#tables-extension-
+from __future__ import annotations
+
 import re
 
 from ..common.utils import charCodeAt, isSpace
@@ -8,7 +10,7 @@ headerLineRe = re.compile(r"^:?-+:?$")
 enclosingPipesRe = re.compile(r"^\||\|$")
 
 
-def getLine(state: StateBlock, line: int):
+def getLine(state: StateBlock, line: int) -> str:
     pos = state.bMarks[line] + state.tShift[line]
     maximum = state.eMarks[line]
 
@@ -16,8 +18,8 @@ def getLine(state: StateBlock, line: int):
     return state.src[pos:maximum]
 
 
-def escapedSplit(string):
-    result = []
+def escapedSplit(string: str) -> list[str]:
+    result: list[str] = []
     pos = 0
     max = len(string)
     isEscaped = False
@@ -47,7 +49,7 @@ def escapedSplit(string):
     return result
 
 
-def table(state: StateBlock, startLine: int, endLine: int, silent: bool):
+def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
     tbodyLines = None
 
     # should have at least two lines

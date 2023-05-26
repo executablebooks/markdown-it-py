@@ -4,7 +4,7 @@ from __future__ import annotations
 from .state_inline import Delimiter, StateInline
 
 
-def tokenize(state: StateInline, silent: bool):
+def tokenize(state: StateInline, silent: bool) -> bool:
     """Insert each marker as a separate text token, and add it to delimiter list"""
     start = state.pos
     marker = state.srcCharCode[start]
@@ -52,7 +52,7 @@ def tokenize(state: StateInline, silent: bool):
     return True
 
 
-def _postProcess(state: StateInline, delimiters: list[Delimiter]):
+def _postProcess(state: StateInline, delimiters: list[Delimiter]) -> None:
     loneMarkers = []
     maximum = len(delimiters)
 
@@ -113,7 +113,7 @@ def _postProcess(state: StateInline, delimiters: list[Delimiter]):
             state.tokens[i] = token
 
 
-def postProcess(state: StateInline):
+def postProcess(state: StateInline) -> None:
     """Walk through delimiter list and replace text tokens with tags."""
     tokens_meta = state.tokens_meta
     maximum = len(state.tokens_meta)

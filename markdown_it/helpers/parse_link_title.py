@@ -6,13 +6,13 @@ from ..common.utils import charCodeAt, unescapeAll
 class _Result:
     __slots__ = ("ok", "pos", "lines", "str")
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.ok = False
         self.pos = 0
         self.lines = 0
         self.str = ""
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.str
 
 

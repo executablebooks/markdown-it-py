@@ -6,7 +6,7 @@ from .state_block import StateBlock
 LOGGER = logging.getLogger(__name__)
 
 
-def fence(state: StateBlock, startLine: int, endLine: int, silent: bool):
+def fence(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
     LOGGER.debug("entering fence: %s, %s, %s, %s", state, startLine, endLine, silent)
 
     haveEndMarker = False

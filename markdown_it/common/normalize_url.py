@@ -68,7 +68,7 @@ BAD_PROTO_RE = re.compile(r"^(vbscript|javascript|file|data):")
 GOOD_DATA_RE = re.compile(r"^data:image\/(gif|png|jpeg|webp);")
 
 
-def validateLink(url: str, validator: Callable | None = None) -> bool:
+def validateLink(url: str, validator: Callable[[str], bool] | None = None) -> bool:
     """Validate URL link is allowed in output.
 
     This validator can prohibit more than really needed to prevent XSS.

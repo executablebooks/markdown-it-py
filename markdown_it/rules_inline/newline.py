@@ -7,7 +7,7 @@ from .state_inline import StateInline
 endSpace = re.compile(r" +$")
 
 
-def newline(state: StateInline, silent: bool):
+def newline(state: StateInline, silent: bool) -> bool:
     pos = state.pos
 
     # /* \n */

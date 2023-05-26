@@ -1,5 +1,6 @@
 # Skip text characters for text token, place those to pending buffer
 # and increment current pos
+from typing import Any
 
 from .state_inline import StateInline
 
@@ -12,7 +13,7 @@ from .state_inline import StateInline
 # http://spec.commonmark.org/0.15/#ascii-punctuation-character
 
 
-def isTerminatorChar(ch):
+def isTerminatorChar(ch: int) -> bool:
     return ch in {
         0x0A,  # /* \n */:
         0x21,  # /* ! */:
@@ -40,7 +41,7 @@ def isTerminatorChar(ch):
     }
 
 
-def text(state: StateInline, silent: bool, **args):
+def text(state: StateInline, silent: bool, **args: Any) -> bool:
     pos = state.pos
     posMax = state.posMax
     while (pos < posMax) and not isTerminatorChar(state.srcCharCode[pos]):

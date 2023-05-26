@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, MutableMapping
 import dataclasses as dc
-from typing import Any
+from typing import Any, Literal
 import warnings
 
 from markdown_it._compat import DATACLASS_KWARGS
@@ -28,7 +28,7 @@ class Token:
     tag: str
     """HTML tag name, e.g. 'p'"""
 
-    nesting: int
+    nesting: Literal[-1, 0, 1]
     """Level change (number in {-1, 0, 1} set), where:
     -  `1` means the tag is opening
     -  `0` means the tag is self-closing
@@ -63,7 +63,7 @@ class Token:
     - The string value of the item marker for ordered-list "list_item_open" tokens
     """
 
-    meta: dict = dc.field(default_factory=dict)
+    meta: dict[Any, Any] = dc.field(default_factory=dict)
     """A place for plugins to store any arbitrary data"""
 
     block: bool = False
@@ -76,7 +76,7 @@ class Token:
     Used for tight lists to hide paragraphs.
     """
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         self.attrs = convert_attrs(self.attrs)
 
     def attrIndex(self, name: str) -> int:
@@ -129,7 +129,7 @@ class Token:
         *,
         children: bool = True,
         as_upstream: bool = True,
-        meta_serializer: Callable[[dict], Any] | None = None,
+        meta_serializer: Callable[[dict[Any, Any]], Any] | None = None,
         filter: Callable[[str, Any], bool] | None = None,
         dict_factory: Callable[..., MutableMapping[str, Any]] = dict,
     ) -> MutableMapping[str, Any]:

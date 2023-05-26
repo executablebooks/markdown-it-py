@@ -1,9 +1,11 @@
 # For each opening emphasis-like marker find a matching closing one
 #
+from typing import Any
+
 from .state_inline import StateInline
 
 
-def processDelimiters(state: StateInline, delimiters, *args):
+def processDelimiters(state: StateInline, delimiters, *args: Any) -> None:
     openersBottom = {}
     maximum = len(delimiters)
 

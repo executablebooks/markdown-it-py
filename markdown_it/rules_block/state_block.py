@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Literal
 
 from ..common.utils import isSpace
 from ..ruler import StateBase
@@ -36,11 +36,11 @@ class StateBlock(StateBase):
 
         self.tokens = tokens
 
-        self.bMarks = []  # line begin offsets for fast jumps
-        self.eMarks = []  # line end offsets for fast jumps
+        self.bMarks: list[int] = []  # line begin offsets for fast jumps
+        self.eMarks: list[int] = []  # line end offsets for fast jumps
         # offsets of the first non-space characters (tabs not expanded)
-        self.tShift = []
-        self.sCount = []  # indents for each line (tabs expanded)
+        self.tShift: list[int] = []
+        self.sCount: list[int] = []  # indents for each line (tabs expanded)
 
         # An amount of virtual spaces (tabs expanded) between beginning
         # of each line (bMarks) and real beginning of that line.
@@ -52,7 +52,7 @@ class StateBlock(StateBase):
         # an initial tab length, e.g. bsCount=21 applied to string `\t123`
         # means first tab should be expanded to 4-21%4 === 3 spaces.
         #
-        self.bsCount = []
+        self.bsCount: list[int] = []
 
         # block parser variables
         self.blkIndent = 0  # required block content indent (for example, if we are
@@ -115,13 +115,13 @@ class StateBlock(StateBase):
 
         self.lineMax = len(self.bMarks) - 1  # don't count last fake line
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}"
             f"(line={self.line},level={self.level},tokens={len(self.tokens)})"
         )
 
-    def push(self, ttype: str, tag: str, nesting: int) -> Token:
+    def push(self, ttype: str, tag: str, nesting: Literal[-1, 0, 1]) -> Token:
         """Push new token to "stream"."""
         token = Token(ttype, tag, nesting)
         token.block = True

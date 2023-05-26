@@ -9,7 +9,7 @@ LOGGER = logging.getLogger(__name__)
 
 # Search `[-+*][\n ]`, returns next pos after marker on success
 # or -1 on fail.
-def skipBulletListMarker(state: StateBlock, startLine: int):
+def skipBulletListMarker(state: StateBlock, startLine: int) -> int:
     pos = state.bMarks[startLine] + state.tShift[startLine]
     maximum = state.eMarks[startLine]
 
@@ -34,7 +34,7 @@ def skipBulletListMarker(state: StateBlock, startLine: int):
 
 # Search `\d+[.)][\n ]`, returns next pos after marker on success
 # or -1 on fail.
-def skipOrderedListMarker(state: StateBlock, startLine: int):
+def skipOrderedListMarker(state: StateBlock, startLine: int) -> int:
     start = state.bMarks[startLine] + state.tShift[startLine]
     pos = start
     maximum = state.eMarks[startLine]
@@ -83,7 +83,7 @@ def skipOrderedListMarker(state: StateBlock, startLine: int):
     return pos
 
 
-def markTightParagraphs(state: StateBlock, idx: int):
+def markTightParagraphs(state: StateBlock, idx: int) -> None:
     level = state.level + 2
 
     i = idx + 2
@@ -96,7 +96,7 @@ def markTightParagraphs(state: StateBlock, idx: int):
         i += 1
 
 
-def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool):
+def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
     LOGGER.debug("entering list: %s, %s, %s, %s", state, startLine, endLine, silent)
 
     isTerminatingParagraph = False

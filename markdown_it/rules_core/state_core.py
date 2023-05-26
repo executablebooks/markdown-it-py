@@ -17,7 +17,7 @@ class StateCore(StateBase):
         md: MarkdownIt,
         env: MutableMapping,
         tokens: list[Token] | None = None,
-    ):
+    ) -> None:
         self.src = src
         self.md = md  # link to parser instance
         self.env = env
