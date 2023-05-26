@@ -150,7 +150,7 @@ def test_parseInline():
             type="inline",
             tag="",
             nesting=0,
-            attrs=None,
+            attrs={},
             map=[0, 1],
             level=0,
             children=[
@@ -158,7 +158,7 @@ def test_parseInline():
                     type="text",
                     tag="",
                     nesting=0,
-                    attrs=None,
+                    attrs={},
                     map=None,
                     level=0,
                     children=None,
@@ -173,7 +173,7 @@ def test_parseInline():
                     type="softbreak",
                     tag="br",
                     nesting=0,
-                    attrs=None,
+                    attrs={},
                     map=None,
                     level=0,
                     children=None,
@@ -188,7 +188,7 @@ def test_parseInline():
                     type="softbreak",
                     tag="br",
                     nesting=0,
-                    attrs=None,
+                    attrs={},
                     map=None,
                     level=0,
                     children=None,
@@ -203,7 +203,7 @@ def test_parseInline():
                     type="text",
                     tag="",
                     nesting=0,
-                    attrs=None,
+                    attrs={},
                     map=None,
                     level=0,
                     children=None,
@@ -239,7 +239,7 @@ def test_emptyStr():
             type="inline",
             tag="",
             nesting=0,
-            attrs=None,
+            attrs={},
             map=[0, 1],
             level=0,
             children=[],
@@ -257,7 +257,7 @@ def test_empty_env():
     """Test that an empty `env` is mutated, not copied and mutated."""
     md = MarkdownIt()
 
-    env = {}
+    env = {}  # type: ignore
     md.render("[foo]: /url\n[foo]", env)
     assert "references" in env
 
