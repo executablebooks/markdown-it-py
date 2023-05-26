@@ -61,7 +61,7 @@ class Rule:
 
 
 class Ruler:
-    def __init__(self):
+    def __init__(self) -> None:
         # List of added rules.
         self.__rules__: list[Rule] = []
         # Cached rule chains.
