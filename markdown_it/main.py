@@ -12,7 +12,7 @@ from .parser_inline import ParserInline  # noqa F401
 from .renderer import RendererHTML, RendererProtocol
 from .rules_core.state_core import StateCore
 from .token import Token
-from .utils import OptionsDict
+from .utils import EnvType, OptionsDict
 
 try:
     import linkify_it
@@ -229,7 +229,7 @@ class MarkdownIt:
         plugin(self, *params, **options)
         return self
 
-    def parse(self, src: str, env: MutableMapping | None = None) -> list[Token]:
+    def parse(self, src: str, env: EnvType | None = None) -> list[Token]:
         """Parse the source string to a token stream
 
         :param src: source string
@@ -252,7 +252,7 @@ class MarkdownIt:
         self.core.process(state)
         return state.tokens
 
-    def render(self, src: str, env: MutableMapping | None = None) -> Any:
+    def render(self, src: str, env: EnvType | None = None) -> Any:
         """Render markdown string into html. It does all magic for you :).
 
         :param src: source string
@@ -266,7 +266,7 @@ class MarkdownIt:
         env = {} if env is None else env
         return self.renderer.render(self.parse(src, env), self.options, env)
 
-    def parseInline(self, src: str, env: MutableMapping | None = None) -> list[Token]:
+    def parseInline(self, src: str, env: EnvType | None = None) -> list[Token]:
         """The same as [[MarkdownIt.parse]] but skip all block rules.
 
         :param src: source string
@@ -286,7 +286,7 @@ class MarkdownIt:
         self.core.process(state)
         return state.tokens
 
-    def renderInline(self, src: str, env: MutableMapping | None = None) -> Any:
+    def renderInline(self, src: str, env: EnvType | None = None) -> Any:
         """Similar to [[MarkdownIt.render]] but for single paragraph content.
 
         :param src: source string

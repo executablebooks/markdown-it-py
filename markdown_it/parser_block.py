@@ -2,11 +2,16 @@
 from __future__ import annotations
 
 import logging
+from typing import TYPE_CHECKING
 
 from . import rules_block
 from .ruler import Ruler
 from .rules_block.state_block import StateBlock
 from .token import Token
+from .utils import EnvType
+
+if TYPE_CHECKING:
+    from markdown_it import MarkdownIt
 
 LOGGER = logging.getLogger(__name__)
 
@@ -39,7 +44,7 @@ class ParserBlock:
     [[Ruler]] instance. Keep configuration of block rules.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.ruler = Ruler()
         for data in _rules:
             name = data[0]
@@ -96,8 +101,8 @@ class ParserBlock:
     def parse(
         self,
         src: str,
-        md,
-        env,
+        md: MarkdownIt,
+        env: EnvType,
         outTokens: list[Token],
         ords: tuple[int, ...] | None = None,
     ) -> list[Token] | None:

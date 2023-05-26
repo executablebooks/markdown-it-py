@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Literal
 from ..common.utils import isSpace
 from ..ruler import StateBase
 from ..token import Token
+from ..utils import EnvType
 
 if TYPE_CHECKING:
     from markdown_it.main import MarkdownIt
@@ -15,7 +16,7 @@ class StateBlock(StateBase):
         self,
         src: str,
         md: MarkdownIt,
-        env,
+        env: EnvType,
         tokens: list[Token],
         srcCharCode: tuple[int, ...] | None = None,
     ):

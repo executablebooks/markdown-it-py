@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from collections import namedtuple
-from collections.abc import MutableMapping
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Literal
 
@@ -9,6 +8,7 @@ from .._compat import DATACLASS_KWARGS
 from ..common.utils import isMdAsciiPunct, isPunctChar, isWhiteSpace
 from ..ruler import StateBase
 from ..token import Token
+from ..utils import EnvType
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
@@ -50,7 +50,7 @@ Scanned = namedtuple("Scanned", ["can_open", "can_close", "length"])
 
 class StateInline(StateBase):
     def __init__(
-        self, src: str, md: MarkdownIt, env: MutableMapping, outTokens: list[Token]
+        self, src: str, md: MarkdownIt, env: EnvType, outTokens: list[Token]
     ) -> None:
         self.src = src
         self.env = env

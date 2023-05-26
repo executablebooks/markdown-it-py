@@ -17,11 +17,13 @@ rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 """
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, MutableMapping
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 from markdown_it._compat import DATACLASS_KWARGS
+
+from .utils import EnvType
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
@@ -30,7 +32,7 @@ if TYPE_CHECKING:
 class StateBase:
     srcCharCode: tuple[int, ...]
 
-    def __init__(self, src: str, md: MarkdownIt, env: MutableMapping):
+    def __init__(self, src: str, md: MarkdownIt, env: EnvType):
         self.src = src
         self.env = env
         self.md = md

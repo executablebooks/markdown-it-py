@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from pathlib import Path
+from typing import Any, MutableMapping
+
+EnvType = MutableMapping[str, Any]
+"""Type for the environment sandbox used in parsing and rendering,
+which stores mutable variables for use by plugins and rules.
+"""
 
 
 class OptionsDict(dict):
