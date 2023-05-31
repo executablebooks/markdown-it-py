@@ -1,4 +1,4 @@
-.code-cell > .highlight > pre {
+.cell_output > .output > .highlight > pre {
     border-left-color: green;
     border-left-width: medium;
     border-left-style: solid;

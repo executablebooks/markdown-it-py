@@ -52,6 +52,7 @@ rtd = [
     "sphinx-copybutton",
     "sphinx-design",
     "sphinx_book_theme",
+    "jupyter_sphinx",
 ]
 testing = [
     "coverage",
