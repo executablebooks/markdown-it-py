@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from . import rules_block
 from .ruler import Ruler
@@ -16,11 +16,11 @@ if TYPE_CHECKING:
 LOGGER = logging.getLogger(__name__)
 
 
-_rules: list[tuple] = [
+_rules: list[tuple[str, Any, list[str]]] = [
     # First 2 params - rule name & source. Secondary array - list of rules,
     # which can be terminated by this one.
     ("table", rules_block.table, ["paragraph", "reference"]),
-    ("code", rules_block.code),
+    ("code", rules_block.code, []),
     ("fence", rules_block.fence, ["paragraph", "reference", "blockquote", "list"]),
     (
         "blockquote",
@@ -29,11 +29,11 @@ _rules: list[tuple] = [
     ),
     ("hr", rules_block.hr, ["paragraph", "reference", "blockquote", "list"]),
     ("list", rules_block.list_block, ["paragraph", "reference", "blockquote"]),
-    ("reference", rules_block.reference),
+    ("reference", rules_block.reference, []),
     ("html_block", rules_block.html_block, ["paragraph", "reference", "blockquote"]),
     ("heading", rules_block.heading, ["paragraph", "reference", "blockquote"]),
-    ("lheading", rules_block.lheading),
-    ("paragraph", rules_block.paragraph),
+    ("lheading", rules_block.lheading, []),
+    ("paragraph", rules_block.paragraph, []),
 ]
 
 
@@ -46,10 +46,8 @@ class ParserBlock:
 
     def __init__(self) -> None:
         self.ruler = Ruler()
-        for data in _rules:
-            name = data[0]
-            rule = data[1]
-            self.ruler.push(name, rule, {"alt": data[2] if len(data) > 2 else []})
+        for name, rule, alt in _rules:
+            self.ruler.push(name, rule, {"alt": alt})
 
     def tokenize(
         self, state: StateBlock, startLine: int, endLine: int, silent: bool = False
