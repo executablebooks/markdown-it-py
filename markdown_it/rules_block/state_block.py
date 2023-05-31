@@ -116,6 +116,9 @@ class StateBlock(StateBase):
 
         self.lineMax = len(self.bMarks) - 1  # don't count last fake line
 
+        # pre-check if code blocks are enabled, to speed up is_code_block method
+        self._code_enabled = "code" in self.md["block"].ruler.get_active_rules()
+
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}"
@@ -228,3 +231,9 @@ class StateBlock(StateBase):
             i += 1
 
         return "".join(queue)
+
+    def is_code_block(self, line: int) -> bool:
+        """Check if line is a code block,
+        i.e. the code block rule is enabled and text is indented by more than 3 spaces.
+        """
+        return self._code_enabled and (self.sCount[line] - self.blkIndent) >= 4

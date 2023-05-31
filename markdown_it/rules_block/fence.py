@@ -13,8 +13,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
     pos = state.bMarks[startLine] + state.tShift[startLine]
     maximum = state.eMarks[startLine]
 
-    # if it's indented more than 3 spaces, it should be a code block
-    if state.sCount[startLine] - state.blkIndent >= 4:
+    if state.is_code_block(startLine):
         return False
 
     if pos + 3 > maximum:
@@ -72,8 +71,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
         except IndexError:
             break
 
-        if state.sCount[nextLine] - state.blkIndent >= 4:
-            # closing fence should be indented less than 4 spaces
+        if state.is_code_block(nextLine):
             continue
 
         pos = state.skipChars(pos, marker)

@@ -16,8 +16,7 @@ def reference(state: StateBlock, startLine: int, _endLine: int, silent: bool) ->
     maximum = state.eMarks[startLine]
     nextLine = startLine + 1
 
-    # if it's indented more than 3 spaces, it should be a code block
-    if state.sCount[startLine] - state.blkIndent >= 4:
+    if state.is_code_block(startLine):
         return False
 
     if state.srcCharCode[pos] != 0x5B:  # /* [ */
