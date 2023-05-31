@@ -80,7 +80,7 @@ html_css_files = ["custom.css"]
 
 
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/3.7", None),
+    "python": ("https://docs.python.org/3.8", None),
     "mdit-py-plugins": ("https://mdit-py-plugins.readthedocs.io/en/latest/", None),
 }
 

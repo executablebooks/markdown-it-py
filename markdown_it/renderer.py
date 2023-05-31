@@ -9,16 +9,11 @@ from __future__ import annotations
 
 from collections.abc import MutableMapping, Sequence
 import inspect
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Protocol
 
 from .common.utils import escapeHtml, unescapeAll
 from .token import Token
 from .utils import OptionsDict
-
-try:
-    from typing import Protocol
-except ImportError:  # Python <3.8 doesn't have `Protocol` in the stdlib
-    from typing_extensions import Protocol  # type: ignore
 
 
 class RendererProtocol(Protocol):
