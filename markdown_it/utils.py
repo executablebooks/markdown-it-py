@@ -49,7 +49,7 @@ class OptionsDict(MutableMappingABC):  # type: ignore
     # but we keep it for backwards compatibility.
 
     def __init__(self, options: OptionsType) -> None:
-        self._options = options
+        self._options = dict(options)
 
     def __getitem__(self, key: str) -> Any:
         return self._options[key]  # type: ignore[literal-required]
