@@ -44,18 +44,10 @@ extensions = [
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 nitpicky = True
-nitpick_ignore = [
-    ("py:class", "Match"),
-    ("py:class", "Path"),
-    ("py:class", "x in the interval [0, 1)."),
-    ("py:class", "markdown_it.helpers.parse_link_destination._Result"),
-    ("py:class", "markdown_it.helpers.parse_link_title._Result"),
-    ("py:class", "MarkdownIt"),
-    ("py:class", "RuleFunc"),
-    ("py:class", "_NodeType"),
-    ("py:class", "typing_extensions.Protocol"),
+nitpick_ignore_regex = [
+    ("py:.*", name)
+    for name in ("_ItemTV", ".*_NodeType", ".*Literal.*", ".*_Result", "EnvType")
 ]
-
 
 # -- Options for HTML output -------------------------------------------------
 
