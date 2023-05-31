@@ -30,7 +30,7 @@ if TYPE_CHECKING:
 
 
 class StateBase:
-    srcCharCode: tuple[int, ...]
+    srcCharCode: tuple[int, ...]  # noqa: N815
 
     def __init__(self, src: str, md: MarkdownIt, env: EnvType):
         self.src = src

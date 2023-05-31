@@ -120,14 +120,17 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
     # limit conditions when list can interrupt
     # a paragraph (validation mode only)
-    if silent and state.parentType == "paragraph":
-        # Next list item should still terminate previous list item
-        #
-        # This code can fail if plugins use blkIndent as well as lists,
-        # but I hope the spec gets fixed long before that happens.
-        #
-        if state.tShift[startLine] >= state.blkIndent:
-            isTerminatingParagraph = True
+    # Next list item should still terminate previous list item
+    #
+    # This code can fail if plugins use blkIndent as well as lists,
+    # but I hope the spec gets fixed long before that happens.
+    #
+    if (
+        silent
+        and state.parentType == "paragraph"
+        and state.tShift[startLine] >= state.blkIndent
+    ):
+        isTerminatingParagraph = True
 
     # Detect list type and position after marker
     posAfterMarker = skipOrderedListMarker(state, startLine)
@@ -149,9 +152,11 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
     # If we're starting a new unordered list right after
     # a paragraph, first line should not be empty.
-    if isTerminatingParagraph:
-        if state.skipSpaces(posAfterMarker) >= state.eMarks[startLine]:
-            return False
+    if (
+        isTerminatingParagraph
+        and state.skipSpaces(posAfterMarker) >= state.eMarks[startLine]
+    ):
+        return False
 
     # We should terminate list on style change. Remember first one to compare.
     markerCharCode = state.srcCharCode[posAfterMarker - 1]
@@ -209,11 +214,8 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
         contentStart = pos
 
-        if contentStart >= maximum:
-            # trimming space in "-    \n  3" case, indent is 1 here
-            indentAfterMarker = 1
-        else:
-            indentAfterMarker = offset - initial
+        # trimming space in "-    \n  3" case, indent is 1 here
+        indentAfterMarker = 1 if contentStart >= maximum else offset - initial
 
         # If we have more than 4 spaces, the indent is 1
         # (the rest is just indented code block)

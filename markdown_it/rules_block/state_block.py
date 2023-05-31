@@ -202,10 +202,11 @@ class StateBlock(StateBase):
         while line < end:
             lineIndent = 0
             lineStart = first = self.bMarks[line]
-            if line + 1 < end or keepLastLF:
-                last = self.eMarks[line] + 1
-            else:
-                last = self.eMarks[line]
+            last = (
+                self.eMarks[line] + 1
+                if line + 1 < end or keepLastLF
+                else self.eMarks[line]
+            )
 
             while (first < last) and (lineIndent < indent):
                 ch = self.srcCharCode[first]

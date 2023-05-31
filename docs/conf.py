@@ -121,7 +121,7 @@ def run_apidoc(app):
         shutil.rmtree(api_folder)
     os.mkdir(api_folder)
 
-    argv = ["-M", "--separate", "-o", api_folder, module_path] + ignore_paths
+    argv = ["-M", "--separate", "-o", api_folder, module_path, *ignore_paths]
 
     apidoc.OPTIONS.append("ignore-module-all")
     apidoc.main(argv)

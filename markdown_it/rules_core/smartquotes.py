@@ -100,19 +100,17 @@ def process_inlines(tokens: list[Token], state: StateCore) -> None:
             isLastWhiteSpace = isWhiteSpace(lastChar)
             isNextWhiteSpace = isWhiteSpace(nextChar)
 
-            if isNextWhiteSpace:
+            if isNextWhiteSpace:  # noqa: SIM114
                 canOpen = False
-            elif isNextPunctChar:
-                if not (isLastWhiteSpace or isLastPunctChar):
-                    canOpen = False
+            elif isNextPunctChar and not (isLastWhiteSpace or isLastPunctChar):
+                canOpen = False
 
-            if isLastWhiteSpace:
+            if isLastWhiteSpace:  # noqa: SIM114
                 canClose = False
-            elif isLastPunctChar:
-                if not (isNextWhiteSpace or isNextPunctChar):
-                    canClose = False
+            elif isLastPunctChar and not (isNextWhiteSpace or isNextPunctChar):
+                canClose = False
 
-            if nextChar == 0x22 and t.group(0) == '"':  # 0x22: "
+            if nextChar == 0x22 and t.group(0) == '"':  # 0x22: "  # noqa: SIM102
                 if lastChar >= 0x30 and lastChar <= 0x39:  # 0x30: 0, 0x39: 9
                     # special case: 1"" - count first quote as an inch
                     canClose = canOpen = False

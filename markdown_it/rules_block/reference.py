@@ -153,18 +153,17 @@ def reference(state: StateBlock, startLine: int, _endLine: int, silent: bool) ->
             break
         pos += 1
 
-    if pos < maximum and charCodeAt(string, pos) != 0x0A:
-        if title:
-            # garbage at the end of the line after title,
-            # but it could still be a valid reference if we roll back
-            title = ""
-            pos = destEndPos
-            lines = destEndLineNo
-            while pos < maximum:
-                ch = charCodeAt(string, pos)
-                if not isSpace(ch):
-                    break
-                pos += 1
+    if pos < maximum and charCodeAt(string, pos) != 0x0A and title:
+        # garbage at the end of the line after title,
+        # but it could still be a valid reference if we roll back
+        title = ""
+        pos = destEndPos
+        lines = destEndLineNo
+        while pos < maximum:
+            ch = charCodeAt(string, pos)
+            if not isSpace(ch):
+                break
+            pos += 1
 
     if pos < maximum and charCodeAt(string, pos) != 0x0A:
         # garbage at the end of the line
