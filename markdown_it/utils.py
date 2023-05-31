@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import MutableMapping as MutableMappingABC
 from pathlib import Path
-from typing import Any, Callable, Iterable, MutableMapping, TypedDict
+from typing import Any, Callable, Iterable, MutableMapping, TypedDict, cast
 
 EnvType = MutableMapping[str, Any]  # note: could use TypeAlias in python 3.10
 """Type for the environment sandbox used in parsing and rendering,
@@ -49,7 +49,7 @@ class OptionsDict(MutableMappingABC):  # type: ignore
     # but we keep it for backwards compatibility.
 
     def __init__(self, options: OptionsType) -> None:
-        self._options = dict(options)
+        self._options = cast(OptionsType, dict(options))
 
     def __getitem__(self, key: str) -> Any:
         return self._options[key]  # type: ignore[literal-required]
