@@ -7,7 +7,7 @@ from .state_block import StateBlock
 LOGGER = logging.getLogger(__name__)
 
 
-def paragraph(state: StateBlock, startLine: int, endLine: int, silent: bool = False):
+def paragraph(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
     LOGGER.debug(
         "entering paragraph: %s, %s, %s, %s", state, startLine, endLine, silent
     )

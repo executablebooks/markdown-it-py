@@ -7,7 +7,7 @@ from .state_block import StateBlock
 LOGGER = logging.getLogger(__name__)
 
 
-def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool):
+def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
     LOGGER.debug("entering lheading: %s, %s, %s, %s", state, startLine, endLine, silent)
 
     level = None

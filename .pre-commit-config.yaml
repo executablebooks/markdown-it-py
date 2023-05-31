@@ -44,3 +44,9 @@ repos:
     hooks:
     - id: mypy
       additional_dependencies: [mdurl]
+      exclude: >
+        (?x)^(
+          benchmarking/.*\.py|
+          docs/.*\.py|
+          scripts/.*\.py|
+        )$

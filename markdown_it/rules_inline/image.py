@@ -6,7 +6,7 @@ from ..token import Token
 from .state_inline import StateInline
 
 
-def image(state: StateInline, silent: bool):
+def image(state: StateInline, silent: bool) -> bool:
     label = None
     href = ""
     oldPos = state.pos

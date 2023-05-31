@@ -4,7 +4,7 @@ from ..common.utils import isSpace, normalizeReference
 from .state_inline import StateInline
 
 
-def link(state: StateInline, silent: bool):
+def link(state: StateInline, silent: bool) -> bool:
     href = ""
     title = ""
     label = None

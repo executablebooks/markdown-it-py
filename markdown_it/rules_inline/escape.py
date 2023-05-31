@@ -9,7 +9,7 @@ for ch in "\\!\"#$%&'()*+,./:;<=>?@[]^_`{|}~-":
     ESCAPED[ord(ch)] = 1
 
 
-def escape(state: StateInline, silent: bool):
+def escape(state: StateInline, silent: bool) -> bool:
     pos = state.pos
     maximum = state.posMax
 

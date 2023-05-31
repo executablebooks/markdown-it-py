@@ -24,7 +24,7 @@ def test_token():
     assert token.attrGet("a") == "b"
     token.attrJoin("a", "c")
     assert token.attrGet("a") == "b c"
-    token.attrPush(["x", "y"])
+    token.attrPush(("x", "y"))
     assert token.attrGet("x") == "y"
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")

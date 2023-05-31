@@ -56,7 +56,7 @@ EN_DASH_INDENT_RE = re.compile(r"(^|[^-\s])--(?=[^-\s]|$)", flags=re.MULTILINE)
 SCOPED_ABBR = {"c": "©", "r": "®", "p": "§", "tm": "™"}
 
 
-def replaceFn(match: re.Match[str]):
+def replaceFn(match: re.Match[str]) -> str:
     return SCOPED_ABBR[match.group(1).lower()]
 
 

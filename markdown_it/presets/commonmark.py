@@ -6,9 +6,10 @@ primarily in that it allows HTML and does not enable components:
 - block: table
 - inline: strikethrough
 """
+from ..utils import PresetType
 
 
-def make():
+def make() -> PresetType:
     return {
         "options": {
             "maxNesting": 20,  # Internal protection, recursion limit

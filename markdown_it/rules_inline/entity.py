@@ -9,7 +9,7 @@ DIGITAL_RE = re.compile(r"^&#((?:x[a-f0-9]{1,6}|[0-9]{1,7}));", re.IGNORECASE)
 NAMED_RE = re.compile(r"^&([a-z][a-z0-9]{1,31});", re.IGNORECASE)
 
 
-def entity(state: StateInline, silent: bool):
+def entity(state: StateInline, silent: bool) -> bool:
     pos = state.pos
     maximum = state.posMax
 

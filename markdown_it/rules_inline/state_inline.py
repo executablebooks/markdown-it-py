@@ -1,14 +1,14 @@
 from __future__ import annotations
 
 from collections import namedtuple
-from collections.abc import MutableMapping
 from dataclasses import dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Literal
 
 from .._compat import DATACLASS_KWARGS
 from ..common.utils import isMdAsciiPunct, isPunctChar, isWhiteSpace
 from ..ruler import StateBase
 from ..token import Token
+from ..utils import EnvType
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
@@ -50,13 +50,13 @@ Scanned = namedtuple("Scanned", ["can_open", "can_close", "length"])
 
 class StateInline(StateBase):
     def __init__(
-        self, src: str, md: MarkdownIt, env: MutableMapping, outTokens: list[Token]
-    ):
+        self, src: str, md: MarkdownIt, env: EnvType, outTokens: list[Token]
+    ) -> None:
         self.src = src
         self.env = env
         self.md = md
         self.tokens = outTokens
-        self.tokens_meta: list[dict | None] = [None] * len(outTokens)
+        self.tokens_meta: list[dict[str, Any] | None] = [None] * len(outTokens)
 
         self.pos = 0
         self.posMax = len(self.src)
@@ -78,13 +78,13 @@ class StateInline(StateBase):
         self.backticks: dict[int, int] = {}
         self.backticksScanned = False
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}"
             f"(pos=[{self.pos} of {self.posMax}], token={len(self.tokens)})"
         )
 
-    def pushPending(self):
+    def pushPending(self) -> Token:
         token = Token("text", "", 0)
         token.content = self.pending
         token.level = self.pendingLevel
@@ -92,7 +92,7 @@ class StateInline(StateBase):
         self.pending = ""
         return token
 
-    def push(self, ttype, tag, nesting):
+    def push(self, ttype: str, tag: str, nesting: Literal[-1, 0, 1]) -> Token:
         """Push new token to "stream".
         If pending text exists - flush it as text token
         """
@@ -121,7 +121,7 @@ class StateInline(StateBase):
         self.tokens_meta.append(token_meta)
         return token
 
-    def scanDelims(self, start, canSplitWord):
+    def scanDelims(self, start: int, canSplitWord: bool) -> Scanned:
         """
         Scan a sequence of emphasis-like markers, and determine whether
         it can start an emphasis sequence or end an emphasis sequence.

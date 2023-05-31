@@ -20,7 +20,7 @@ def test_property_passthrough():
     tree = SyntaxTreeNode(tokens)
     heading_node = tree.children[0]
     assert heading_open.tag == heading_node.tag
-    assert tuple(heading_open.map) == heading_node.map
+    assert tuple(heading_open.map or ()) == heading_node.map
     assert heading_open.level == heading_node.level
     assert heading_open.content == heading_node.content
     assert heading_open.markup == heading_node.markup
@@ -49,11 +49,13 @@ def test_sibling_traverse():
     text_node = paragraph_inline_node.children[0]
     assert text_node.type == "text"
     strong_node = text_node.next_sibling
+    assert strong_node
     assert strong_node.type == "strong"
     another_text_node = strong_node.next_sibling
+    assert another_text_node
     assert another_text_node.type == "text"
     assert another_text_node.next_sibling is None
-    assert another_text_node.previous_sibling.previous_sibling == text_node
+    assert another_text_node.previous_sibling.previous_sibling == text_node  # type: ignore
     assert text_node.previous_sibling is None
 
 

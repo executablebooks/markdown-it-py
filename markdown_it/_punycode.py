@@ -22,6 +22,7 @@
 
 import codecs
 import re
+from typing import Callable
 
 REGEX_SEPARATORS = re.compile(r"[\x2E\u3002\uFF0E\uFF61]")
 REGEX_NON_ASCII = re.compile(r"[^\0-\x7E]")
@@ -32,10 +33,10 @@ def encode(uni: str) -> str:
 
 
 def decode(ascii: str) -> str:
-    return codecs.decode(ascii, encoding="punycode")  # type: ignore[call-overload]
+    return codecs.decode(ascii, encoding="punycode")  # type: ignore
 
 
-def map_domain(string, fn):
+def map_domain(string: str, fn: Callable[[str], str]) -> str:
     parts = string.split("@")
     result = ""
     if len(parts) > 1:

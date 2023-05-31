@@ -3,13 +3,13 @@ from ..common.html_re import HTML_TAG_RE
 from .state_inline import StateInline
 
 
-def isLetter(ch: int):
+def isLetter(ch: int) -> bool:
     lc = ch | 0x20  # to lower case
     # /* a */ and /* z */
     return (lc >= 0x61) and (lc <= 0x7A)
 
 
-def html_inline(state: StateInline, silent: bool):
+def html_inline(state: StateInline, silent: bool) -> bool:
     pos = state.pos
 
     if not state.md.options.get("html", None):

@@ -9,7 +9,6 @@ import textwrap
 from typing import Any, NamedTuple, TypeVar, overload
 
 from .token import Token
-from .utils import _removesuffix
 
 
 class _NesterTokens(NamedTuple):
@@ -51,7 +50,7 @@ class SyntaxTreeNode:
 
         # Empty list unless a non-empty container, or unnested token that has
         # children (i.e. inline or img)
-        self._children: list = []
+        self._children: list[Any] = []
 
         if create_root:
             self._set_children_from_tokens(tokens)
@@ -119,7 +118,7 @@ class SyntaxTreeNode:
 
     @property
     def parent(self: _NodeType) -> _NodeType | None:
-        return self._parent
+        return self._parent  # type: ignore
 
     @parent.setter
     def parent(self: _NodeType, value: _NodeType | None) -> None:
@@ -314,7 +313,7 @@ class SyntaxTreeNode:
         return self._attribute_token().info
 
     @property
-    def meta(self) -> dict:
+    def meta(self) -> dict[Any, Any]:
         """A place for plugins to store an arbitrary data."""
         return self._attribute_token().meta
 
@@ -328,3 +327,14 @@ class SyntaxTreeNode:
         """If it's true, ignore this element when rendering.
         Used for tight lists to hide paragraphs."""
         return self._attribute_token().hidden
+
+
+def _removesuffix(string: str, suffix: str) -> str:
+    """Remove a suffix from a string.
+
+    Replace this with str.removesuffix() from stdlib when minimum Python
+    version is 3.9.
+    """
+    if suffix and string.endswith(suffix):
+        return string[: -len(suffix)]
+    return string

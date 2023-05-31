@@ -9,7 +9,7 @@ from .state_block import StateBlock
 LOGGER = logging.getLogger(__name__)
 
 
-def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool):
+def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
     LOGGER.debug(
         "entering blockquote: %s, %s, %s, %s", state, startLine, endLine, silent
     )

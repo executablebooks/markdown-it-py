@@ -1,10 +1,11 @@
 # Process *this* and _that_
 #
+from __future__ import annotations
 
 from .state_inline import Delimiter, StateInline
 
 
-def tokenize(state: StateInline, silent: bool):
+def tokenize(state: StateInline, silent: bool) -> bool:
     """Insert each marker as a separate text token, and add it to delimiter list"""
     start = state.pos
     marker = state.srcCharCode[start]
@@ -38,7 +39,7 @@ def tokenize(state: StateInline, silent: bool):
     return True
 
 
-def _postProcess(state, delimiters):
+def _postProcess(state: StateInline, delimiters: list[Delimiter]) -> None:
     i = len(delimiters) - 1
     while i >= 0:
         startDelim = delimiters[i]
@@ -92,7 +93,7 @@ def _postProcess(state, delimiters):
         i -= 1
 
 
-def postProcess(state: StateInline):
+def postProcess(state: StateInline) -> None:
     """Walk through delimiter list and replace text tokens with tags."""
     _postProcess(state, state.delimiters)
 

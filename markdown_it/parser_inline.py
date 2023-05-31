@@ -2,10 +2,16 @@
 """
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from . import rules_inline
 from .ruler import RuleFunc, Ruler
 from .rules_inline.state_inline import StateInline
 from .token import Token
+from .utils import EnvType
+
+if TYPE_CHECKING:
+    from markdown_it import MarkdownIt
 
 # Parser rules
 _rules: list[tuple[str, RuleFunc]] = [
@@ -31,7 +37,7 @@ _rules2: list[tuple[str, RuleFunc]] = [
 
 
 class ParserInline:
-    def __init__(self):
+    def __init__(self) -> None:
         self.ruler = Ruler()
         for name, rule in _rules:
             self.ruler.push(name, rule)
@@ -114,7 +120,9 @@ class ParserInline:
         if state.pending:
             state.pushPending()
 
-    def parse(self, src: str, md, env, tokens: list[Token]) -> list[Token]:
+    def parse(
+        self, src: str, md: MarkdownIt, env: EnvType, tokens: list[Token]
+    ) -> list[Token]:
         """Process input string and push inline tokens into `tokens`"""
         state = StateInline(src, md, env, tokens)
         self.tokenize(state)

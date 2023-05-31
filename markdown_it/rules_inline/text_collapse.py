@@ -1,7 +1,7 @@
 from .state_inline import StateInline
 
 
-def text_collapse(state: StateInline, *args):
+def text_collapse(state: StateInline) -> None:
     """
     Clean up tokens after emphasis and strikethrough postprocessing:
     merge adjacent text nodes into one and re-calculate all token levels

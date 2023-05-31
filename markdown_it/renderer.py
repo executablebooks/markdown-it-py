@@ -7,20 +7,20 @@ rules if you create plugin and adds new token types.
 """
 from __future__ import annotations
 
-from collections.abc import MutableMapping, Sequence
+from collections.abc import Sequence
 import inspect
 from typing import Any, ClassVar, Protocol
 
 from .common.utils import escapeHtml, unescapeAll
 from .token import Token
-from .utils import OptionsDict
+from .utils import EnvType, OptionsDict
 
 
 class RendererProtocol(Protocol):
     __output__: ClassVar[str]
 
     def render(
-        self, tokens: Sequence[Token], options: OptionsDict, env: MutableMapping
+        self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
     ) -> Any:
         ...
 
@@ -57,7 +57,7 @@ class RendererHTML(RendererProtocol):
 
     __output__ = "html"
 
-    def __init__(self, parser=None):
+    def __init__(self, parser: Any = None):
         self.rules = {
             k: v
             for k, v in inspect.getmembers(self, predicate=inspect.ismethod)
@@ -65,7 +65,7 @@ class RendererHTML(RendererProtocol):
         }
 
     def render(
-        self, tokens: Sequence[Token], options: OptionsDict, env: MutableMapping
+        self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
     ) -> str:
         """Takes token stream and generates HTML.
 
@@ -88,7 +88,7 @@ class RendererHTML(RendererProtocol):
         return result
 
     def renderInline(
-        self, tokens: Sequence[Token], options: OptionsDict, env: MutableMapping
+        self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
     ) -> str:
         """The same as ``render``, but for single token of `inline` type.
 
@@ -111,7 +111,7 @@ class RendererHTML(RendererProtocol):
         tokens: Sequence[Token],
         idx: int,
         options: OptionsDict,
-        env: MutableMapping,
+        env: EnvType,
     ) -> str:
         """Default token renderer.
 
@@ -184,7 +184,7 @@ class RendererHTML(RendererProtocol):
         self,
         tokens: Sequence[Token] | None,
         options: OptionsDict,
-        env: MutableMapping,
+        env: EnvType,
     ) -> str:
         """Special kludge for image `alt` attributes to conform CommonMark spec.
 
@@ -210,7 +210,9 @@ class RendererHTML(RendererProtocol):
 
     ###################################################
 
-    def code_inline(self, tokens: Sequence[Token], idx: int, options, env) -> str:
+    def code_inline(
+        self, tokens: Sequence[Token], idx: int, options: OptionsDict, env: EnvType
+    ) -> str:
         token = tokens[idx]
         return (
             "<code"
@@ -225,7 +227,7 @@ class RendererHTML(RendererProtocol):
         tokens: Sequence[Token],
         idx: int,
         options: OptionsDict,
-        env: MutableMapping,
+        env: EnvType,
     ) -> str:
         token = tokens[idx]
 
@@ -242,7 +244,7 @@ class RendererHTML(RendererProtocol):
         tokens: Sequence[Token],
         idx: int,
         options: OptionsDict,
-        env: MutableMapping,
+        env: EnvType,
     ) -> str:
         token = tokens[idx]
         info = unescapeAll(token.info).strip() if token.info else ""
@@ -294,7 +296,7 @@ class RendererHTML(RendererProtocol):
         tokens: Sequence[Token],
         idx: int,
         options: OptionsDict,
-        env: MutableMapping,
+        env: EnvType,
     ) -> str:
         token = tokens[idx]
 
@@ -308,22 +310,28 @@ class RendererHTML(RendererProtocol):
         return self.renderToken(tokens, idx, options, env)
 
     def hardbreak(
-        self, tokens: Sequence[Token], idx: int, options: OptionsDict, *args
+        self, tokens: Sequence[Token], idx: int, options: OptionsDict, env: EnvType
     ) -> str:
         return "<br />\n" if options.xhtmlOut else "<br>\n"
 
     def softbreak(
-        self, tokens: Sequence[Token], idx: int, options: OptionsDict, *args
+        self, tokens: Sequence[Token], idx: int, options: OptionsDict, env: EnvType
     ) -> str:
         return (
             ("<br />\n" if options.xhtmlOut else "<br>\n") if options.breaks else "\n"
         )
 
-    def text(self, tokens: Sequence[Token], idx: int, *args) -> str:
+    def text(
+        self, tokens: Sequence[Token], idx: int, options: OptionsDict, env: EnvType
+    ) -> str:
         return escapeHtml(tokens[idx].content)
 
-    def html_block(self, tokens: Sequence[Token], idx: int, *args) -> str:
+    def html_block(
+        self, tokens: Sequence[Token], idx: int, options: OptionsDict, env: EnvType
+    ) -> str:
         return tokens[idx].content
 
-    def html_inline(self, tokens: Sequence[Token], idx: int, *args) -> str:
+    def html_inline(
+        self, tokens: Sequence[Token], idx: int, options: OptionsDict, env: EnvType
+    ) -> str:
         return tokens[idx].content

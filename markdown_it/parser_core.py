@@ -21,7 +21,7 @@ _rules: list[tuple[str, RuleFunc]] = [
 
 
 class ParserCore:
-    def __init__(self):
+    def __init__(self) -> None:
         self.ruler = Ruler()
         for name, rule in _rules:
             self.ruler.push(name, rule)

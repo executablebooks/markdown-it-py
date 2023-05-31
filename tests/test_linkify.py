@@ -6,6 +6,7 @@ def test_token_levels():
     tokens = mdit.parse("www.python.org")
     inline = tokens[1]
     assert inline.type == "inline"
+    assert inline.children
     link_open = inline.children[0]
     assert link_open.type == "link_open"
     link_text = inline.children[1]

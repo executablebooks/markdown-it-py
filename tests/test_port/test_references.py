@@ -4,7 +4,7 @@ from markdown_it import MarkdownIt
 def test_ref_definitions():
     md = MarkdownIt()
     src = "[a]: abc\n\n[b]: xyz\n\n[b]: ijk"
-    env = {}
+    env = {}  # type: ignore
     tokens = md.parse(src, env)
     assert tokens == []
     assert env == {

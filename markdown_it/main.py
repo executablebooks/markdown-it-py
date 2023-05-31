@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Generator, Iterable, Mapping, MutableMapping
 from contextlib import contextmanager
-from typing import Any
+from typing import Any, Literal, overload
 
 from . import helpers, presets  # noqa F401
 from .common import normalize_url, utils  # noqa F401
@@ -12,7 +12,7 @@ from .parser_inline import ParserInline  # noqa F401
 from .renderer import RendererHTML, RendererProtocol
 from .rules_core.state_core import StateCore
 from .token import Token
-from .utils import OptionsDict
+from .utils import EnvType, OptionsDict, OptionsType, PresetType
 
 try:
     import linkify_it
@@ -20,7 +20,7 @@ except ModuleNotFoundError:
     linkify_it = None
 
 
-_PRESETS = {
+_PRESETS: dict[str, PresetType] = {
     "default": presets.default.make(),
     "js-default": presets.js_default.make(),
     "zero": presets.zero.make(),
@@ -32,8 +32,8 @@ _PRESETS = {
 class MarkdownIt:
     def __init__(
         self,
-        config: str | Mapping = "commonmark",
-        options_update: Mapping | None = None,
+        config: str | PresetType = "commonmark",
+        options_update: Mapping[str, Any] | None = None,
         *,
         renderer_cls: Callable[[MarkdownIt], RendererProtocol] = RendererHTML,
     ):
@@ -67,6 +67,26 @@ class MarkdownIt:
     def __repr__(self) -> str:
         return f"{self.__class__.__module__}.{self.__class__.__name__}()"
 
+    @overload
+    def __getitem__(self, name: Literal["inline"]) -> ParserInline:
+        ...
+
+    @overload
+    def __getitem__(self, name: Literal["block"]) -> ParserBlock:
+        ...
+
+    @overload
+    def __getitem__(self, name: Literal["core"]) -> ParserCore:
+        ...
+
+    @overload
+    def __getitem__(self, name: Literal["renderer"]) -> RendererProtocol:
+        ...
+
+    @overload
+    def __getitem__(self, name: str) -> Any:
+        ...
+
     def __getitem__(self, name: str) -> Any:
         return {
             "inline": self.inline,
@@ -75,7 +95,7 @@ class MarkdownIt:
             "renderer": self.renderer,
         }[name]
 
-    def set(self, options: MutableMapping) -> None:
+    def set(self, options: OptionsType) -> None:
         """Set parser options (in the same format as in constructor).
         Probably, you will never need it, but you can change options after constructor call.
 
@@ -86,7 +106,7 @@ class MarkdownIt:
         self.options = OptionsDict(options)
 
     def configure(
-        self, presets: str | Mapping, options_update: Mapping | None = None
+        self, presets: str | PresetType, options_update: Mapping[str, Any] | None = None
     ) -> MarkdownIt:
         """Batch load of all options and component settings.
         This is an internal method, and you probably will not need it.
@@ -108,9 +128,9 @@ class MarkdownIt:
 
         options = config.get("options", {}) or {}
         if options_update:
-            options = {**options, **options_update}
+            options = {**options, **options_update}  # type: ignore
 
-        self.set(options)
+        self.set(options)  # type: ignore
 
         if "components" in config:
             for name, component in config["components"].items():
@@ -206,7 +226,9 @@ class MarkdownIt:
                 self[chain].ruler.enableOnly(rules)
         self.inline.ruler2.enableOnly(chain_rules["inline2"])
 
-    def add_render_rule(self, name: str, function: Callable, fmt: str = "html") -> None:
+    def add_render_rule(
+        self, name: str, function: Callable[..., Any], fmt: str = "html"
+    ) -> None:
         """Add a rule for rendering a particular Token type.
 
         Only applied when ``renderer.__output__ == fmt``
@@ -214,7 +236,9 @@ class MarkdownIt:
         if self.renderer.__output__ == fmt:
             self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
 
-    def use(self, plugin: Callable, *params, **options) -> MarkdownIt:
+    def use(
+        self, plugin: Callable[..., None], *params: Any, **options: Any
+    ) -> MarkdownIt:
         """Load specified plugin with given params into current parser instance. (chainable)
 
         It's just a sugar to call `plugin(md, params)` with curring.
@@ -229,7 +253,7 @@ class MarkdownIt:
         plugin(self, *params, **options)
         return self
 
-    def parse(self, src: str, env: MutableMapping | None = None) -> list[Token]:
+    def parse(self, src: str, env: EnvType | None = None) -> list[Token]:
         """Parse the source string to a token stream
 
         :param src: source string
@@ -252,7 +276,7 @@ class MarkdownIt:
         self.core.process(state)
         return state.tokens
 
-    def render(self, src: str, env: MutableMapping | None = None) -> Any:
+    def render(self, src: str, env: EnvType | None = None) -> Any:
         """Render markdown string into html. It does all magic for you :).
 
         :param src: source string
@@ -266,7 +290,7 @@ class MarkdownIt:
         env = {} if env is None else env
         return self.renderer.render(self.parse(src, env), self.options, env)
 
-    def parseInline(self, src: str, env: MutableMapping | None = None) -> list[Token]:
+    def parseInline(self, src: str, env: EnvType | None = None) -> list[Token]:
         """The same as [[MarkdownIt.parse]] but skip all block rules.
 
         :param src: source string
@@ -286,7 +310,7 @@ class MarkdownIt:
         self.core.process(state)
         return state.tokens
 
-    def renderInline(self, src: str, env: MutableMapping | None = None) -> Any:
+    def renderInline(self, src: str, env: EnvType | None = None) -> Any:
         """Similar to [[MarkdownIt.render]] but for single paragraph content.
 
         :param src: source string

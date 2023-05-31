@@ -1,8 +1,10 @@
 """Utilities for parsing source text
 """
+from __future__ import annotations
+
 import html
 import re
-from typing import Any
+from typing import Any, Match, TypeVar
 
 from .entities import entities
 
@@ -22,29 +24,12 @@ def charCodeAt(src: str, pos: int) -> Any:
         return None
 
 
-# Merge objects
-#
-def assign(obj):
-    """Merge objects /*from1, from2, from3, ...*/)"""
-    raise NotImplementedError
-    # sources = Array.prototype.slice.call(arguments, 1)
-
-    # sources.forEach(function (source) {
-    #   if (!source) { return; }
-
-    #   if (typeof source !== 'object') {
-    #     throw new TypeError(source + 'must be object')
-    #   }
-
-    #   Object.keys(source).forEach(function (key) {
-    #     obj[key] = source[key]
-    #   })
-    # })
-
-    # return obj
+_ItemTV = TypeVar("_ItemTV")
 
 
-def arrayReplaceAt(src: list, pos: int, newElements: list) -> list:
+def arrayReplaceAt(
+    src: list[_ItemTV], pos: int, newElements: list[_ItemTV]
+) -> list[_ItemTV]:
     """
     Remove element from array and put another array at those position.
     Useful for some operations with tokens
@@ -133,7 +118,7 @@ def unescapeMd(string: str) -> str:
 
 
 def unescapeAll(string: str) -> str:
-    def replacer_func(match):
+    def replacer_func(match: Match[str]) -> str:
         escaped = match.group(1)
         if escaped:
             return escaped

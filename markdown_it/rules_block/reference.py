@@ -6,7 +6,7 @@ from .state_block import StateBlock
 LOGGER = logging.getLogger(__name__)
 
 
-def reference(state: StateBlock, startLine, _endLine, silent):
+def reference(state: StateBlock, startLine: int, _endLine: int, silent: bool) -> bool:
     LOGGER.debug(
         "entering reference: %s, %s, %s, %s", state, startLine, _endLine, silent
     )
