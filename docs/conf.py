@@ -46,7 +46,16 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 nitpicky = True
 nitpick_ignore_regex = [
     ("py:.*", name)
-    for name in ("_ItemTV", ".*_NodeType", ".*Literal.*", ".*_Result", "EnvType")
+    for name in (
+        "_ItemTV",
+        ".*_NodeType",
+        ".*Literal.*",
+        ".*_Result",
+        "EnvType",
+        "RuleFunc",
+        "Path",
+        "Ellipsis",
+    )
 ]
 
 # -- Options for HTML output -------------------------------------------------
