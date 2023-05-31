@@ -1,7 +1,8 @@
 """markdown-it default options."""
+from ..utils import PresetType
 
 
-def make():
+def make() -> PresetType:
     return {
         "options": {
             "maxNesting": 100,  # Internal protection, recursion limit

@@ -12,7 +12,7 @@ from .parser_inline import ParserInline  # noqa F401
 from .renderer import RendererHTML, RendererProtocol
 from .rules_core.state_core import StateCore
 from .token import Token
-from .utils import EnvType, OptionsDict
+from .utils import EnvType, OptionsDict, OptionsType, PresetType
 
 try:
     import linkify_it
@@ -20,7 +20,7 @@ except ModuleNotFoundError:
     linkify_it = None
 
 
-_PRESETS = {
+_PRESETS: dict[str, PresetType] = {
     "default": presets.default.make(),
     "js-default": presets.js_default.make(),
     "zero": presets.zero.make(),
@@ -32,8 +32,8 @@ _PRESETS = {
 class MarkdownIt:
     def __init__(
         self,
-        config: str | Mapping = "commonmark",
-        options_update: Mapping | None = None,
+        config: str | PresetType = "commonmark",
+        options_update: Mapping[str, Any] | None = None,
         *,
         renderer_cls: Callable[[MarkdownIt], RendererProtocol] = RendererHTML,
     ):
@@ -75,7 +75,7 @@ class MarkdownIt:
             "renderer": self.renderer,
         }[name]
 
-    def set(self, options: MutableMapping) -> None:
+    def set(self, options: OptionsType) -> None:
         """Set parser options (in the same format as in constructor).
         Probably, you will never need it, but you can change options after constructor call.
 
@@ -86,7 +86,7 @@ class MarkdownIt:
         self.options = OptionsDict(options)
 
     def configure(
-        self, presets: str | Mapping, options_update: Mapping | None = None
+        self, presets: str | PresetType, options_update: Mapping[str, Any] | None = None
     ) -> MarkdownIt:
         """Batch load of all options and component settings.
         This is an internal method, and you probably will not need it.
@@ -108,9 +108,9 @@ class MarkdownIt:
 
         options = config.get("options", {}) or {}
         if options_update:
-            options = {**options, **options_update}
+            options = {**options, **options_update}  # type: ignore
 
-        self.set(options)
+        self.set(options)  # type: ignore
 
         if "components" in config:
             for name, component in config["components"].items():
@@ -206,7 +206,9 @@ class MarkdownIt:
                 self[chain].ruler.enableOnly(rules)
         self.inline.ruler2.enableOnly(chain_rules["inline2"])
 
-    def add_render_rule(self, name: str, function: Callable, fmt: str = "html") -> None:
+    def add_render_rule(
+        self, name: str, function: Callable[..., Any], fmt: str = "html"
+    ) -> None:
         """Add a rule for rendering a particular Token type.
 
         Only applied when ``renderer.__output__ == fmt``
@@ -214,7 +216,9 @@ class MarkdownIt:
         if self.renderer.__output__ == fmt:
             self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
 
-    def use(self, plugin: Callable, *params, **options) -> MarkdownIt:
+    def use(
+        self, plugin: Callable[..., None], *params: Any, **options: Any
+    ) -> MarkdownIt:
         """Load specified plugin with given params into current parser instance. (chainable)
 
         It's just a sugar to call `plugin(md, params)` with curring.

@@ -1,6 +1,7 @@
 __all__ = ("commonmark", "default", "zero", "js_default", "gfm_like")
 
 from . import commonmark, default, zero
+from ..utils import PresetType
 
 js_default = default
 
@@ -16,7 +17,7 @@ class gfm_like:
     """
 
     @staticmethod
-    def make():
+    def make() -> PresetType:
         config = commonmark.make()
         config["components"]["core"]["rules"].append("linkify")
         config["components"]["block"]["rules"].append("table")
