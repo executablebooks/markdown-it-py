@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1685559647287,
+  "lastUpdate": 1685560809807,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -22773,6 +22773,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0022547",
             "group": "packages",
             "extra": "mean: 797.99 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.16"
+        },
+        "commit": {
+          "id": "9251695727cfa948bb18fc76a5dc85495cacc361",
+          "message": "👌 Centralise indented code block test (#260)\n\nFor CommonMark, the presence of indented code blocks prevent any other block element from having an indent of greater than 4 spaces.\r\nCertain Markdown flavors and derivatives, such as mdx and djot, disable these code blocks though, since it is more common to use code fences and/or arbitrary indenting is desirable.\r\nCurrently, disabling code blocks does not remove the indent limitation, since most block elements have the 3 space limitation hard-coded.\r\nThis commit therefore centralises the logic of applying this limitation, and only applies it when indented code blocks are enabled.\r\nNote, this is a potential breaking change and divergence from upstream markdown-it, for this niche case, but I feel makes sense and could even be upstreamed.",
+          "timestamp": "2023-05-31T21:18:09+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/9251695727cfa948bb18fc76a5dc85495cacc361",
+          "distinct": true,
+          "tree_id": "a2a70317e5ed3887e51ec70bdcee13802c8f00dd"
+        },
+        "date": 1685560808526,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.398640110793079,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057999",
+            "group": "packages",
+            "extra": "mean: 227.34 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.221745142029489,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0019792",
+            "group": "packages",
+            "extra": "mean: 97.831 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.618367075021909,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015751",
+            "group": "packages",
+            "extra": "mean: 381.92 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 2.087435841879221,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016328",
+            "group": "packages",
+            "extra": "mean: 479.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.1773186946191652,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0046133",
+            "group": "packages",
+            "extra": "mean: 849.39 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 6.5563857988847545,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0068948",
+            "group": "packages",
+            "extra": "mean: 152.52 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.1654718017922934,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0050778",
+            "group": "packages",
+            "extra": "mean: 858.02 msec\nrounds: 20"
           }
         ]
       }
