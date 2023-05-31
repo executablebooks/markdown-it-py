@@ -36,6 +36,7 @@ extensions = [
     "myst_parser",
     "sphinx_copybutton",
     "sphinx_design",
+    "jupyter_sphinx",
 ]
 
 # List of patterns, relative to source directory, that match files and
@@ -135,17 +136,3 @@ def setup(app):
     """Add functions to the Sphinx setup."""
     if os.environ.get("SKIP_APIDOC", None) is None:
         app.connect("builder-inited", run_apidoc)
-
-    from sphinx.directives.code import CodeBlock
-
-    class CodeCell(CodeBlock):
-        """Custom code block directive."""
-
-        def run(self):
-            """Run the directive."""
-            self.options["class"] = ["code-cell"]
-            return super().run()
-
-    # note, these could be run by myst-nb,
-    # but currently this causes a circular dependency issue
-    app.add_directive("code-cell", CodeCell)
