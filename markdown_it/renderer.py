@@ -152,19 +152,18 @@ class RendererHTML(RendererProtocol):
         if token.block:
             needLf = True
 
-            if token.nesting == 1:
-                if idx + 1 < len(tokens):
-                    nextToken = tokens[idx + 1]
+            if token.nesting == 1 and (idx + 1 < len(tokens)):
+                nextToken = tokens[idx + 1]
 
-                    if nextToken.type == "inline" or nextToken.hidden:
-                        # Block-level tag containing an inline tag.
-                        #
-                        needLf = False
+                if nextToken.type == "inline" or nextToken.hidden:  # noqa: SIM114
+                    # Block-level tag containing an inline tag.
+                    #
+                    needLf = False
 
-                    elif nextToken.nesting == -1 and nextToken.tag == token.tag:
-                        # Opening tag + closing tag of the same type. E.g. `<li></li>`.
-                        #
-                        needLf = False
+                elif nextToken.nesting == -1 and nextToken.tag == token.tag:
+                    # Opening tag + closing tag of the same type. E.g. `<li></li>`.
+                    #
+                    needLf = False
 
         result += ">\n" if needLf else ">"
 

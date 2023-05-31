@@ -60,10 +60,12 @@ def processDelimiters(state: StateInline, delimiters: list[Delimiter]) -> None:
                 # closing delimiters must not be a multiple of 3 unless both lengths
                 # are multiples of 3.
                 #
-                if opener.close or closer.open:
-                    if (opener.length + closer.length) % 3 == 0:
-                        if opener.length % 3 != 0 or closer.length % 3 != 0:
-                            isOddMatch = True
+                if (
+                    (opener.close or closer.open)
+                    and ((opener.length + closer.length) % 3 == 0)
+                    and (opener.length % 3 != 0 or closer.length % 3 != 0)
+                ):
+                    isOddMatch = True
 
                 if not isOddMatch:
                     # If previous delimiter cannot be an opener, we can safely skip

@@ -6,7 +6,7 @@ from ..utils import PresetType
 js_default = default
 
 
-class gfm_like:
+class gfm_like:  # noqa: N801
     """GitHub Flavoured Markdown (GFM) like.
 
     This adds the linkify, table and strikethrough components to CommmonMark.

@@ -80,7 +80,7 @@ class Token:
         self.attrs = convert_attrs(self.attrs)
 
     def attrIndex(self, name: str) -> int:
-        warnings.warn(
+        warnings.warn(  # noqa: B028
             "Token.attrIndex should not be used, since Token.attrs is a dictionary",
             UserWarning,
         )

@@ -131,8 +131,6 @@ class StateInline(StateBase):
 
         """
         pos = start
-        left_flanking = True
-        right_flanking = True
         maximum = self.posMax
         marker = self.srcCharCode[start]
 
@@ -153,17 +151,14 @@ class StateInline(StateBase):
         isLastWhiteSpace = isWhiteSpace(lastChar)
         isNextWhiteSpace = isWhiteSpace(nextChar)
 
-        if isNextWhiteSpace:
-            left_flanking = False
-        elif isNextPunctChar:
-            if not (isLastWhiteSpace or isLastPunctChar):
-                left_flanking = False
-
-        if isLastWhiteSpace:
-            right_flanking = False
-        elif isLastPunctChar:
-            if not (isNextWhiteSpace or isNextPunctChar):
-                right_flanking = False
+        left_flanking = not (
+            isNextWhiteSpace
+            or (isNextPunctChar and not (isLastWhiteSpace or isLastPunctChar))
+        )
+        right_flanking = not (
+            isLastWhiteSpace
+            or (isLastPunctChar and not (isNextWhiteSpace or isNextPunctChar))
+        )
 
         if not canSplitWord:
             can_open = left_flanking and ((not right_flanking) or isLastPunctChar)

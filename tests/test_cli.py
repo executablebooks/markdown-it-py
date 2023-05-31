@@ -37,7 +37,6 @@ def test_interactive():
     def mock_input(prompt):
         raise KeyboardInterrupt
 
-    with patch("builtins.print") as patched:
-        with patch("builtins.input", mock_input):
-            parse.interactive()
+    with patch("builtins.print") as patched, patch("builtins.input", mock_input):
+        parse.interactive()
     patched.assert_called()
