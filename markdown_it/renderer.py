@@ -57,7 +57,7 @@ class RendererHTML(RendererProtocol):
 
     __output__ = "html"
 
-    def __init__(self, parser=None):
+    def __init__(self, parser: Any = None):
         self.rules = {
             k: v
             for k, v in inspect.getmembers(self, predicate=inspect.ismethod)

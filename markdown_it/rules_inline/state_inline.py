@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import namedtuple
 from dataclasses import dataclass
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Any, Literal
 
 from .._compat import DATACLASS_KWARGS
 from ..common.utils import isMdAsciiPunct, isPunctChar, isWhiteSpace
@@ -56,7 +56,7 @@ class StateInline(StateBase):
         self.env = env
         self.md = md
         self.tokens = outTokens
-        self.tokens_meta: list[dict | None] = [None] * len(outTokens)
+        self.tokens_meta: list[dict[str, Any] | None] = [None] * len(outTokens)
 
         self.pos = 0
         self.posMax = len(self.src)

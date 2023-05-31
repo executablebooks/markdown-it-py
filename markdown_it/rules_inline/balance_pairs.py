@@ -1,11 +1,11 @@
-# For each opening emphasis-like marker find a matching closing one
-#
-from typing import Any
+"""Balance paired characters (*, _, etc) in inline tokens."""
+from __future__ import annotations
 
-from .state_inline import StateInline
+from .state_inline import Delimiter, StateInline
 
 
-def processDelimiters(state: StateInline, delimiters, *args: Any) -> None:
+def processDelimiters(state: StateInline, delimiters: list[Delimiter]) -> None:
+    """For each opening emphasis-like marker find a matching closing one."""
     openersBottom = {}
     maximum = len(delimiters)
 
