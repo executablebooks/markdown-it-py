@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1685565261119,
+  "lastUpdate": 1685584113319,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -23007,6 +23007,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0067470",
             "group": "packages",
             "extra": "mean: 877.82 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.16"
+        },
+        "commit": {
+          "id": "f52249e1c26c7e66c8504848f582fcd3de85ab3d",
+          "message": "♻️ REFACTOR: Replace character codes with strings (#270)\n\nThe use of `StateBase.srcCharCode` is deprecated (with backward-compatibility), and all core uses are replaced by `StateBase.src`.\r\n\r\nConversion of source string characters to an integer representing the Unicode character is prevalent in the upstream JavaScript implementation, to improve performance.\r\nHowever, it is unnecessary in Python and leads to harder to read code and performance deprecations (during the conversion in the `StateBase` initialisation).\r\n\r\n`StateBase.srcCharCode` is no longer populated on initiation, but is left as an on-demand, cached property, to allow backward compatibility for plugins (deprecation warnings are emitted to identify where updates are required).\r\n\r\n`isStrSpace` is supplied as a replacement for `isSpace`, and similarly `StateBlock.skipCharsStr`/`StateBlock.skipCharsStrBack` replace `StateBlock.skipChars`/`StateBlock.skipCharsBack`\r\n\r\nCo-authored-by: Taneli Hukkinen <3275109+hukkin@users.noreply.github.com>",
+          "timestamp": "2023-06-01T03:45:46+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/f52249e1c26c7e66c8504848f582fcd3de85ab3d",
+          "distinct": true,
+          "tree_id": "6c3d22f063291e398b43f08ca03825055e08169d"
+        },
+        "date": 1685584111796,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 3.398494010463791,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010852",
+            "group": "packages",
+            "extra": "mean: 294.25 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 7.588056948042546,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0043363",
+            "group": "packages",
+            "extra": "mean: 131.79 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.0824593279204162,
+            "unit": "iter/sec",
+            "range": "stddev: 0.029457",
+            "group": "packages",
+            "extra": "mean: 923.82 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.5385077748806537,
+            "unit": "iter/sec",
+            "range": "stddev: 0.024305",
+            "group": "packages",
+            "extra": "mean: 649.98 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 0.8709816534258364,
+            "unit": "iter/sec",
+            "range": "stddev: 0.024289",
+            "group": "packages",
+            "extra": "mean: 1.1481 sec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 4.623453814808272,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0097066",
+            "group": "packages",
+            "extra": "mean: 216.29 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 0.8459219047561324,
+            "unit": "iter/sec",
+            "range": "stddev: 0.044855",
+            "group": "packages",
+            "extra": "mean: 1.1821 sec\nrounds: 20"
           }
         ]
       }
