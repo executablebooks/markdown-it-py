@@ -23,8 +23,7 @@
       to manipulate `Token.attrs`, which have an identical signature to those upstream.
     - Use python version of `charCodeAt`
     - |
-      Reduce use of charCodeAt() by storing char codes in a srcCharCodes attribute for state
-      objects and sharing those whenever possible
+      Use `str` units instead of `int`s to represent Unicode codepoints.
       This provides a significant performance boost
     - |
       In markdown_it/rules_block/reference.py,
