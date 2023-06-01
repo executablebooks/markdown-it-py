@@ -147,8 +147,12 @@ class StateBlock(StateBase):
 
     def skipSpaces(self, pos: int) -> int:
         """Skip spaces from given position."""
-        while pos < len(self.src):
-            if not isStrSpace(self.src[pos]):
+        while True:
+            try:
+                current = self.src[pos]
+            except IndexError:
+                break
+            if not isStrSpace(current):
                 break
             pos += 1
         return pos
@@ -165,16 +169,24 @@ class StateBlock(StateBase):
 
     def skipChars(self, pos: int, code: int) -> int:
         """Skip character code from given position."""
-        while pos < len(self.src):
-            if self.srcCharCode[pos] != code:
+        while True:
+            try:
+                current = self.srcCharCode[pos]
+            except IndexError:
+                break
+            if current != code:
                 break
             pos += 1
         return pos
 
     def skipCharsStr(self, pos: int, ch: str) -> int:
         """Skip character string from given position."""
-        while pos < len(self.src):
-            if self.src[pos] != ch:
+        while True:
+            try:
+                current = self.src[pos]
+            except IndexError:
+                break
+            if current != ch:
                 break
             pos += 1
         return pos
