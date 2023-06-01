@@ -24,9 +24,7 @@ def replaceAt(string: str, index: int, ch: str) -> str:
 def process_inlines(tokens: list[Token], state: StateCore) -> None:
     stack: list[dict[str, Any]] = []
 
-    for i in range(len(tokens)):
-        token = tokens[i]
-
+    for i, token in enumerate(tokens):
         thisLevel = token.level
 
         j = 0
@@ -60,13 +58,12 @@ def process_inlines(tokens: list[Token], state: StateCore) -> None:
 
             # Find previous character,
             # default to space if it's the beginning of the line
-            lastChar = 0x20
+            lastChar: None | int = 0x20
 
             if t.start(0) + lastIndex - 1 >= 0:
                 lastChar = charCodeAt(text, t.start(0) + lastIndex - 1)
             else:
                 for j in range(i)[::-1]:
-                    # lastChar defaults to 0x20
                     if tokens[j].type == "softbreak" or tokens[j].type == "hardbreak":
                         break
                     # should skip all tokens except 'text', 'html_inline' or 'code_inline'
@@ -78,7 +75,7 @@ def process_inlines(tokens: list[Token], state: StateCore) -> None:
 
             # Find next character,
             # default to space if it's the end of the line
-            nextChar = 0x20
+            nextChar: None | int = 0x20
 
             if pos < maximum:
                 nextChar = charCodeAt(text, pos)
@@ -94,11 +91,15 @@ def process_inlines(tokens: list[Token], state: StateCore) -> None:
                     nextChar = charCodeAt(tokens[j].content, 0)
                     break
 
-            isLastPunctChar = isMdAsciiPunct(lastChar) or isPunctChar(chr(lastChar))
-            isNextPunctChar = isMdAsciiPunct(nextChar) or isPunctChar(chr(nextChar))
+            isLastPunctChar = lastChar is not None and (
+                isMdAsciiPunct(lastChar) or isPunctChar(chr(lastChar))
+            )
+            isNextPunctChar = nextChar is not None and (
+                isMdAsciiPunct(nextChar) or isPunctChar(chr(nextChar))
+            )
 
-            isLastWhiteSpace = isWhiteSpace(lastChar)
-            isNextWhiteSpace = isWhiteSpace(nextChar)
+            isLastWhiteSpace = lastChar is not None and isWhiteSpace(lastChar)
+            isNextWhiteSpace = nextChar is not None and isWhiteSpace(nextChar)
 
             if isNextWhiteSpace:  # noqa: SIM114
                 canOpen = False
@@ -111,7 +112,9 @@ def process_inlines(tokens: list[Token], state: StateCore) -> None:
                 canClose = False
 
             if nextChar == 0x22 and t.group(0) == '"':  # 0x22: "  # noqa: SIM102
-                if lastChar >= 0x30 and lastChar <= 0x39:  # 0x30: 0, 0x39: 9
+                if (
+                    lastChar is not None and lastChar >= 0x30 and lastChar <= 0x39
+                ):  # 0x30: 0, 0x39: 9
                     # special case: 1"" - count first quote as an inch
                     canClose = canOpen = False
 

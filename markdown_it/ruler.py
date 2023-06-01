@@ -20,6 +20,7 @@ from __future__ import annotations
 from collections.abc import Callable, Iterable
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, TypedDict
+import warnings
 
 from markdown_it._compat import DATACLASS_KWARGS
 
@@ -30,8 +31,6 @@ if TYPE_CHECKING:
 
 
 class StateBase:
-    srcCharCode: tuple[int, ...]  # noqa: N815
-
     def __init__(self, src: str, md: MarkdownIt, env: EnvType):
         self.src = src
         self.env = env
@@ -44,7 +43,18 @@ class StateBase:
     @src.setter
     def src(self, value: str) -> None:
         self._src = value
-        self.srcCharCode = tuple(ord(c) for c in self.src)
+        self._srcCharCode: tuple[int, ...] | None = None
+
+    @property
+    def srcCharCode(self) -> tuple[int, ...]:
+        warnings.warn(
+            "StateBase.srcCharCode is deprecated. Use StateBase.src instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        if self._srcCharCode is None:
+            self._srcCharCode = tuple(ord(c) for c in self._src)
+        return self._srcCharCode
 
 
 # The first positional arg is always a subtype of `StateBase`. Other

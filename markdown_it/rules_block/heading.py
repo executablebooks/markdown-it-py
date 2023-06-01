@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import logging
 
-from ..common.utils import isSpace
+from ..common.utils import isStrSpace
 from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
@@ -18,29 +18,27 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bo
     if state.is_code_block(startLine):
         return False
 
-    ch: int | None = state.srcCharCode[pos]
+    ch: str | None = state.src[pos]
 
-    # /* # */
-    if ch != 0x23 or pos >= maximum:
+    if ch != "#" or pos >= maximum:
         return False
 
     # count heading level
     level = 1
     pos += 1
     try:
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
     except IndexError:
         ch = None
-    # /* # */
-    while ch == 0x23 and pos < maximum and level <= 6:
+    while ch == "#" and pos < maximum and level <= 6:
         level += 1
         pos += 1
         try:
-            ch = state.srcCharCode[pos]
+            ch = state.src[pos]
         except IndexError:
             ch = None
 
-    if level > 6 or (pos < maximum and not isSpace(ch)):
+    if level > 6 or (pos < maximum and not isStrSpace(ch)):
         return False
 
     if silent:
@@ -49,8 +47,8 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bo
     # Let's cut tails like '    ###  ' from the end of string
 
     maximum = state.skipSpacesBack(maximum, pos)
-    tmp = state.skipCharsBack(maximum, 0x23, pos)  # #
-    if tmp > pos and isSpace(state.srcCharCode[tmp - 1]):
+    tmp = state.skipCharsStrBack(maximum, "#", pos)
+    if tmp > pos and isStrSpace(state.src[tmp - 1]):
         maximum = tmp
 
     state.line = startLine + 1

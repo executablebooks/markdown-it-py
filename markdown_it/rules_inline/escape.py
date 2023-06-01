@@ -1,42 +1,72 @@
 """
 Process escaped chars and hardbreaks
 """
-from ..common.utils import isSpace
+from ..common.utils import isStrSpace
 from .state_inline import StateInline
 
-ESCAPED = [0 for _ in range(256)]
-for ch in "\\!\"#$%&'()*+,./:;<=>?@[]^_`{|}~-":
-    ESCAPED[ord(ch)] = 1
+_ESCAPED = {
+    "!",
+    '"',
+    "#",
+    "$",
+    "%",
+    "&",
+    "'",
+    "(",
+    ")",
+    "*",
+    "+",
+    ",",
+    "-",
+    ".",
+    "/",
+    ":",
+    ";",
+    "<",
+    "=",
+    ">",
+    "?",
+    "@",
+    "[",
+    "\\",
+    "]",
+    "^",
+    "_",
+    "`",
+    "{",
+    "|",
+    "}",
+    "~",
+}
 
 
 def escape(state: StateInline, silent: bool) -> bool:
     pos = state.pos
     maximum = state.posMax
 
-    # /* \ */
-    if state.srcCharCode[pos] != 0x5C:
+    if state.src[pos] != "\\":
         return False
 
     pos += 1
 
     if pos < maximum:
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
 
-        if ch < 256 and ESCAPED[ch] != 0:
+        if ch in _ESCAPED:
             if not silent:
                 state.pending += state.src[pos]
             state.pos += 2
             return True
 
-        if ch == 0x0A:
+        if ch == "\n":
             if not silent:
                 state.push("hardbreak", "br", 0)
 
             pos += 1
             # skip leading whitespaces from next line
             while pos < maximum:
-                ch = state.srcCharCode[pos]
-                if not isSpace(ch):
+                ch = state.src[pos]
+                if not isStrSpace(ch):
                     break
                 pos += 1
 

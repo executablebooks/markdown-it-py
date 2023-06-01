@@ -4,12 +4,12 @@ from __future__ import annotations
 
 import html
 import re
-from typing import Any, Match, TypeVar
+from typing import Match, TypeVar
 
 from .entities import entities
 
 
-def charCodeAt(src: str, pos: int) -> Any:
+def charCodeAt(src: str, pos: int) -> int | None:
     """
     Returns the Unicode value of the character at the specified location.
 
@@ -20,6 +20,21 @@ def charCodeAt(src: str, pos: int) -> Any:
     """
     try:
         return ord(src[pos])
+    except IndexError:
+        return None
+
+
+def charStrAt(src: str, pos: int) -> str | None:
+    """
+    Returns the Unicode value of the character at the specified location.
+
+    @param - index The zero-based index of the desired character.
+    If there is no character at the specified index, NaN is returned.
+
+    This was added for compatibility with python
+    """
+    try:
+        return src[pos]
     except IndexError:
         return None
 
@@ -96,7 +111,7 @@ def replaceEntityPattern(match: str, name: str) -> str:
     if name in entities:
         return entities[name]
 
-    if ord(name[0]) == 0x23 and DIGITAL_ENTITY_TEST_RE.search(name):
+    if name[0] == "#" and DIGITAL_ENTITY_TEST_RE.search(name):
         code = int(name[2:], 16) if name[1].lower() == "x" else int(name[1:], 10)
         if isValidEntityCode(code):
             return fromCodePoint(code)
@@ -178,8 +193,14 @@ def escapeRE(string: str) -> str:
 # //////////////////////////////////////////////////////////////////////////////
 
 
-def isSpace(code: object) -> bool:
-    return code in {0x09, 0x20}
+def isSpace(code: int | None) -> bool:
+    """Check if character code is a whitespace."""
+    return code in (0x09, 0x20)
+
+
+def isStrSpace(ch: str | None) -> bool:
+    """Check if character is a whitespace."""
+    return ch in ("\t", " ")
 
 
 MD_WHITESPACE = {
@@ -188,7 +209,7 @@ MD_WHITESPACE = {
     0x0B,  # \v
     0x0C,  # \f
     0x0D,  # \r
-    0x20,
+    0x20,  # space
     0xA0,
     0x1680,
     0x202F,
@@ -213,6 +234,7 @@ UNICODE_PUNCT_RE = re.compile(
 
 # Currently without astral characters support.
 def isPunctChar(ch: str) -> bool:
+    """Check if character is a punctuation character."""
     return UNICODE_PUNCT_RE.search(ch) is not None
 
 
