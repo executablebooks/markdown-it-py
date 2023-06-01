@@ -9,7 +9,7 @@ from pathlib import Path
 from markdown_it import MarkdownIt
 
 commonmark_spec = (
-    (Path(__file__).parent / "tests" / "test_cmark_spec" / "spec.md")
+    (Path(__file__).parent.parent / "tests" / "test_cmark_spec" / "spec.md")
     .read_bytes()
     .decode()
 )
