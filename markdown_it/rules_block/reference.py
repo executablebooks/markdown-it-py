@@ -19,17 +19,17 @@ def reference(state: StateBlock, startLine: int, _endLine: int, silent: bool) ->
     if state.is_code_block(startLine):
         return False
 
-    if state.srcCharCode[pos] != 0x5B:  # /* [ */
+    if state.src[pos] != "[":
         return False
 
     # Simple check to quickly interrupt scan on [link](url) at the start of line.
     # Can be useful on practice: https:#github.com/markdown-it/markdown-it/issues/54
     while pos < maximum:
         # /* ] */  /* \ */  /* : */
-        if state.srcCharCode[pos] == 0x5D and state.srcCharCode[pos - 1] != 0x5C:
+        if state.src[pos] == "]" and state.src[pos - 1] != "\\":
             if pos + 1 == maximum:
                 return False
-            if state.srcCharCode[pos + 1] != 0x3A:
+            if state.src[pos + 1] != ":":
                 return False
             break
         pos += 1

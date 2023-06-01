@@ -17,17 +17,12 @@ def html_inline(state: StateInline, silent: bool) -> bool:
 
     # Check start
     maximum = state.posMax
-    if state.srcCharCode[pos] != 0x3C or pos + 2 >= maximum:  # /* < */
+    if state.src[pos] != "<" or pos + 2 >= maximum:
         return False
 
     # Quick fail on second char
-    ch = state.srcCharCode[pos + 1]
-    if (
-        ch != 0x21
-        and ch != 0x3F  # /* ! */
-        and ch != 0x2F  # /* ? */
-        and not isLetter(ch)  # /* / */
-    ):
+    ch = state.src[pos + 1]
+    if ch not in ("!", "?", "/") and not isLetter(ord(ch)):  # /* / */
         return False
 
     match = HTML_TAG_RE.search(state.src[pos:])

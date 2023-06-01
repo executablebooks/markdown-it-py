@@ -46,7 +46,7 @@ class MarkdownIt:
         """
         # add modules
         self.utils = utils
-        self.helpers: Any = helpers
+        self.helpers = helpers
 
         # initialise classes
         self.inline = ParserInline()

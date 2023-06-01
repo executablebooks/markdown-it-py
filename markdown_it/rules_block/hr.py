@@ -4,7 +4,7 @@ At least 3 of these characters on a line * - _
 """
 import logging
 
-from ..common.utils import isSpace
+from ..common.utils import isStrSpace
 from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
@@ -20,22 +20,22 @@ def hr(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
         return False
 
     try:
-        marker = state.srcCharCode[pos]
+        marker = state.src[pos]
     except IndexError:
         return False
     pos += 1
 
-    # Check hr marker: /* * */ /* - */ /* _ */
-    if marker != 0x2A and marker != 0x2D and marker != 0x5F:
+    # Check hr marker
+    if marker not in ("*", "-", "_"):
         return False
 
     # markers can be mixed with spaces, but there should be at least 3 of them
 
     cnt = 1
     while pos < maximum:
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
         pos += 1
-        if ch != marker and not isSpace(ch):
+        if ch != marker and not isStrSpace(ch):
             return False
         if ch == marker:
             cnt += 1
@@ -50,6 +50,6 @@ def hr(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
 
     token = state.push("hr", "hr", 0)
     token.map = [startLine, state.line]
-    token.markup = chr(marker) * (cnt + 1)
+    token.markup = marker * (cnt + 1)
 
     return True

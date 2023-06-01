@@ -19,15 +19,14 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
     if pos + 3 > maximum:
         return False
 
-    marker = state.srcCharCode[pos]
+    marker = state.src[pos]
 
-    # /* ~ */  /* ` */
-    if marker != 0x7E and marker != 0x60:
+    if marker not in ("~", "`"):
         return False
 
     # scan marker length
     mem = pos
-    pos = state.skipChars(pos, marker)
+    pos = state.skipCharsStr(pos, marker)
 
     length = pos - mem
 
@@ -37,8 +36,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
     markup = state.src[mem:pos]
     params = state.src[pos:maximum]
 
-    # /* ` */
-    if marker == 0x60 and chr(marker) in params:
+    if marker == "`" and marker in params:
         return False
 
     # Since start is found, we can report success here in validation mode
@@ -65,7 +63,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
             break
 
         try:
-            if state.srcCharCode[pos] != marker:
+            if state.src[pos] != marker:
                 continue
         except IndexError:
             break
@@ -73,7 +71,7 @@ def fence(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
         if state.is_code_block(nextLine):
             continue
 
-        pos = state.skipChars(pos, marker)
+        pos = state.skipCharsStr(pos, marker)
 
         # closing code fence must be at least as long as the opening one
         if pos - mem < length:

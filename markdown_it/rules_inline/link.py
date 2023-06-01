@@ -1,6 +1,6 @@
 # Process [link](<to> "stuff")
 
-from ..common.utils import isSpace, normalizeReference
+from ..common.utils import isStrSpace, normalizeReference
 from .state_inline import StateInline
 
 
@@ -13,7 +13,7 @@ def link(state: StateInline, silent: bool) -> bool:
     start = state.pos
     parseReference = True
 
-    if state.srcCharCode[state.pos] != 0x5B:  # /* [ */
+    if state.src[state.pos] != "[":
         return False
 
     labelStart = state.pos + 1
@@ -25,7 +25,7 @@ def link(state: StateInline, silent: bool) -> bool:
 
     pos = labelEnd + 1
 
-    if pos < maximum and state.srcCharCode[pos] == 0x28:  # /* ( */
+    if pos < maximum and state.src[pos] == "(":
         #
         # Inline link
         #
@@ -37,8 +37,8 @@ def link(state: StateInline, silent: bool) -> bool:
         #        ^^ skipping these spaces
         pos += 1
         while pos < maximum:
-            code = state.srcCharCode[pos]
-            if not isSpace(code) and code != 0x0A:
+            ch = state.src[pos]
+            if not isStrSpace(ch) and ch != "\n":
                 break
             pos += 1
 
@@ -60,8 +60,8 @@ def link(state: StateInline, silent: bool) -> bool:
             #                ^^ skipping these spaces
             start = pos
             while pos < maximum:
-                code = state.srcCharCode[pos]
-                if not isSpace(code) and code != 0x0A:
+                ch = state.src[pos]
+                if not isStrSpace(ch) and ch != "\n":
                     break
                 pos += 1
 
@@ -75,12 +75,12 @@ def link(state: StateInline, silent: bool) -> bool:
                 # [link](  <href>  "title"  )
                 #                         ^^ skipping these spaces
                 while pos < maximum:
-                    code = state.srcCharCode[pos]
-                    if not isSpace(code) and code != 0x0A:
+                    ch = state.src[pos]
+                    if not isStrSpace(ch) and ch != "\n":
                         break
                     pos += 1
 
-        if pos >= maximum or state.srcCharCode[pos] != 0x29:  # /* ) */
+        if pos >= maximum or state.src[pos] != ")":
             # parsing a valid shortcut link failed, fallback to reference
             parseReference = True
 
@@ -93,7 +93,7 @@ def link(state: StateInline, silent: bool) -> bool:
         if "references" not in state.env:
             return False
 
-        if pos < maximum and state.srcCharCode[pos] == 0x5B:  # /* [ */
+        if pos < maximum and state.src[pos] == "[":
             start = pos + 1
             pos = state.md.helpers.parseLinkLabel(state, pos)
             if pos >= 0:

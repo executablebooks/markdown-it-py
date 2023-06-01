@@ -12,7 +12,7 @@ AUTOLINK_RE = re.compile(r"^([a-zA-Z][a-zA-Z0-9+.\-]{1,31}):([^<>\x00-\x20]*)$")
 def autolink(state: StateInline, silent: bool) -> bool:
     pos = state.pos
 
-    if state.srcCharCode[pos] != 0x3C:  # /* < */
+    if state.src[pos] != "<":
         return False
 
     start = state.pos
@@ -23,11 +23,11 @@ def autolink(state: StateInline, silent: bool) -> bool:
         if pos >= maximum:
             return False
 
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
 
-        if ch == 0x3C:  # /* < */
+        if ch == "<":
             return False
-        if ch == 0x3E:  # /* > */
+        if ch == ">":
             break
 
     url = state.src[start + 1 : pos]

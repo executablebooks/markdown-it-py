@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 
-from ..common.utils import charCodeAt, isSpace
+from ..common.utils import charStrAt, isStrSpace
 from .state_block import StateBlock
 
 headerLineRe = re.compile(r"^:?-+:?$")
@@ -25,10 +25,10 @@ def escapedSplit(string: str) -> list[str]:
     isEscaped = False
     lastPos = 0
     current = ""
-    ch = charCodeAt(string, pos)
+    ch = charStrAt(string, pos)
 
     while pos < max:
-        if ch == 0x7C:  # /* | */
+        if ch == "|":
             if not isEscaped:
                 # pipe separating cells, '|'
                 result.append(current + string[lastPos:pos])
@@ -39,10 +39,10 @@ def escapedSplit(string: str) -> list[str]:
                 current += string[lastPos : pos - 1]
                 lastPos = pos
 
-        isEscaped = ch == 0x5C  # /* \ */
+        isEscaped = ch == "\\"
         pos += 1
 
-        ch = charCodeAt(string, pos)
+        ch = charStrAt(string, pos)
 
     result.append(current + string[lastPos:])
 
@@ -71,29 +71,27 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
     pos = state.bMarks[nextLine] + state.tShift[nextLine]
     if pos >= state.eMarks[nextLine]:
         return False
-    first_ch = state.srcCharCode[pos]
+    first_ch = state.src[pos]
     pos += 1
-    if first_ch not in {0x7C, 0x2D, 0x3A}:  # not in {"|", "-", ":"}
+    if first_ch not in ("|", "-", ":"):
         return False
 
     if pos >= state.eMarks[nextLine]:
         return False
-    second_ch = state.srcCharCode[pos]
+    second_ch = state.src[pos]
     pos += 1
-    # not in {"|", "-", ":"} and not space
-    if second_ch not in {0x7C, 0x2D, 0x3A} and not isSpace(second_ch):
+    if second_ch not in ("|", "-", ":") and not isStrSpace(second_ch):
         return False
 
     # if first character is '-', then second character must not be a space
     # (due to parsing ambiguity with list)
-    if first_ch == 0x2D and isSpace(second_ch):
+    if first_ch == "-" and isStrSpace(second_ch):
         return False
 
     while pos < state.eMarks[nextLine]:
-        ch = state.srcCharCode[pos]
+        ch = state.src[pos]
 
-        # /* | */  /* - */ /* : */
-        if ch not in {0x7C, 0x2D, 0x3A} and not isSpace(ch):
+        if ch not in ("|", "-", ":") and not isStrSpace(ch):
             return False
 
         pos += 1
@@ -114,10 +112,9 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
 
         if not headerLineRe.search(t):
             return False
-        if charCodeAt(t, len(t) - 1) == 0x3A:  # /* : */
-            # /* : */
-            aligns.append("center" if charCodeAt(t, 0) == 0x3A else "right")
-        elif charCodeAt(t, 0) == 0x3A:  # /* : */
+        if charStrAt(t, len(t) - 1) == ":":
+            aligns.append("center" if charStrAt(t, 0) == ":" else "right")
+        elif charStrAt(t, 0) == ":":
             aligns.append("left")
         else:
             aligns.append("")

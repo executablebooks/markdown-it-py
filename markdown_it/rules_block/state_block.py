@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Literal
 
-from ..common.utils import isSpace
+from ..common.utils import isStrSpace
 from ..ruler import StateBase
 from ..token import Token
 from ..utils import EnvType
@@ -13,18 +13,9 @@ if TYPE_CHECKING:
 
 class StateBlock(StateBase):
     def __init__(
-        self,
-        src: str,
-        md: MarkdownIt,
-        env: EnvType,
-        tokens: list[Token],
-        srcCharCode: tuple[int, ...] | None = None,
-    ):
-        if srcCharCode is not None:
-            self._src = src
-            self.srcCharCode = srcCharCode
-        else:
-            self.src = src
+        self, src: str, md: MarkdownIt, env: EnvType, tokens: list[Token]
+    ) -> None:
+        self.src = src
 
         # link to parser instance
         self.md = md
@@ -80,12 +71,12 @@ class StateBlock(StateBase):
         start = pos = indent = offset = 0
         length = len(self.src)
 
-        for pos, character in enumerate(self.srcCharCode):
+        for pos, character in enumerate(self.src):
             if not indent_found:
-                if isSpace(character):
+                if isStrSpace(character):
                     indent += 1
 
-                    if character == 0x09:
+                    if character == "\t":
                         offset += 4 - offset % 4
                     else:
                         offset += 1
@@ -93,8 +84,8 @@ class StateBlock(StateBase):
                 else:
                     indent_found = True
 
-            if character == 0x0A or pos == length - 1:
-                if character != 0x0A:
+            if character == "\n" or pos == length - 1:
+                if character != "\n":
                     pos += 1
                 self.bMarks.append(start)
                 self.eMarks.append(pos)
@@ -157,7 +148,7 @@ class StateBlock(StateBase):
     def skipSpaces(self, pos: int) -> int:
         """Skip spaces from given position."""
         while pos < len(self.src):
-            if not isSpace(self.srcCharCode[pos]):
+            if not isStrSpace(self.src[pos]):
                 break
             pos += 1
         return pos
@@ -168,25 +159,43 @@ class StateBlock(StateBase):
             return pos
         while pos > minimum:
             pos -= 1
-            if not isSpace(self.srcCharCode[pos]):
+            if not isStrSpace(self.src[pos]):
                 return pos + 1
         return pos
 
     def skipChars(self, pos: int, code: int) -> int:
-        """Skip char codes from given position."""
+        """Skip character code from given position."""
         while pos < len(self.src):
             if self.srcCharCode[pos] != code:
                 break
             pos += 1
         return pos
 
+    def skipCharsStr(self, pos: int, ch: str) -> int:
+        """Skip character string from given position."""
+        while pos < len(self.src):
+            if self.src[pos] != ch:
+                break
+            pos += 1
+        return pos
+
     def skipCharsBack(self, pos: int, code: int, minimum: int) -> int:
-        """Skip char codes reverse from given position - 1."""
+        """Skip character code reverse from given position - 1."""
         if pos <= minimum:
             return pos
         while pos > minimum:
             pos -= 1
             if code != self.srcCharCode[pos]:
+                return pos + 1
+        return pos
+
+    def skipCharsStrBack(self, pos: int, ch: str, minimum: int) -> int:
+        """Skip character string reverse from given position - 1."""
+        if pos <= minimum:
+            return pos
+        while pos > minimum:
+            pos -= 1
+            if ch != self.src[pos]:
                 return pos + 1
         return pos
 
@@ -209,9 +218,9 @@ class StateBlock(StateBase):
             )
 
             while (first < last) and (lineIndent < indent):
-                ch = self.srcCharCode[first]
-                if isSpace(ch):
-                    if ch == 0x09:
+                ch = self.src[first]
+                if isStrSpace(ch):
+                    if ch == "\t":
                         lineIndent += 4 - (lineIndent + self.bsCount[line]) % 4
                     else:
                         lineIndent += 1

@@ -35,16 +35,15 @@ def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> b
             maximum = state.eMarks[nextLine]
 
             if pos < maximum:
-                marker = state.srcCharCode[pos]
+                marker = state.src[pos]
 
-                # /* - */  /* = */
-                if marker == 0x2D or marker == 0x3D:
-                    pos = state.skipChars(pos, marker)
+                if marker in ("-", "="):
+                    pos = state.skipCharsStr(pos, marker)
                     pos = state.skipSpaces(pos)
 
                     # /* = */
                     if pos >= maximum:
-                        level = 1 if marker == 0x3D else 2
+                        level = 1 if marker == "=" else 2
                         break
 
         # quirk for blockquotes, this line should already be checked by that rule
@@ -72,7 +71,7 @@ def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> b
     state.line = nextLine + 1
 
     token = state.push("heading_open", "h" + str(level), 1)
-    token.markup = chr(marker)
+    token.markup = marker
     token.map = [startLine, state.line]
 
     token = state.push("inline", "", 0)
@@ -81,7 +80,7 @@ def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> b
     token.children = []
 
     token = state.push("heading_close", "h" + str(level), -1)
-    token.markup = chr(marker)
+    token.markup = marker
 
     state.parentType = oldParentType
 

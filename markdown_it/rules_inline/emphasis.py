@@ -8,23 +8,22 @@ from .state_inline import Delimiter, StateInline
 def tokenize(state: StateInline, silent: bool) -> bool:
     """Insert each marker as a separate text token, and add it to delimiter list"""
     start = state.pos
-    marker = state.srcCharCode[start]
+    marker = state.src[start]
 
     if silent:
         return False
 
-    # /* _ */  /* * */
-    if marker != 0x5F and marker != 0x2A:
+    if marker not in ("_", "*"):
         return False
 
-    scanned = state.scanDelims(state.pos, marker == 0x2A)
+    scanned = state.scanDelims(state.pos, marker == "*")
 
     for i in range(scanned.length):
         token = state.push("text", "", 0)
-        token.content = chr(marker)
+        token.content = marker
         state.delimiters.append(
             Delimiter(
-                marker=marker,
+                marker=ord(marker),
                 length=scanned.length,
                 jump=i,
                 token=len(state.tokens) - 1,
