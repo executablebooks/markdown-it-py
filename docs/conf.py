@@ -53,7 +53,6 @@ nitpick_ignore_regex = [
         ".*Literal.*",
         ".*_Result",
         "EnvType",
-        "RuleFunc",
         "Path",
         "Ellipsis",
     )

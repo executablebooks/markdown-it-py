@@ -6,7 +6,9 @@
 """
 from __future__ import annotations
 
-from .ruler import RuleFunc, Ruler
+from typing import Callable
+
+from .ruler import Ruler
 from .rules_core import (
     block,
     inline,
@@ -18,7 +20,9 @@ from .rules_core import (
 )
 from .rules_core.state_core import StateCore
 
-_rules: list[tuple[str, RuleFunc]] = [
+RuleFuncCoreType = Callable[[StateCore], None]
+
+_rules: list[tuple[str, RuleFuncCoreType]] = [
     ("normalize", normalize),
     ("block", block),
     ("inline", inline),
@@ -31,7 +35,7 @@ _rules: list[tuple[str, RuleFunc]] = [
 
 class ParserCore:
     def __init__(self) -> None:
-        self.ruler = Ruler()
+        self.ruler = Ruler[RuleFuncCoreType]()
         for name, rule in _rules:
             self.ruler.push(name, rule)
 
