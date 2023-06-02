@@ -81,6 +81,13 @@ dupes-ellipsis
 <p>!.. ?.. ,… !!!.. ???.. ,…</p>
 .
 
+copyright should be escapable
+.
+\(c)
+.
+<p>(c)</p>
+.
+
 
 dashes
 .
@@ -99,6 +106,16 @@ markdownit--awesome
 <p>abc ----</p>
 <p>–markdownit – super–</p>
 <p>markdownit–awesome</p>
+.
+
+dashes should be escapable
+.
+foo \-- bar
+
+foo -\- bar
+.
+<p>foo -- bar</p>
+<p>foo -- bar</p>
 .
 
 regression tests for #624

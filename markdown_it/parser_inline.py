@@ -28,11 +28,18 @@ _rules: list[tuple[str, RuleFunc]] = [
     ("entity", rules_inline.entity),
 ]
 
+# Note `rule2` ruleset was created specifically for emphasis/strikethrough
+# post-processing and may be changed in the future.
+#
+# Don't use this for anything except pairs (plugins working with `balance_pairs`).
+#
 _rules2: list[tuple[str, RuleFunc]] = [
     ("balance_pairs", rules_inline.link_pairs),
     ("strikethrough", rules_inline.strikethrough.postProcess),
     ("emphasis", rules_inline.emphasis.postProcess),
-    ("text_collapse", rules_inline.text_collapse),
+    # rules for pairs separate '**' into its own text tokens, which may be left unused,
+    # rule below merges unused segments back with the rest of the text
+    ("fragments_join", rules_inline.fragments_join),
 ]
 
 

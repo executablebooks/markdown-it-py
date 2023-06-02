@@ -97,3 +97,10 @@ after
 <p><a href="http://github.com">github.com</a></p>
 <p>after</p>
 .
+
+Don't match escaped
+.
+google\.com
+.
+<p>google.com</p>
+.

@@ -33,8 +33,11 @@ def make() -> PresetType:
             "highlight": None,
         },
         "components": {
-            "core": {"rules": ["normalize", "block", "inline"]},
+            "core": {"rules": ["normalize", "block", "inline", "text_join"]},
             "block": {"rules": ["paragraph"]},
-            "inline": {"rules": ["text"], "rules2": ["balance_pairs", "text_collapse"]},
+            "inline": {
+                "rules": ["text"],
+                "rules2": ["balance_pairs", "fragments_join"],
+            },
         },
     }
