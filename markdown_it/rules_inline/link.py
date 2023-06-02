@@ -140,7 +140,9 @@ def link(state: StateInline, silent: bool) -> bool:
         if label and state.md.options.get("store_labels", False):
             token.meta["label"] = label
 
+        state.linkLevel += 1
         state.md.inline.tokenize(state)
+        state.linkLevel -= 1
 
         token = state.push("link_close", "a", -1)
 

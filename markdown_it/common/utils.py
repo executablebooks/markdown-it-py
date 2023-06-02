@@ -304,3 +304,15 @@ def normalizeReference(string: str) -> str:
     # most notably, `__proto__`)
     #
     return string.lower().upper()
+
+
+LINK_OPEN_RE = re.compile(r"^<a[>\s]", flags=re.IGNORECASE)
+LINK_CLOSE_RE = re.compile(r"^</a\s*>", flags=re.IGNORECASE)
+
+
+def isLinkOpen(string: str) -> bool:
+    return bool(LINK_OPEN_RE.search(string))
+
+
+def isLinkClose(string: str) -> bool:
+    return bool(LINK_CLOSE_RE.search(string))

@@ -16,6 +16,7 @@ if TYPE_CHECKING:
 # Parser rules
 _rules: list[tuple[str, RuleFunc]] = [
     ("text", rules_inline.text),
+    ("linkify", rules_inline.linkify),
     ("newline", rules_inline.newline),
     ("escape", rules_inline.escape),
     ("backticks", rules_inline.backtick),

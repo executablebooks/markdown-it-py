@@ -30,6 +30,7 @@ def test_get_rules():
         ],
         "inline": [
             "text",
+            "linkify",
             "newline",
             "escape",
             "backticks",

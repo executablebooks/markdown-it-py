@@ -3,6 +3,7 @@ __all__ = (
     "text",
     "fragments_join",
     "link_pairs",
+    "linkify",
     "escape",
     "newline",
     "backtick",
@@ -24,6 +25,7 @@ from .fragments_join import fragments_join
 from .html_inline import html_inline
 from .image import image
 from .link import link
+from .linkify import linkify
 from .newline import newline
 from .state_inline import StateInline
 from .text import text
