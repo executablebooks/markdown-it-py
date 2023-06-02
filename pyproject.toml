@@ -42,6 +42,7 @@ compare = [
     "mistune~=3.0",
     "panflute~=2.3",
     "markdown-it-pyrs",
+    "pyromark~=0.2.0",
 ]
 linkify = ["linkify-it-py>=1,<3"]
 plugins = ["mdit-py-plugins"]
