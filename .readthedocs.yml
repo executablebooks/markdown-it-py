@@ -7,7 +7,6 @@ python:
         path: .
         extra_requirements:
           - linkify
-          - plugins
           - rtd
 
 sphinx:
