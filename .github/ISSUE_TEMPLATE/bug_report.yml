@@ -1,0 +1,63 @@
+name: Report a problem 🐛
+description: Problem reports are for when something behaves incorrectly, or differently from how you'd expect.
+labels: [bug]
+body:
+- type: textarea
+  id: describe
+  attributes:
+    label: Describe the bug
+    description: |
+      Provide a short description (one or two sentences) about the problem. What did you expect to happen, and what is actually happening?
+
+      If possible, provide screenshots or error messages that you've encountered.
+    value: |
+      **context**
+      When I do ___.
+
+      **expectation**
+      I expected ___ to occur.
+
+      **bug**
+      But instead ___ happens
+      Here's an error message I ran into...
+
+      **problem**
+      This is a problem for people doing ___ because ___.
+
+  validations:
+    required: true
+
+- type: textarea
+  id: reproduce
+  attributes:
+    label: Reproduce the bug
+    description: |
+      Provide information that others may use to re-produce this behavior.
+      For example:
+
+      - Step-by-step instructions that others can follow.
+      - Links to a website that demonstrates the bug.
+      - Information about certain conditions that the bug pops up.
+
+    placeholder: |
+      1. Go to '...'
+      2. Click on '....'
+      3. Scroll down to '....'
+      4. See error
+  validations:
+    required: true
+
+- type: textarea
+  id: environment
+  attributes:
+    label: List your environment
+    description: |
+      List the environment needed to reproduce the error.
+      Here are a few ideas:
+
+      - Version of markdown-it-py
+      - Versions of mdit-py-plugins
+      - The version of Python you're using.
+      - Your operating system
+  validations:
+    required: false

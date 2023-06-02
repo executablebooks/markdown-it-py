@@ -1,0 +1,4 @@
+contact_links:
+  - name: Questions or general discussion ❓🗣️
+    url: https://github.com/executablebooks/markdown-it-py/discussions
+    about: Use Disussions for general conversations that aren't meant for actionable Issues.
