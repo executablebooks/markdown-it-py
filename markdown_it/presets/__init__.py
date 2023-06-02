@@ -21,7 +21,7 @@ class gfm_like:  # noqa: N801
         config = commonmark.make()
         config["components"]["core"]["rules"].append("linkify")
         config["components"]["block"]["rules"].append("table")
-        config["components"]["inline"]["rules"].append("strikethrough")
+        config["components"]["inline"]["rules"].extend(["strikethrough", "linkify"])
         config["components"]["inline"]["rules2"].append("strikethrough")
         config["options"]["linkify"] = True
         config["options"]["html"] = True

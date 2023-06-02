@@ -70,6 +70,10 @@ class StateInline(StateBase):
         self.backticks: dict[int, int] = {}
         self.backticksScanned = False
 
+        # Counter used to disable inline linkify-it execution
+        # inside <a> and markdown links
+        self.linkLevel = 0
+
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}"

@@ -1,41 +1,32 @@
-import re
+from __future__ import annotations
 
-from ..common.utils import arrayReplaceAt
+import re
+from typing import Protocol
+
+from ..common.utils import arrayReplaceAt, isLinkClose, isLinkOpen
 from ..token import Token
 from .state_core import StateCore
-
-LINK_OPEN_RE = re.compile(r"^<a[>\s]", flags=re.IGNORECASE)
-LINK_CLOSE_RE = re.compile(r"^</a\s*>", flags=re.IGNORECASE)
 
 HTTP_RE = re.compile(r"^http://")
 MAILTO_RE = re.compile(r"^mailto:")
 TEST_MAILTO_RE = re.compile(r"^mailto:", flags=re.IGNORECASE)
 
 
-def isLinkOpen(string: str) -> bool:
-    return bool(LINK_OPEN_RE.search(string))
-
-
-def isLinkClose(string: str) -> bool:
-    return bool(LINK_CLOSE_RE.search(string))
-
-
 def linkify(state: StateCore) -> None:
-    blockTokens = state.tokens
-
+    """Rule for identifying plain-text links."""
     if not state.md.options.linkify:
         return
 
     if not state.md.linkify:
         raise ModuleNotFoundError("Linkify enabled but not installed.")
 
-    for j in range(len(blockTokens)):
-        if blockTokens[j].type != "inline" or not state.md.linkify.pretest(
-            blockTokens[j].content
+    for inline_token in state.tokens:
+        if inline_token.type != "inline" or not state.md.linkify.pretest(
+            inline_token.content
         ):
             continue
 
-        tokens = blockTokens[j].children
+        tokens = inline_token.children
 
         htmlLinkLevel = 0
 
@@ -71,38 +62,47 @@ def linkify(state: StateCore) -> None:
                 currentToken.content
             ):
                 text = currentToken.content
-                links = state.md.linkify.match(text)
+                links: list[_LinkType] = state.md.linkify.match(text) or []
 
                 # Now split string to nodes
                 nodes = []
                 level = currentToken.level
                 lastPos = 0
 
-                for ln in range(len(links)):
-                    url = links[ln].url
+                # forbid escape sequence at the start of the string,
+                # this avoids http\://example.com/ from being linkified as
+                # http:<a href="//example.com/">//example.com/</a>
+                if (
+                    links
+                    and links[0].index == 0
+                    and i > 0
+                    and tokens[i - 1].type == "text_special"
+                ):
+                    links = links[1:]
+
+                for link in links:
+                    url = link.url
                     fullUrl = state.md.normalizeLink(url)
                     if not state.md.validateLink(fullUrl):
                         continue
 
-                    urlText = links[ln].text
+                    urlText = link.text
 
                     # Linkifier might send raw hostnames like "example.com", where url
                     # starts with domain name. So we prepend http:// in those cases,
                     # and remove it afterwards.
-                    if not links[ln].schema:
+                    if not link.schema:
                         urlText = HTTP_RE.sub(
                             "", state.md.normalizeLinkText("http://" + urlText)
                         )
-                    elif links[ln].schema == "mailto:" and TEST_MAILTO_RE.search(
-                        urlText
-                    ):
+                    elif link.schema == "mailto:" and TEST_MAILTO_RE.search(urlText):
                         urlText = MAILTO_RE.sub(
                             "", state.md.normalizeLinkText("mailto:" + urlText)
                         )
                     else:
                         urlText = state.md.normalizeLinkText(urlText)
 
-                    pos = links[ln].index
+                    pos = link.index
 
                     if pos > lastPos:
                         token = Token("text", "", 0)
@@ -130,7 +130,7 @@ def linkify(state: StateCore) -> None:
                     token.info = "auto"
                     nodes.append(token)
 
-                    lastPos = links[ln].last_index
+                    lastPos = link.last_index
 
                 if lastPos < len(text):
                     token = Token("text", "", 0)
@@ -138,4 +138,12 @@ def linkify(state: StateCore) -> None:
                     token.level = level
                     nodes.append(token)
 
-                blockTokens[j].children = tokens = arrayReplaceAt(tokens, i, nodes)
+                inline_token.children = tokens = arrayReplaceAt(tokens, i, nodes)
+
+
+class _LinkType(Protocol):
+    url: str
+    text: str
+    index: int
+    last_index: int
+    schema: str | None
