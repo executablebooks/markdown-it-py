@@ -130,7 +130,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     if (
         silent
         and state.parentType == "paragraph"
-        and state.tShift[startLine] >= state.blkIndent
+        and state.sCount[startLine] >= state.blkIndent
     ):
         isTerminatingParagraph = True
 
