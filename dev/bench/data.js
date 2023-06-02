@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1685734212304,
+  "lastUpdate": 1685739013259,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -23865,6 +23865,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.027522",
             "group": "packages",
             "extra": "mean: 1.0371 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.16"
+        },
+        "commit": {
+          "id": "90b367d9c340cb6db1cf3e0ebf96127ddc72497f",
+          "message": "🔧 Add typing of rule functions (#283)\n\nRule functions signature is specific to the state it acts on.",
+          "timestamp": "2023-06-02T22:47:54+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/90b367d9c340cb6db1cf3e0ebf96127ddc72497f",
+          "distinct": true,
+          "tree_id": "0d758f5502f5423df2b120b188c306fdd4fb4d4d"
+        },
+        "date": 1685739011887,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.330229455892629,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012759",
+            "group": "packages",
+            "extra": "mean: 230.93 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 9.488324685028696,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0037793",
+            "group": "packages",
+            "extra": "mean: 105.39 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.217422720925673,
+            "unit": "iter/sec",
+            "range": "stddev: 0.026388",
+            "group": "packages",
+            "extra": "mean: 821.41 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 2.0497826354944193,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018716",
+            "group": "packages",
+            "extra": "mean: 487.86 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.1017474935764004,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017664",
+            "group": "packages",
+            "extra": "mean: 907.65 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 6.076155134928445,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0073191",
+            "group": "packages",
+            "extra": "mean: 164.58 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.0571678162180447,
+            "unit": "iter/sec",
+            "range": "stddev: 0.031700",
+            "group": "packages",
+            "extra": "mean: 945.92 msec\nrounds: 20"
           }
         ]
       }
