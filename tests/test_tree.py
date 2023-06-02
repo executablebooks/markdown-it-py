@@ -76,6 +76,13 @@ Here's some text and an image ![title](image.png)
     file_regression.check(node.pretty(indent=2, show_text=True), extension=".xml")
 
 
+def test_pretty_text_special(file_regression):
+    md = MarkdownIt()
+    md.disable("text_join")
+    tree = SyntaxTreeNode(md.parse("foo &copy; bar \\("))
+    file_regression.check(tree.pretty(show_text=True), extension=".xml")
+
+
 def test_walk():
     tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
     tree = SyntaxTreeNode(tokens)

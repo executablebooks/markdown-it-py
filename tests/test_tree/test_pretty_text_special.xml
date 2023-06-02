@@ -1,0 +1,11 @@
+<root>
+  <paragraph>
+    <inline>
+      <text>
+        foo 
+      <text_special>
+        ©
+      <text>
+         bar 
+      <text_special>
+        (

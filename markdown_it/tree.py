@@ -229,7 +229,12 @@ class SyntaxTreeNode:
         if not self.is_root and self.attrs:
             text += " " + " ".join(f"{k}={v!r}" for k, v in self.attrs.items())
         text += ">"
-        if show_text and not self.is_root and self.type == "text" and self.content:
+        if (
+            show_text
+            and not self.is_root
+            and self.type in ("text", "text_special")
+            and self.content
+        ):
             text += "\n" + textwrap.indent(self.content, prefix + " " * indent)
         for child in self.children:
             text += "\n" + child.pretty(
