@@ -7,7 +7,15 @@
 from __future__ import annotations
 
 from .ruler import RuleFunc, Ruler
-from .rules_core import block, inline, linkify, normalize, replace, smartquotes
+from .rules_core import (
+    block,
+    inline,
+    linkify,
+    normalize,
+    replace,
+    smartquotes,
+    text_join,
+)
 from .rules_core.state_core import StateCore
 
 _rules: list[tuple[str, RuleFunc]] = [
@@ -17,6 +25,7 @@ _rules: list[tuple[str, RuleFunc]] = [
     ("linkify", linkify),
     ("replacements", replace),
     ("smartquotes", smartquotes),
+    ("text_join", text_join),
 ]
 
 

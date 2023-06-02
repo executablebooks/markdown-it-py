@@ -40,7 +40,7 @@ def make() -> PresetType:
             "highlight": None,
         },
         "components": {
-            "core": {"rules": ["normalize", "block", "inline"]},
+            "core": {"rules": ["normalize", "block", "inline", "text_join"]},
             "block": {
                 "rules": [
                     "blockquote",
@@ -68,7 +68,7 @@ def make() -> PresetType:
                     "newline",
                     "text",
                 ],
-                "rules2": ["balance_pairs", "emphasis", "text_collapse"],
+                "rules2": ["balance_pairs", "emphasis", "fragments_join"],
             },
         },
     }

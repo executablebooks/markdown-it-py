@@ -13,6 +13,7 @@ def test_get_rules():
             "linkify",
             "replacements",
             "smartquotes",
+            "text_join",
         ],
         "block": [
             "table",
@@ -40,7 +41,7 @@ def test_get_rules():
             "html_inline",
             "entity",
         ],
-        "inline2": ["balance_pairs", "strikethrough", "emphasis", "text_collapse"],
+        "inline2": ["balance_pairs", "strikethrough", "emphasis", "fragments_join"],
     }
 
 
@@ -48,13 +49,13 @@ def test_load_presets():
     md = MarkdownIt("zero")
     assert md.get_active_rules() == {
         "block": ["paragraph"],
-        "core": ["normalize", "block", "inline"],
+        "core": ["normalize", "block", "inline", "text_join"],
         "inline": ["text"],
-        "inline2": ["balance_pairs", "text_collapse"],
+        "inline2": ["balance_pairs", "fragments_join"],
     }
     md = MarkdownIt("commonmark")
     assert md.get_active_rules() == {
-        "core": ["normalize", "block", "inline"],
+        "core": ["normalize", "block", "inline", "text_join"],
         "block": [
             "code",
             "fence",
@@ -79,7 +80,7 @@ def test_load_presets():
             "html_inline",
             "entity",
         ],
-        "inline2": ["balance_pairs", "emphasis", "text_collapse"],
+        "inline2": ["balance_pairs", "emphasis", "fragments_join"],
     }
 
 
@@ -94,16 +95,16 @@ def test_enable():
     md = MarkdownIt("zero").enable("heading")
     assert md.get_active_rules() == {
         "block": ["heading", "paragraph"],
-        "core": ["normalize", "block", "inline"],
+        "core": ["normalize", "block", "inline", "text_join"],
         "inline": ["text"],
-        "inline2": ["balance_pairs", "text_collapse"],
+        "inline2": ["balance_pairs", "fragments_join"],
     }
     md.enable(["backticks", "autolink"])
     assert md.get_active_rules() == {
         "block": ["heading", "paragraph"],
-        "core": ["normalize", "block", "inline"],
+        "core": ["normalize", "block", "inline", "text_join"],
         "inline": ["text", "backticks", "autolink"],
-        "inline2": ["balance_pairs", "text_collapse"],
+        "inline2": ["balance_pairs", "fragments_join"],
     }
 
 
@@ -111,16 +112,16 @@ def test_disable():
     md = MarkdownIt("zero").disable("inline")
     assert md.get_active_rules() == {
         "block": ["paragraph"],
-        "core": ["normalize", "block"],
+        "core": ["normalize", "block", "text_join"],
         "inline": ["text"],
-        "inline2": ["balance_pairs", "text_collapse"],
+        "inline2": ["balance_pairs", "fragments_join"],
     }
     md.disable(["text"])
     assert md.get_active_rules() == {
         "block": ["paragraph"],
-        "core": ["normalize", "block"],
+        "core": ["normalize", "block", "text_join"],
         "inline": [],
-        "inline2": ["balance_pairs", "text_collapse"],
+        "inline2": ["balance_pairs", "fragments_join"],
     }
 
 
@@ -130,15 +131,15 @@ def test_reset():
         md.disable("inline")
         assert md.get_active_rules() == {
             "block": ["paragraph"],
-            "core": ["normalize", "block"],
+            "core": ["normalize", "block", "text_join"],
             "inline": ["text"],
-            "inline2": ["balance_pairs", "text_collapse"],
+            "inline2": ["balance_pairs", "fragments_join"],
         }
     assert md.get_active_rules() == {
         "block": ["paragraph"],
-        "core": ["normalize", "block", "inline"],
+        "core": ["normalize", "block", "inline", "text_join"],
         "inline": ["text"],
-        "inline2": ["balance_pairs", "text_collapse"],
+        "inline2": ["balance_pairs", "fragments_join"],
     }
 
 
