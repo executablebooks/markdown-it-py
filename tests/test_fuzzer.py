@@ -10,15 +10,15 @@ import pytest
 from markdown_it import MarkdownIt
 
 TESTS = {
-    55363: ">```\n>",
-    55367: ">-\n>\n>",
-    # 55371: "[](so&#4»0;!"  TODO this did not fail
-    # 55401: "?c_" * 100_000  TODO this did not fail
+    55363: (">```\n>", "<blockquote>\n<pre><code></code></pre>\n</blockquote>\n"),
+    55367: (">-\n>\n>", "<blockquote>\n<ul>\n<li></li>\n</ul>\n</blockquote>\n"),
+    55371: ("[](so&#4H0;!", "<p>[](so&amp;#4H0;!</p>\n"),
+    # 55401: (("?c_" * 100000) + "c_", ""),  TODO this does not fail, just takes a long time
 }
 
 
-@pytest.mark.parametrize("raw_input", TESTS.values(), ids=TESTS.keys())
-def test_fuzzing(raw_input):
+@pytest.mark.parametrize("raw_input,expected", TESTS.values(), ids=TESTS.keys())
+def test_fuzzing(raw_input, expected):
     md = MarkdownIt()
     md.parse(raw_input)
-    print(md.render(raw_input))
+    assert md.render(raw_input) == expected

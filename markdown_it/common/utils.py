@@ -2,7 +2,6 @@
 """
 from __future__ import annotations
 
-import html
 import re
 from typing import Match, TypeVar
 
@@ -52,9 +51,6 @@ def arrayReplaceAt(
     return src[:pos] + newElements + src[pos + 1 :]
 
 
-######################################################################
-
-
 def isValidEntityCode(c: int) -> bool:
     # broken sequence
     if c >= 0xD800 and c <= 0xDFFF:
@@ -89,47 +85,33 @@ def fromCodePoint(c: int) -> str:
     return chr(c)
 
 
-UNESCAPE_MD_RE = re.compile(r'\\([!"#$%&\'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])')
+# UNESCAPE_MD_RE = re.compile(r'\\([!"#$%&\'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])')
 # ENTITY_RE_g       = re.compile(r'&([a-z#][a-z0-9]{1,31})', re.IGNORECASE)
 UNESCAPE_ALL_RE = re.compile(
     r'\\([!"#$%&\'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])' + "|" + r"&([a-z#][a-z0-9]{1,31});",
     re.IGNORECASE,
 )
-DIGITAL_ENTITY_TEST_RE = re.compile(r"^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))", re.IGNORECASE)
+DIGITAL_ENTITY_BASE10_RE = re.compile(r"#([0-9]{1,8})")
+DIGITAL_ENTITY_BASE16_RE = re.compile(r"#x([a-f0-9]{1,8})", re.IGNORECASE)
 
 
 def replaceEntityPattern(match: str, name: str) -> str:
-    """Convert HTML entity patterns
-
-    ::
-
-        https://www.google.com -> https%3A//www.google.com
-
+    """Convert HTML entity patterns,
+    see https://spec.commonmark.org/0.30/#entity-references
     """
-    code = 0
-
     if name in entities:
         return entities[name]
 
-    if name[0] == "#" and DIGITAL_ENTITY_TEST_RE.search(name):
-        code = int(name[2:], 16) if name[1].lower() == "x" else int(name[1:], 10)
-        if isValidEntityCode(code):
-            return fromCodePoint(code)
+    code: None | int = None
+    if pat := DIGITAL_ENTITY_BASE10_RE.fullmatch(name):
+        code = int(pat.group(1), 10)
+    elif pat := DIGITAL_ENTITY_BASE16_RE.fullmatch(name):
+        code = int(pat.group(1), 16)
+
+    if code is not None and isValidEntityCode(code):
+        return fromCodePoint(code)
 
     return match
-
-
-# def replaceEntities(string):
-#   if (string.indexOf('&') < 0):
-#       return string
-#   return string.replace(ENTITY_RE, replaceEntityPattern)
-
-
-def unescapeMd(string: str) -> str:
-    raise NotImplementedError
-    # if "\\" in string:
-    #     return string
-    # return string.replace(UNESCAPE_MD_RE, "$1")
 
 
 def unescapeAll(string: str) -> str:
@@ -154,30 +136,14 @@ def stripEscape(string: str) -> str:
     return ESCAPE_CHAR.sub(r"\1", string)
 
 
-# //////////////////////////////////////////////////////////////////////////////
-
-# TODO This section changed quite a lot, should re-check
-
-# UNESCAPE_HTML_RE = re.compile(r"\\&(?=(amp\;|lt\;|gt\;|quot\;))")
-# ESCAPE_AND_HTML = re.compile(r"&(?!(amp\;|lt\;|gt\;|quot\;))")
-# HTML_ESCAPE_REPLACE_RE = re.compile(r'[&<>"]')
-
-
-# def escapeHtml(string: str):
-
-#     if HTML_ESCAPE_REPLACE_RE.search(string):
-
-#         string = UNESCAPE_HTML_RE.sub("&", string)
-#         string = ESCAPE_AND_HTML.sub("&amp;", string)
-#         for k, v in {"<": "&lt;", ">": "&gt;", '"': "&quot;"}.items():
-#             string = string.replace(k, v)
-
-#     return string
-
-
 def escapeHtml(raw: str) -> str:
-    # return html.escape(html.unescape(raw)).replace("&#x27;", "'")
-    return html.escape(raw).replace("&#x27;", "'")
+    """Replace special characters "&", "<", ">" and '"' to HTML-safe sequences."""
+    # like html.escape, but without escaping single quotes
+    raw = raw.replace("&", "&amp;") # Must be done first!
+    raw = raw.replace("<", "&lt;")
+    raw = raw.replace(">", "&gt;")
+    raw = raw.replace('"', "&quot;")
+    return raw
 
 
 # //////////////////////////////////////////////////////////////////////////////
