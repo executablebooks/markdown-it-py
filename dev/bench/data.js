@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1685588804619,
+  "lastUpdate": 1685690481213,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -23163,6 +23163,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.030584",
             "group": "packages",
             "extra": "mean: 1.0213 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.80",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.16"
+        },
+        "commit": {
+          "id": "4e6dfd5994bc765c3d4d5c308e10831c86a1452f",
+          "message": "🐛 FIX: numeric character reference passing (#272)\n\nFix issue with incorrect determination of a numeric character reference, and subsequent failure to convert to an integer code.\r\n\r\nFrom https://github.com/google/oss-fuzz/tree/master/projects/markdown-it-py, fixes issue 55371\r\n\r\nThis also essentially fixes a bug in upstream, see https://github.com/markdown-it/markdown-it/issues/935",
+          "timestamp": "2023-06-02T09:19:23+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/4e6dfd5994bc765c3d4d5c308e10831c86a1452f",
+          "distinct": true,
+          "tree_id": "8fd04301bca4018214e4b0e5572f15cb56bd18b7"
+        },
+        "date": 1685690480333,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 5.38639004372234,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0039230",
+            "group": "packages",
+            "extra": "mean: 185.65 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.765863406739681,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0017650",
+            "group": "packages",
+            "extra": "mean: 92.886 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.7014340496393252,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012892",
+            "group": "packages",
+            "extra": "mean: 587.74 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 2.2099721176735168,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011804",
+            "group": "packages",
+            "extra": "mean: 452.49 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.1428329599892724,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0034657",
+            "group": "packages",
+            "extra": "mean: 875.02 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 6.9805251964478074,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0045492",
+            "group": "packages",
+            "extra": "mean: 143.26 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.2452952481677202,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014557",
+            "group": "packages",
+            "extra": "mean: 803.02 msec\nrounds: 20"
           }
         ]
       }
