@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1685712082990,
+  "lastUpdate": 1685729095021,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -23553,6 +23553,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.036470",
             "group": "packages",
             "extra": "mean: 1.0865 sec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.30",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.16"
+        },
+        "commit": {
+          "id": "ea27cc86ca52c7ca1876fd1c550a518ecb61ecbe",
+          "message": "♻️ Refactor: Add linkifier rule to inline chain for full links (#279)\n\nFixes collision of emphasis and linkifier\r\n(so `http://example.org/foo._bar_-_baz` is now a single link, not emphasized).\r\nEmails and fuzzy links are not affected by this.\r\n\r\nImplements upstream: https://github.com/markdown-it/markdown-it/commit/6b58ec4245abe2e293c79bd7daabf4543ef46399",
+          "timestamp": "2023-06-02T20:02:17+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/ea27cc86ca52c7ca1876fd1c550a518ecb61ecbe",
+          "distinct": true,
+          "tree_id": "9e9ecc007f9bb6d267d8ef1c8f923d5c14706d2d"
+        },
+        "date": 1685729093366,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 4.302252843531618,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0076610",
+            "group": "packages",
+            "extra": "mean: 232.44 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 9.094388450979658,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0033870",
+            "group": "packages",
+            "extra": "mean: 109.96 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.129323489618036,
+            "unit": "iter/sec",
+            "range": "stddev: 0.030145",
+            "group": "packages",
+            "extra": "mean: 885.49 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 1.8492470488612216,
+            "unit": "iter/sec",
+            "range": "stddev: 0.020553",
+            "group": "packages",
+            "extra": "mean: 540.76 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.0497749512956192,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011894",
+            "group": "packages",
+            "extra": "mean: 952.59 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 5.794740690394001,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0071134",
+            "group": "packages",
+            "extra": "mean: 172.57 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.0293687827538565,
+            "unit": "iter/sec",
+            "range": "stddev: 0.019307",
+            "group": "packages",
+            "extra": "mean: 971.47 msec\nrounds: 20"
           }
         ]
       }
