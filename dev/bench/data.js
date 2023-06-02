@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1685705778256,
+  "lastUpdate": 1685706372775,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -23319,6 +23319,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0080910",
             "group": "packages",
             "extra": "mean: 806.04 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.16"
+        },
+        "commit": {
+          "id": "84dcefe28712c2488e4f1a1c1a03afe5222a70c0",
+          "message": "🐛 Fix: tab preventing paragraph continuation in lists (#274)\n\nImplements upstream: https://github.com/markdown-it/markdown-it/commit/1cd8a5143b22967a7583bba19678900efdf72adf",
+          "timestamp": "2023-06-02T13:43:54+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/84dcefe28712c2488e4f1a1c1a03afe5222a70c0",
+          "distinct": true,
+          "tree_id": "1b7285bc6ca2d1c64f21e42d374722e2d9647309"
+        },
+        "date": 1685706371480,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 5.082723779382369,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0054541",
+            "group": "packages",
+            "extra": "mean: 196.74 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.183803113919065,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0021804",
+            "group": "packages",
+            "extra": "mean: 98.195 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.6855517500057733,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014399",
+            "group": "packages",
+            "extra": "mean: 593.28 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 2.1299665289796477,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014078",
+            "group": "packages",
+            "extra": "mean: 469.49 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.1721023938622777,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0044891",
+            "group": "packages",
+            "extra": "mean: 853.17 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 6.498142956481916,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0061732",
+            "group": "packages",
+            "extra": "mean: 153.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.1675197963430868,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0042366",
+            "group": "packages",
+            "extra": "mean: 856.52 msec\nrounds: 20"
           }
         ]
       }
