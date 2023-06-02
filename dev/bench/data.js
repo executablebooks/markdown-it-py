@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1685690481213,
+  "lastUpdate": 1685705778256,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -23241,6 +23241,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.014557",
             "group": "packages",
             "extra": "mean: 803.02 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.80",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.16"
+        },
+        "commit": {
+          "id": "eb96da144db03319bacdda9dc765d8cd66f50dd3",
+          "message": "👌 Improve nested emphasis parsing (#273)\n\nThis fixes quadratic complexity in e.g. `**<...>**a**<...>**`\r\n\r\nImplementation of upstream commit: https://github.com/markdown-it/markdown-it/commit/24abaa51a605c2de14da59893797733921f09bb8",
+          "timestamp": "2023-06-02T13:34:19+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/eb96da144db03319bacdda9dc765d8cd66f50dd3",
+          "distinct": true,
+          "tree_id": "02e3c291715203530ed5e435e6d4eece29830b81"
+        },
+        "date": 1685705777358,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 5.335270756523811,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0042367",
+            "group": "packages",
+            "extra": "mean: 187.43 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.672745538073743,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0017164",
+            "group": "packages",
+            "extra": "mean: 93.697 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.9626564274242313,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014648",
+            "group": "packages",
+            "extra": "mean: 509.51 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 2.2152735598630664,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011606",
+            "group": "packages",
+            "extra": "mean: 451.41 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.1361349237533669,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0082700",
+            "group": "packages",
+            "extra": "mean: 880.18 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 6.953981209126533,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0048658",
+            "group": "packages",
+            "extra": "mean: 143.80 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.2406368244052803,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0080910",
+            "group": "packages",
+            "extra": "mean: 806.04 msec\nrounds: 20"
           }
         ]
       }
