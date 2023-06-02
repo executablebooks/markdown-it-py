@@ -55,7 +55,9 @@ class ParserBlock:
         for name, rule, alt in _rules:
             self.ruler.push(name, rule, {"alt": alt})
 
-    def tokenize(self, state: StateBlock, startLine: int, endLine: int) -> None:
+    def tokenize(
+        self, state: StateBlock, startLine: int, endLine: int, silent: bool = False
+    ) -> None:
         """Generate tokens for input range."""
         rules = self.ruler.getRules("")
         line = startLine
