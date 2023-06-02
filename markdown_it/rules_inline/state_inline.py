@@ -22,14 +22,6 @@ class Delimiter:
     # Total length of these series of delimiters.
     length: int
 
-    # An amount of characters before this one that's equivalent to
-    # current one. In plain English: if this delimiter does not open
-    # an emphasis, neither do previous `jump` characters.
-    #
-    # Used to skip sequences like "*****" in one step, for 1st asterisk
-    # value will be 0, for 2nd it's 1 and so on.
-    jump: int
-
     # A position of the token this delimiter corresponds to.
     token: int
 

@@ -25,7 +25,6 @@ def tokenize(state: StateInline, silent: bool) -> bool:
             Delimiter(
                 marker=ord(marker),
                 length=scanned.length,
-                jump=i,
                 token=len(state.tokens) - 1,
                 end=-1,
                 open=scanned.can_open,
@@ -63,9 +62,11 @@ def _postProcess(state: StateInline, delimiters: list[Delimiter]) -> None:
         isStrong = (
             i > 0
             and delimiters[i - 1].end == startDelim.end + 1
-            and delimiters[i - 1].token == startDelim.token - 1
-            and delimiters[startDelim.end + 1].token == endDelim.token + 1
+            # check that first two markers match and adjacent
             and delimiters[i - 1].marker == startDelim.marker
+            and delimiters[i - 1].token == startDelim.token - 1
+            # check that last two markers are adjacent (we can safely assume they match)
+            and delimiters[startDelim.end + 1].token == endDelim.token + 1
         )
 
         ch = chr(startDelim.marker)
