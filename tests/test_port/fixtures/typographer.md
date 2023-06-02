@@ -130,3 +130,10 @@ regression tests for #624
 <p>1–2–3</p>
 <p>1 – – 3</p>
 .
+
+shouldn't replace entities
+.
+&#40;c) (c&#41; (c)
+.
+<p>(c) (c) ©</p>
+.
