@@ -1,10 +1,6 @@
-# Proceess '\n'
-import re
-
+"""Proceess '\n'."""
 from ..common.utils import charStrAt, isStrSpace
 from .state_inline import StateInline
-
-endSpace = re.compile(r" +$")
 
 
 def newline(state: StateInline, silent: bool) -> bool:
@@ -23,7 +19,12 @@ def newline(state: StateInline, silent: bool) -> bool:
     if not silent:
         if pmax >= 0 and charStrAt(state.pending, pmax) == " ":
             if pmax >= 1 and charStrAt(state.pending, pmax - 1) == " ":
-                state.pending = endSpace.sub("", state.pending)
+                # Find whitespaces tail of pending chars.
+                ws = pmax - 1
+                while ws >= 1 and charStrAt(state.pending, ws - 1) == " ":
+                    ws -= 1
+                state.pending = state.pending[:ws]
+
                 state.push("hardbreak", "br", 0)
             else:
                 state.pending = state.pending[:-1]
