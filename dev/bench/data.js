@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1685729095021,
+  "lastUpdate": 1685731741930,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -23631,6 +23631,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.019307",
             "group": "packages",
             "extra": "mean: 971.47 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.60",
+          "cores": 2,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.8.16"
+        },
+        "commit": {
+          "id": "d5b3874539f50faf435ecb81355546cd8a63dd40",
+          "message": "♻️ Parse entities to `text_special` token (#280)\n\nRather than adding directly to text.\r\nThe `text_join` core rule then joins it to the text later, but after typographic rules have been applied.\r\n\r\nImplements upstream: https://github.com/markdown-it/markdown-it/commita/3fc0deb38b5a8b2eb8f46c727cc4e299e5ae5f9c",
+          "timestamp": "2023-06-02T20:46:32+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/d5b3874539f50faf435ecb81355546cd8a63dd40",
+          "distinct": true,
+          "tree_id": "d610c48e11a63dc9f34af5a7936b8edc24712b1d"
+        },
+        "date": 1685731740998,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 5.0495985098562475,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0062944",
+            "group": "packages",
+            "extra": "mean: 198.04 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.116500962452905,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0034647",
+            "group": "packages",
+            "extra": "mean: 98.848 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 1.67000975021749,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014928",
+            "group": "packages",
+            "extra": "mean: 598.80 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 2.15804728974452,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014342",
+            "group": "packages",
+            "extra": "mean: 463.38 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 1.174696031119188,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0058698",
+            "group": "packages",
+            "extra": "mean: 851.28 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 6.486825149952751,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059315",
+            "group": "packages",
+            "extra": "mean: 154.16 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.1685354456537875,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0060853",
+            "group": "packages",
+            "extra": "mean: 855.77 msec\nrounds: 20"
           }
         ]
       }
