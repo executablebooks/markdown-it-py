@@ -17,9 +17,9 @@ rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 """
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable
+from collections.abc import Iterable
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, TypedDict
+from typing import TYPE_CHECKING, Generic, TypedDict, TypeVar
 import warnings
 
 from markdown_it._compat import DATACLASS_KWARGS
@@ -57,33 +57,30 @@ class StateBase:
         return self._srcCharCode
 
 
-# The first positional arg is always a subtype of `StateBase`. Other
-# arguments may or may not exist, based on the rule's type (block,
-# core, inline). Return type is either `None` or `bool` based on the
-# rule's type.
-RuleFunc = Callable  # type: ignore
-
-
 class RuleOptionsType(TypedDict, total=False):
     alt: list[str]
 
 
+RuleFuncTv = TypeVar("RuleFuncTv")
+"""A rule function, whose signature is dependent on the state type."""
+
+
 @dataclass(**DATACLASS_KWARGS)
-class Rule:
+class Rule(Generic[RuleFuncTv]):
     name: str
     enabled: bool
-    fn: RuleFunc = field(repr=False)
+    fn: RuleFuncTv = field(repr=False)
     alt: list[str]
 
 
-class Ruler:
+class Ruler(Generic[RuleFuncTv]):
     def __init__(self) -> None:
         # List of added rules.
-        self.__rules__: list[Rule] = []
+        self.__rules__: list[Rule[RuleFuncTv]] = []
         # Cached rule chains.
         # First level - chain name, '' for default.
         # Second level - diginal anchor for fast filtering by charcodes.
-        self.__cache__: dict[str, list[RuleFunc]] | None = None
+        self.__cache__: dict[str, list[RuleFuncTv]] | None = None
 
     def __find__(self, name: str) -> int:
         """Find rule index by name"""
@@ -112,7 +109,7 @@ class Ruler:
                 self.__cache__[chain].append(rule.fn)
 
     def at(
-        self, ruleName: str, fn: RuleFunc, options: RuleOptionsType | None = None
+        self, ruleName: str, fn: RuleFuncTv, options: RuleOptionsType | None = None
     ) -> None:
         """Replace rule by name with new function & options.
 
@@ -133,7 +130,7 @@ class Ruler:
         self,
         beforeName: str,
         ruleName: str,
-        fn: RuleFunc,
+        fn: RuleFuncTv,
         options: RuleOptionsType | None = None,
     ) -> None:
         """Add new rule to chain before one with given name.
@@ -148,14 +145,16 @@ class Ruler:
         options = options or {}
         if index == -1:
             raise KeyError(f"Parser rule not found: {beforeName}")
-        self.__rules__.insert(index, Rule(ruleName, True, fn, options.get("alt", [])))
+        self.__rules__.insert(
+            index, Rule[RuleFuncTv](ruleName, True, fn, options.get("alt", []))
+        )
         self.__cache__ = None
 
     def after(
         self,
         afterName: str,
         ruleName: str,
-        fn: RuleFunc,
+        fn: RuleFuncTv,
         options: RuleOptionsType | None = None,
     ) -> None:
         """Add new rule to chain after one with given name.
@@ -171,12 +170,12 @@ class Ruler:
         if index == -1:
             raise KeyError(f"Parser rule not found: {afterName}")
         self.__rules__.insert(
-            index + 1, Rule(ruleName, True, fn, options.get("alt", []))
+            index + 1, Rule[RuleFuncTv](ruleName, True, fn, options.get("alt", []))
         )
         self.__cache__ = None
 
     def push(
-        self, ruleName: str, fn: RuleFunc, options: RuleOptionsType | None = None
+        self, ruleName: str, fn: RuleFuncTv, options: RuleOptionsType | None = None
     ) -> None:
         """Push new rule to the end of chain.
 
@@ -185,7 +184,9 @@ class Ruler:
         :param options: new rule options (not mandatory).
 
         """
-        self.__rules__.append(Rule(ruleName, True, fn, (options or {}).get("alt", [])))
+        self.__rules__.append(
+            Rule[RuleFuncTv](ruleName, True, fn, (options or {}).get("alt", []))
+        )
         self.__cache__ = None
 
     def enable(
@@ -252,7 +253,7 @@ class Ruler:
         self.__cache__ = None
         return result
 
-    def getRules(self, chainName: str) -> list[RuleFunc]:
+    def getRules(self, chainName: str = "") -> list[RuleFuncTv]:
         """Return array of active functions (rules) for given chain name.
         It analyzes rules configuration, compiles caches if not exists and returns result.
 

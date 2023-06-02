@@ -2,10 +2,10 @@
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 
 from . import rules_inline
-from .ruler import RuleFunc, Ruler
+from .ruler import Ruler
 from .rules_inline.state_inline import StateInline
 from .token import Token
 from .utils import EnvType
@@ -13,8 +13,14 @@ from .utils import EnvType
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
 
+
 # Parser rules
-_rules: list[tuple[str, RuleFunc]] = [
+RuleFuncInlineType = Callable[[StateInline, bool], bool]
+"""(state: StateInline, silent: bool) -> matched: bool)
+
+`silent` disables token generation, useful for lookahead.
+"""
+_rules: list[tuple[str, RuleFuncInlineType]] = [
     ("text", rules_inline.text),
     ("linkify", rules_inline.linkify),
     ("newline", rules_inline.newline),
@@ -34,7 +40,8 @@ _rules: list[tuple[str, RuleFunc]] = [
 #
 # Don't use this for anything except pairs (plugins working with `balance_pairs`).
 #
-_rules2: list[tuple[str, RuleFunc]] = [
+RuleFuncInline2Type = Callable[[StateInline], None]
+_rules2: list[tuple[str, RuleFuncInline2Type]] = [
     ("balance_pairs", rules_inline.link_pairs),
     ("strikethrough", rules_inline.strikethrough.postProcess),
     ("emphasis", rules_inline.emphasis.postProcess),
@@ -46,11 +53,11 @@ _rules2: list[tuple[str, RuleFunc]] = [
 
 class ParserInline:
     def __init__(self) -> None:
-        self.ruler = Ruler()
+        self.ruler = Ruler[RuleFuncInlineType]()
         for name, rule in _rules:
             self.ruler.push(name, rule)
         # Second ruler used for post-processing (e.g. in emphasis-like rules)
-        self.ruler2 = Ruler()
+        self.ruler2 = Ruler[RuleFuncInline2Type]()
         for name, rule2 in _rules2:
             self.ruler2.push(name, rule2)
 

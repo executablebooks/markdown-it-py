@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Callable
 
 from . import rules_block
 from .ruler import Ruler
@@ -16,7 +16,13 @@ if TYPE_CHECKING:
 LOGGER = logging.getLogger(__name__)
 
 
-_rules: list[tuple[str, Any, list[str]]] = [
+RuleFuncBlockType = Callable[[StateBlock, int, int, bool], bool]
+"""(state: StateBlock, startLine: int, endLine: int, silent: bool) -> matched: bool)
+
+`silent` disables token generation, useful for lookahead.
+"""
+
+_rules: list[tuple[str, RuleFuncBlockType, list[str]]] = [
     # First 2 params - rule name & source. Secondary array - list of rules,
     # which can be terminated by this one.
     ("table", rules_block.table, ["paragraph", "reference"]),
@@ -45,7 +51,7 @@ class ParserBlock:
     """
 
     def __init__(self) -> None:
-        self.ruler = Ruler()
+        self.ruler = Ruler[RuleFuncBlockType]()
         for name, rule, alt in _rules:
             self.ruler.push(name, rule, {"alt": alt})
 

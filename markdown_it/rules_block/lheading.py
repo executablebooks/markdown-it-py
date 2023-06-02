@@ -1,7 +1,6 @@
 # lheading (---, ==)
 import logging
 
-from ..ruler import Ruler
 from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
@@ -12,7 +11,7 @@ def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> b
 
     level = None
     nextLine = startLine + 1
-    ruler: Ruler = state.md.block.ruler
+    ruler = state.md.block.ruler
     terminatorRules = ruler.getRules("paragraph")
 
     if state.is_code_block(startLine):
