@@ -41,15 +41,6 @@ trademark
 <p>™ ™</p>
 .
 
-
-paragraph
-.
-(p) (P)
-.
-<p>§ §</p>
-.
-
-
 plus-minus
 .
 +-5

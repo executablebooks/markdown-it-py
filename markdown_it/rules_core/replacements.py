@@ -3,7 +3,6 @@
 * ``(c)``, ``(C)`` → ©
 * ``(tm)``, ``(TM)`` → ™
 * ``(r)``, ``(R)`` → ®
-* ``(p)``, ``(P)`` → §
 * ``+-`` → ±
 * ``...`` → …
 * ``?....`` → ?..
@@ -26,15 +25,15 @@ LOGGER = logging.getLogger(__name__)
 
 # TODO:
 # - fractionals 1/2, 1/4, 3/4 -> ½, ¼, ¾
-# - miltiplication 2 x 4 -> 2 × 4
+# - multiplication 2 x 4 -> 2 × 4
 
 RARE_RE = re.compile(r"\+-|\.\.|\?\?\?\?|!!!!|,,|--")
 
 # Workaround for phantomjs - need regex without /g flag,
 # or root check will fail every second time
-# SCOPED_ABBR_TEST_RE = r"\((c|tm|r|p)\)"
+# SCOPED_ABBR_TEST_RE = r"\((c|tm|r)\)"
 
-SCOPED_ABBR_RE = re.compile(r"\((c|tm|r|p)\)", flags=re.IGNORECASE)
+SCOPED_ABBR_RE = re.compile(r"\((c|tm|r)\)", flags=re.IGNORECASE)
 
 PLUS_MINUS_RE = re.compile(r"\+-")
 
@@ -53,7 +52,7 @@ EN_DASH_RE = re.compile(r"(^|\s)--(?=\s|$)", flags=re.MULTILINE)
 EN_DASH_INDENT_RE = re.compile(r"(^|[^-\s])--(?=[^-\s]|$)", flags=re.MULTILINE)
 
 
-SCOPED_ABBR = {"c": "©", "r": "®", "p": "§", "tm": "™"}
+SCOPED_ABBR = {"c": "©", "r": "®", "tm": "™"}
 
 
 def replaceFn(match: re.Match[str]) -> str:
