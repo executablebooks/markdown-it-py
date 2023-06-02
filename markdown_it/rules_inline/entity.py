@@ -16,35 +16,38 @@ def entity(state: StateInline, silent: bool) -> bool:
     if state.src[pos] != "&":
         return False
 
-    if (pos + 1) < maximum:
-        if state.src[pos + 1] == "#":
-            match = DIGITAL_RE.search(state.src[pos:])
-            if match:
-                if not silent:
-                    match1 = match.group(1)
-                    code = (
-                        int(match1[1:], 16)
-                        if match1[0].lower() == "x"
-                        else int(match1, 10)
-                    )
-                    state.pending += (
-                        fromCodePoint(code)
-                        if isValidEntityCode(code)
-                        else fromCodePoint(0xFFFD)
-                    )
+    if pos + 1 >= maximum:
+        return False
 
-                state.pos += len(match.group(0))
-                return True
+    if state.src[pos + 1] == "#":
+        if match := DIGITAL_RE.search(state.src[pos:]):
+            if not silent:
+                match1 = match.group(1)
+                code = (
+                    int(match1[1:], 16) if match1[0].lower() == "x" else int(match1, 10)
+                )
 
-        else:
-            match = NAMED_RE.search(state.src[pos:])
-            if match and match.group(1) in entities:
-                if not silent:
-                    state.pending += entities[match.group(1)]
-                state.pos += len(match.group(0))
-                return True
+                token = state.push("text_special", "", 0)
+                token.content = (
+                    fromCodePoint(code)
+                    if isValidEntityCode(code)
+                    else fromCodePoint(0xFFFD)
+                )
+                token.markup = match.group(0)
+                token.info = "entity"
 
-    if not silent:
-        state.pending += "&"
-    state.pos += 1
-    return True
+            state.pos += len(match.group(0))
+            return True
+
+    else:
+        if (match := NAMED_RE.search(state.src[pos:])) and match.group(1) in entities:
+            if not silent:
+                token = state.push("text_special", "", 0)
+                token.content = entities[match.group(1)]
+                token.markup = match.group(0)
+                token.info = "entity"
+
+            state.pos += len(match.group(0))
+            return True
+
+    return False
