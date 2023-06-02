@@ -34,7 +34,6 @@ def tokenize(state: StateInline, silent: bool) -> bool:
             Delimiter(
                 marker=ord(ch),
                 length=0,  # disable "rule of 3" length checks meant for emphasis
-                jump=i // 2,  # for `~~` 1 marker = 2 characters
                 token=len(state.tokens) - 1,
                 end=-1,
                 open=scanned.can_open,
