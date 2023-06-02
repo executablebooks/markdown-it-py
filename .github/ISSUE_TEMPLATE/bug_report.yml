@@ -13,17 +13,17 @@ body:
     value: |
       **context**
       When I do ___.
-      
+
       **expectation**
       I expected ___ to occur.
-      
+
       **bug**
       But instead ___ happens
       Here's an error message I ran into...
 
       **problem**
       This is a problem for people doing ___ because ___.
-      
+
   validations:
     required: true
 
@@ -34,7 +34,7 @@ body:
     description: |
       Provide information that others may use to re-produce this behavior.
       For example:
-      
+
       - Step-by-step instructions that others can follow.
       - Links to a website that demonstrates the bug.
       - Information about certain conditions that the bug pops up.
