@@ -18,7 +18,7 @@ def tokenize(state: StateInline, silent: bool) -> bool:
 
     scanned = state.scanDelims(state.pos, marker == "*")
 
-    for i in range(scanned.length):
+    for _ in range(scanned.length):
         token = state.push("text", "", 0)
         token.content = marker
         state.delimiters.append(
