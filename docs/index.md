@@ -7,6 +7,7 @@
 - {fa}`check,text-success mr-1` Pluggable: Adds syntax extensions to extend the parser (see the [plugin list](md/plugins))
 - {fa}`check,text-success mr-1` High speed (see our [benchmarking tests](md/performance))
 - {fa}`check,text-success mr-1` [Safe by default](md/security)
+- {fa}`check,text-success mr-1` Member of [Google's Assured Open Source Software](https://cloud.google.com/assured-open-source-software/docs/supported-packages)
 
 For a good introduction to [markdown-it] see the __[Live demo](https://markdown-it.github.io)__.
 This is a Python port of the well used [markdown-it], and some of its associated plugins.
