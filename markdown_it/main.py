@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Generator, Iterable, Mapping, MutableMapping
 from contextlib import contextmanager
-from typing import Any, Literal, overload
+from typing import Any, Literal, Sequence, overload
 
 from . import helpers, presets
 from .common import normalize_url, utils
@@ -227,11 +227,20 @@ class MarkdownIt:
         self.inline.ruler2.enableOnly(chain_rules["inline2"])
 
     def add_render_rule(
-        self, name: str, function: Callable[..., Any], fmt: str = "html"
+        self,
+        name: str,
+        function: Callable[
+            [RendererProtocol, Sequence[Token], int, OptionsDict, EnvType], str
+        ],
+        fmt: str = "html",
     ) -> None:
         """Add a rule for rendering a particular Token type.
 
         Only applied when ``renderer.__output__ == fmt``
+
+        :param name: the name of the token type
+        :param function: the function to call to render the token;
+            it should have the signature ``function(tokens, idx, options, env)``
         """
         if self.renderer.__output__ == fmt:
             self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
