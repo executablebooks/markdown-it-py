@@ -67,14 +67,14 @@ For documentation build tests:
    Where possible try to port directly from that.
    It is usually better to modify existing code, instead of writing all from scratch.
 2. Try to find the right place for your plugin rule:
-  - Will it conflict with existing markup (by priority)?
-    - If yes - you need to write an inline or block rule.
-    - If no - you can morph tokens within core chains.
-  - Remember that token morphing in core chains is always more simple than writing
-    block or inline rules, if you don't copy existing ones. However,
-    block and inline rules are usually faster.
-  - Sometimes, it's enough to only modify the renderer, for example, to add
-    header IDs or `target="_blank"` for the links.
+   - Will it conflict with existing markup (by priority)?
+     - If yes - you need to write an inline or block rule.
+     - If no - you can morph tokens within core chains.
+   - Remember that token morphing in core chains is always more simple than writing
+     block or inline rules, if you don't copy existing ones. However,
+     block and inline rules are usually faster.
+   - Sometimes, it's enough to only modify the renderer, for example, to add
+     header IDs or `target="_blank"` for the links.
 
 ## FAQ
 

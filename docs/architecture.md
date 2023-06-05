@@ -41,7 +41,6 @@ An `env` sandbox can be used alongside tokens to inject external variables for y
 
 Each chain (core / block / inline) uses an independent `state` object when parsing data, so that each parsing operation is independent and can be disabled on the fly.
 
-
 ## Token stream
 
 Instead of traditional AST we use more low-level data representation - *tokens*.
@@ -74,7 +73,6 @@ More details about tokens:
 - [Token source](https://github.com/executablebooks/markdown-it-py/tree/master/markdown_it/token.py)
 - [Live demo](https://markdown-it.github.io/) - type your text and click `debug` tab.
 
-
 ## Rules
 
 Rules are functions, doing "magic" with parser `state` objects. A rule is associated with one or more *chains* and is unique. For instance, a `blockquote` token is associated with `blockquote`, `paragraph`, `heading` and `list` chains.
@@ -93,7 +91,6 @@ can investigate existing rules & plugins to see possible approaches.
 Also, in complex cases you can try to ask for help in tracker. Condition is very
 simple - it should be clear from your ticket, that you studied docs, sources,
 and tried to do something yourself. We never reject with help to real developers.
-
 
 ## Renderer
 

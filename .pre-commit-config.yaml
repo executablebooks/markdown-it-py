@@ -9,11 +9,18 @@ exclude: >
       test.*\.html|
       test.*\.xml|
       .*commonmark\.json|
-      benchmark/.*\.md|
+      benchmarking/.*\.md|
       .*/spec\.md
     )$
 
 repos:
+
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.4
+    hooks:
+    - id: mdformat
+      args: [--number]
+      additional_dependencies: [mdformat-myst==0.1.2]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0

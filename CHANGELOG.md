@@ -198,8 +198,8 @@ There are four notable (and breaking) changes:
 
 This release brings Markdown-It-Py inline with Markdown-It v11.0.1 (2020-09-14), applying two fixes:
 
-- Fix blockquote lazy newlines, [[#696](https://github.com/markdown-it/markdown-it/issues/696)].
-- Fix missed mappings for table rows, [[#705](https://github.com/markdown-it/markdown-it/issues/705)].
+- Fix blockquote lazy newlines, \[[#696](https://github.com/markdown-it/markdown-it/issues/696)\].
+- Fix missed mappings for table rows, \[[#705](https://github.com/markdown-it/markdown-it/issues/705)\].
 
 Thanks to [@hukkinj1](https://github.com/hukkinj1)!
 
@@ -289,19 +289,19 @@ md = MarkdownIt().use(tasklists_plugin)
 - ✨ NEW: Add simple typographic replacements, thanks to [@tsutsu3](https://github.com/tsutsu3):
   This allows you to add the `typographer` option to the parser, to replace particular text constructs:
 
-  - ``(c)``, ``(C)`` → ©
-  - ``(tm)``, ``(TM)`` → ™
-  - ``(r)``, ``(R)`` → ®
-  - ``(p)``, ``(P)`` → §
-  - ``+-`` → ±
-  - ``...`` → …
-  - ``?....`` → ?..
-  - ``!....`` → !..
-  - ``????????`` → ???
-  - ``!!!!!`` → !!!
-  - ``,,,`` → ,
-  - ``--`` → &ndash
-  - ``---`` → &mdash
+  - `(c)`, `(C)` → ©
+  - `(tm)`, `(TM)` → ™
+  - `(r)`, `(R)` → ®
+  - `(p)`, `(P)` → §
+  - `+-` → ±
+  - `...` → …
+  - `?....` → ?..
+  - `!....` → !..
+  - `????????` → ???
+  - `!!!!!` → !!!
+  - `,,,` → ,
+  - `--` → &ndash
+  - `---` → &mdash
 
   ```python
   md = MarkdownIt().enable("replacements")
@@ -309,7 +309,9 @@ md = MarkdownIt().use(tasklists_plugin)
   ```
 
 - 📚 DOCS: Improve documentation for CLI, thanks to [@westurner](https://github.com/westurner)
+
 - 👌 IMPROVE: Use `re.sub()` instead of `re.subn()[0]`, thanks to [@hukkinj1](https://github.com/hukkinj1)
+
 - 🐛 FIX: An exception raised by having multiple blank lines at the end of some files
 
 ## 0.5.5 - 2020-09-27

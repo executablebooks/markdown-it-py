@@ -1,6 +1,6 @@
 # markdown-it-py
 
-[![Github-CI][github-ci]][github-link]
+[![Github-CI]][github-link]
 [![Coverage Status][codecov-badge]][codecov-link]
 [![PyPI][pypi-badge]][pypi-link]
 [![Conda][conda-badge]][conda-link]
@@ -127,22 +127,20 @@ Big thanks to the authors of [markdown-it]:
 
 Also [John MacFarlane](https://github.com/jgm) for his work on the CommonMark spec and reference implementations.
 
-[github-ci]: https://github.com/executablebooks/markdown-it-py/workflows/Python%20package/badge.svg?branch=master
-[github-link]: https://github.com/executablebooks/markdown-it-py
-[pypi-badge]: https://img.shields.io/pypi/v/markdown-it-py.svg
-[pypi-link]: https://pypi.org/project/markdown-it-py
-[conda-badge]: https://anaconda.org/conda-forge/markdown-it-py/badges/version.svg
-[conda-link]: https://anaconda.org/conda-forge/markdown-it-py
-[codecov-badge]: https://codecov.io/gh/executablebooks/markdown-it-py/branch/master/graph/badge.svg
-[codecov-link]: https://codecov.io/gh/executablebooks/markdown-it-py
 [black-badge]: https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]: https://github.com/ambv/black
+[codecov-badge]: https://codecov.io/gh/executablebooks/markdown-it-py/branch/master/graph/badge.svg
+[codecov-link]: https://codecov.io/gh/executablebooks/markdown-it-py
+[conda-badge]: https://anaconda.org/conda-forge/markdown-it-py/badges/version.svg
+[conda-link]: https://anaconda.org/conda-forge/markdown-it-py
+[github-ci]: https://github.com/executablebooks/markdown-it-py/workflows/Python%20package/badge.svg?branch=master
+[github-link]: https://github.com/executablebooks/markdown-it-py
 [install-badge]: https://img.shields.io/pypi/dw/markdown-it-py?label=pypi%20installs
 [install-link]: https://pypistats.org/packages/markdown-it-py
-
-[CommonMark spec]: http://spec.commonmark.org/
 [markdown-it]: https://github.com/markdown-it/markdown-it
 [markdown-it-readme]: https://github.com/markdown-it/markdown-it/blob/master/README.md
-[md-security]: https://markdown-it-py.readthedocs.io/en/latest/other.html
 [md-performance]: https://markdown-it-py.readthedocs.io/en/latest/other.html
 [md-plugins]: https://markdown-it-py.readthedocs.io/en/latest/plugins.html
+[md-security]: https://markdown-it-py.readthedocs.io/en/latest/other.html
+[pypi-badge]: https://img.shields.io/pypi/v/markdown-it-py.svg
+[pypi-link]: https://pypi.org/project/markdown-it-py
