@@ -243,7 +243,7 @@ class MarkdownIt:
             it should have the signature ``function(renderer, tokens, idx, options, env)``
         """
         if self.renderer.__output__ == fmt:
-            self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
+            self.renderer.rules[name] = function.__get__(self.renderer)
 
     def use(
         self, plugin: Callable[..., None], *params: Any, **options: Any
