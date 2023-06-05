@@ -9,11 +9,14 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 import inspect
-from typing import Any, Callable, ClassVar, MutableMapping, Protocol
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, MutableMapping, Protocol
 
 from .common.utils import escapeHtml, unescapeAll
 from .token import Token
 from .utils import EnvType, OptionsDict
+
+if TYPE_CHECKING:
+    from markdown_it import MarkdownIt
 
 
 class RendererProtocol(Protocol):
@@ -27,6 +30,9 @@ class RendererProtocol(Protocol):
         self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
     ) -> Any:
         ...
+
+    # note container and admon plugins also expect renderToken to be defined,
+    # but it is unclear if this should be a requirement for all renderers
 
 
 class RendererHTML(RendererProtocol):
@@ -61,7 +67,7 @@ class RendererHTML(RendererProtocol):
 
     __output__ = "html"
 
-    def __init__(self, parser: Any = None):
+    def __init__(self, parser: None | MarkdownIt = None):
         self.rules = {
             k: v
             for k, v in inspect.getmembers(self, predicate=inspect.ismethod)
