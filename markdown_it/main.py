@@ -240,7 +240,7 @@ class MarkdownIt:
 
         :param name: the name of the token type
         :param function: the function to call to render the token;
-            it should have the signature ``function(tokens, idx, options, env)``
+            it should have the signature ``function(renderer, tokens, idx, options, env)``
         """
         if self.renderer.__output__ == fmt:
             self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
