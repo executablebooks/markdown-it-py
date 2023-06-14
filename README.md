@@ -127,7 +127,7 @@ Big thanks to the authors of [markdown-it]:
 
 Also [John MacFarlane](https://github.com/jgm) for his work on the CommonMark spec and reference implementations.
 
-[github-ci]: https://github.com/executablebooks/markdown-it-py/workflows/Python%20package/badge.svg?branch=master
+[github-ci]: https://github.com/executablebooks/markdown-it-py/actions/workflows/tests.yml/badge.svg?branch=master
 [github-link]: https://github.com/executablebooks/markdown-it-py
 [pypi-badge]: https://img.shields.io/pypi/v/markdown-it-py.svg
 [pypi-link]: https://pypi.org/project/markdown-it-py
