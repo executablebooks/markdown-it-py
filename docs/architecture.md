@@ -1,6 +1,6 @@
 (md/architecture)=
 
-# markdown-it design principles
+# Design principles
 
 (md/data-flow)=
 ## Data flow

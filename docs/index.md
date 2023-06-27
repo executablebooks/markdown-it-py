@@ -33,7 +33,8 @@ Also [John MacFarlane](https://github.com/jgm) for his work on the CommonMark sp
 
 using
 architecture
-other
+security
+performance
 plugins
 contributing
 api/markdown_it
