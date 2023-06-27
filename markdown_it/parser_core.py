@@ -41,5 +41,5 @@ class ParserCore:
 
     def process(self, state: StateCore) -> None:
         """Executes core chain rules."""
-        for rule in self.ruler.getRules(""):
+        for rule in self.ruler.getRules():
             rule(state)

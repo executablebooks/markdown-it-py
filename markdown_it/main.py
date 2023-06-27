@@ -144,7 +144,7 @@ class MarkdownIt:
         return self
 
     def get_all_rules(self) -> dict[str, list[str]]:
-        """Return the names of all active rules."""
+        """Return the names of all rules."""
         rules = {
             chain: self[chain].ruler.get_all_rules()
             for chain in ["core", "block", "inline"]
