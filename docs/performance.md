@@ -5,8 +5,8 @@
 You can view our continuous integration benchmarking analysis at: <https://executablebooks.github.io/markdown-it-py/dev/bench/>,
 or you can run it for yourself within the repository:
 
-```console
-$ tox -e py311-bench-packages -- --benchmark-columns mean,stddev
+```bash
+tox -e py311-bench-packages -- --benchmark-columns mean,stddev
 ```
 
 |       package        | version | mean (ms) | stddev  |
@@ -19,7 +19,6 @@ $ tox -e py311-bench-packages -- --benchmark-columns mean,stddev
 | pymarkdown           | 3.4.3   | 387.775   | 10.394  |
 | pymarkdown (+extras) | 3.4.3   | 646.564   | 11.316  |
 | panflute             | 2.3.0   | 860.105   | 208.607 |
-
 
 As you can see, `markdown-it-py` doesn't pay with speed for it's flexibility.
 
