@@ -24,6 +24,9 @@ For details on [markdown-it] itself, see:
 - The __[Live demo](https://markdown-it.github.io)__
 - [The markdown-it README][markdown-it-readme]
 
+**See also:** [markdown-it-pyrs](https://github.com/chrisjsewell/markdown-it-pyrs) for an experimental Rust binding,
+for even more speed!
+
 ## Installation
 
 ```bash
@@ -143,6 +146,6 @@ Also [John MacFarlane](https://github.com/jgm) for his work on the CommonMark sp
 [CommonMark spec]: http://spec.commonmark.org/
 [markdown-it]: https://github.com/markdown-it/markdown-it
 [markdown-it-readme]: https://github.com/markdown-it/markdown-it/blob/master/README.md
-[md-security]: https://markdown-it-py.readthedocs.io/en/latest/other.html
-[md-performance]: https://markdown-it-py.readthedocs.io/en/latest/other.html
+[md-security]: https://markdown-it-py.readthedocs.io/en/latest/security.html
+[md-performance]: https://markdown-it-py.readthedocs.io/en/latest/performance.html
 [md-plugins]: https://markdown-it-py.readthedocs.io/en/latest/plugins.html

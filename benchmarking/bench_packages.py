@@ -19,6 +19,15 @@ def test_markdown_it_py(benchmark, spec_text):
 
 
 @pytest.mark.benchmark(group="packages")
+def test_markdown_it_pyrs(benchmark, spec_text):
+    import markdown_it_pyrs
+
+    parser = markdown_it_pyrs.MarkdownIt("commonmark")
+    benchmark.extra_info["version"] = markdown_it_pyrs.__version__
+    benchmark(parser.render, spec_text)
+
+
+@pytest.mark.benchmark(group="packages")
 def test_mistune(benchmark, spec_text):
     import mistune
 

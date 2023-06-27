@@ -33,34 +33,3 @@ If those depend on user input - always add prefixes to avoid DOM clobbering.
 See [discussion](https://github.com/markdown-it/markdown-it/issues/28) for details.
 
 So, if you decide to use plugins that add extended class syntax or autogenerating header anchors - be careful.
-
-(md/performance)=
-
-# Performance
-
-You can view our continuous integration benchmarking analysis at: <https://executablebooks.github.io/markdown-it-py/dev/bench/>,
-or you can run it for yourself within the repository:
-
-```console
-$ tox -e py38-bench-packages -- --benchmark-columns mean,stddev
-
-Name (time in ms)             Mean             StdDev
----------------------------------------------------------------
-test_mistune               70.3272 (1.0)       0.7978 (1.0)
-test_mistletoe            116.0919 (1.65)      6.2870 (7.88)
-test_markdown_it_py       152.9022 (2.17)      4.2988 (5.39)
-test_commonmark_py        326.9506 (4.65)     15.8084 (19.81)
-test_pymarkdown           368.2712 (5.24)      7.5906 (9.51)
-test_pymarkdown_extra     640.4913 (9.11)     15.1769 (19.02)
-test_panflute             678.3547 (9.65)      9.4622 (11.86)
----------------------------------------------------------------
-```
-
-As you can see, `markdown-it-py` doesn't pay with speed for it's flexibility.
-
-```{note}
-`mistune` is not CommonMark compliant, which is what allows for its
-faster parsing, at the expense of issues, for example, with nested inline parsing.
-See [mistletoes's explanation](https://github.com/miyuchina/mistletoe/blob/master/performance.md)
-for further details.
-```

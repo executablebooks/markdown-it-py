@@ -1,4 +1,4 @@
-# Contribute to markdown-it-py
+# Contribute
 
 We welcome all contributions! ✨
 
