@@ -64,8 +64,11 @@ nitpick_ignore_regex = [
 # a list of builtin themes.
 #
 html_title = "markdown-it-py"
+html_logo = html_favicon = "_static/markdown-it-py.svg"
 html_theme = "sphinx_book_theme"
 html_theme_options = {
+    "home_page_in_toc": True,
+    "use_repository_button": True,
     "use_edit_page_button": True,
     "repository_url": "https://github.com/executablebooks/markdown-it-py",
     "repository_branch": "master",
