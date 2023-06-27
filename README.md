@@ -7,6 +7,10 @@
 [![Code style: black][black-badge]][black-link]
 [![PyPI - Downloads][install-badge]][install-link]
 
+<p align="center">
+  <img alt="markdown-it-py icon" src="https://raw.githubusercontent.com/executablebooks/markdown-it-py/master/docs/_static/markdown-it-py.svg">
+</p>
+
 > Markdown parser done right.
 
 - Follows the __[CommonMark spec](http://spec.commonmark.org/)__ for baseline parsing
