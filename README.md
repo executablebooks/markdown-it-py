@@ -17,7 +17,7 @@
 - Configurable syntax: you can add new rules and even replace existing ones.
 - Pluggable: Adds syntax extensions to extend the parser (see the [plugin list][md-plugins]).
 - High speed (see our [benchmarking tests][md-performance])
-- [Safe by default][md-security]
+- Easy to configure for [security][md-security]
 - Member of [Google's Assured Open Source Software](https://cloud.google.com/assured-open-source-software/docs/supported-packages)
 
 This is a Python port of [markdown-it], and some of its associated plugins.
