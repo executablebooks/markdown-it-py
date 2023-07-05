@@ -2,8 +2,8 @@
 
 # Security
 
-Contrary to some expectations, the Markdown format, by default, is not particularly concerned about security.
-This is fine for many use cases, for example when writing articles for one's own blog or composing technical documentation for a software package.
+By default, the `MardownIt` parser is initialised to comply with the [CommonMark spec](https://spec.commonmark.org/), which allows for parsing aritrary HTML tags.
+This can be useful for many use cases, for example when writing articles for one's own blog or composing technical documentation for a software package.
 
 However, extra precautions are needed when parsing content from untrusted sources.
 Generally, the output should be run through sanitizers to ensure safety and prevent vulnerabilities like cross-site scripting (XSS).
