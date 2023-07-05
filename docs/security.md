@@ -2,7 +2,7 @@
 
 # Security
 
-By default, the `MardownIt` parser is initialised to comply with the [CommonMark spec](https://spec.commonmark.org/), which allows for parsing aritrary HTML tags.
+By default, the `MarkdownIt` parser is initialised to comply with the [CommonMark spec](https://spec.commonmark.org/), which allows for parsing arbitrary HTML tags.
 This can be useful for many use cases, for example when writing articles for one's own blog or composing technical documentation for a software package.
 
 However, extra precautions are needed when parsing content from untrusted sources.
@@ -14,7 +14,7 @@ With `markdown-it`/`markdown-it-py`, there are two strategies for doing this:
    This removes the need for further sanitizing.
 
 ```{warning}
-Unlike the original `markdown-it` JavaScript project, which uses the second, safe-by-default strategy, `markdown-it-py` enables less-secure (but more convenient) CommonMark-compliant settings by default.
+Unlike the original `markdown-it` JavaScript project, which uses the second, safe-by-default strategy, `markdown-it-py` enables the more convenient, but less secure, CommonMark-compliant settings by default.
 
 This is not safe when using `markdown-it-py` in web applications that parse user-submitted content.
 In such cases, [using the `js-default` preset](using.md) is strongly recommended.
