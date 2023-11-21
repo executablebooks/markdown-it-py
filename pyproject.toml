@@ -54,6 +54,7 @@ rtd = [
     "sphinx-design",
     "sphinx_book_theme",
     "jupyter_sphinx",
+    "ipykernel",
 ]
 testing = [
     "coverage",
