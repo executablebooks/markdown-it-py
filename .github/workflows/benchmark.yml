@@ -9,7 +9,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Set up Python 3.8
       uses: actions/setup-python@v4
@@ -30,7 +30,7 @@ jobs:
       run: tox -e py38-bench-packages -- --benchmark-min-rounds 20 --benchmark-json bench-packages.json
 
     # - name: Upload package data
-    #   uses: actions/upload-artifact@v2
+    #   uses: actions/upload-artifact@v3
     #   with:
     #     name: bench-packages
     #     path: bench-packages.json
