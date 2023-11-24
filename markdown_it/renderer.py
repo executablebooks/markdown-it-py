@@ -155,7 +155,7 @@ class RendererHTML(RendererProtocol):
             if token.nesting == 1 and (idx + 1 < len(tokens)):
                 nextToken = tokens[idx + 1]
 
-                if nextToken.type == "inline" or nextToken.hidden:  # noqa: SIM114
+                if nextToken.type == "inline" or nextToken.hidden:
                     # Block-level tag containing an inline tag.
                     #
                     needLf = False
