@@ -12,7 +12,7 @@
 For a good introduction to [markdown-it] see the __[Live demo](https://markdown-it.github.io)__.
 This is a Python port of the well used [markdown-it], and some of its associated plugins.
 The driving design philosophy of the port has been to change as little of the fundamental code structure (file names, function name, etc) as possible, just sprinkling in a little Python syntactical sugar ✨.
-It is very simple to write complimentary extensions for both language implementations!
+It is very simple to write complementary extensions for both language implementations!
 
 ## References & Thanks
 
