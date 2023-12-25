@@ -239,3 +239,10 @@ This applies to _series of URLs too_ http://example.org/foo._bar_-_baz http://ex
 .
 <p>This applies to <em>series of URLs too</em> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a>, these dont <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> and these <strong>do</strong> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a></p>
 .
+
+emphasis inside raw links (asterisk) at end of line
+.
+This doesnt http://example.org/foo.*bar*-*baz
+.
+<p>This doesnt <a href="http://example.org/foo.*bar*-*baz">http://example.org/foo.*bar*-*baz</a></p>
+.
