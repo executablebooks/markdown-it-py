@@ -211,3 +211,31 @@ google\.com
 .
 <p>google.com</p>
 .
+
+Issue [#300](https://github.com/executablebooks/markdown-it-py/issues/300) emphasis inside raw links (underscore) at beginning of line
+.
+http://example.org/foo._bar_-_baz This works
+.
+<p><a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> This works</p>
+.
+
+Issue [#300](https://github.com/executablebooks/markdown-it-py/issues/300) emphasis inside raw links (underscore) at end of line
+.
+This doesnt http://example.org/foo._bar_-_baz
+.
+<p>This doesnt <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a></p>
+.
+
+Issue [#300](https://github.com/executablebooks/markdown-it-py/issues/300) emphasis inside raw links (underscore) mix1
+.
+While this `does` http://example.org/foo._bar_-_baz, this doesnt http://example.org/foo._bar_-_baz and this **does** http://example.org/foo._bar_-_baz
+.
+<p>While this <code>does</code> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a>, this doesnt <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> and this <strong>does</strong> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a></p>
+.
+
+Issue [#300](https://github.com/executablebooks/markdown-it-py/issues/300) emphasis inside raw links (underscore) mix2
+.
+This applies to _series of URLs too_ http://example.org/foo._bar_-_baz http://example.org/foo._bar_-_baz, these dont http://example.org/foo._bar_-_baz http://example.org/foo._bar_-_baz and these **do** http://example.org/foo._bar_-_baz http://example.org/foo._bar_-_baz
+.
+<p>This applies to <em>series of URLs too</em> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a>, these dont <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> and these <strong>do</strong> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a> <a href="http://example.org/foo._bar_-_baz">http://example.org/foo._bar_-_baz</a></p>
+.
