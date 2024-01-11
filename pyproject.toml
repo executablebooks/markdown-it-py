@@ -53,7 +53,7 @@ rtd = [
     "sphinx",
     "sphinx-copybutton",
     "sphinx-design",
-    "sphinx_book_theme",
+    "sphinx-book-theme~=1.0",
     "jupyter_sphinx",
     "ipykernel",
 ]
