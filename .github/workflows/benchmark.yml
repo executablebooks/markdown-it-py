@@ -37,7 +37,7 @@ jobs:
     #     if-no-files-found: error
 
     - name: Store benchmark result
-      uses: aiidateam/github-action-benchmark@v2
+      uses: aiidateam/github-action-benchmark@v3
       with:
         name: Parsing Benchmarks
         output-file-path: bench-packages.json
