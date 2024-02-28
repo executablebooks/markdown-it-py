@@ -1,10 +1,16 @@
+// The main interface to the page DOM
+
 'use strict';
 
 import { collectBenchesPerTestCasePerGroup, renderGraph } from "./funcs.js";
 
 (function () {
   const data = setupData(window.BENCHMARK_DATA);
-  renderAllCharts(data);
+  const config = {
+    suites: window.CONFIGURATION_DATA.suites || {},
+    groups: window.CONFIGURATION_DATA.groups || {},
+  };
+  renderAllCharts(data, config);
 })();
 
 function setupData(data) {
@@ -27,35 +33,79 @@ function setupData(data) {
   // Prepare data points for charts
   return Object.keys(data.entries).map(name => ({
     name,
-    xAxis: data.xAxis,
-    oneChartGroups: data.oneChartGroups,
     dataSet: collectBenchesPerTestCasePerGroup(data.entries[name]),
   }));
 }
 
-function renderBenchSetGroups(name, benchSets, main, xAxis, oneChartGroups) {
+function addResetZoomButton(chart, graphsElem) {
+  // assign the chart to the DOM and add a zoom reset
+  const chartId = Object.keys(window.charts).length
+  window.charts[chartId] = chart;
+  const resetButton = document.createElement('button');
+  resetButton.className = 'benchmark-button-reset';
+  resetButton.id = chartId
+  resetButton.innerText = 'Reset Zoom'
+  resetButton.onclick = function (event) {
+    console.log("resetting zoom");
+    console.log(window.charts)
+    console.log(event.target.id);
+    window.charts[event.target.id].resetZoom();
+  };
+  graphsElem.appendChild(resetButton);
+}
+
+
+/**
+ * Returns the sum of all numbers passed to the function.
+ * @param name name of the entry set
+ * @param Object benchSets map of {group-key: data, ...}
+ * @param Object configEntry map of configuration for the entry
+ * @param Object configGroups map of configuration per group: {group-key: data, ...}
+ */
+function renderBenchSetGroups(domElement, name, benchSets, configEntry, configGroups) {
   const setElem = document.createElement('div');
   setElem.className = 'benchmark-set';
-  main.appendChild(setElem);
+  domElement.appendChild(setElem);
 
-  const nameElem = document.createElement('h1');
-  nameElem.className = 'benchmark-title';
-  nameElem.textContent = name;
-  setElem.appendChild(nameElem);
+  // add the entry title and description
+  const titleElem = document.createElement('h1');
+  titleElem.className = 'benchmark-title';
+  titleElem.textContent = configEntry.header || name;
+  setElem.appendChild(titleElem);
+  if (configEntry.description) {
+    const descriptElem = document.createElement('p');
+    descriptElem.className = 'benchmark-description';
+    descriptElem.textContent = configEntry.description;
+    setElem.appendChild(descriptElem);
+  }
 
-  for (const [groupName, benchSet] of benchSets.entries()) {
+  for (const [groupKey, benchSet] of benchSets.entries()) {
 
-    if (groupName) {
+    const configGroup = configGroups[groupKey] || {};
+    const groupHeader = configGroup.header || groupKey;
+
+    // add a group title and description
+    if (groupHeader) {
       const nameElem = document.createElement('h2');
-      nameElem.className = 'benchmark-group';
-      nameElem.textContent = groupName
+      nameElem.className = 'benchmark-group-title';
+      nameElem.textContent = groupHeader
       setElem.appendChild(nameElem);
     }
+    if (configGroup.description) {
+      const descriptElem = document.createElement('p');
+      descriptElem.className = 'benchmark-group-description';
+      descriptElem.textContent = configGroup.description;
+      setElem.appendChild(descriptElem);
+    }
+
+    // add a container for the group graphs
     const graphsElem = document.createElement('div');
     graphsElem.className = 'benchmark-graphs';
     setElem.appendChild(graphsElem);
 
-    if ((oneChartGroups ? oneChartGroups : []).includes(groupName)) {
+    var chart, chartConfig;
+
+    if (configGroup.single_chart) {
       const canvas = document.createElement('canvas');
       canvas.className = 'benchmark-chart';
       graphsElem.appendChild(canvas);
@@ -67,8 +117,18 @@ function renderBenchSetGroups(name, benchSets, main, xAxis, oneChartGroups) {
           data: uniqueCommits.map(c => lookup.get(c[1])),
         };
       });
-      const labels = uniqueCommits.map((d) => (xAxis === 'date') ? moment(d[0]) : d[1].slice(0, 7));
-      renderGraph(canvas, datasets, labels, xAxis, 10)
+      const labels = uniqueCommits.map((d) => (configGroup.xAxis === 'date') ? moment(d[0]) : d[1].slice(0, 7));
+      chartConfig = {
+        fill: configGroup.backgroundFill,
+        legendAlign: configGroup.legendAlign,
+        yAxisFormat: configGroup.yAxisFormat,
+        alpha: 10,
+        xAxis: configGroup.xAxis,
+        colors: configGroup.colors,
+      };
+      chart = renderGraph(canvas, datasets, labels, chartConfig);
+      addResetZoomButton(chart, graphsElem);
+
     } else {
       for (const [benchName, benches] of benchSet.entries()) {
         const canvas = document.createElement('canvas');
@@ -78,18 +138,30 @@ function renderBenchSetGroups(name, benchSets, main, xAxis, oneChartGroups) {
           name: benchName,
           data: benches
         }]
-        const labels = benches.map((d) => (xAxis === 'date') ? moment(d.commit.timestamp) : d.commit.id.slice(0, 7));
-        const labelString = benches.length > 0 ? benches[0].bench.unit : '';
-        renderGraph(canvas, datasets, labels, xAxis, 60, labelString);
+        const labels = benches.map((d) => (configGroup.xAxis === 'date') ? moment(d.commit.timestamp) : d.commit.id.slice(0, 7));
+        chartConfig = {
+          alpha: 60,
+          xAxis: configGroup.xAxis,
+          yLabelString: benches.length > 0 ? benches[0].bench.unit : ''
+        };
+        chart = renderGraph(canvas, datasets, labels, chartConfig);
+        addResetZoomButton(chart, graphsElem);
       }
     }
 
   }
 }
 
-function renderAllCharts(dataSets) {
+/**
+ * Returns the sum of all numbers passed to the function.
+ * @param Object dataSets map of {group-key: {test-name: data, ...}, ...}
+ * @param Object config map of {suites: {key: data}, groups: {key: data}}
+ */
+function renderAllCharts(dataSets, config) {
+  window.charts = {};
   const main = document.getElementById('main');
-  for (const { name, dataSet, xAxis, oneChartGroups } of dataSets) {
-    renderBenchSetGroups(name, dataSet, main, xAxis, oneChartGroups);
+  for (const { name, dataSet } of dataSets) {
+    const configEntry = config.suites[name] || {};
+    renderBenchSetGroups(main, name, dataSet, configEntry, config.groups);
   }
 }

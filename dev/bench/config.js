@@ -1,0 +1,1 @@
+window.CONFIGURATION_DATA = {}
