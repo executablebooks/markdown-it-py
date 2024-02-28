@@ -59,6 +59,7 @@ class StateBase:
 
 class RuleOptionsType(TypedDict, total=False):
     alt: list[str]
+    """list of rules which can be terminated by this one."""
 
 
 RuleFuncTv = TypeVar("RuleFuncTv")
@@ -71,9 +72,12 @@ class Rule(Generic[RuleFuncTv]):
     enabled: bool
     fn: RuleFuncTv = field(repr=False)
     alt: list[str]
+    """list of rules which can be terminated by this one."""
 
 
 class Ruler(Generic[RuleFuncTv]):
+    """Class to manage functions (rules) which identify syntax elements."""
+
     def __init__(self) -> None:
         # List of added rules.
         self.__rules__: list[Rule[RuleFuncTv]] = []
@@ -255,10 +259,13 @@ class Ruler(Generic[RuleFuncTv]):
 
     def getRules(self, chainName: str = "") -> list[RuleFuncTv]:
         """Return array of active functions (rules) for given chain name.
+
         It analyzes rules configuration, compiles caches if not exists and returns result.
 
-        Default chain name is `''` (empty string). It can't be skipped.
-        That's done intentionally, to keep signature monomorphic for high speed.
+        :param chainName: name of chain to return rules for:
+            - The default `""` means all "top-level rules for this ruler.
+            - A specific name can be used to fetch only rules which can terminate
+              the named rule (used for block level rules like paragraph, list, etc.)
 
         """
         if self.__cache__ is None:

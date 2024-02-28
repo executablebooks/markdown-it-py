@@ -57,7 +57,7 @@ class ParserBlock:
 
     def tokenize(self, state: StateBlock, startLine: int, endLine: int) -> None:
         """Generate tokens for input range."""
-        rules = self.ruler.getRules("")
+        rules = self.ruler.getRules()
         line = startLine
         maxNesting = state.md.options.maxNesting
         hasEmptyLines = False
