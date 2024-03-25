@@ -1,4 +1,5 @@
 """Process links like https://example.org/"""
+
 import re
 
 from .state_inline import StateInline

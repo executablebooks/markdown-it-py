@@ -5,6 +5,7 @@ https://github.com/google/oss-fuzz/tree/master/projects/markdown-it-py
 In the future, perhaps atheris could be directly used here,
 but it was not directly apparent how to integrate it into pytest.
 """
+
 import pytest
 
 from markdown_it import MarkdownIt

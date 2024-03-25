@@ -4,6 +4,7 @@ CLI interface to markdown-it-py
 
 Parse one or more markdown files, convert each to HTML, and print to stdout.
 """
+
 from __future__ import annotations
 
 import argparse
