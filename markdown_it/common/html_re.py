@@ -1,5 +1,4 @@
-"""Regexps to match html elements
-"""
+"""Regexps to match html elements"""
 
 import re
 

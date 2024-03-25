@@ -1,6 +1,7 @@
 """Test basic plugin creation functionality:
 that they can be added and are called correctly
 """
+
 from markdown_it import MarkdownIt
 
 

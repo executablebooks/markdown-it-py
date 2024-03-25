@@ -4,6 +4,7 @@ To generate and read results:
   - `tox -e profile`
   - `firefox .tox/prof/output.svg`
 """
+
 from pathlib import Path
 
 from markdown_it import MarkdownIt
