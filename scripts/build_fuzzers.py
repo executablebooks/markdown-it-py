@@ -1,4 +1,5 @@
 """Build fuzzers idempotently in a given folder."""
+
 import argparse
 from pathlib import Path
 import subprocess

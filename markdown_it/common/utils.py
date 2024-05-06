@@ -1,5 +1,5 @@
-"""Utilities for parsing source text
-"""
+"""Utilities for parsing source text"""
+
 from __future__ import annotations
 
 import re
