@@ -76,3 +76,11 @@ def test_panflute(benchmark, spec_text):
     benchmark(
         panflute.convert_text, spec_text, input_format="markdown", output_format="html"
     )
+
+
+@pytest.mark.benchmark(group="packages")
+def test_pyromark(benchmark, spec_text):
+    import pyromark
+
+    benchmark.extra_info["version"] = pyromark.__version__
+    benchmark(pyromark.markdown, spec_text)
