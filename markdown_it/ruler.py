@@ -15,6 +15,7 @@ You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 [[MarkdownIt.use]].
 """
+
 from __future__ import annotations
 
 from collections.abc import Iterable
