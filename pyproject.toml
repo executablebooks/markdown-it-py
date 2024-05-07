@@ -83,7 +83,7 @@ exclude = [
     "benchmarking/"
 ]
 
-[tool.ruff]
+[tool.ruff.lint]
 extend-select = ["B0", "C4", "I", "ICN", "ISC", "N", "RUF", "SIM", "UP"]
 extend-ignore = ["ISC001", "ISC003", "N802", "N803", "N806", "N816", "RUF003"]
 
