@@ -2,6 +2,7 @@
 
 This module is not part of upstream JavaScript markdown-it.
 """
+
 from __future__ import annotations
 
 from collections.abc import Generator, Sequence
@@ -78,12 +79,10 @@ class SyntaxTreeNode:
         return f"{type(self).__name__}({self.type})"
 
     @overload
-    def __getitem__(self: _NodeType, item: int) -> _NodeType:
-        ...
+    def __getitem__(self: _NodeType, item: int) -> _NodeType: ...
 
     @overload
-    def __getitem__(self: _NodeType, item: slice) -> list[_NodeType]:
-        ...
+    def __getitem__(self: _NodeType, item: slice) -> list[_NodeType]: ...
 
     def __getitem__(self: _NodeType, item: int | slice) -> _NodeType | list[_NodeType]:
         return self.children[item]

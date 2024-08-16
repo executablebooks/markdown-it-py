@@ -1,7 +1,7 @@
 __all__ = ("commonmark", "default", "zero", "js_default", "gfm_like")
 
-from . import commonmark, default, zero
 from ..utils import PresetType
+from . import commonmark, default, zero
 
 js_default = default
 

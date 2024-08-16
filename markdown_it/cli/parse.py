@@ -4,6 +4,7 @@ CLI interface to markdown-it-py
 
 Parse one or more markdown files, convert each to HTML, and print to stdout.
 """
+
 from __future__ import annotations
 
 import argparse
@@ -13,7 +14,7 @@ import sys
 from markdown_it import __version__
 from markdown_it.main import MarkdownIt
 
-version_str = "markdown-it-py [version {}]".format(__version__)
+version_str = f"markdown-it-py [version {__version__}]"
 
 
 def main(args: Sequence[str] | None = None) -> int:
@@ -35,7 +36,7 @@ def convert_file(filename: str) -> None:
     Parse a Markdown file and dump the output to stdout.
     """
     try:
-        with open(filename, "r", encoding="utf8", errors="ignore") as fin:
+        with open(filename, encoding="utf8", errors="ignore") as fin:
             rendered = MarkdownIt().render(fin.read())
             print(rendered, end="")
     except OSError:
@@ -100,7 +101,7 @@ Batch:
 
 
 def print_heading() -> None:
-    print("{} (interactive)".format(version_str))
+    print(f"{version_str} (interactive)")
     print("Type Ctrl-D to complete input, or Ctrl-C to exit.")
 
 

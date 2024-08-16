@@ -16,7 +16,7 @@ Details of the port can be found in the `markdown_it/port.yaml` and in `port.yam
 
 ## Code Style
 
-Code style is tested using [flake8](http://flake8.pycqa.org), with the configuration set in `.flake8`, and code formatted with [black](https://github.com/ambv/black).
+Code style is tested using [ruff](https://github.com/astral-sh/ruff), with the configuration set in `pyproject.toml`, and code formatted with [black](https://github.com/ambv/black).
 
 Installing with `markdown-it-py[code_style]` makes the [pre-commit](https://pre-commit.com/) package available, which will ensure this style is met before commits are submitted, by reformatting the code and testing for lint errors.
 It can be setup by:
