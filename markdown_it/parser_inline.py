@@ -84,6 +84,8 @@ class ParserInline:
                 ok = rule(state, True)
                 state.level -= 1
                 if ok:
+                    if pos >= state.pos:
+                        raise Exception("inline rule didn't increment state.pos")
                     break
         else:
             # Too much nesting, just skip until the end of the paragraph.
@@ -117,11 +119,14 @@ class ParserInline:
             # - update `state.pos`
             # - update `state.tokens`
             # - return true
+            prevPos = state.pos
 
             if state.level < maxNesting:
                 for rule in rules:
                     ok = rule(state, False)
                     if ok:
+                        if prevPos >= state.pos:
+                            raise Exception("inline rule didn't increment state.pos")
                         break
 
             if ok:

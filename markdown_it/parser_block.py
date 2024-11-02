@@ -58,6 +58,7 @@ class ParserBlock:
 
     def tokenize(self, state: StateBlock, startLine: int, endLine: int) -> None:
         """Generate tokens for input range."""
+        ok = False
         rules = self.ruler.getRules("")
         line = startLine
         maxNesting = state.md.options.maxNesting
@@ -82,9 +83,18 @@ class ParserBlock:
             # - update `state.line`
             # - update `state.tokens`
             # - return True
+            prevLine = state.line
+
             for rule in rules:
-                if rule(state, line, endLine, False):
+                ok = rule(state, line, endLine, False)
+                if ok:
+                    if prevLine >= state.line:
+                        raise Exception("block rule didn't increment state.line")
                     break
+
+            # this can only happen if user disables paragraph rule
+            if not ok:
+                raise Exception("none of the block rules matched")
 
             # set state.tight if we had an empty line before current tag
             # i.e. latest empty line should not count
