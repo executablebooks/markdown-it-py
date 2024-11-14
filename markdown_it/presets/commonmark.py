@@ -39,6 +39,9 @@ def make() -> PresetType:
             # function (/*str, lang, attrs*/) { return ''; }
             #
             "highlight": None,
+            # Python implementation specific:
+            # Store link label in link/image token's metadata (under Token.meta['label']).
+            "store_labels": False,
         },
         "components": {
             "core": {"rules": ["normalize", "block", "inline", "text_join"]},

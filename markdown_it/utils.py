@@ -31,6 +31,8 @@ class OptionsType(TypedDict):
     """CSS language prefix for fenced blocks."""
     highlight: Callable[[str, str, str], str] | None
     """Highlighter function: (content, lang, attrs) -> str."""
+    store_labels: bool
+    """Store link label in link/image token's metadata (under Token.meta['label'])."""
 
 
 class PresetType(TypedDict):
