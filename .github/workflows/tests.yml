@@ -50,11 +50,11 @@ jobs:
         pytest tests/ --cov=markdown_it --cov-report=xml --cov-report=term-missing
     - name: Upload to Codecov
       if: matrix.python-version == '3.9' && github.repository == 'executablebooks/markdown-it-py'
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v5
       with:
         name: markdown-it-py-pytests
         flags: pytests
-        file: ./coverage.xml
+        files: ./coverage.xml
         fail_ci_if_error: true
         token: ${{ secrets.CODECOV_TOKEN }}
 
