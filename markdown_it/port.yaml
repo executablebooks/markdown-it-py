@@ -1,7 +1,7 @@
 - package: markdown-it/markdown-it
   version: 13.0.1
-  commit: e843acc9edad115cbf8cf85e676443f01658be08
-  date: May 3, 2022
+  commit: 49ca65bbef067c7dba63468a48c4aee3048607dc
+  date: Sep 26, 2023
   notes:
     - Rename variables that use python built-in names, e.g.
       - `max` -> `maximum`
