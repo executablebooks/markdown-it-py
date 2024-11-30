@@ -20,18 +20,19 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python 3.8
+    - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
-        python-version: '3.8'
+        python-version: '3.9'
     - uses: pre-commit/action@v3.0.0
 
   tests:
 
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        python-version: ['pypy-3.8', '3.8', '3.9', '3.10', '3.11', '3.12']
+        python-version: ['pypy-3.9', '3.9', '3.10', '3.11', '3.12', '3.13']
 
     steps:
     - uses: actions/checkout@v4
@@ -48,7 +49,7 @@ jobs:
       run: |
         pytest tests/ --cov=markdown_it --cov-report=xml --cov-report=term-missing
     - name: Upload to Codecov
-      if: matrix.python-version == '3.8' && github.repository == 'executablebooks/markdown-it-py'
+      if: matrix.python-version == '3.9' && github.repository == 'executablebooks/markdown-it-py'
       uses: codecov/codecov-action@v3
       with:
         name: markdown-it-py-pytests
@@ -62,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8']
+        python-version: ['3.9']
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -86,10 +87,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python 3.8
+    - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
-        python-version: '3.8'
+        python-version: '3.9'
 
     - name: Install tox
       run: |
@@ -115,10 +116,10 @@ jobs:
     steps:
     - name: Checkout source
       uses: actions/checkout@v4
-    - name: Set up Python 3.8
+    - name: Set up Python 3.9
       uses: actions/setup-python@v5
       with:
-        python-version: '3.8'
+        python-version: '3.9'
     - name: install flit
       run: |
         pip install flit~=3.4
