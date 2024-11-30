@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import re
-from typing import Match, TypeVar
+from re import Match
+from typing import TypeVar
 
 from .entities import entities
 
