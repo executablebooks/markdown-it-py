@@ -35,7 +35,6 @@ Homepage = "https://github.com/executablebooks/markdown-it-py"
 Documentation = "https://markdown-it-py.readthedocs.io"
 
 [project.optional-dependencies]
-code_style = ["pre-commit~=3.0"]
 compare = [
     "commonmark~=0.9",
     "markdown~=3.4",
@@ -71,6 +70,7 @@ benchmarking = [
 profiling = ["gprof2dot"]
 
 [dependency-groups]
+pre_commit = ["pre-commit"]
 mypy = ["mypy", "mdurl", "typing-extensions"]
 
 [project.scripts]
