@@ -33,11 +33,7 @@ for even more speed!
 
 ## Installation
 
-```bash
-conda install -c conda-forge markdown-it-py
-```
-
-or
+### PIP
 
 ```bash
 pip install markdown-it-py[plugins]
@@ -46,8 +42,19 @@ pip install markdown-it-py[plugins]
 or with extras
 
 ```bash
-conda install -c conda-forge markdown-it-py linkify-it-py mdit-py-plugins
 pip install markdown-it-py[linkify,plugins]
+```
+
+### Conda
+
+```bash
+conda install -c conda-forge markdown-it-py
+```
+
+or with extras
+
+```bash
+conda install -c conda-forge markdown-it-py linkify-it-py mdit-py-plugins
 ```
 
 ## Usage
@@ -63,7 +70,7 @@ from mdit_py_plugins.front_matter import front_matter_plugin
 from mdit_py_plugins.footnote import footnote_plugin
 
 md = (
-    MarkdownIt('commonmark' ,{'breaks':True,'html':True})
+    MarkdownIt('commonmark', {'breaks':True,'html':True})
     .use(front_matter_plugin)
     .use(footnote_plugin)
     .enable('table')
