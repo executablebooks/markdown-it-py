@@ -70,9 +70,7 @@ def isValidEntityCode(c: int) -> bool:
     if c >= 0x7F and c <= 0x9F:
         return False
     # out of range
-    if c > 0x10FFFF:
-        return False
-    return True
+    return not (c > 0x10FFFF)
 
 
 def fromCodePoint(c: int) -> str:

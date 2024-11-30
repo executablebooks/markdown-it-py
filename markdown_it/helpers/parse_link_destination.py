@@ -6,7 +6,7 @@ from ..common.utils import charCodeAt, unescapeAll
 
 
 class _Result:
-    __slots__ = ("ok", "pos", "lines", "str")
+    __slots__ = ("lines", "ok", "pos", "str")
 
     def __init__(self) -> None:
         self.ok = False
