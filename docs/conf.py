@@ -55,6 +55,7 @@ nitpick_ignore_regex = [
         "EnvType",
         "Path",
         "Ellipsis",
+        "NotRequired",
     )
 ]
 

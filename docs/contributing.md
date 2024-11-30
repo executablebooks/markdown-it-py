@@ -32,7 +32,7 @@ All functions and class methods should be annotated with types and include a doc
 
 ## Testing
 
-For code tests, markdown-it-py uses [pytest](https://docs.pytest.org)):
+For code tests, markdown-it-py uses [pytest](https://docs.pytest.org):
 
 ```shell
 >> cd markdown-it-py

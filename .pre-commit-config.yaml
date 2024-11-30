@@ -34,7 +34,7 @@ repos:
     rev: v1.13.0
     hooks:
     - id: mypy
-      additional_dependencies: [mdurl]
+      additional_dependencies: [mdurl, typing-extensions]
       exclude: >
         (?x)^(
           benchmarking/.*\.py|

@@ -141,3 +141,5 @@ __pycache__/
 .DS_Store
 
 docs/api/
+
+uv.lock
