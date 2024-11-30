@@ -67,7 +67,7 @@ class ParserInline:
         """
         ok = False
         pos = state.pos
-        rules = self.ruler.getRules("")
+        rules = self.ruler.getRules()
         maxNesting = state.md.options["maxNesting"]
         cache = state.cache
 
@@ -106,7 +106,7 @@ class ParserInline:
     def tokenize(self, state: StateInline) -> None:
         """Generate tokens for input range."""
         ok = False
-        rules = self.ruler.getRules("")
+        rules = self.ruler.getRules()
         end = state.posMax
         maxNesting = state.md.options["maxNesting"]
 
@@ -141,7 +141,7 @@ class ParserInline:
         """Process input string and push inline tokens into `tokens`"""
         state = StateInline(src, md, env, tokens)
         self.tokenize(state)
-        rules2 = self.ruler2.getRules("")
+        rules2 = self.ruler2.getRules()
         for rule in rules2:
             rule(state)
         return state.tokens
