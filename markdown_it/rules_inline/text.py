@@ -1,3 +1,4 @@
+import functools
 import re
 
 # Skip text characters for text token, place those to pending buffer
@@ -36,14 +37,18 @@ _TerminatorChars = {
     "}",
     "~",
 }
-_RE_TERMINATOR_CHAR = re.compile("[" + re.escape("".join(_TerminatorChars)) + "]")
+
+
+@functools.cache
+def _terminator_char_regex() -> re.Pattern[str]:
+    return re.compile("[" + re.escape("".join(_TerminatorChars)) + "]")
 
 
 def text(state: StateInline, silent: bool) -> bool:
     pos = state.pos
     posMax = state.posMax
 
-    terminator_char = _RE_TERMINATOR_CHAR.search(state.src, pos)
+    terminator_char = _terminator_char_regex().search(state.src, pos)
     pos = terminator_char.start() if terminator_char else posMax
 
     if pos == state.pos:
