@@ -101,7 +101,7 @@ jobs:
       run: tox -e py39-bench-core -- --benchmark-json bench-core.json
 
     - name: Upload data
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: bench-core
         path: bench-core.json
