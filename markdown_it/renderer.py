@@ -77,11 +77,12 @@ class RendererHTML(RendererProtocol):
         result = ""
 
         for i, token in enumerate(tokens):
-            if token.type == "inline":
+            type = token.type
+            if type == "inline":
                 if token.children:
                     result += self.renderInline(token.children, options, env)
-            elif token.type in self.rules:
-                result += self.rules[token.type](tokens, i, options, env)
+            elif type in self.rules:
+                result += self.rules[type](tokens, i, options, env)
             else:
                 result += self.renderToken(tokens, i, options, env)
 
@@ -217,7 +218,7 @@ class RendererHTML(RendererProtocol):
             "<code"
             + self.renderAttrs(token)
             + ">"
-            + escapeHtml(tokens[idx].content)
+            + escapeHtml(token.content)
             + "</code>"
         )
 

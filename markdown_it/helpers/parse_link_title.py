@@ -16,9 +16,9 @@ class _Result:
         return self.str
 
 
-def parseLinkTitle(string: str, pos: int, maximum: int) -> _Result:
+def parseLinkTitle(string: str, start: int, maximum: int) -> _Result:
     lines = 0
-    start = pos
+    pos = start
     result = _Result()
 
     if pos >= maximum:
