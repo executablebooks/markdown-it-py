@@ -90,25 +90,24 @@ UNESCAPE_ALL_RE = re.compile(
     r'\\([!"#$%&\'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])' + "|" + r"&([a-z#][a-z0-9]{1,31});",
     re.IGNORECASE,
 )
-DIGITAL_ENTITY_BASE10_RE = re.compile(r"#([0-9]{1,8})")
-DIGITAL_ENTITY_BASE16_RE = re.compile(r"#x([a-f0-9]{1,8})", re.IGNORECASE)
+DIGITAL_ENTITY_TEST_RE = re.compile(
+    r"^#((?:x[a-f0-9]{1,8}|[0-9]{1,8}))$", re.IGNORECASE
+)
 
 
 def replaceEntityPattern(match: str, name: str) -> str:
     """Convert HTML entity patterns,
     see https://spec.commonmark.org/0.30/#entity-references
     """
+    code = 0
+
     if name in entities:
         return entities[name]
 
-    code: None | int = None
-    if pat := DIGITAL_ENTITY_BASE10_RE.fullmatch(name):
-        code = int(pat.group(1), 10)
-    elif pat := DIGITAL_ENTITY_BASE16_RE.fullmatch(name):
-        code = int(pat.group(1), 16)
-
-    if code is not None and isValidEntityCode(code):
-        return fromCodePoint(code)
+    if name[0] == "#" and DIGITAL_ENTITY_TEST_RE.search(name):
+        code = int(name[2:], 16) if name[1].lower() == "x" else int(name[1:], 10)
+        if isValidEntityCode(code):
+            return fromCodePoint(code)
 
     return match
 

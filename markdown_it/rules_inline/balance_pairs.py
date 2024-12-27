@@ -5,7 +5,7 @@ from __future__ import annotations
 from .state_inline import Delimiter, StateInline
 
 
-def processDelimiters(state: StateInline, delimiters: list[Delimiter]) -> None:
+def processDelimiters(delimiters: list[Delimiter]) -> None:
     """For each opening emphasis-like marker find a matching closing one."""
     if not delimiters:
         return
@@ -128,11 +128,11 @@ def link_pairs(state: StateInline) -> None:
     tokens_meta = state.tokens_meta
     maximum = len(state.tokens_meta)
 
-    processDelimiters(state, state.delimiters)
+    processDelimiters(state.delimiters)
 
     curr = 0
     while curr < maximum:
         curr_meta = tokens_meta[curr]
         if curr_meta and "delimiters" in curr_meta:
-            processDelimiters(state, curr_meta["delimiters"])
+            processDelimiters(curr_meta["delimiters"])
         curr += 1

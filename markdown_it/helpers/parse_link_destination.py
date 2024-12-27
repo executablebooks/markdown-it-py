@@ -15,9 +15,8 @@ class _Result:
         self.str = ""
 
 
-def parseLinkDestination(string: str, pos: int, maximum: int) -> _Result:
-    lines = 0
-    start = pos
+def parseLinkDestination(string: str, start: int, maximum: int) -> _Result:
+    pos = start
     result = _Result()
 
     if charCodeAt(string, pos) == 0x3C:  # /* < */
@@ -80,7 +79,6 @@ def parseLinkDestination(string: str, pos: int, maximum: int) -> _Result:
         return result
 
     result.str = unescapeAll(string[start:pos])
-    result.lines = lines
     result.pos = pos
     result.ok = True
     return result
