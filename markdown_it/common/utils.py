@@ -197,7 +197,7 @@ def isWhiteSpace(code: int) -> bool:
 # Currently without astral characters support.
 def isPunctChar(ch: str) -> bool:
     """Check if character is a punctuation character."""
-    return unicodedata.category(ch).startswith("P")
+    return unicodedata.category(ch).startswith(("P", "S"))
 
 
 MD_ASCII_PUNCT = {
