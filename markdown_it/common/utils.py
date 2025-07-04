@@ -85,10 +85,10 @@ def fromCodePoint(c: int) -> str:
     return chr(c)
 
 
-# UNESCAPE_MD_RE = re.compile(r'\\([!"#$%&\'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])')
+# UNESCAPE_MD_RE = re.compile(r'\\([!"#$%&\'()*+,\-./:;<=>?@[\\\]^_`{|}~])')
 # ENTITY_RE_g       = re.compile(r'&([a-z#][a-z0-9]{1,31})', re.IGNORECASE)
 UNESCAPE_ALL_RE = re.compile(
-    r'\\([!"#$%&\'()*+,\-.\/:;<=>?@[\\\]^_`{|}~])' + "|" + r"&([a-z#][a-z0-9]{1,31});",
+    r'\\([!"#$%&\'()*+,\-./:;<=>?@[\\\]^_`{|}~])' + "|" + r"&([a-z#][a-z0-9]{1,31});",
     re.IGNORECASE,
 )
 DIGITAL_ENTITY_BASE10_RE = re.compile(r"#([0-9]{1,8})")
