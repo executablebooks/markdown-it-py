@@ -2,7 +2,7 @@
 
 We welcome all contributions! ✨
 
-See the [EBP Contributing Guide](https://executablebooks.org/en/latest/contributing.html) for general details, and below for guidance specific to markdown-it-py.
+See the [EBP Contributing Guide](https://executablebooks.org/en/latest/contribute/) for general details, and below for guidance specific to markdown-it-py.
 
 Before continuing, make sure you've read:
 
