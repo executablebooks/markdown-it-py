@@ -20,10 +20,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up Python 3.9
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.10'
     - uses: pre-commit/action@v3.0.1
 
   tests:
@@ -32,7 +32,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ['pypy-3.9', '3.9', '3.10', '3.11', '3.12', '3.13']
+        python-version: ['pypy-3.10', '3.10', '3.11', '3.12', '3.13']
 
     steps:
     - uses: actions/checkout@v4
@@ -49,7 +49,7 @@ jobs:
       run: |
         pytest tests/ --cov=markdown_it --cov-report=xml --cov-report=term-missing
     - name: Upload to Codecov
-      if: matrix.python-version == '3.9' && github.repository == 'executablebooks/markdown-it-py'
+      if: matrix.python-version == '3.10' && github.repository == 'executablebooks/markdown-it-py'
       uses: codecov/codecov-action@v5
       with:
         name: markdown-it-py-pytests
@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.9']
+        python-version: ['3.10']
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
@@ -87,10 +87,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Python 3.9
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.10'
 
     - name: Install tox
       run: |
@@ -98,7 +98,7 @@ jobs:
         pip install tox
 
     - name: Run benchmark
-      run: tox -e py39-bench-core -- --benchmark-json bench-core.json
+      run: tox -e py310-bench-core -- --benchmark-json bench-core.json
 
     - name: Upload data
       uses: actions/upload-artifact@v4
@@ -116,10 +116,10 @@ jobs:
     steps:
     - name: Checkout source
       uses: actions/checkout@v4
-    - name: Set up Python 3.9
+    - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.10'
     - name: install flit
       run: |
         pip install flit~=3.4
