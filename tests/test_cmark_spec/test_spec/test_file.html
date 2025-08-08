@@ -1,9 +1,9 @@
 <hr />
 <p>title: CommonMark Spec
 author: John MacFarlane
-version: 0.30
-date: '2021-06-19'
-license: '<a href="http://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a>'
+version: '0.31.2'
+date: '2024-01-28'
+license: '<a href="https://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0</a>'
 ...</p>
 <h1>Introduction</h1>
 <h2>What is Markdown?</h2>
@@ -11,7 +11,7 @@ license: '<a href="http://creativecommons.org/licenses/by-sa/4.0/">CC-BY-SA 4.0<
 based on conventions for indicating formatting in email
 and usenet posts.  It was developed by John Gruber (with
 help from Aaron Swartz) and released in 2004 in the form of a
-<a href="http://daringfireball.net/projects/markdown/syntax">syntax description</a>
+<a href="https://daringfireball.net/projects/markdown/syntax">syntax description</a>
 and a Perl script (<code>Markdown.pl</code>) for converting Markdown to
 HTML.  In the next decade, dozens of implementations were
 developed in many languages.  Some extended the original
@@ -30,10 +30,10 @@ to make it as readable as possible. The idea is that a
 Markdown-formatted document should be publishable as-is, as
 plain text, without looking like it's been marked up with tags
 or formatting instructions.
-(<a href="http://daringfireball.net/projects/markdown/">http://daringfireball.net/projects/markdown/</a>)</p>
+(<a href="https://daringfireball.net/projects/markdown/">https://daringfireball.net/projects/markdown/</a>)</p>
 </blockquote>
 <p>The point can be illustrated by comparing a sample of
-<a href="http://www.methods.co.nz/asciidoc/">AsciiDoc</a> with
+<a href="https://asciidoc.org/">AsciiDoc</a> with
 an equivalent sample of Markdown.  Here is a sample of
 AsciiDoc from the AsciiDoc manual:</p>
 <pre><code>1. List item one.
@@ -91,7 +91,7 @@ to worry about indentation.  But the Markdown version is much easier
 to read.  The nesting of list items is apparent to the eye in the
 source, not just in the processed document.</p>
 <h2>Why is a spec needed?</h2>
-<p>John Gruber's <a href="http://daringfireball.net/projects/markdown/syntax">canonical description of Markdown's
+<p>John Gruber's <a href="https://daringfireball.net/projects/markdown/syntax">canonical description of Markdown's
 syntax</a>
 does not specify the syntax unambiguously.  Here are some examples of
 questions it does not answer:</p>
@@ -103,7 +103,7 @@ not fully explicit about sublists.  It is natural to think that
 they, too, must be indented four spaces, but <code>Markdown.pl</code> does
 not require that.  This is hardly a &quot;corner case,&quot; and divergences
 between implementations on this issue often lead to surprises for
-users in real documents. (See <a href="http://article.gmane.org/gmane.text.markdown.general/1997">this comment by John
+users in real documents. (See <a href="https://web.archive.org/web/20170611172104/http://article.gmane.org/gmane.text.markdown.general/1997">this comment by John
 Gruber</a>.)</p>
 </li>
 <li>
@@ -112,7 +112,7 @@ Most implementations do not require the blank line.  However,
 this can lead to unexpected results in hard-wrapped text, and
 also to ambiguities in parsing (note that some implementations
 put the heading inside the blockquote, while others do not).
-(John Gruber has also spoken <a href="http://article.gmane.org/gmane.text.markdown.general/2146">in favor of requiring the blank
+(John Gruber has also spoken <a href="https://web.archive.org/web/20170611172104/http://article.gmane.org/gmane.text.markdown.general/2146">in favor of requiring the blank
 lines</a>.)</p>
 </li>
 <li>
@@ -140,7 +140,7 @@ wrapped in <code>&lt;p&gt;</code> tags?  Can a list be partially &quot;loose&quo
 2.  two
 </code></pre>
 <p>(There are some relevant comments by John Gruber
-<a href="http://article.gmane.org/gmane.text.markdown.general/2554">here</a>.)</p>
+<a href="https://web.archive.org/web/20170611172104/http://article.gmane.org/gmane.text.markdown.general/2554">here</a>.)</p>
 </li>
 <li>
 <p>Can list markers be indented?  Can ordered list markers be right-aligned?</p>
@@ -275,9 +275,9 @@ following line feed.</p>
 <p>A line containing no characters, or a line containing only spaces
 (<code>U+0020</code>) or tabs (<code>U+0009</code>), is called a <a href="@">blank line</a>.</p>
 <p>The following definitions of character classes will be used in this spec:</p>
-<p>A <a href="@">Unicode whitespace character</a> is
-any code point in the Unicode <code>Zs</code> general category, or a tab (<code>U+0009</code>),
-line feed (<code>U+000A</code>), form feed (<code>U+000C</code>), or carriage return (<code>U+000D</code>).</p>
+<p>A <a href="@">Unicode whitespace character</a> is a character in the Unicode <code>Zs</code> general
+category, or a tab (<code>U+0009</code>), line feed (<code>U+000A</code>), form feed (<code>U+000C</code>), or
+carriage return (<code>U+000D</code>).</p>
 <p><a href="@">Unicode whitespace</a> is a sequence of one or more
 [Unicode whitespace characters].</p>
 <p>A <a href="@">tab</a> is <code>U+0009</code>.</p>
@@ -290,9 +290,8 @@ is <code>!</code>, <code>&quot;</code>, <code>#</code>, <code>$</code>, <code>%<
 <code>:</code>, <code>;</code>, <code>&lt;</code>, <code>=</code>, <code>&gt;</code>, <code>?</code>, <code>@</code> (U+003A–0040),
 <code>[</code>, <code>\</code>, <code>]</code>, <code>^</code>, <code>_</code>, <code>`</code> (U+005B–0060),
 <code>{</code>, <code>|</code>, <code>}</code>, or <code>~</code> (U+007B–007E).</p>
-<p>A <a href="@">Unicode punctuation character</a> is an [ASCII
-punctuation character] or anything in
-the general Unicode categories  <code>Pc</code>, <code>Pd</code>, <code>Pe</code>, <code>Pf</code>, <code>Pi</code>, <code>Po</code>, or <code>Ps</code>.</p>
+<p>A <a href="@">Unicode punctuation character</a> is a character in the Unicode <code>P</code>
+(puncuation) or <code>S</code> (symbol) general categories.</p>
 <h2>Tabs</h2>
 <p>Tabs in lines are not expanded to [spaces].  However,
 in contexts where spaces help to define block structure,
@@ -467,9 +466,9 @@ raw HTML:</p>
 &lt;pre&gt;&lt;code&gt;\[\]
 &lt;/code&gt;&lt;/pre&gt;
 </code></pre>
-<pre><code class="language-example">&lt;http://example.com?find=\*&gt;
+<pre><code class="language-example">&lt;https://example.com?find=\*&gt;
 .
-&lt;p&gt;&lt;a href=&quot;http://example.com?find=%5C*&quot;&gt;http://example.com?find=\*&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://example.com?find=%5C*&quot;&gt;https://example.com?find=\*&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 <pre><code class="language-example">&lt;a href=&quot;/bar\/)&quot;&gt;
 .
@@ -987,10 +986,7 @@ interpretable as a [code fence], [ATX heading][ATX headings],
 [list item][list items], or [HTML block][HTML blocks].</p>
 <p>A <a href="@">setext heading underline</a> is a sequence of
 <code>=</code> characters or a sequence of <code>-</code> characters, with no more than 3
-spaces of indentation and any number of trailing spaces or tabs.  If a line
-containing a single <code>-</code> can be interpreted as an
-empty [list items], it should be interpreted this way
-and not as a [setext heading underline].</p>
+spaces of indentation and any number of trailing spaces or tabs.</p>
 <p>The heading is a level 1 heading if <code>=</code> characters are used in
 the [setext heading underline], and a level 2 heading if <code>-</code>
 characters are used.  The contents of the heading are the result
@@ -1461,7 +1457,7 @@ has been found, the code block contains all of the lines after the
 opening code fence until the end of the containing block (or
 document).  (An alternative spec would require backtracking in the
 event that a closing code fence is not found.  But this makes parsing
-much less efficient, and there seems to be no real down side to the
+much less efficient, and there seems to be no real downside to the
 behavior described here.)</p>
 <p>A fenced code block may interrupt a paragraph, and does not require
 a blank line either before or after.</p>
@@ -1786,7 +1782,7 @@ followed by an ASCII letter.<br />
 <strong>End condition:</strong> line contains the string <code>]]&gt;</code>.</p>
 </li>
 <li>
-<p><strong>Start condition:</strong> line begins the string <code>&lt;</code> or <code>&lt;/</code>
+<p><strong>Start condition:</strong> line begins with the string <code>&lt;</code> or <code>&lt;/</code>
 followed by one of the strings (case-insensitive) <code>address</code>,
 <code>article</code>, <code>aside</code>, <code>base</code>, <code>basefont</code>, <code>blockquote</code>, <code>body</code>,
 <code>caption</code>, <code>center</code>, <code>col</code>, <code>colgroup</code>, <code>dd</code>, <code>details</code>, <code>dialog</code>,
@@ -1795,7 +1791,7 @@ followed by one of the strings (case-insensitive) <code>address</code>,
 <code>h1</code>, <code>h2</code>, <code>h3</code>, <code>h4</code>, <code>h5</code>, <code>h6</code>, <code>head</code>, <code>header</code>, <code>hr</code>,
 <code>html</code>, <code>iframe</code>, <code>legend</code>, <code>li</code>, <code>link</code>, <code>main</code>, <code>menu</code>, <code>menuitem</code>,
 <code>nav</code>, <code>noframes</code>, <code>ol</code>, <code>optgroup</code>, <code>option</code>, <code>p</code>, <code>param</code>,
-<code>section</code>, <code>source</code>, <code>summary</code>, <code>table</code>, <code>tbody</code>, <code>td</code>,
+<code>search</code>, <code>section</code>, <code>summary</code>, <code>table</code>, <code>tbody</code>, <code>td</code>,
 <code>tfoot</code>, <code>th</code>, <code>thead</code>, <code>title</code>, <code>tr</code>, <code>track</code>, <code>ul</code>, followed
 by a space, a tab, the end of the line, the string <code>&gt;</code>, or
 the string <code>/&gt;</code>.<br />
@@ -3085,7 +3081,7 @@ in some browsers.)</p>
 blocks <em>Bs</em> starting with a character other than a space or tab, and <em>M</em> is
 a list marker of width <em>W</em> followed by 1 ≤ <em>N</em> ≤ 4 spaces of indentation,
 then the result of prepending <em>M</em> and the following spaces to the first line
-of Ls*, and indenting subsequent lines of <em>Ls</em> by <em>W + N</em> spaces, is a
+of <em>Ls</em>, and indenting subsequent lines of <em>Ls</em> by <em>W + N</em> spaces, is a
 list item with <em>Bs</em> as its contents.  The type of the list item
 (bullet or ordered) is determined by the type of its list marker.
 If the list item is ordered, then it is also assigned a start
@@ -4081,10 +4077,10 @@ then</p>
 <p>Since it is well established Markdown practice to allow lists to
 interrupt paragraphs inside list items, the [principle of
 uniformity] requires us to allow this outside list items as
-well.  (<a href="http://docutils.sourceforge.net/rst.html">reStructuredText</a>
+well.  (<a href="https://docutils.sourceforge.net/rst.html">reStructuredText</a>
 takes a different approach, requiring blank lines before lists
 even inside other list items.)</p>
-<p>In order to solve of unwanted lists in paragraphs with
+<p>In order to solve the problem of unwanted lists in paragraphs with
 hard-wrapped numerals, we allow only lists starting with <code>1</code> to
 interrupt paragraphs.  Thus,</p>
 <pre><code class="language-example">The number of windows in my house is
@@ -4631,14 +4627,14 @@ Thus, this is code:</p>
 &lt;p&gt;&lt;a href=&quot;`&quot;&gt;`&lt;/p&gt;
 </code></pre>
 <p>And this is code:</p>
-<pre><code class="language-example">`&lt;http://foo.bar.`baz&gt;`
+<pre><code class="language-example">`&lt;https://foo.bar.`baz&gt;`
 .
-&lt;p&gt;&lt;code&gt;&amp;lt;http://foo.bar.&lt;/code&gt;baz&amp;gt;`&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;https://foo.bar.&lt;/code&gt;baz&amp;gt;`&lt;/p&gt;
 </code></pre>
 <p>But this is an autolink:</p>
-<pre><code class="language-example">&lt;http://foo.bar.`baz&gt;`
+<pre><code class="language-example">&lt;https://foo.bar.`baz&gt;`
 .
-&lt;p&gt;&lt;a href=&quot;http://foo.bar.%60baz&quot;&gt;http://foo.bar.`baz&lt;/a&gt;`&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://foo.bar.%60baz&quot;&gt;https://foo.bar.`baz&lt;/a&gt;`&lt;/p&gt;
 </code></pre>
 <p>When a backtick string is not closed by a matching backtick string,
 we just have literal backticks:</p>
@@ -4657,7 +4653,7 @@ closing backtick strings to be equal in length:</p>
 &lt;p&gt;`foo&lt;code&gt;bar&lt;/code&gt;&lt;/p&gt;
 </code></pre>
 <h2>Emphasis and strong emphasis</h2>
-<p>John Gruber's original <a href="http://daringfireball.net/projects/markdown/syntax#em">Markdown syntax
+<p>John Gruber's original <a href="https://daringfireball.net/projects/markdown/syntax#em">Markdown syntax
 description</a> says:</p>
 <blockquote>
 <p>Markdown treats asterisks (<code>*</code>) and underscores (<code>_</code>) as indicators of
@@ -4744,7 +4740,7 @@ a _ b
 <p>(The idea of distinguishing left-flanking and right-flanking
 delimiter runs based on the character before and the character
 after comes from Roopesh Chander's
-<a href="http://www.vfmd.org/vfmd-spec/specification/#procedure-for-identifying-emphasis-tags">vfmd</a>.
+<a href="https://web.archive.org/web/20220608143320/http://www.vfmd.org/vfmd-spec/specification/#procedure-for-identifying-emphasis-tags">vfmd</a>.
 vfmd uses the terminology &quot;emphasis indicator string&quot; instead of &quot;delimiter
 run,&quot; and its rules for distinguishing left- and right-flanking runs
 are a bit more complex than the ones given here.)</p>
@@ -4886,6 +4882,17 @@ not part of a [left-flanking delimiter run]:</p>
 <pre><code class="language-example">* a *
 .
 &lt;p&gt;* a *&lt;/p&gt;
+</code></pre>
+<p>Unicode symbols count as punctuation, too:</p>
+<pre><code class="language-example">*$*alpha.
+
+*£*bravo.
+
+*€*charlie.
+.
+&lt;p&gt;*$*alpha.&lt;/p&gt;
+&lt;p&gt;*£*bravo.&lt;/p&gt;
+&lt;p&gt;*€*charlie.&lt;/p&gt;
 </code></pre>
 <p>Intraword emphasis with <code>*</code> is permitted:</p>
 <pre><code class="language-example">foo*bar*
@@ -5521,13 +5528,13 @@ delimiters:</p>
 .
 &lt;p&gt;&lt;em&gt;a &lt;code&gt;_&lt;/code&gt;&lt;/em&gt;&lt;/p&gt;
 </code></pre>
-<pre><code class="language-example">**a&lt;http://foo.bar/?q=**&gt;
+<pre><code class="language-example">**a&lt;https://foo.bar/?q=**&gt;
 .
-&lt;p&gt;**a&lt;a href=&quot;http://foo.bar/?q=**&quot;&gt;http://foo.bar/?q=**&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;**a&lt;a href=&quot;https://foo.bar/?q=**&quot;&gt;https://foo.bar/?q=**&lt;/a&gt;&lt;/p&gt;
 </code></pre>
-<pre><code class="language-example">__a&lt;http://foo.bar/?q=__&gt;
+<pre><code class="language-example">__a&lt;https://foo.bar/?q=__&gt;
 .
-&lt;p&gt;__a&lt;a href=&quot;http://foo.bar/?q=__&quot;&gt;http://foo.bar/?q=__&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;__a&lt;a href=&quot;https://foo.bar/?q=__&quot;&gt;https://foo.bar/?q=__&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 <h2>Links</h2>
 <p>A link contains [link text] (the visible text), a [link destination]
@@ -5720,13 +5727,13 @@ in Markdown:</p>
 <p>A link can contain fragment identifiers and queries:</p>
 <pre><code class="language-example">[link](#fragment)
 
-[link](http://example.com#fragment)
+[link](https://example.com#fragment)
 
-[link](http://example.com?foo=3#frag)
+[link](https://example.com?foo=3#frag)
 .
 &lt;p&gt;&lt;a href=&quot;#fragment&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://example.com#fragment&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://example.com?foo=3#frag&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://example.com#fragment&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://example.com?foo=3#frag&quot;&gt;link&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 <p>Note that a backslash before a non-escapable character is
 just a backslash:</p>
@@ -5878,9 +5885,9 @@ and autolinks over link grouping:</p>
 .
 &lt;p&gt;[foo&lt;code&gt;](/uri)&lt;/code&gt;&lt;/p&gt;
 </code></pre>
-<pre><code class="language-example">[foo&lt;http://example.com/?search=](uri)&gt;
+<pre><code class="language-example">[foo&lt;https://example.com/?search=](uri)&gt;
 .
-&lt;p&gt;[foo&lt;a href=&quot;http://example.com/?search=%5D(uri)&quot;&gt;http://example.com/?search=](uri)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[foo&lt;a href=&quot;https://example.com/?search=%5D(uri)&quot;&gt;https://example.com/?search=](uri)&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 <p>There are three kinds of <a href="@">reference link</a>s:
 <a href="#full-reference-link">full</a>, <a href="#collapsed-reference-link">collapsed</a>,
@@ -5985,11 +5992,11 @@ and autolinks over link grouping:</p>
 .
 &lt;p&gt;[foo&lt;code&gt;][ref]&lt;/code&gt;&lt;/p&gt;
 </code></pre>
-<pre><code class="language-example">[foo&lt;http://example.com/?search=][ref]&gt;
+<pre><code class="language-example">[foo&lt;https://example.com/?search=][ref]&gt;
 
 [ref]: /uri
 .
-&lt;p&gt;[foo&lt;a href=&quot;http://example.com/?search=%5D%5Bref%5D&quot;&gt;http://example.com/?search=][ref]&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;[foo&lt;a href=&quot;https://example.com/?search=%5D%5Bref%5D&quot;&gt;https://example.com/?search=][ref]&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 <p>Matching is case-insensitive:</p>
 <pre><code class="language-example">[foo][BaR]
@@ -6132,7 +6139,7 @@ line ending:</p>
 consists of a [link label] that [matches] a
 [link reference definition] elsewhere in the
 document, followed by the string <code>[]</code>.
-The contents of the first link label are parsed as inlines,
+The contents of the link label are parsed as inlines,
 which are used as the link's text.  The link's URI and title are
 provided by the matching reference link definition.  Thus,
 <code>[foo][]</code> is equivalent to <code>[foo][foo]</code>.</p>
@@ -6169,7 +6176,7 @@ allowed between the two sets of brackets:</p>
 consists of a [link label] that [matches] a
 [link reference definition] elsewhere in the
 document and is not followed by <code>[]</code> or a link label.
-The contents of the first link label are parsed as inlines,
+The contents of the link label are parsed as inlines,
 which are used as the link's text.  The link's URI and title
 are provided by the matching link reference definition.
 Thus, <code>[foo]</code> is equivalent to <code>[foo][]</code>.</p>
@@ -6227,7 +6234,7 @@ following closing bracket:</p>
 .
 &lt;p&gt;*&lt;a href=&quot;/url&quot;&gt;foo*&lt;/a&gt;&lt;/p&gt;
 </code></pre>
-<p>Full and compact references take precedence over shortcut
+<p>Full and collapsed references take precedence over shortcut
 references:</p>
 <pre><code class="language-example">[foo][bar]
 
@@ -6438,7 +6445,7 @@ as the link label.</p>
 a link to the URI, with the URI as the link's label.</p>
 <p>An <a href="@">absolute URI</a>,
 for these purposes, consists of a [scheme] followed by a colon (<code>:</code>)
-followed by zero or more characters other [ASCII control
+followed by zero or more characters other than [ASCII control
 characters][ASCII control character], [space], <code>&lt;</code>, and <code>&gt;</code>.
 If the URI includes these characters, they must be percent-encoded
 (e.g. <code>%20</code> for a space).</p>
@@ -6451,9 +6458,9 @@ by any combination of ASCII letters, digits, or the symbols plus
 .
 &lt;p&gt;&lt;a href=&quot;http://foo.bar.baz&quot;&gt;http://foo.bar.baz&lt;/a&gt;&lt;/p&gt;
 </code></pre>
-<pre><code class="language-example">&lt;http://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean&gt;
+<pre><code class="language-example">&lt;https://foo.bar.baz/test?q=hello&amp;id=22&amp;boolean&gt;
 .
-&lt;p&gt;&lt;a href=&quot;http://foo.bar.baz/test?q=hello&amp;amp;id=22&amp;amp;boolean&quot;&gt;http://foo.bar.baz/test?q=hello&amp;amp;id=22&amp;amp;boolean&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://foo.bar.baz/test?q=hello&amp;amp;id=22&amp;amp;boolean&quot;&gt;https://foo.bar.baz/test?q=hello&amp;amp;id=22&amp;amp;boolean&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 <pre><code class="language-example">&lt;irc://foo.bar:2233/baz&gt;
 .
@@ -6476,23 +6483,23 @@ with their syntax:</p>
 .
 &lt;p&gt;&lt;a href=&quot;made-up-scheme://foo,bar&quot;&gt;made-up-scheme://foo,bar&lt;/a&gt;&lt;/p&gt;
 </code></pre>
-<pre><code class="language-example">&lt;http://../&gt;
+<pre><code class="language-example">&lt;https://../&gt;
 .
-&lt;p&gt;&lt;a href=&quot;http://../&quot;&gt;http://../&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://../&quot;&gt;https://../&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 <pre><code class="language-example">&lt;localhost:5001/foo&gt;
 .
 &lt;p&gt;&lt;a href=&quot;localhost:5001/foo&quot;&gt;localhost:5001/foo&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 <p>Spaces are not allowed in autolinks:</p>
-<pre><code class="language-example">&lt;http://foo.bar/baz bim&gt;
+<pre><code class="language-example">&lt;https://foo.bar/baz bim&gt;
 .
-&lt;p&gt;&amp;lt;http://foo.bar/baz bim&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;https://foo.bar/baz bim&amp;gt;&lt;/p&gt;
 </code></pre>
 <p>Backslash-escapes do not work inside autolinks:</p>
-<pre><code class="language-example">&lt;http://example.com/\[\&gt;
+<pre><code class="language-example">&lt;https://example.com/\[\&gt;
 .
-&lt;p&gt;&lt;a href=&quot;http://example.com/%5C%5B%5C&quot;&gt;http://example.com/\[\&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://example.com/%5C%5B%5C&quot;&gt;https://example.com/\[\&lt;/a&gt;&lt;/p&gt;
 </code></pre>
 <p>An <a href="@">email autolink</a>
 consists of <code>&lt;</code>, followed by an [email address],
@@ -6524,9 +6531,9 @@ spec</a>:</p>
 .
 &lt;p&gt;&amp;lt;&amp;gt;&lt;/p&gt;
 </code></pre>
-<pre><code class="language-example">&lt; http://foo.bar &gt;
+<pre><code class="language-example">&lt; https://foo.bar &gt;
 .
-&lt;p&gt;&amp;lt; http://foo.bar &amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt; https://foo.bar &amp;gt;&lt;/p&gt;
 </code></pre>
 <pre><code class="language-example">&lt;m:abc&gt;
 .
@@ -6536,9 +6543,9 @@ spec</a>:</p>
 .
 &lt;p&gt;&amp;lt;foo.bar.baz&amp;gt;&lt;/p&gt;
 </code></pre>
-<pre><code class="language-example">http://example.com
+<pre><code class="language-example">https://example.com
 .
-&lt;p&gt;http://example.com&lt;/p&gt;
+&lt;p&gt;https://example.com&lt;/p&gt;
 </code></pre>
 <pre><code class="language-example">foo@bar.example.com
 .
@@ -6582,10 +6589,9 @@ an optional <code>/</code> character, and a <code>&gt;</code> character.</p>
 <p>A <a href="@">closing tag</a> consists of the string <code>&lt;/</code>, a
 [tag name], optional spaces, tabs, and up to one line ending, and the character
 <code>&gt;</code>.</p>
-<p>An <a href="@">HTML comment</a> consists of <code>&lt;!--</code> + <em>text</em> + <code>--&gt;</code>,
-where <em>text</em> does not start with <code>&gt;</code> or <code>-&gt;</code>, does not end with <code>-</code>,
-and does not contain <code>--</code>.  (See the
-<a href="http://www.w3.org/TR/html5/syntax.html#comments">HTML5 spec</a>.)</p>
+<p>An <a href="@">HTML comment</a> consists of <code>&lt;!--&gt;</code>, <code>&lt;!---&gt;</code>, or  <code>&lt;!--</code>, a string of
+characters not including the string <code>--&gt;</code>, and <code>--&gt;</code> (see the
+<a href="https://html.spec.whatwg.org/multipage/parsing.html#markup-declaration-open-state">HTML spec</a>).</p>
 <p>A <a href="@">processing instruction</a>
 consists of the string <code>&lt;?</code>, a string
 of characters not including the string <code>?&gt;</code>, and the string
@@ -6669,23 +6675,18 @@ bim!bop /&amp;gt;&lt;/p&gt;
 &lt;p&gt;&amp;lt;/a href=&amp;quot;foo&amp;quot;&amp;gt;&lt;/p&gt;
 </code></pre>
 <p>Comments:</p>
-<pre><code class="language-example">foo &lt;!-- this is a
-comment - with hyphen --&gt;
+<pre><code class="language-example">foo &lt;!-- this is a --
+comment - with hyphens --&gt;
 .
-&lt;p&gt;foo &lt;!-- this is a
-comment - with hyphen --&gt;&lt;/p&gt;
+&lt;p&gt;foo &lt;!-- this is a --
+comment - with hyphens --&gt;&lt;/p&gt;
 </code></pre>
-<pre><code class="language-example">foo &lt;!-- not a comment -- two hyphens --&gt;
-.
-&lt;p&gt;foo &amp;lt;!-- not a comment -- two hyphens --&amp;gt;&lt;/p&gt;
-</code></pre>
-<p>Not comments:</p>
 <pre><code class="language-example">foo &lt;!--&gt; foo --&gt;
 
-foo &lt;!-- foo---&gt;
+foo &lt;!---&gt; foo --&gt;
 .
-&lt;p&gt;foo &amp;lt;!--&amp;gt; foo --&amp;gt;&lt;/p&gt;
-&lt;p&gt;foo &amp;lt;!-- foo---&amp;gt;&lt;/p&gt;
+&lt;p&gt;foo &lt;!--&gt; foo --&amp;gt;&lt;/p&gt;
+&lt;p&gt;foo &lt;!---&gt; foo --&amp;gt;&lt;/p&gt;
 </code></pre>
 <p>Processing instructions:</p>
 <pre><code class="language-example">foo &lt;?php echo $a; ?&gt;
@@ -7069,7 +7070,7 @@ delimiter from the stack, and return a literal text node <code>]</code>.</p>
 </li>
 <li>
 <p>If we find one and it's active, then we parse ahead to see if
-we have an inline link/image, reference link/image, compact reference
+we have an inline link/image, reference link/image, collapsed reference
 link/image, or shortcut reference link/image.</p>
 <ul>
 <li>
