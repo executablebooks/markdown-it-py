@@ -29,7 +29,7 @@ def backtick(state: StateInline, silent: bool) -> bool:
         state.pos += openerLength
         return True
 
-    matchStart = matchEnd = pos
+    matchEnd = pos
 
     # Nothing found in the cache, scan until the end of the line (or until marker is found)
     while True:
