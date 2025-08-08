@@ -60,6 +60,7 @@ testing = [
     "pytest",
     "pytest-cov",
     "pytest-regressions",
+    "requests",
 ]
 benchmarking = [
     "psutil",
