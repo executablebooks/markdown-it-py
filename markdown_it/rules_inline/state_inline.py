@@ -155,11 +155,11 @@ class StateInline(StateBase):
             or (isLastPunctChar and not (isNextWhiteSpace or isNextPunctChar))
         )
 
-        if not canSplitWord:
-            can_open = left_flanking and ((not right_flanking) or isLastPunctChar)
-            can_close = right_flanking and ((not left_flanking) or isNextPunctChar)
-        else:
-            can_open = left_flanking
-            can_close = right_flanking
+        can_open = left_flanking and (
+            canSplitWord or (not right_flanking) or isLastPunctChar
+        )
+        can_close = right_flanking and (
+            canSplitWord or (not left_flanking) or isNextPunctChar
+        )
 
         return Scanned(can_open, can_close, count)
