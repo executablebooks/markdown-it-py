@@ -7,7 +7,7 @@
 
 from __future__ import annotations
 
-from typing import Callable
+from collections.abc import Callable
 
 from .ruler import Ruler
 from .rules_core import (

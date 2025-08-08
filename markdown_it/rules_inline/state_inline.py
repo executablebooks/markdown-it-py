@@ -4,7 +4,6 @@ from collections import namedtuple
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any, Literal
 
-from .._compat import DATACLASS_KWARGS
 from ..common.utils import isMdAsciiPunct, isPunctChar, isWhiteSpace
 from ..ruler import StateBase
 from ..token import Token
@@ -14,7 +13,7 @@ if TYPE_CHECKING:
     from markdown_it import MarkdownIt
 
 
-@dataclass(**DATACLASS_KWARGS)
+@dataclass(slots=True)
 class Delimiter:
     # Char code of the starting marker (number).
     marker: int
