@@ -98,7 +98,7 @@ jobs:
         pip install tox
 
     - name: Run benchmark
-      run: tox -e py39-bench-core -- --benchmark-json bench-core.json
+      run: tox -e py310-bench-core -- --benchmark-json bench-core.json
 
     - name: Upload data
       uses: actions/upload-artifact@v4

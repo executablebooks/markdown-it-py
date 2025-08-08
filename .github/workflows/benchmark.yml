@@ -27,7 +27,7 @@ jobs:
         pip install tox
 
     - name: Run package benchmarks
-      run: tox -e py39-bench-packages -- --benchmark-min-rounds 20 --benchmark-json bench-packages.json
+      run: tox -e py310-bench-packages -- --benchmark-min-rounds 20 --benchmark-json bench-packages.json
 
     # - name: Upload package data
     #   uses: actions/upload-artifact@v3
