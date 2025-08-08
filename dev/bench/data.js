@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754656214702,
+  "lastUpdate": 1754671850778,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -26921,6 +26921,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.013857",
             "group": "packages",
             "extra": "mean: 704.52 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.18"
+        },
+        "commit": {
+          "id": "4535d77edcb5f51450a266135687eeae8bcc5033",
+          "message": "⬆️ Comply with Commonmark 0.31.2 (#362)\n\nThis PR ports https://github.com/markdown-it/markdown-it/commit/cd2477863fdcc182cc8739e9bedc7363acb344d8,\nwhich in turn complies with https://spec.commonmark.org/0.31.2/changes.html:\n\n- Unicode:\n\n  ```diff\n  A [Unicode punctuation character](@) is\n  -  an [ASCII punctuation character] or anything in\n  - he general Unicode categories  `Pc`, `Pd`, `Pe`, `Pf`, `Pi`, `Po`, or `Ps`.\n  + a character in the Unicode `P` (puncuation) or `S` (symbol) general categories.\n  ```\n\n- HTML comments:\n\n  ```diff\n  - An HTML comment consists of `<!--` + *text* + `-->`,\n  - where *text* does not start with `>` or `->`, does not end with `-`, and does not contain `--`.\n  - (See the [HTML5 spec](http://www.w3.org/TR/html5/syntax.html#comments).)\n  + An [HTML comment](@) consists of `<!-->`, `<!--->`, or  `<!--`, a string of characters not including the string `-->`, and `-->`\n  + (see the [HTML spec](https://html.spec.whatwg.org/multipage/parsing.html#markup-declaration-open-state)).\n  ```\n\n- HTML blocks:\n\n  ```diff\n  Start condition: line begins the string < or </ followed by one of the strings (case-insensitive)\n  - `section`, `source`, `summary`, `table`, `tbody`, `td`,\n  + `search`, `section`, `summary`, `table`, `tbody`, `td`,\n  ```\n\n- Setext header:\n\n  ```diff\n  - If a line containing a single `-` can be interpreted as an\n  - empty [list items], it should be interpreted this way\n  - and not as a [setext heading underline].\n  ```\n\nCo-Authored-By: Clément Bœsch <34467+ubitux@users.noreply.github.com>",
+          "timestamp": "2025-08-08T18:49:43+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/4535d77edcb5f51450a266135687eeae8bcc5033",
+          "distinct": true,
+          "tree_id": "07cec3b7670fd042bc2601795f69b87cf3421d72"
+        },
+        "date": 1754671850064,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.946039886133498,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035137",
+            "group": "packages",
+            "extra": "mean: 125.85 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.48757850920592,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000041664",
+            "group": "packages",
+            "extra": "mean: 5.0636 msec\nrounds: 125"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 9.991827349684455,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0023791",
+            "group": "packages",
+            "extra": "mean: 100.08 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.118983431738584,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013089",
+            "group": "packages",
+            "extra": "mean: 320.62 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.718574288574542,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0061304",
+            "group": "packages",
+            "extra": "mean: 129.56 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.526337560190018,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0038427",
+            "group": "packages",
+            "extra": "mean: 180.95 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.328569759080459,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014317",
+            "group": "packages",
+            "extra": "mean: 136.45 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4071922224913436,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0066769",
+            "group": "packages",
+            "extra": "mean: 710.63 msec\nrounds: 20"
           }
         ]
       }
