@@ -50,28 +50,42 @@ class StateInline(StateBase):
         self.tokens_meta: list[dict[str, Any] | None] = [None] * len(outTokens)
 
         self.pos = 0
+        """Current position in src string"""
         self.posMax = len(self.src)
+        """Length of the src string"""
         self.level = 0
+        """Current nesting level of tokens,
+        +1 when adding opening token, -1 when adding closing token
+        """
         self.pending = ""
+        """Accumulated text not yet converted to a token.
+        This will be added as a `text` token when the next token is pushed (before it),
+        or when the parser finishes running (after all other tokens).
+        """
         self.pendingLevel = 0
+        """The nesting level of the pending text"""
 
-        # Stores { start: end } pairs. Useful for backtrack
-        # optimization of pairs parse (emphasis, strikes).
         self.cache: dict[int, int] = {}
+        """
+        Stores { start: end } pairs.
+        Useful for backtrack optimization of pairs parse (emphasis, strikes).
+        """
 
-        # List of emphasis-like delimiters for current tag
         self.delimiters: list[Delimiter] = []
+        """List of emphasis-like delimiters for current tag"""
 
-        # Stack of delimiter lists for upper level tags
         self._prev_delimiters: list[list[Delimiter]] = []
+        """Stack of delimiter lists for upper level tags"""
 
-        # backticklength => last seen position
         self.backticks: dict[int, int] = {}
+        """backticklength => last seen position"""
         self.backticksScanned = False
 
-        # Counter used to disable inline linkify-it execution
-        # inside <a> and markdown links
         self.linkLevel = 0
+        """
+        Counter used to disable inline linkify-it execution
+        inside `<a>` and markdown links
+        """
 
     def __repr__(self) -> str:
         return (
