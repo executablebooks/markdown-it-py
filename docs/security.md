@@ -25,7 +25,7 @@ from markdown_it import MarkdownIt
 MarkdownIt("js-default").render("*user-submitted* text")
 ```
 
-Note that even with the default configuration, `markdown-it-py` prohibits some kind of links which could be used for XSS:
+Note that even with the default configuration, `markdown-it-py` prohibits some kinds of links which could be used for XSS:
 
 - `javascript:`, `vbscript:`
 - `file:`
@@ -37,8 +37,8 @@ If you find a security problem, please report it to <executablebooks@gmail.com>.
 
 Usually, plugins operate with tokenized content, and that's enough to provide safe output.
 
-But there is one non-evident case you should know - don't allow plugins to generate arbitrary element `id` and `name`.
+But there is one non-evident case you should know - don't allow plugins to generate arbitrary `id` and `name` attributes.
 If those depend on user input - always add prefixes to avoid DOM clobbering.
 See [discussion](https://github.com/markdown-it/markdown-it/issues/28) for details.
 
-So, if you decide to use plugins that add extended class syntax or autogenerating header anchors - be careful.
+So, if you decide to use plugins that add extended class syntax or autogenerate header anchors - be careful.

@@ -60,7 +60,7 @@ In total, a token stream is:
 - On the top level - array of paired or single "block" tokens:
   - open/close for headers, lists, blockquotes, paragraphs, ...
   - codes, fenced blocks, horizontal rules, html blocks, inlines containers
-- Each inline token have a `.children` property with a nested token stream for inline content:
+- Each inline token has a `.children` property with a nested token stream for inline content:
   - open/close for strong, em, link, code, ...
   - text, line breaks
 
@@ -81,7 +81,7 @@ Rules are functions, doing "magic" with parser `state` objects. A rule is associ
 
 Rules are managed by names via [Ruler](https://markdown-it.github.io/markdown-it/#Ruler) instances and can be  `enabled` / `disabled` from the [MarkdownIt](https://markdown-it.github.io/markdown-it/#MarkdownIt) methods.
 
-You can note, that some rules have a `validation mode` - in this mode rules do not
+Note that some rules have a `validation mode` - in this mode rules do not
 modify the token stream, and only look ahead for the end of a token. It's one
 important design principle - a token stream is "write only" on block & inline parse stages.
 
@@ -160,9 +160,9 @@ JSON/XML... You can even use it to generate AST.
 
 ## Summary
 
-This was mentioned in [Data flow](md/data-flow), but let's repeat sequence again:
+This was mentioned in [Data flow](md/data-flow), but let's repeat the sequence again:
 
-1. Blocks are parsed, and top level of token stream filled with block tokens.
+1. Blocks are parsed, and the top level of the token stream filled with block tokens.
 2. Content on inline containers is parsed, filling `.children` properties.
 3. Rendering happens.
 
