@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1754673139393,
+  "lastUpdate": 1754690989865,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -27093,6 +27093,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0057180",
             "group": "packages",
             "extra": "mean: 710.57 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.18"
+        },
+        "commit": {
+          "id": "87b16e272bf8207182084e07a63253b98fc437d7",
+          "message": "🔧 simplify logic in scanDelims (#365)\n\nports https://github.com/markdown-it/markdown-it/commit/5e900639542bb36501ee9e960c07bfaa529431c9",
+          "timestamp": "2025-08-09T00:08:40+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/87b16e272bf8207182084e07a63253b98fc437d7",
+          "distinct": true,
+          "tree_id": "85a3349343f72ce1fe30da530463ccef6065a7b6"
+        },
+        "date": 1754690988805,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 8.050559170002597,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0027781",
+            "group": "packages",
+            "extra": "mean: 124.21 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 198.30056542347435,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000046519",
+            "group": "packages",
+            "extra": "mean: 5.0428 msec\nrounds: 125"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.05333220855236,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0019797",
+            "group": "packages",
+            "extra": "mean: 99.470 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.3008301556153232,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012900",
+            "group": "packages",
+            "extra": "mean: 302.95 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.716408237377575,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0048700",
+            "group": "packages",
+            "extra": "mean: 129.59 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.570489277556427,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0034441",
+            "group": "packages",
+            "extra": "mean: 179.52 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.385393436950572,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010736",
+            "group": "packages",
+            "extra": "mean: 135.40 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4510835316404604,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0064682",
+            "group": "packages",
+            "extra": "mean: 689.14 msec\nrounds: 20"
           }
         ]
       }
