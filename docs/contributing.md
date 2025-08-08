@@ -61,6 +61,22 @@ For documentation build tests:
 >> make html-strict
 ```
 
+### Updating the commonmark specification
+
+If you need to update the commonmark specification, you can do so by running:
+
+```shell
+>> cd markdown-it-py
+>> python tests/test_cmark_spec/get_cmark_spec.py
+```
+
+or
+
+```shell
+>> cd markdown-it-py
+>> uv run tests/test_cmark_spec/get_cmark_spec.py
+```
+
 ## Contributing a plugin
 
 1. Does it already exist as JavaScript implementation ([see npm](https://www.npmjs.com/search?q=keywords:markdown-it-plugin))?

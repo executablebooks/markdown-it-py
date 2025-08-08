@@ -45,6 +45,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -e .[testing,linkify]
+    - name: Check spec file is up to date
+      run: |
+        python tests/test_cmark_spec/get_cmark_spec.py
     - name: Run pytest
       run: |
         pytest tests/ --cov=markdown_it --cov-report=xml --cov-report=term-missing
