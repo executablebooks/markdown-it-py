@@ -5,7 +5,7 @@
 # ///
 from pathlib import Path
 
-default_version = "0.31.2"
+default_version = "0.30"
 default_output_path = Path(__file__).parent / "commonmark.json"
 default_fixture_test_path = (
     Path(__file__).parent.parent / "test_port" / "fixtures" / "commonmark_spec.md"
