@@ -5,7 +5,7 @@ import sys
 from typing import Any
 
 DATACLASS_KWARGS: Mapping[str, Any]
-if sys.version_info >= (3, 10):
+if sys.version_info >= (3, 10, 0, "final"):
     DATACLASS_KWARGS = {"slots": True}
 else:
     DATACLASS_KWARGS = {}
