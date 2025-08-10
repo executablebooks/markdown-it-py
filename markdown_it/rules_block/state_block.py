@@ -28,40 +28,68 @@ class StateBlock(StateBase):
 
         self.tokens = tokens
 
-        self.bMarks: list[int] = []  # line begin offsets for fast jumps
-        self.eMarks: list[int] = []  # line end offsets for fast jumps
-        # offsets of the first non-space characters (tabs not expanded)
+        self.bMarks: list[int] = []
+        """line begin offsets for fast jumps"""
+
+        self.eMarks: list[int] = []
+        """line end offsets for fast jumps"""
+
         self.tShift: list[int] = []
-        self.sCount: list[int] = []  # indents for each line (tabs expanded)
+        """Offsets of the first non-space characters (tabs not expanded)"""
 
-        # An amount of virtual spaces (tabs expanded) between beginning
-        # of each line (bMarks) and real beginning of that line.
-        #
-        # It exists only as a hack because blockquotes override bMarks
-        # losing information in the process.
-        #
-        # It's used only when expanding tabs, you can think about it as
-        # an initial tab length, e.g. bsCount=21 applied to string `\t123`
-        # means first tab should be expanded to 4-21%4 === 3 spaces.
-        #
+        self.sCount: list[int] = []
+        """indents for each line (tabs expanded)"""
+
         self.bsCount: list[int] = []
+        """
+        An amount of virtual spaces (tabs expanded) between beginning
+        of each line (bMarks) and real beginning of that line.
 
+        It exists only as a hack because blockquotes override bMarks
+        losing information in the process.
+
+        It's used only when expanding tabs, you can think about it as
+        an initial tab length, e.g. `bsCount=21` applied to string `\\t123`
+        means first tab should be expanded to `4-21 % 4 == 3` spaces.
+        """
+
+        #
         # block parser variables
-        self.blkIndent = 0  # required block content indent (for example, if we are
-        # inside a list, it would be positioned after list marker)
-        self.line = 0  # line index in src
-        self.lineMax = 0  # lines count
-        self.tight = False  # loose/tight mode for lists
-        self.ddIndent = -1  # indent of the current dd block (-1 if there isn't any)
-        self.listIndent = -1  # indent of the current list block (-1 if there isn't any)
+        #
 
-        # can be 'blockquote', 'list', 'root', 'paragraph' or 'reference'
-        # used in lists to determine if they interrupt a paragraph
+        self.blkIndent = 0
+        """required block content indent
+        (for example, if we are inside a list, it would be positioned after list marker)
+        """
+
+        self.line = 0
+        """line index in src"""
+        self.lineMax = 0
+        """Total lines count"""
+
+        self.tight = False
+        """loose/tight mode for lists"""
+
+        self.ddIndent = -1
+        """indent of the current dd block (-1 if there isn't any),
+        used only by deflist plugin
+        """
+
+        self.listIndent = -1
+        """indent of the current list block (-1 if there isn't any)"""
+
         self.parentType = "root"
+        """
+        can be 'blockquote', 'list', 'root', 'paragraph' or 'reference'
+        used in lists to determine if they interrupt a paragraph
+        """
 
         self.level = 0
+        """Current nesting level of tokens,
+        +1 when adding opening token, -1 when adding closing token
+        """
 
-        # renderer
+        # renderer (does not appear to be used)
         self.result = ""
 
         # Create caches
