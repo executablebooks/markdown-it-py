@@ -52,6 +52,7 @@ nitpick_ignore_regex = [
         ".*_NodeType",
         ".*Literal.*",
         ".*_Result",
+        ".*_State",
         "EnvType",
         "Path",
         "Ellipsis",
