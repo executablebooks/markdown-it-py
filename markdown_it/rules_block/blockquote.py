@@ -27,81 +27,16 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
             return False
     except IndexError:
         return False
-    pos += 1
 
     # we know that it's going to be a valid blockquote,
     # so no point trying to find the end of it in silent mode
     if silent:
         return True
 
-    # set offset past spaces and ">"
-    initial = offset = state.sCount[startLine] + 1
-
-    try:
-        second_char: str | None = state.src[pos]
-    except IndexError:
-        second_char = None
-
-    # skip one optional space after '>'
-    if second_char == " ":
-        # ' >   test '
-        #     ^ -- position start of line here:
-        pos += 1
-        initial += 1
-        offset += 1
-        adjustTab = False
-        spaceAfterMarker = True
-    elif second_char == "\t":
-        spaceAfterMarker = True
-
-        if (state.bsCount[startLine] + offset) % 4 == 3:
-            # '  >\t  test '
-            #       ^ -- position start of line here (tab has width==1)
-            pos += 1
-            initial += 1
-            offset += 1
-            adjustTab = False
-        else:
-            # ' >\t  test '
-            #    ^ -- position start of line here + shift bsCount slightly
-            #         to make extra space appear
-            adjustTab = True
-
-    else:
-        spaceAfterMarker = False
-
-    oldBMarks = [state.bMarks[startLine]]
-    state.bMarks[startLine] = pos
-
-    while pos < max:
-        ch = state.src[pos]
-
-        if isStrSpace(ch):
-            if ch == "\t":
-                offset += (
-                    4
-                    - (offset + state.bsCount[startLine] + (1 if adjustTab else 0)) % 4
-                )
-            else:
-                offset += 1
-
-        else:
-            break
-
-        pos += 1
-
-    oldBSCount = [state.bsCount[startLine]]
-    state.bsCount[startLine] = (
-        state.sCount[startLine] + 1 + (1 if spaceAfterMarker else 0)
-    )
-
-    lastLineEmpty = pos >= max
-
-    oldSCount = [state.sCount[startLine]]
-    state.sCount[startLine] = offset - initial
-
-    oldTShift = [state.tShift[startLine]]
-    state.tShift[startLine] = pos - state.bMarks[startLine]
+    oldBMarks = []
+    oldBSCount = []
+    oldSCount = []
+    oldTShift = []
 
     terminatorRules = state.md.block.ruler.getRules("blockquote")
 
@@ -127,8 +62,8 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     #      - - -
     #     ```
 
-    # for (nextLine = startLine + 1; nextLine < endLine; nextLine++) {
-    nextLine = startLine + 1
+    # for (nextLine = startLine; nextLine < endLine; nextLine++) {
+    nextLine = startLine
     while nextLine < endLine:
         # check if it's outdented, i.e. it's inside list item and indented
         # less than said list item:
@@ -153,7 +88,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
             # This line is inside the blockquote.
 
             # set offset past spaces and ">"
-            initial = offset = state.sCount[nextLine] + 1
+            initial = state.sCount[nextLine] + 1
 
             try:
                 next_char: str | None = state.src[pos]
@@ -166,18 +101,16 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
                 #     ^ -- position start of line here:
                 pos += 1
                 initial += 1
-                offset += 1
                 adjustTab = False
                 spaceAfterMarker = True
             elif next_char == "\t":
                 spaceAfterMarker = True
 
-                if (state.bsCount[nextLine] + offset) % 4 == 3:
+                if (state.bsCount[nextLine] + initial) % 4 == 3:
                     # '  >\t  test '
                     #       ^ -- position start of line here (tab has width==1)
                     pos += 1
                     initial += 1
-                    offset += 1
                     adjustTab = False
                 else:
                     # ' >\t  test '
@@ -188,6 +121,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
             else:
                 spaceAfterMarker = False
 
+            offset = initial
             oldBMarks.append(state.bMarks[nextLine])
             state.bMarks[nextLine] = pos
 

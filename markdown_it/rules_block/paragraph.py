@@ -15,7 +15,6 @@ def paragraph(state: StateBlock, startLine: int, endLine: int, silent: bool) -> 
     nextLine = startLine + 1
     ruler = state.md.block.ruler
     terminatorRules = ruler.getRules("paragraph")
-    endLine = state.lineMax
 
     oldParentType = state.parentType
     state.parentType = "paragraph"

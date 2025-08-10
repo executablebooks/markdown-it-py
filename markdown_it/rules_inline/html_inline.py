@@ -32,7 +32,7 @@ def html_inline(state: StateInline, silent: bool) -> bool:
 
     if not silent:
         token = state.push("html_inline", "", 0)
-        token.content = state.src[pos : pos + len(match.group(0))]
+        token.content = match.group(0)
 
         if isLinkOpen(token.content):
             state.linkLevel += 1

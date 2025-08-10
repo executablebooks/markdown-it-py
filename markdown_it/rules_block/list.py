@@ -101,10 +101,11 @@ def markTightParagraphs(state: StateBlock, idx: int) -> None:
 def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
     LOGGER.debug("entering list: %s, %s, %s, %s", state, startLine, endLine, silent)
 
+    nextLine = startLine
     isTerminatingParagraph = False
     tight = True
 
-    if state.is_code_block(startLine):
+    if state.is_code_block(nextLine):
         return False
 
     # Special case:
@@ -115,8 +116,8 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     #      - this one is a paragraph continuation
     if (
         state.listIndent >= 0
-        and state.sCount[startLine] - state.listIndent >= 4
-        and state.sCount[startLine] < state.blkIndent
+        and state.sCount[nextLine] - state.listIndent >= 4
+        and state.sCount[nextLine] < state.blkIndent
     ):
         return False
 
@@ -130,15 +131,15 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     if (
         silent
         and state.parentType == "paragraph"
-        and state.sCount[startLine] >= state.blkIndent
+        and state.sCount[nextLine] >= state.blkIndent
     ):
         isTerminatingParagraph = True
 
     # Detect list type and position after marker
-    posAfterMarker = skipOrderedListMarker(state, startLine)
+    posAfterMarker = skipOrderedListMarker(state, nextLine)
     if posAfterMarker >= 0:
         isOrdered = True
-        start = state.bMarks[startLine] + state.tShift[startLine]
+        start = state.bMarks[nextLine] + state.tShift[nextLine]
         markerValue = int(state.src[start : posAfterMarker - 1])
 
         # If we're starting a new ordered list right after
@@ -146,7 +147,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
         if isTerminatingParagraph and markerValue != 1:
             return False
     else:
-        posAfterMarker = skipBulletListMarker(state, startLine)
+        posAfterMarker = skipBulletListMarker(state, nextLine)
         if posAfterMarker >= 0:
             isOrdered = False
         else:
@@ -156,16 +157,16 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     # a paragraph, first line should not be empty.
     if (
         isTerminatingParagraph
-        and state.skipSpaces(posAfterMarker) >= state.eMarks[startLine]
+        and state.skipSpaces(posAfterMarker) >= state.eMarks[nextLine]
     ):
         return False
-
-    # We should terminate list on style change. Remember first one to compare.
-    markerChar = state.src[posAfterMarker - 1]
 
     # For validation mode we can terminate immediately
     if silent:
         return True
+
+    # We should terminate list on style change. Remember first one to compare.
+    markerChar = state.src[posAfterMarker - 1]
 
     # Start list
     listTokIdx = len(state.tokens)
@@ -178,14 +179,13 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     else:
         token = state.push("bullet_list_open", "ul", 1)
 
-    token.map = listLines = [startLine, 0]
+    token.map = listLines = [nextLine, 0]
     token.markup = markerChar
 
     #
     # Iterate list items
     #
 
-    nextLine = startLine
     prevEmptyEnd = False
     terminatorRules = state.md.block.ruler.getRules("list")
 
@@ -199,7 +199,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
         initial = offset = (
             state.sCount[nextLine]
             + posAfterMarker
-            - (state.bMarks[startLine] + state.tShift[startLine])
+            - (state.bMarks[nextLine] + state.tShift[nextLine])
         )
 
         while pos < maximum:
@@ -231,14 +231,14 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
         # Run subparser & write tokens
         token = state.push("list_item_open", "li", 1)
         token.markup = markerChar
-        token.map = itemLines = [startLine, 0]
+        token.map = itemLines = [nextLine, 0]
         if isOrdered:
             token.info = state.src[start : posAfterMarker - 1]
 
         # change current state, then restore it after parser subcall
         oldTight = state.tight
-        oldTShift = state.tShift[startLine]
-        oldSCount = state.sCount[startLine]
+        oldTShift = state.tShift[nextLine]
+        oldSCount = state.sCount[nextLine]
 
         #  - example list
         # ^ listIndent position will be here
@@ -249,10 +249,10 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
         state.blkIndent = indent
 
         state.tight = True
-        state.tShift[startLine] = contentStart - state.bMarks[startLine]
-        state.sCount[startLine] = offset
+        state.tShift[nextLine] = contentStart - state.bMarks[nextLine]
+        state.sCount[nextLine] = offset
 
-        if contentStart >= maximum and state.isEmpty(startLine + 1):
+        if contentStart >= maximum and state.isEmpty(nextLine + 1):
             # workaround for this case
             # (list item is empty, list terminates before "foo"):
             # ~~~~~~~~
@@ -263,9 +263,9 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
             state.line = min(state.line + 2, endLine)
         else:
             # NOTE in list.js this was:
-            # state.md.block.tokenize(state, startLine, endLine, True)
-            # but  tokeniz does not take the final parameter
-            state.md.block.tokenize(state, startLine, endLine)
+            # state.md.block.tokenize(state, nextLine, endLine, True)
+            # but tokenize does not take the final parameter
+            state.md.block.tokenize(state, nextLine, endLine)
 
         # If any of list item is tight, mark list as tight
         if (not state.tight) or prevEmptyEnd:
@@ -273,24 +273,22 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
         # Item become loose if finish with empty line,
         # but we should filter last element, because it means list finish
-        prevEmptyEnd = (state.line - startLine) > 1 and state.isEmpty(state.line - 1)
+        prevEmptyEnd = (state.line - nextLine) > 1 and state.isEmpty(state.line - 1)
 
         state.blkIndent = state.listIndent
         state.listIndent = oldListIndent
-        state.tShift[startLine] = oldTShift
-        state.sCount[startLine] = oldSCount
+        state.tShift[nextLine] = oldTShift
+        state.sCount[nextLine] = oldSCount
         state.tight = oldTight
 
         token = state.push("list_item_close", "li", -1)
         token.markup = markerChar
 
-        nextLine = startLine = state.line
+        nextLine = state.line
         itemLines[1] = nextLine
 
         if nextLine >= endLine:
             break
-
-        contentStart = state.bMarks[startLine]
 
         #
         # Try to check if list is terminated or continued.
@@ -298,7 +296,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
         if state.sCount[nextLine] < state.blkIndent:
             break
 
-        if state.is_code_block(startLine):
+        if state.is_code_block(nextLine):
             break
 
         # fail if terminating block found
