@@ -1,5 +1,20 @@
 # Change Log
 
+## 4.0.0 - 2024-08-10
+
+This primarily drops support for Python 3.9, adds support for Python 3.13,
+and updates the parser to comply with Commonmark 0.31.2 and Markdown-It v14.1.0.
+
+* ⬆️ Drop support for Python 3.9 in [#360](https://github.com/executablebooks/markdown-it-py/pull/360)
+* ⬆️ Comply with Commonmark 0.31.2 in [#362](https://github.com/executablebooks/markdown-it-py/pull/362)
+* 👌 Improve performance of "text" inline rule in [#347](https://github.com/executablebooks/markdown-it-py/pull/347)
+* 👌 Use `str.removesuffix` in [#348](https://github.com/executablebooks/markdown-it-py/pull/348)
+* 👌 limit the number of autocompleted cells in a table in [#364](https://github.com/executablebooks/markdown-it-py/pull/364)
+* 👌 fix quadratic complexity in reference parser in [#367](https://github.com/executablebooks/markdown-it-py/pull/367)
+* 🐛 Fix emphasis inside raw links bugs in [#320](https://github.com/executablebooks/markdown-it-py/pull/320)
+
+**Full Changelog**: <https://github.com/executablebooks/markdown-it-py/compare/v3.0.0...v4.0.0>
+
 ## 3.0.0 - 2023-06-03
 
 ⚠️ This release contains some minor breaking changes in the internal API and improvements to the parsing strictness.
