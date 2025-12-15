@@ -104,7 +104,7 @@ jobs:
       run: tox -e py310-bench-core -- --benchmark-json bench-core.json
 
     - name: Upload data
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: bench-core
         path: bench-core.json
