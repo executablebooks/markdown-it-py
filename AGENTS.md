@@ -18,7 +18,7 @@ markdown-it-py is designed as a foundation for projects requiring robust Markdow
 
 ```
 pyproject.toml          # Project configuration and dependencies (flit)
-tox.ini                 # Tox test environment configuration
+tox.ini                 # Tox test environment configuration (use with tox-uv for faster env creation)
 
 markdown_it/            # Main source code
 ├── __init__.py         # Package init
