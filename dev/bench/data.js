@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1766576745319,
+  "lastUpdate": 1771402026935,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -27523,6 +27523,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0077989",
             "group": "packages",
             "extra": "mean: 695.62 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.19"
+        },
+        "commit": {
+          "id": "2f6ae107ba32e9a7bd2d00134d09a78ec805a6a0",
+          "message": "🔧 Add AGENTS.md and copilot-setup-steps workflow (#380)\n\n* Initial plan\n\n* 📚 DOCS: Add AGENTS.md and copilot-setup-steps.yml workflow\n\nCo-authored-by: chrisjsewell <2997570+chrisjsewell@users.noreply.github.com>\n\n* 👌 IMPROVE: Add tox-uv note to AGENTS.md\n\nCo-authored-by: chrisjsewell <2997570+chrisjsewell@users.noreply.github.com>\n\n---------\n\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: chrisjsewell <2997570+chrisjsewell@users.noreply.github.com>",
+          "timestamp": "2026-02-18T09:06:02+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/2f6ae107ba32e9a7bd2d00134d09a78ec805a6a0",
+          "distinct": true,
+          "tree_id": "46041d3addd7d5f26da0a2a2e46c2f9ef9821f1b"
+        },
+        "date": 1771402026081,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.889742153632428,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0030267",
+            "group": "packages",
+            "extra": "mean: 126.75 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.70350539601353,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000037080",
+            "group": "packages",
+            "extra": "mean: 5.0581 msec\nrounds: 116"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 9.731336147665699,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0048831",
+            "group": "packages",
+            "extra": "mean: 102.76 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.0696902990869277,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015466",
+            "group": "packages",
+            "extra": "mean: 325.77 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.551148477259439,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0063464",
+            "group": "packages",
+            "extra": "mean: 132.43 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.603685661512774,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0040685",
+            "group": "packages",
+            "extra": "mean: 178.45 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.51649718453167,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011168",
+            "group": "packages",
+            "extra": "mean: 133.04 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4333516926072116,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0069676",
+            "group": "packages",
+            "extra": "mean: 697.67 msec\nrounds: 20"
           }
         ]
       }
