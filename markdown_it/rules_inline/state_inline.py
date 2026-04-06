@@ -148,6 +148,14 @@ class StateInline(StateBase):
         isLastWhiteSpace = isWhiteSpace(ord(lastChar))
         isNextWhiteSpace = isWhiteSpace(ord(nextChar))
 
+        # Treat CJK ideographs as punctuation for flanking delimiter checks
+        # so that emphasis works correctly in mixed CJK/ASCII contexts.
+        # e.g. 湾岸の**46%**を should render <strong>46%</strong>
+        if not isNextPunctChar and ord(nextChar) > 0x2E7F:
+            isNextPunctChar = True
+        if not isLastPunctChar and ord(lastChar) > 0x2E7F:
+            isLastPunctChar = True
+
         left_flanking = not (
             isNextWhiteSpace
             or (isNextPunctChar and not (isLastWhiteSpace or isLastPunctChar))
