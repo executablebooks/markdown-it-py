@@ -45,6 +45,8 @@ class OptionsType(TypedDict):
     """Enable GFM task list checkbox detection in list items."""
     alerts: NotRequired[bool]
     """Enable GitHub-style alert detection in blockquotes."""
+    tasklists_enabled: NotRequired[bool]
+    """When True, rendered task list checkboxes are interactive (no disabled attribute)."""
     strikethrough_single_tilde: NotRequired[bool]
     """Allow single tilde ``~text~`` for strikethrough in addition to double."""
 

@@ -274,6 +274,9 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     state.blkIndent = 0
 
     # Detect GitHub-style alert marker on the first content line.
+    # Note: `startLine` here refers to the first content line of the
+    # blockquote, after the `>` prefix has already been stripped by the
+    # blockquote parser above (bMarks/tShift adjusted to skip `> `).
     alert_kind = None
     if state.md.options.get("alerts", False) and nextLine > startLine:
         alert_kind = _detect_alert(state, startLine)
@@ -296,9 +299,11 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
         title_token.children = []
         token = state.push("alert_title_close", "p", -1)
 
-        # Skip the marker line (startLine) and tokenize from startLine + 1
+        # Skip the marker line (startLine) and tokenize from startLine + 1.
         contentStart = startLine + 1
         if contentStart < nextLine:
+            # tokenize() updates state.line to nextLine as part of its
+            # contract, consistent with the blockquote code path below.
             state.md.block.tokenize(state, contentStart, nextLine)
         else:
             state.line = nextLine

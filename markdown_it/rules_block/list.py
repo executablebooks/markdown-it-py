@@ -241,13 +241,10 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
             checked = _detect_task_checkbox(state.src, contentStart, maximum)
             if checked is not None:
                 token.meta = {"checked": checked}
-                # Advance content past the checkbox (3 chars `[x]`) + one whitespace
-                checkboxLen = 3
-                if (contentStart + 3) < maximum and state.src[contentStart + 3] in (
-                    " ",
-                    "\t",
-                ):
-                    checkboxLen = 4
+                # Advance content past the checkbox: `[x]` (3 chars) + whitespace.
+                # `_detect_task_checkbox` already guarantees a whitespace char at
+                # pos+3, so we always consume 4 characters.
+                checkboxLen = 4
 
         # change current state, then restore it after parser subcall
         oldTight = state.tight

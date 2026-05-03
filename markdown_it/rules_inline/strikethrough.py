@@ -31,7 +31,8 @@ def tokenize(state: StateInline, silent: bool) -> bool:
             return False
         if length > 2:
             # Consume 3+ tildes as plain text so the parser doesn't
-            # re-enter and match a subset of them.
+            # re-enter and match a subset of them.  This intentionally
+            # matches GitHub's rendering, where ≥3 tildes are literal text.
             token = state.push("text", "", 0)
             token.content = ch * length
             state.pos += scanned.length
