@@ -60,6 +60,7 @@ testing = [
     "pytest",
     "pytest-cov",
     "pytest-regressions",
+    "pytest-timeout",
     "requests",
 ]
 benchmarking = [
@@ -114,3 +115,4 @@ ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 xfail_strict = true
+timeout = 10

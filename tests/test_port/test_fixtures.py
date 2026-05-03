@@ -106,12 +106,42 @@ def test_strikethrough(line, title, input, expected):
 
 @pytest.mark.parametrize(
     "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("strikethrough_single_tilde.md")),
+)
+def test_strikethrough_single_tilde(line, title, input, expected):
+    md = MarkdownIt("gfm-like2")
+    text = md.render(input)
+    assert text.rstrip() == expected.rstrip()
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
     read_fixture_file(FIXTURE_PATH.joinpath("disable_code_block.md")),
 )
 def test_disable_code_block(line, title, input, expected):
     md = MarkdownIt().enable("table").disable("code")
     text = md.render(input)
     print(text.rstrip())
+    assert text.rstrip() == expected.rstrip()
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("tasklists.md")),
+)
+def test_tasklists(line, title, input, expected):
+    md = MarkdownIt("gfm-like2")
+    text = md.render(input)
+    assert text.rstrip() == expected.rstrip()
+
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("alerts.md")),
+)
+def test_alerts(line, title, input, expected):
+    md = MarkdownIt("gfm-like2")
+    text = md.render(input)
     assert text.rstrip() == expected.rstrip()
 
 

@@ -41,6 +41,12 @@ class OptionsType(TypedDict):
 
     This is a Python only option, and is intended for the use of round-trip parsing.
     """
+    tasklists: NotRequired[bool]
+    """Enable GFM task list checkbox detection in list items."""
+    alerts: NotRequired[bool]
+    """Enable GitHub-style alert detection in blockquotes."""
+    strikethrough_single_tilde: NotRequired[bool]
+    """Allow single tilde ``~text~`` for strikethrough in addition to double."""
 
 
 class PresetType(TypedDict):
