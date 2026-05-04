@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from collections.abc import Callable
 from typing import TYPE_CHECKING
 
@@ -13,6 +14,39 @@ from .utils import EnvType
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
+
+
+# Default set of characters that terminate a text token and allow inline rules to fire.
+# '{}$%@~+=:' reserved for extensions.
+# Note: Don't confuse with "Markdown ASCII Punctuation" chars.
+# http://spec.commonmark.org/0.15/#ascii-punctuation-character
+_DEFAULT_TERMINATORS: frozenset[str] = frozenset(
+    {
+        "\n",
+        "!",
+        "#",
+        "$",
+        "%",
+        "&",
+        "*",
+        "+",
+        "-",
+        ":",
+        "<",
+        "=",
+        ">",
+        "@",
+        "[",
+        "\\",
+        "]",
+        "^",
+        "_",
+        "`",
+        "{",
+        "}",
+        "~",
+    }
+)
 
 
 # Parser rules
@@ -61,6 +95,28 @@ class ParserInline:
         self.ruler2 = Ruler[RuleFuncInline2Type]()
         for name, rule2 in _rules2:
             self.ruler2.push(name, rule2)
+        # Characters that stop the text rule, allowing other inline rules to fire.
+        self._terminator_chars: set[str] = set(_DEFAULT_TERMINATORS)
+        # Pre-compiled regex is kept in sync with _terminator_chars (updated eagerly in
+        # add_terminator_char) so there is no per-call None-check overhead in the hot path.
+        self.terminator_re: re.Pattern[str] = self._build_terminator_re()
+
+    def _build_terminator_re(self) -> re.Pattern[str]:
+        return re.compile(
+            "[" + re.escape("".join(sorted(self._terminator_chars))) + "]"
+        )
+
+    def add_terminator_char(self, ch: str) -> None:
+        """Register a character that stops the ``text`` rule, allowing inline rules to fire.
+
+        This lets plugins declare which characters their inline rules react to,
+        mirroring the ``MARKER`` mechanism in the Rust markdown-it implementation.
+
+        :param ch: A single character to add to the terminator set.
+        """
+        if ch not in self._terminator_chars:
+            self._terminator_chars.add(ch)
+            self.terminator_re = self._build_terminator_re()
 
     def skipToken(self, state: StateInline) -> None:
         """Skip single token by running all rules in validation mode;
