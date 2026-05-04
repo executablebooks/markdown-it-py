@@ -103,7 +103,7 @@ class ParserInline:
 
     def _build_terminator_re(self) -> re.Pattern[str]:
         return re.compile(
-            "[" + re.escape("".join(sorted(self._terminator_chars))) + "]"
+            "[" + re.escape("".join(self._terminator_chars)) + "]"
         )
 
     def add_terminator_char(self, ch: str) -> None:

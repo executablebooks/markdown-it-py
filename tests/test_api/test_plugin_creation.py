@@ -109,9 +109,9 @@ def test_add_terminator_char():
     md = MarkdownIt().use(_plugin)
 
     # Without the terminator 'w' would be consumed as plain text;
-    # with it the rule fires for each 'w'.
+    # with it the rule fires exactly for the 'w' at position 1 in "awb".
     md.render("awb")
-    assert len(hit_positions) > 0
+    assert hit_positions == [1]
 
 
 def test_add_terminator_char_idempotent():
