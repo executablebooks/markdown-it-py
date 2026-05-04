@@ -58,6 +58,9 @@ You can define this configuration *via* directly supplying a dictionary or a pre
 - `gfm-like`: This configures the parser to approximately comply with the [GitHub Flavored Markdown specification](https://github.github.com/gfm/).
   Compared to `commonmark`, it enables the table, strikethrough and linkify components.
   **Important**, to use this configuration you must have `linkify-it-py` installed.
+- `gfm-like2`: Builds on `gfm-like` and additionally enables task lists (`- [x] done`),
+  GitHub-style alerts (`> [!NOTE]`), and single-tilde strikethrough (`~text~`).
+  **Important**, to use this configuration you must have `linkify-it-py` installed.
 
 ```{jupyter-execute}
 from markdown_it.presets import zero

@@ -26,6 +26,7 @@ _PRESETS: dict[str, PresetType] = {
     "zero": presets.zero.make(),
     "commonmark": presets.commonmark.make(),
     "gfm-like": presets.gfm_like.make(),
+    "gfm-like2": presets.gfm_like2.make(),
 }
 
 
