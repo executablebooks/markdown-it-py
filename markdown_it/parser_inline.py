@@ -48,6 +48,12 @@ _DEFAULT_TERMINATORS: frozenset[str] = frozenset(
     }
 )
 
+# Pre-compiled regex for the default terminator set.  Shared across all ParserInline
+# instances that have not had extra chars added, so __init__ pays no allocation cost.
+_default_terminator_re: re.Pattern[str] = re.compile(
+    "[" + re.escape("".join(_DEFAULT_TERMINATORS)) + "]"
+)
+
 
 # Parser rules
 RuleFuncInlineType = Callable[[StateInline, bool], bool]
@@ -96,15 +102,11 @@ class ParserInline:
         for name, rule2 in _rules2:
             self.ruler2.push(name, rule2)
         # Characters that stop the text rule, allowing other inline rules to fire.
-        self._terminator_chars: set[str] = set(_DEFAULT_TERMINATORS)
-        # Pre-compiled regex is kept in sync with _terminator_chars (updated eagerly in
-        # add_terminator_char) so there is no per-call None-check overhead in the hot path.
-        self.terminator_re: re.Pattern[str] = self._build_terminator_re()
-
-    def _build_terminator_re(self) -> re.Pattern[str]:
-        return re.compile(
-            "[" + re.escape("".join(self._terminator_chars)) + "]"
-        )
+        # _extra_terminator_chars is only allocated when add_terminator_char() is called
+        # with a char outside the defaults, keeping __init__ allocation-free.
+        self._extra_terminator_chars: set[str] = set()
+        # Pre-compiled regex shared with all default instances (no copy in the common path).
+        self.terminator_re: re.Pattern[str] = _default_terminator_re
 
     def add_terminator_char(self, ch: str) -> None:
         """Register a character that stops the ``text`` rule, allowing inline rules to fire.
@@ -114,9 +116,13 @@ class ParserInline:
 
         :param ch: A single character to add to the terminator set.
         """
-        if ch not in self._terminator_chars:
-            self._terminator_chars.add(ch)
-            self.terminator_re = self._build_terminator_re()
+        if ch not in _DEFAULT_TERMINATORS and ch not in self._extra_terminator_chars:
+            self._extra_terminator_chars.add(ch)
+            self.terminator_re = re.compile(
+                "["
+                + re.escape("".join(_DEFAULT_TERMINATORS | self._extra_terminator_chars))
+                + "]"
+            )
 
     def skipToken(self, state: StateInline) -> None:
         """Skip single token by running all rules in validation mode;

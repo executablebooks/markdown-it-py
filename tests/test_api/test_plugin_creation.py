@@ -131,4 +131,4 @@ def test_add_terminator_char_rebuilds():
 
     md.inline.add_terminator_char("w")
     assert md.inline.terminator_re is not original_re
-    assert "w" in md.inline._terminator_chars
+    assert "w" in md.inline._extra_terminator_chars
