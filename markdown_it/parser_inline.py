@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import functools
 import re
 from collections.abc import Callable
 from typing import TYPE_CHECKING
@@ -48,11 +49,14 @@ _DEFAULT_TERMINATORS: frozenset[str] = frozenset(
     }
 )
 
-# Pre-compiled regex for the default terminator set.  Shared across all ParserInline
-# instances that have not had extra chars added, so __init__ pays no allocation cost.
-_default_terminator_re: re.Pattern[str] = re.compile(
-    "[" + re.escape("".join(_DEFAULT_TERMINATORS)) + "]"
-)
+# Lazily compiled regex for the default terminator set.  The @cache ensures it is
+# compiled at most once (on first ParserInline instantiation) and shared across all
+# instances that have not added extra chars, keeping __init__ cost near zero.
+@functools.cache
+def _default_terminator_re() -> re.Pattern[str]:
+    return re.compile(
+        "[" + re.escape("".join(_DEFAULT_TERMINATORS)) + "]"
+    )
 
 
 # Parser rules
@@ -106,7 +110,7 @@ class ParserInline:
         # with a char outside the defaults, keeping __init__ allocation-free.
         self._extra_terminator_chars: set[str] = set()
         # Pre-compiled regex shared with all default instances (no copy in the common path).
-        self.terminator_re: re.Pattern[str] = _default_terminator_re
+        self.terminator_re: re.Pattern[str] = _default_terminator_re()
 
     def add_terminator_char(self, ch: str) -> None:
         """Register a character that stops the ``text`` rule, allowing inline rules to fire.
