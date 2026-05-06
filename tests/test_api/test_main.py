@@ -279,3 +279,66 @@ def test_table_tokens(data_regression):
     """
     )
     data_regression.check([t.as_dict() for t in tokens])
+
+
+def test_fragments_join_merges_adjacent_text_tokens():
+    """fragments_join should merge runs of adjacent text tokens into one.
+
+    Underscore characters flanked by word characters (e.g. ``a_b``) are not
+    valid emphasis delimiters in CommonMark, so the emphasis rule leaves each
+    ``_`` as a plain text token adjacent to the surrounding text tokens,
+    giving a run of five tokens: text("a"), text("_"), text("b c"),
+    text("_"), text("d").
+
+    Note: there is also a core-level ``text_join`` rule that collapses adjacent
+    text tokens as a fallback.  We disable it here so that the assertions are
+    sensitive only to ``fragments_join``.
+    """
+    src = "a_b c_d"
+
+    # --- both rules disabled: five separate text tokens must survive ---
+    md_both_off = MarkdownIt()
+    md_both_off.disable(["text_join", "fragments_join"])
+    children_both_off = md_both_off.parseInline(src)[0].children
+    assert children_both_off is not None
+    assert len(children_both_off) > 1, "expected multiple text tokens with no merging"
+    assert all(t.type == "text" for t in children_both_off)
+
+    # --- only fragments_join enabled (text_join still off): run must collapse ---
+    md_fj_on = MarkdownIt()
+    md_fj_on.disable("text_join")
+    children_fj_on = md_fj_on.parseInline(src)[0].children
+    assert children_fj_on is not None
+    assert len(children_fj_on) == 1
+    assert children_fj_on[0].type == "text"
+    assert children_fj_on[0].content == "a_b c_d"
+
+
+def test_text_join_merges_adjacent_text_special_tokens():
+    """text_join should convert text_special tokens and merge runs into one.
+
+    Backslash-escaped characters each produce a ``text_special`` token.
+    ``fragments_join`` only merges ``text`` tokens, so a run of
+    ``text_special`` tokens passes through it untouched.  ``text_join``
+    must then convert them to ``text`` and collapse the run in a single
+    pass rather than via pairwise concatenation.
+    """
+    # Three consecutive backslash escapes → three text_special tokens before
+    # text_join runs.
+    src = r"\*\*\*"
+
+    # --- text_join disabled: three text_special tokens must survive ---
+    md_off = MarkdownIt()
+    md_off.disable("text_join")
+    children_off = md_off.parseInline(src)[0].children
+    assert children_off is not None
+    assert len(children_off) > 1, "expected multiple text_special tokens before merging"
+    assert all(t.type == "text_special" for t in children_off)
+
+    # --- text_join enabled (default): must collapse to a single text token ---
+    md_on = MarkdownIt()
+    children_on = md_on.parseInline(src)[0].children
+    assert children_on is not None
+    assert len(children_on) == 1
+    assert children_on[0].type == "text"
+    assert children_on[0].content == "***"
