@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1771402624370,
+  "lastUpdate": 1778079337859,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -27695,6 +27695,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0058058",
             "group": "packages",
             "extra": "mean: 704.46 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.20"
+        },
+        "commit": {
+          "id": "d4ea0ca7f44e3ca86c18a87356502c59e5e49ec3",
+          "message": "👌 Fix quadratic complexity in `fragments_join` / `text_join` (#389)\n\nOptimize adjacent-token joining in both inline cleanup stages by\nreplacing repeated pairwise string concatenation with a single\n`\"\".join(...)` over each contiguous run.\n\n## Details\n\n- `fragments_join` merges adjacent `text` tokens left behind after\nemphasis/strikethrough post-processing and recalculates token levels\n- `text_join` converts `text_special` tokens to `text` and performs the\nfinal adjacent-text merge in the inline token stream\n\nBoth rules previously rebuilt growing strings incrementally, which can\nbecome quadratic for long runs.\n\n## Why\n\nTested on an adversarial ~190 KB document with ~30k intraword\nunderscores on a single line. With `tracemalloc` running:\n\n|           | render time | peak Python alloc |\n|-----------|-------------|-------------------|\n| before    | 2.2s        | 4476 MB           |\n| after     | 0.6s        | 23 MB             |\n\nIt's not just a contrived attack input - this kind of thing also shows\nup naturally in Markdown produced by OCR pipelines, where tables of\nidentifiers / references can easily contain very long runs of\nunderscores or other delimiter characters.\n\n## Tests\n\nAdded focused tests for both rules:\n\n- `fragments_join`: verifies raw adjacent text fragments remain when\nboth join stages are disabled, and that `fragments_join` alone collapses\nthem when `text_join` is disabled\n- `text_join`: verifies escaped characters remain as multiple\n`text_special` tokens when `text_join` is disabled, and are converted\nand merged into a single `text` token when enabled\n\n## Result\n\nNo behavioral change in parser output, with less unnecessary work when\njoining long runs of adjacent tokens.\n\n---------\n\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2026-05-06T16:54:19+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/d4ea0ca7f44e3ca86c18a87356502c59e5e49ec3",
+          "distinct": true,
+          "tree_id": "98fdbf22ef418a88af103920ab676e6c9c481c65"
+        },
+        "date": 1778079336847,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.671434586260692,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0040983",
+            "group": "packages",
+            "extra": "mean: 130.35 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 196.22383708334425,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000050313",
+            "group": "packages",
+            "extra": "mean: 5.0962 msec\nrounds: 125"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 9.69602947592961,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0024459",
+            "group": "packages",
+            "extra": "mean: 103.13 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.1273802960540382,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014763",
+            "group": "packages",
+            "extra": "mean: 319.76 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.176576451349845,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0094925",
+            "group": "packages",
+            "extra": "mean: 139.34 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.48677811367391,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0046450",
+            "group": "packages",
+            "extra": "mean: 182.26 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 6.9454002762183595,
+            "unit": "iter/sec",
+            "range": "stddev: 0.023093",
+            "group": "packages",
+            "extra": "mean: 143.98 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4022971229559378,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012775",
+            "group": "packages",
+            "extra": "mean: 713.12 msec\nrounds: 20"
           }
         ]
       }
