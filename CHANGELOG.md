@@ -1,5 +1,15 @@
 # Change Log
 
+## 4.1.0 - 2025-05-06
+
+* ✨ Add `gfm-like2` preset with task lists, alerts, and single-tilde strikethrough core plugins in [#388](https://github.com/executablebooks/markdown-it-py/pull/388)
+* ✨ Allow plugins to register inline terminator characters in [#391](https://github.com/executablebooks/markdown-it-py/pull/391)
+* 👌 Fix quadratic complexity in `fragments_join` / `text_join` in [#389](https://github.com/executablebooks/markdown-it-py/pull/389), thanks to [@petricevich](https://github.com/petricevich)
+* 👌 Add `--stdin` option to CLI for reading Markdown from standard input in [#379](https://github.com/executablebooks/markdown-it-py/pull/379), thanks to [@mcepl](https://github.com/mcepl)
+* 🔧 Add typing to Scanner in [#382](https://github.com/executablebooks/markdown-it-py/pull/382), thanks to [@Alunderin](https://github.com/Alunderin)
+
+**Full Changelog**: <https://github.com/executablebooks/markdown-it-py/compare/v4.0.0...v4.1.0>
+
 ## 4.0.0 - 2024-08-10
 
 This primarily drops support for Python 3.9, adds support for Python 3.13,
