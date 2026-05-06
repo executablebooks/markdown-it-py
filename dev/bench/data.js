@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778079337859,
+  "lastUpdate": 1778080250869,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -27781,6 +27781,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.012775",
             "group": "packages",
             "extra": "mean: 713.12 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.20"
+        },
+        "commit": {
+          "id": "df6fd361099cab7fe0259467c3aaa3f284ec8259",
+          "message": "✨Allow plugins to register inline terminator characters (#391)\n\nThe inline `text` rule used a hardcoded, unexpandable set of terminator\ncharacters, forcing plugins that need to trigger on non-terminator\ncharacters (e.g. `w` for GFM `www.` autolinks) to resort to core-rule\npost-processing workarounds.\n\n## Changes\n\n- **`parser_inline.py`**: Moves the terminator set onto `ParserInline`\nas `_terminator_chars` (a `set[str]` seeded from `_DEFAULT_TERMINATORS`)\nwith a pre-compiled `terminator_re: re.Pattern[str]` attribute. Exposes\n`add_terminator_char(ch)` to extend the set; the regex is rebuilt\neagerly only when a genuinely new character is added, keeping zero\nper-call overhead in the hot path.\n\n- **`rules_inline/text.py`**: Drops the module-level `_TerminatorChars`\nset and `@functools.cache`-decorated factory. The `text` rule now reads\n`state.md.inline.terminator_re` directly.\n\n- **`docs/contributing.md`**: Updates the \"Why is my inline rule not\nexecuted?\" FAQ to document the new API.\n\n## Usage\n\n```python\ndef gfm_autolink_plugin(md: MarkdownIt) -> None:\n    md.inline.add_terminator_char(\"w\")\n    md.inline.ruler.push(\"gfm_autolink_www\", _www_rule)\n```\n\nFully backward-compatible — the default terminator set is unchanged.\n\n---------\n\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: chrisjsewell <2997570+chrisjsewell@users.noreply.github.com>\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2026-05-06T17:09:32+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/df6fd361099cab7fe0259467c3aaa3f284ec8259",
+          "distinct": true,
+          "tree_id": "23ff56263617bc04bf1683f6c6ed09bdd778f901"
+        },
+        "date": 1778080249515,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.871019257197956,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035317",
+            "group": "packages",
+            "extra": "mean: 127.05 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 198.92952794283036,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000037287",
+            "group": "packages",
+            "extra": "mean: 5.0269 msec\nrounds: 127"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.009151041499983,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0026571",
+            "group": "packages",
+            "extra": "mean: 99.909 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.134423410370782,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011809",
+            "group": "packages",
+            "extra": "mean: 319.04 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.497938359370991,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0064403",
+            "group": "packages",
+            "extra": "mean: 133.37 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.583584916082901,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0044220",
+            "group": "packages",
+            "extra": "mean: 179.10 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.411164705965655,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013735",
+            "group": "packages",
+            "extra": "mean: 134.93 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.41336859649915,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0071493",
+            "group": "packages",
+            "extra": "mean: 707.53 msec\nrounds: 20"
           }
         ]
       }
