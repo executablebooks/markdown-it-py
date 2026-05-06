@@ -126,7 +126,7 @@ class MarkdownIt:
         if options_update:
             options = {**options, **options_update}  # type: ignore
 
-        self.set(options)  # type: ignore
+        self.set(options)
 
         if "components" in config:
             for name, component in config["components"].items():
