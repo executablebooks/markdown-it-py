@@ -92,6 +92,29 @@ def test_override_options():
     assert md.options["maxNesting"] == 99
 
 
+def test_gfm_like2_tasklists_editable():
+    md_default = MarkdownIt("gfm-like2")
+    assert md_default.options["tasklists_editable"] is False
+    assert (
+        '<input class="task-list-item-checkbox" disabled="" type="checkbox" checked="">'
+        in md_default.render("- [x] done")
+    )
+
+    md_editable = MarkdownIt("gfm-like2", {"tasklists_editable": True})
+    assert md_editable.options["tasklists_editable"] is True
+    assert (
+        '<input class="task-list-item-checkbox" type="checkbox" checked="">'
+        in md_editable.render("- [x] done")
+    )
+
+
+def test_gfm_like2_alert_token_map():
+    md = MarkdownIt("gfm-like2")
+    tokens = md.parse("> [!NOTE]\n> body")
+    assert tokens[0].type == "alert_open"
+    assert tokens[0].map == [0, 2]
+
+
 def test_enable():
     md = MarkdownIt("zero").enable("heading")
     assert md.get_active_rules() == {

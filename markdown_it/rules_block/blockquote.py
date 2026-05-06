@@ -281,13 +281,15 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     if state.md.options.get("alerts", False) and nextLine > startLine:
         alert_kind = _detect_alert(state, startLine)
 
+    lines = [startLine, 0]
+
     if alert_kind is not None:
         # Emit alert tokens instead of blockquote tokens
         alert_lower = alert_kind.lower()
         token = state.push("alert_open", "div", 1)
         token.markup = ">"
         token.attrSet("class", f"markdown-alert markdown-alert-{alert_lower}")
-        token.map = lines = [startLine, 0]
+        token.map = lines
         token.info = alert_kind
         token.meta = {"kind": alert_kind}
 
@@ -313,7 +315,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     else:
         token = state.push("blockquote_open", "blockquote", 1)
         token.markup = ">"
-        token.map = lines = [startLine, 0]
+        token.map = lines
 
         state.md.block.tokenize(state, startLine, nextLine)
 
@@ -322,6 +324,7 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
     state.lineMax = oldLineMax
     state.parentType = oldParentType
+    # Update the opening token map for both alert and blockquote containers.
     lines[1] = state.line
 
     # Restore original tShift; this might not be necessary since the parser

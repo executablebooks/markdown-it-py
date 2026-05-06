@@ -221,7 +221,7 @@ class RendererHTML(RendererProtocol):
         if token.meta and "checked" in token.meta:
             checked_attr = ' checked=""' if token.meta["checked"] else ""
             disabled_attr = (
-                "" if options.get("tasklists_enabled", False) else ' disabled=""'
+                "" if options.get("tasklists_editable", False) else ' disabled=""'
             )
             result += (
                 '<input class="task-list-item-checkbox"'

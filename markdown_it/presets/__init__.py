@@ -42,6 +42,7 @@ class gfm_like2:  # noqa: N801
     def make() -> PresetType:
         config = gfm_like.make()
         config["options"]["tasklists"] = True
+        config["options"]["tasklists_editable"] = False
         config["options"]["alerts"] = True
         config["options"]["strikethrough_single_tilde"] = True
         return config
