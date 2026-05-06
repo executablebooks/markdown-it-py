@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778080250869,
+  "lastUpdate": 1778081796880,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -27867,6 +27867,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0071493",
             "group": "packages",
             "extra": "mean: 707.53 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.20"
+        },
+        "commit": {
+          "id": "693bb24063b6c658d60c7c14203ac6470387e3c6",
+          "message": "✨ Add `gfm-like2` preset with task lists, alerts, and single-tilde strikethrough (#388)\n\n### Summary\n\nAdds a new `gfm-like2` preset that extends `gfm-like` with three GFM\nfeatures:\n\n- **Task lists** — `- [x] done` / `- [ ] todo` checkbox syntax in list\nitems\n- **Alerts** — `> [!NOTE]`, `> [!TIP]`, `> [!WARNING]`, etc. inside\nblockquotes\n- **Single-tilde strikethrough** — `~text~` in addition to `~~text~~`\n\nThese are enabled via the `gfm-like2` preset or individually through the\n`tasklists`, `alerts`, and `strikethrough_single_tilde` options. The\nexisting `gfm-like` preset is unchanged, so as to remain\nback-compatible.\n\n### Why in markdown-it-py, not mdit-py-plugins?\n\nTask lists and alerts are implemented by integrating detection directly\ninto the existing block-level parsers (list.py and blockquote.py),\nrather than as post-processing rules:\n\n- Checkbox detection happens during list item parsing, before the\nsub-parser runs on the item content\n- Alert detection happens during blockquote parsing, before the inner\ncontent is tokenized\n\nThis design is not achievable from a plugin: plugins can only add new\nrules or post-process the token stream — they cannot modify the\ninternals of `list_block()` or `blockquote()` to inject detection at the\nright point in the parsing pipeline. Implementing these as\npost-processing core rules would work functionally, but it means\nre-walking and mutating the token stream after the fact, which is less\nclean and less consistent with how the block parsers are designed to\nwork.\n\nSingle-tilde strikethrough similarly extends the existing strikethrough\nrule's matching logic (opener/closer width matching), which is more\nnaturally done inside the rule than bolted on externally.\n\n### Changes\n\n- **`rules_block/list.py`** — Detect `[ ]`/`[x]`/`[X]` at content start\nduring list item parsing; set `token.meta[\"checked\"]`; advance `bMarks`\npast the checkbox; add CSS classes (`task-list-item`,\n`contains-task-list`) after the list loop\n- **`rules_block/blockquote.py`** — Detect `[!TYPE]` on the first\ncontent line; emit `alert_open`/`alert_close` + title tokens instead of\n`blockquote_open`/`blockquote_close`; skip the marker line during\ntokenization\n- **`rules_inline/strikethrough.py`** — When\n`strikethrough_single_tilde` is enabled, accept 1 or 2 tildes (reject\n3+); enforce opener/closer width matching in `_postProcess`\n- **renderer.py** — Add `list_item_open` render method that injects\ncheckbox HTML when `meta[\"checked\"]` is present\n- **`presets/__init__.py`** — Add `gfm_like2` preset class\n- **`main.py`** — Register `gfm-like2` in `_PRESETS`\n- **utils.py** — Add `tasklists`, `alerts`, `strikethrough_single_tilde`\nkeys to `OptionsType`\n- **pyproject.toml** — Add `pytest-timeout` to test deps; set 10s\ndefault timeout\n- **Test fixtures** — 11 tasklist cases, 15 alert cases, 13 single-tilde\nstrikethrough cases\n\n### Usage\n\n```python\nfrom markdown_it import MarkdownIt\n\nmd = MarkdownIt(\"gfm-like2\")\nmd.render(\"- [x] done\\n- [ ] todo\")\nmd.render(\"> [!NOTE]\\n> This is a note.\")\nmd.render(\"~strikethrough~\")\n```",
+          "timestamp": "2026-05-06T17:35:19+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/693bb24063b6c658d60c7c14203ac6470387e3c6",
+          "distinct": true,
+          "tree_id": "aaca2cde3260b1f74f6b147e05948971d27509e4"
+        },
+        "date": 1778081795902,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 8.030191715663806,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0041341",
+            "group": "packages",
+            "extra": "mean: 124.53 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 191.79939972202496,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000042100",
+            "group": "packages",
+            "extra": "mean: 5.2138 msec\nrounds: 119"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 9.878952635199996,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0031145",
+            "group": "packages",
+            "extra": "mean: 101.23 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.332735207901048,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016554",
+            "group": "packages",
+            "extra": "mean: 300.05 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.304883574760106,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0066134",
+            "group": "packages",
+            "extra": "mean: 136.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.704273173083457,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0044111",
+            "group": "packages",
+            "extra": "mean: 175.31 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.445824056654198,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016659",
+            "group": "packages",
+            "extra": "mean: 134.30 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4110646953130623,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0067630",
+            "group": "packages",
+            "extra": "mean: 708.68 msec\nrounds: 20"
           }
         ]
       }
