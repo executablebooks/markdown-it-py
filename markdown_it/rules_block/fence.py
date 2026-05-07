@@ -25,8 +25,10 @@ def make_fence_rule(
         number of marker characters as the opening fence (not "at least as many").
         This enables nesting of fences with different marker counts.
     :param disallow_marker_in_info: Tuple of marker characters that are not allowed
-        to appear in the info string. Per CommonMark, backtick fences cannot have
-        backticks in the info string. Use ``()`` to disable this restriction.
+        to appear in the info string. The check only applies when the actual opening
+        marker is in this tuple (e.g. a tilde fence is unaffected by ``"`"`` being
+        listed). Per CommonMark, backtick fences cannot have backticks in the info
+        string. Use ``()`` to disable this restriction.
     :param min_markers: Minimum number of marker characters to form a fence.
     :return: A block rule function with signature
         ``(state, startLine, endLine, silent) -> bool``.
