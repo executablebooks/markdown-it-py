@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1778085070419,
+  "lastUpdate": 1778155203502,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -28125,6 +28125,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0059996",
             "group": "packages",
             "extra": "mean: 702.05 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.20"
+        },
+        "commit": {
+          "id": "96cf077ba5a6b3b4b2f862db7e0fc532694a72e9",
+          "message": "✨ Add `make_fence_rule()` factory for configurable fence markers (#394)\n\nAdds a `make_fence_rule()` factory function that generates fence parsing\nrules with configurable options, enabling reuse of the fence logic for\ncustom marker characters (e.g. `:` for colon fences) without code\nduplication.\n\n## Motivation\n\nThe `colon_fence` plugin in `mdit-py-plugins` duplicates nearly all of\nthe fence parsing logic, differing only in the marker character (`:` vs\n`` ` ``/`~`), token type, and info-string restrictions. This makes\nmaintenance harder and prevents features like exact-match closing from\nbeing shared.\n\n## Changes\n\n- **New `make_fence_rule()` factory** in fence.py with parameters:\n- `markers`: tuple of valid fence marker characters (default `(\"~\",\n\"\\`\")`)\n  - `token_type`: token type name to emit (default `\"fence\"`)\n- `exact_match`: when `True`, closing fence must have **exactly** the\nsame marker count as the opener (default `False`). This enables nested\nfences (e.g. `::::` wrapping `:::`).\n- `disallow_marker_in_info`: marker characters that reject the fence if\nfound in the info string (default `(\"\\`\",)` per CommonMark)\n  - `min_markers`: minimum marker count to form a fence (default `3`)\n\n- **`fence` remains a module-level export**: `fence = make_fence_rule()`\n— fully backwards compatible, identical behavior to the previous\nimplementation.\n\n- **Exported from `markdown_it.rules_block`** — added `make_fence_rule`\nto `__all__`.\n\n## Usage\n\n```python\nfrom markdown_it import MarkdownIt\nfrom markdown_it.rules_block.fence import make_fence_rule\n\n# Colon fence (replaces mdit-py-plugins/colon_fence duplicated logic)\nmd = MarkdownIt()\nmd.block.ruler.before(\"fence\", \"colon_fence\",\n    make_fence_rule(markers=(\":\",), token_type=\"colon_fence\", disallow_marker_in_info=()))\n\n# Override standard fence with exact-match closing (for MyST nested directives)\nmd.block.ruler.at(\"fence\", make_fence_rule(exact_match=True))\n\n# Combine: all markers with exact matching\nmd.block.ruler.at(\"fence\", make_fence_rule(\n    markers=(\"~\", \"`\", \":\"), exact_match=True))\n```\n\n## Performance\n\nNo regression by design — configuration is captured in the closure at\nrule-creation time (no runtime dict lookups or extra branches in the hot\npath). The `closing_matcher` callable is resolved once at factory time.\n\n## Tests\n\n21 new tests covering:\n- Colon-fence-like marker behavior\n- Exact-match closing (nesting patterns)\n- `ruler.at()` override of standard fence\n- `min_markers` customization\n- `disallow_marker_in_info` variations\n\nFull existing test suite (981 tests) passes unchanged.",
+          "timestamp": "2026-05-07T13:58:47+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/96cf077ba5a6b3b4b2f862db7e0fc532694a72e9",
+          "distinct": true,
+          "tree_id": "1f9ec99ded57e445c5c21417cc54b902c38f6879"
+        },
+        "date": 1778155201105,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.874958104582977,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0023270",
+            "group": "packages",
+            "extra": "mean: 126.98 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 198.23857990478976,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000072011",
+            "group": "packages",
+            "extra": "mean: 5.0444 msec\nrounds: 128"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 10.151178749064952,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0016968",
+            "group": "packages",
+            "extra": "mean: 98.511 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.257463946853278,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013067",
+            "group": "packages",
+            "extra": "mean: 306.99 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.509746313980741,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0056430",
+            "group": "packages",
+            "extra": "mean: 133.16 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.631014922034125,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0045231",
+            "group": "packages",
+            "extra": "mean: 177.59 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.692338023787948,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0096464",
+            "group": "packages",
+            "extra": "mean: 130.00 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4525087310628428,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0041945",
+            "group": "packages",
+            "extra": "mean: 688.46 msec\nrounds: 20"
           }
         ]
       }
