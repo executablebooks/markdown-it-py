@@ -1,5 +1,9 @@
 # Change Log
 
+## 4.2.0 - 2026-05-07
+
+* ✨ Add `make_fence_rule()` factory for configurable fence markers in [#394](https://github.com/executablebooks/markdown-it-py/pull/394)
+
 ## 4.1.0 - 2025-05-06
 
 * ✨ Add `gfm-like2` preset with task lists, alerts, and single-tilde strikethrough core plugins in [#388](https://github.com/executablebooks/markdown-it-py/pull/388)
