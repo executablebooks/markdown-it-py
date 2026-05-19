@@ -112,26 +112,23 @@ jobs:
 
   publish:
 
-    name: Publish to PyPi
+    name: Publish to PyPI
     needs: [pre-commit, tests]
     if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    environment:
+      name: pypi
+      url: https://pypi.org/p/markdown-it-py
     steps:
-    - name: Checkout source
-      uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
       with:
         python-version: '3.10'
-    - name: install flit
-      run: |
-        pip install flit~=3.4
-    - name: Build and publish
-      run: |
-        flit publish
-      env:
-        FLIT_USERNAME: __token__
-        FLIT_PASSWORD: ${{ secrets.PYPI_KEY }}
+    - run: pip install flit~=3.4
+    - run: flit build
+    - uses: pypa/gh-action-pypi-publish@release/v1
 
   allgood:
     runs-on: ubuntu-latest
