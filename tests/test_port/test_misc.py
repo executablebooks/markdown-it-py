@@ -42,3 +42,17 @@ def test_ordered_list_info():
     assert tokens[2].markup == "."
     assert tokens[3].info == "199"
     assert tokens[3].markup == "."
+
+
+def test_no_empty_text_tokens_after_nested_emphasis():
+    # Regression test for #374: when nested emphasis delimiters close at the
+    # same position (e.g. `_li**ne**_`), the closing `_` delimiter used to
+    # leave behind an empty `text` token between `strong_close` and `em_close`.
+    md = MarkdownIt("gfm-like").disable(["linkify"])
+    for source in ("new _li**ne**_", "new _l**i**ne_", "new _**line**_"):
+        tokens = md.parse(source)
+        [inline] = [t for t in tokens if t.type == "inline"]
+        empties = [
+            c for c in (inline.children or []) if c.type == "text" and not c.content
+        ]
+        assert empties == [], f"empty text tokens left in stream for {source!r}"

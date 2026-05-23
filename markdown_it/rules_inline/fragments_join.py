@@ -45,6 +45,19 @@ def fragments_join(state: StateInline) -> None:
             last += 1
             continue
 
+        if state.tokens[curr].type == "text" and not state.tokens[curr].content:
+            # Drop standalone empty text tokens. The emphasis postprocessor
+            # only converts the *inner* marker of a `**` pair into a
+            # strong_open/close tag and blanks the *outer* marker's content
+            # while leaving it as a text token (see emphasis.py `_postProcess`
+            # `if isStrong:` block). The outer-opening empty has an adjacent
+            # text on its left and gets folded by the merge branch above; the
+            # outer-closing empty often sits between two tags (e.g.
+            # `_li**ne**_` puts it between `strong_close` and `em_close`),
+            # has no text neighbor, and would otherwise survive.
+            curr += 1
+            continue
+
         if curr != last:
             state.tokens[last] = state.tokens[curr]
         last += 1
