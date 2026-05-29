@@ -35,7 +35,6 @@ Documentation = "https://markdown-it-py.readthedocs.io"
 
 [project.optional-dependencies]
 compare = [
-    "commonmark~=0.9",
     "markdown~=3.4",
     "mistletoe~=1.0",
     "mistune~=3.0",
