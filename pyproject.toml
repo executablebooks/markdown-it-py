@@ -116,3 +116,9 @@ ignore_missing_imports = true
 [tool.pytest.ini_options]
 xfail_strict = true
 timeout = 10
+
+[tool.uv.workspace]
+members = [
+    "docs",
+    ".",
+]

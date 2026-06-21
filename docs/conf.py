@@ -128,7 +128,7 @@ def run_apidoc(app):
 
     argv = ["-M", "--separate", "-o", api_folder, module_path, *ignore_paths]
 
-    apidoc.OPTIONS.append("ignore-module-all")
+    # apidoc.OPTIONS.append("ignore-module-all")
     apidoc.main(argv)
 
     # we don't use this
