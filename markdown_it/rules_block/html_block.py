@@ -68,7 +68,7 @@ def html_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     # Let's roll down till block end.
     if not html_seq[1].search(lineText):
         while nextLine < endLine:
-            if state.sCount[nextLine] < state.blkIndent:
+            if state.sCount[nextLine] < state.blkIndent and not state.isEmpty(nextLine):
                 break
 
             pos = state.bMarks[nextLine] + state.tShift[nextLine]

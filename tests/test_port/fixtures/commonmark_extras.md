@@ -749,3 +749,27 @@ Issue #204. Combination of blockquotes, list and newlines causes an IndexError
 </li>
 </ul>
 .
+
+Issue #377. HTML comment block inside list item should not end at blank line
+.
+1. item
+
+    <!--
+    comment with
+
+    blank line inside
+    -->
+    paragraph
+.
+<ol>
+<li>
+<p>item</p>
+ <!--
+ comment with
+
+ blank line inside
+ -->
+<p>paragraph</p>
+</li>
+</ol>
+.
