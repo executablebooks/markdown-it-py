@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1779190083498,
+  "lastUpdate": 1783503510001,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -28383,6 +28383,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.016006",
             "group": "packages",
             "extra": "mean: 687.60 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.20"
+        },
+        "commit": {
+          "id": "bff75edcd7e6ce68f417803361d6e9f1223ad373",
+          "message": "🔧 Fix typo in newline.py module docstring (#407)\n\nFix a double-letter typo in the module docstring of\n`markdown_it/rules_inline/newline.py`.\n\n`Proceess` → `Process`\n\nFound with codespell.\n\nCo-authored-by: maxtaran2010 <ocotifuzo727@gmail.com>",
+          "timestamp": "2026-07-08T11:37:28+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/bff75edcd7e6ce68f417803361d6e9f1223ad373",
+          "distinct": true,
+          "tree_id": "99da71546062ea810bd87392d2f21777af06b0a4"
+        },
+        "date": 1783503509237,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.836008469244214,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035885",
+            "group": "packages",
+            "extra": "mean: 127.62 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.63058359114052,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000033525",
+            "group": "packages",
+            "extra": "mean: 5.0599 msec\nrounds: 127"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 14.393030137158155,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0025351",
+            "group": "packages",
+            "extra": "mean: 69.478 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.085538340489647,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014182",
+            "group": "packages",
+            "extra": "mean: 324.09 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.694875658767783,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0071078",
+            "group": "packages",
+            "extra": "mean: 129.96 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.650293954240464,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0039377",
+            "group": "packages",
+            "extra": "mean: 176.98 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.5751575687599795,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013647",
+            "group": "packages",
+            "extra": "mean: 132.01 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4288982082017438,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057766",
+            "group": "packages",
+            "extra": "mean: 699.84 msec\nrounds: 20"
           }
         ]
       }
