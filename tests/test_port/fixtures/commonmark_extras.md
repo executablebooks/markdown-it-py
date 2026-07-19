@@ -749,3 +749,19 @@ Issue #204. Combination of blockquotes, list and newlines causes an IndexError
 </li>
 </ul>
 .
+
+Hardbreak in image description
+.
+![foo\
+bar](/url)
+.
+<p><img src="/url" alt="foo
+bar" /></p>
+.
+
+Inline HTML in image description
+.
+![a<b>c](/url)
+.
+<p><img src="/url" alt="a&lt;b&gt;c" /></p>
+.
