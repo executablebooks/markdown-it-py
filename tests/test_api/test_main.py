@@ -365,3 +365,37 @@ def test_text_join_merges_adjacent_text_special_tokens():
     assert len(children_on) == 1
     assert children_on[0].type == "text"
     assert children_on[0].content == "***"
+
+
+def test_long_special_char_runs_stay_linear():
+    """Runs of characters that begin an inline rule but do not form a construct
+    must tokenise in linear time.
+
+    Bare ``&``/``<``, incomplete entities, etc. were previously O(n^2): the
+    inline tokenizer appended to the ``pending`` string one character at a time
+    (``str += ch`` on an attribute cannot reuse the buffer in place), and the
+    ``entity``/``html_inline`` rules sliced ``src[pos:]`` on every character.
+    The headline case below would exceed the global 10s test timeout if that
+    quadratic behaviour regressed.
+    """
+    md = MarkdownIt()
+
+    # Headline: half a million bare ampersands. Linear renders in well under a
+    # second; the previous O(n^2) behaviour would blow the 10s timeout.
+    big = 500_000
+    assert md.renderInline("&" * big) == "&amp;" * big
+
+    # Correctness across the related constructs (kept small).
+    for src, expected in [
+        ("&" * 1000, "&amp;" * 1000),
+        ("&amp;" * 1000, "&amp;" * 1000),
+        ("&#" * 1000, "&amp;#" * 1000),
+        ("&am" * 1000, "&amp;am" * 1000),
+        ("<" * 1000, "&lt;" * 1000),
+    ]:
+        assert md.renderInline(src) == expected
+
+    # The ``html_inline`` slice was only reachable with ``html=True``; ``<a<a…``
+    # are not valid tags, so they render escaped.
+    md_html = MarkdownIt("commonmark", {"html": True})
+    assert md_html.renderInline("<a" * 250_000) == "&lt;a" * 250_000

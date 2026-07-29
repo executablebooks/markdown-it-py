@@ -54,7 +54,15 @@ class StateInline(StateBase):
         self.pos = 0
         self.posMax = len(self.src)
         self.level = 0
-        self.pending = ""
+        # `pending` accumulates literal text that has not yet been flushed to a
+        # token. It is exposed as a `str` via the property below, but is built
+        # up through a list buffer so that appending a character at a time (the
+        # inline tokenizer's fallback path) stays O(1) instead of O(n) per
+        # append -- the latter makes long runs of non-markup characters (e.g.
+        # `&&&&...`) quadratic, since `str += ch` on an attribute cannot reuse
+        # the string in place.
+        self._pending = ""
+        self._pending_buffer: list[str] = []
         self.pendingLevel = 0
 
         # Stores { start: end } pairs. Useful for backtrack
@@ -80,6 +88,27 @@ class StateInline(StateBase):
             f"{self.__class__.__name__}"
             f"(pos=[{self.pos} of {self.posMax}], token={len(self.tokens)})"
         )
+
+    @property
+    def pending(self) -> str:
+        """The literal text accumulated but not yet flushed to a token."""
+        if self._pending_buffer:
+            self._pending += "".join(self._pending_buffer)
+            self._pending_buffer.clear()
+        return self._pending
+
+    @pending.setter
+    def pending(self, value: str) -> None:
+        self._pending = value
+        self._pending_buffer.clear()
+
+    def append_pending(self, text: str) -> None:
+        """Append literal text to `pending` in amortised O(1) time.
+
+        Prefer this over ``state.pending += text`` on hot paths: it buffers the
+        fragment instead of rebuilding the whole ``pending`` string each call.
+        """
+        self._pending_buffer.append(text)
 
     def pushPending(self) -> Token:
         token = Token("text", "", 0)

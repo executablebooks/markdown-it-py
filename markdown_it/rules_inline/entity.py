@@ -5,8 +5,12 @@ from ..common.entities import entities
 from ..common.utils import fromCodePoint, isValidEntityCode
 from .state_inline import StateInline
 
-DIGITAL_RE = re.compile(r"^&#((?:x[a-f0-9]{1,6}|[0-9]{1,7}));", re.IGNORECASE)
-NAMED_RE = re.compile(r"^&([a-z][a-z0-9]{1,31});", re.IGNORECASE)
+# NB: these are matched at a given position with `.match(src, pos)` (which
+# anchors there), so no leading `^` is needed. Anchoring this way avoids slicing
+# `src[pos:]` on every `&`, which is O(len) per call and makes long runs of
+# ampersands quadratic.
+DIGITAL_RE = re.compile(r"&#((?:x[a-f0-9]{1,6}|[0-9]{1,7}));", re.IGNORECASE)
+NAMED_RE = re.compile(r"&([a-z][a-z0-9]{1,31});", re.IGNORECASE)
 
 
 def entity(state: StateInline, silent: bool) -> bool:
@@ -20,7 +24,7 @@ def entity(state: StateInline, silent: bool) -> bool:
         return False
 
     if state.src[pos + 1] == "#":
-        if match := DIGITAL_RE.search(state.src[pos:]):
+        if match := DIGITAL_RE.match(state.src, pos):
             if not silent:
                 match1 = match.group(1)
                 code = (
@@ -40,7 +44,7 @@ def entity(state: StateInline, silent: bool) -> bool:
             return True
 
     else:
-        if (match := NAMED_RE.search(state.src[pos:])) and match.group(1) in entities:
+        if (match := NAMED_RE.match(state.src, pos)) and match.group(1) in entities:
             if not silent:
                 token = state.push("text_special", "", 0)
                 token.content = entities[match.group(1)]

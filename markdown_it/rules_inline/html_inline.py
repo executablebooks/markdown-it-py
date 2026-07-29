@@ -26,7 +26,7 @@ def html_inline(state: StateInline, silent: bool) -> bool:
     if ch not in ("!", "?", "/") and not isLetter(ord(ch)):  # /* / */
         return False
 
-    match = HTML_TAG_RE.search(state.src[pos:])
+    match = HTML_TAG_RE.match(state.src, pos)
     if not match:
         return False
 

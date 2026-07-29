@@ -21,7 +21,9 @@ declaration = "<![A-Za-z][^>]*>"
 cdata = "<!\\[CDATA\\[[\\s\\S]*?\\]\\]>"
 
 HTML_TAG_RE = re.compile(
-    "^(?:"
+    # No leading `^`: this is applied with `.match(src, pos)`, which anchors at
+    # `pos` without slicing `src[pos:]` (O(len) per call, quadratic over a run).
+    "(?:"
     + open_tag
     + "|"
     + close_tag
