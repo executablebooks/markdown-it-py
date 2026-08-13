@@ -42,3 +42,11 @@ def test_ordered_list_info():
     assert tokens[2].markup == "."
     assert tokens[3].info == "199"
     assert tokens[3].markup == "."
+
+
+def test_backslash_before_two_space_hardbreak():
+    # A literal backslash directly before a two-space hard line break must not
+    # consume a space, otherwise only one space is left and the newline rule
+    # produces a soft break instead of a hard break.
+    md = MarkdownIt("commonmark")
+    assert md.render("foo\\  \nbar") == "<p>foo\\<br />\nbar</p>\n"

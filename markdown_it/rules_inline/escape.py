@@ -36,6 +36,17 @@ def escape(state: StateInline, silent: bool) -> bool:
         state.pos = pos
         return True
 
+    # '\' before a space is a literal backslash. Don't consume the space, so a
+    # trailing two-space hard line break is still detected by the newline rule.
+    if ch1 == " ":
+        if not silent:
+            token = state.push("text_special", "", 0)
+            token.content = "\\"
+            token.markup = "\\"
+            token.info = "escape"
+        state.pos = pos
+        return True
+
     escapedStr = state.src[pos]
 
     if ch1_ord >= 0xD800 and ch1_ord <= 0xDBFF and pos + 1 < maximum:
