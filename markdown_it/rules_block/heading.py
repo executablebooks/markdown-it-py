@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from ..common.utils import isStrSpace
+from ..common.utils import isStrSpace, mdTrim
 from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
@@ -59,7 +59,7 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bo
     token.map = [startLine, state.line]
 
     token = state.push("inline", "", 0)
-    token.content = state.src[pos:maximum].strip()
+    token.content = mdTrim(state.src[pos:maximum])
     token.map = [startLine, state.line]
     token.children = []
 
