@@ -191,6 +191,27 @@ def isWhiteSpace(code: int) -> bool:
     return code in MD_WHITESPACE
 
 
+#: The characters ``String.prototype.trim`` removes in JavaScript, which is
+#: what upstream markdown-it strips, minus U+FEFF.
+#:
+#: ``str.strip()`` without an argument uses :py:meth:`str.isspace`, which also
+#: removes U+001C, U+001D, U+001E, U+001F and U+0085. Those are not whitespace
+#: in CommonMark and are not removed by ``trim``, so relying on it drops them
+#: from the output and makes two different reference labels compare equal.
+#:
+#: U+FEFF is deliberately excluded: ``trim`` does remove it, and that has the
+#: very label folding effect this constant exists to avoid.
+MD_TRIM_CHARS = "".join(
+    chr(code)
+    for code in sorted(MD_WHITESPACE | set(range(0x2000, 0x200B)) | {0x2028, 0x2029})
+)
+
+
+def mdTrim(string: str) -> str:
+    """Strip leading and trailing whitespace, using the CommonMark set."""
+    return string.strip(MD_TRIM_CHARS)
+
+
 # //////////////////////////////////////////////////////////////////////////////
 
 
@@ -254,7 +275,7 @@ def normalizeReference(string: str) -> str:
     """Helper to unify [reference labels]."""
     # Trim and collapse whitespace
     #
-    string = re.sub(r"\s+", " ", string.strip())
+    string = re.sub("[" + re.escape(MD_TRIM_CHARS) + "]+", " ", mdTrim(string))
 
     # In node v10 'ẞ'.toLowerCase() === 'Ṿ', which is presumed to be a bug
     # fixed in v12 (couldn't find any details).
