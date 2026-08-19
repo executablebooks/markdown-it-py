@@ -43,7 +43,7 @@ def test_verbatim_passes_through_non_pre_output():
         return f"<div class='hl'>{content}</div>"
 
     md = _md(highlight, highlight_verbatim=True)
-    assert md.render("```python\nhl\n```") == "<div class='hl'>hl\n</div>\n"
+    assert md.render("```python\nhl\n```") == "<div class='hl'>hl\n</div>"
 
 
 def test_verbatim_passes_through_pre_output():
@@ -53,7 +53,7 @@ def test_verbatim_passes_through_pre_output():
         return f"<pre class='hl'>{content}</pre>"
 
     md = _md(highlight, highlight_verbatim=True)
-    assert md.render("```python\nhl\n```") == "<pre class='hl'>hl\n</pre>\n"
+    assert md.render("```python\nhl\n```") == "<pre class='hl'>hl\n</pre>"
 
 
 def test_verbatim_skips_lang_class_injection():
@@ -64,7 +64,7 @@ def test_verbatim_skips_lang_class_injection():
         return f"<div>{content}</div>"
 
     md = _md(highlight, highlight_verbatim=True)
-    assert md.render("```python\nhl\n```") == "<div>hl\n</div>\n"
+    assert md.render("```python\nhl\n```") == "<div>hl\n</div>"
 
 
 def test_verbatim_falls_back_when_highlighter_returns_empty():
@@ -97,16 +97,46 @@ def test_verbatim_can_be_set_after_construction():
     md = _md(highlight)
     assert md.render("```\nhl\n```") == "<pre><code><div>hl\n</div></code></pre>\n"
     md.options["highlight_verbatim"] = True
-    assert md.render("```\nhl\n```") == "<div>hl\n</div>\n"
+    assert md.render("```\nhl\n```") == "<div>hl\n</div>"
     md.options["highlight_verbatim"] = False
     assert md.render("```\nhl\n```") == "<pre><code><div>hl\n</div></code></pre>\n"
 
 
-def test_verbatim_output_ends_with_newline():
-    """A trailing newline is added, matching the pre-continues heuristic."""
+def test_verbatim_preserves_absence_of_trailing_newline():
+    """No trailing newline is added — verbatim is byte-exact.
+
+    The pre-continues heuristic path keeps its historical ``+ "\\n"``
+    (wrapped blocks are renderer-owned); the verbatim path returns the
+    highlighter's bytes untouched, newline or none.
+    """
 
     def highlight(content, lang, attrs):
         return "<div>hl</div>"  # no trailing newline
 
     md = _md(highlight, highlight_verbatim=True)
-    assert md.render("```\nhl\n```") == "<div>hl</div>\n"
+    assert md.render("```\nhl\n```") == "<div>hl</div>"
+
+
+def test_verbatim_is_byte_exact():
+    """Verbatim means byte-exact: render output == highlighter return.
+
+    Regression for the trailing-newline defect (matrix-03): with
+    highlight_verbatim, the renderer must not append, strip, or alter
+    a single byte of the highlighter's return value — with or without
+    a trailing newline.
+    """
+
+    def hl_no_nl(content, lang, attrs):
+        return "<div>no-newline</div>"
+
+    def hl_with_nl(content, lang, attrs):
+        return "<div>with-newline</div>\n"
+
+    assert (
+        _md(hl_no_nl, highlight_verbatim=True).render("```x\nc\n```")
+        == "<div>no-newline</div>"
+    )
+    assert (
+        _md(hl_with_nl, highlight_verbatim=True).render("```x\nc\n```")
+        == "<div>with-newline</div>\n"
+    )

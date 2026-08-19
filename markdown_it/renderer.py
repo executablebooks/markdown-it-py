@@ -280,9 +280,9 @@ class RendererHTML(RendererProtocol):
             highlighted = options.highlight(token.content, langName, langAttrs)
             if highlighted:
                 if options.get("highlight_verbatim", False):
-                    # Pass the highlighter output through verbatim, without
-                    # the <pre><code> wrapper.
-                    return highlighted + "\n"
+                    # Pass the highlighter output through verbatim —
+                    # byte-exact, no wrapper, no added newline.
+                    return highlighted
             else:
                 highlighted = escapeHtml(token.content)
         else:
