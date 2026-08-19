@@ -36,6 +36,20 @@ class OptionsType(TypedDict):
     """CSS language prefix for fenced blocks."""
     highlight: Callable[[str, str, str], str] | None
     """Highlighter function: (content, lang, attrs) -> str."""
+    highlight_verbatim: NotRequired[bool]
+    """Pass highlighter output through verbatim, without the ``<pre><code>`` wrapper.
+
+    When ``True`` and the ``highlight`` function returns a non-empty string,
+    the returned HTML is used as-is (a trailing newline is added), instead of
+    being wrapped in ``<pre><code>...</code></pre>``. This is useful when the
+    highlighter produces a complete block of HTML (e.g. starting with a
+    ``<div>`` or a ``<pre>`` with custom attributes) that should not be
+    wrapped again.
+
+    This is a Python only option. The default is ``False``, in which case the
+    output is only passed through verbatim if it already starts with ``<pre``
+    (the "pre-continues" heuristic).
+    """
     store_labels: NotRequired[bool]
     """Store link label in link/image token's metadata (under Token.meta['label']).
 
