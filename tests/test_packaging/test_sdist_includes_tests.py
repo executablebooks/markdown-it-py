@@ -15,7 +15,7 @@ def test_flit_sdist_includes_tests_directory() -> None:
     rest = text[start + len("[tool.flit.sdist]") :]
     end = rest.find("\n[")
     block = rest if end < 0 else rest[:end]
-    assert 'include = [' in block
+    assert "include = [" in block
     assert '"tests/"' in block
     assert '"tox.ini"' in block
     # Still exclude heavy non-test trees.
