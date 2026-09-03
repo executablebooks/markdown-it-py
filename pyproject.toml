@@ -81,9 +81,12 @@ markdown-it = "markdown_it.cli.parse:main"
 name = "markdown_it"
 
 [tool.flit.sdist]
+include = [
+    "tests/",
+    "tox.ini",
+]
 exclude = [
     "docs/",
-    "tests/",
     "benchmarking/"
 ]
 
