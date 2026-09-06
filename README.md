@@ -101,17 +101,18 @@ Render markdown to HTML with markdown-it-py from the
 command-line:
 
 ```console
-usage: markdown-it [-h] [-v] [--stdin|filenames [filenames ...]]
+usage: markdown-it [-h] [-v] [--stdin] [--enable-tables] [filenames ...]
 
 Parse one or more markdown files, convert each to HTML, and print to stdout
 
 positional arguments:
-  --stdin        read source Markdown file from standard input
-  filenames      specify an optional list of files to convert
+  filenames        specify an optional list of files to convert
 
-optional arguments:
-  -h, --help     show this help message and exit
-  -v, --version  show program's version number and exit
+options:
+  -h, --help       show this help message and exit
+  -v, --version    show program's version number and exit
+  --stdin          read Markdown from standard input
+  --enable-tables  enable table parsing
 
 Interactive:
 
@@ -130,6 +131,15 @@ Batch:
 
   $ markdown-it README.md README.footer.md > index.html
 
+```
+
+Tables are disabled by default, as in CommonMark.
+Use `--enable-tables` with any input mode to enable them:
+
+```bash
+markdown-it --enable-tables README.md > index.html
+markdown-it --enable-tables --stdin < README.md > index.html
+markdown-it --enable-tables
 ```
 
 ## References / Thanks

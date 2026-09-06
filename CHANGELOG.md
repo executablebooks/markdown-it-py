@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* ✨ Add `--enable-tables` to the CLI for file, standard input and interactive parsing.
 * 📚 Document the Python renderer constructor contract.
 
 ## 4.2.0 - 2026-05-07
