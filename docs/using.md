@@ -333,6 +333,12 @@ md = MarkdownIt("commonmark", renderer_cls=MyRenderer)
 md.render("*a*")
 ```
 
+`MarkdownIt` creates the renderer by calling `renderer_cls(self)`, passing the parser instance as a positional argument.
+This differs from JavaScript, where the renderer is constructed with no arguments.
+If you override `__init__` in a custom renderer, it must accept this parser argument; when subclassing `RendererHTML`, call `super().__init__(parser)` to initialise the render rules.
+`RendererHTML` itself accepts an optional `parser=None` argument and does not use or store it, so `RendererHTML()` is also valid when rendering tokens directly.
+The example above inherits this constructor unchanged.
+
 Plugins can support multiple render types, using the `__output__` attribute (this is currently a Python only feature).
 
 ```{jupyter-execute}

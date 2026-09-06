@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* 📚 Document the Python renderer constructor contract.
+
 ## 4.2.0 - 2026-05-07
 
 * ✨ Add `make_fence_rule()` factory for configurable fence markers in [#394](https://github.com/executablebooks/markdown-it-py/pull/394)
