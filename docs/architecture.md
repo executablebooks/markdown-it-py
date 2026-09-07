@@ -105,7 +105,7 @@ with the same signature:
 
 ```python
 def function(renderer, tokens, idx, options, env):
-  return htmlResult
+    return htmlResult
 ```
 
 In many cases that allows easy output change even without parser intrusion.
@@ -113,22 +113,27 @@ For example, let's replace images with vimeo links to player's iframe:
 
 ```python
 import re
+
 md = MarkdownIt("commonmark")
 
-vimeoRE = re.compile(r'^https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)')
+vimeoRE = re.compile(r"^https?:\/\/(www\.)?vimeo.com\/(\d+)($|\/)")
+
 
 def render_vimeo(self, tokens, idx, options, env):
     token = tokens[idx]
 
     if vimeoRE.match(token.attrs["src"]):
-
         ident = vimeoRE.match(token.attrs["src"])[2]
 
-        return ('<div class="embed-responsive embed-responsive-16by9">\n' +
-               '  <iframe class="embed-responsive-item" src="//player.vimeo.com/video/' +
-                ident + '"></iframe>\n' +
-               '</div>\n')
+        return (
+            '<div class="embed-responsive embed-responsive-16by9">\n'
+            + '  <iframe class="embed-responsive-item" src="//player.vimeo.com/video/'
+            + ident
+            + '"></iframe>\n'
+            + "</div>\n"
+        )
     return self.image(tokens, idx, options, env)
+
 
 md = MarkdownIt("commonmark")
 md.add_render_rule("image", render_vimeo)
@@ -140,11 +145,13 @@ Here is another example, how to add `target="_blank"` to all links:
 ```python
 from markdown_it import MarkdownIt
 
+
 def render_blank_link(self, tokens, idx, options, env):
     tokens[idx].attrSet("target", "_blank")
 
     # pass token to default renderer.
     return self.renderToken(tokens, idx, options, env)
+
 
 md = MarkdownIt("commonmark")
 md.add_render_rule("link_open", render_blank_link)

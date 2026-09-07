@@ -158,11 +158,9 @@ from __future__ import annotations
 
 from typing import Sequence
 
+
 def parse_blocks(
-    state: StateBlock,
-    start_line: int,
-    end_line: int,
-    silent: bool = False
+    state: StateBlock, start_line: int, end_line: int, silent: bool = False
 ) -> bool:
     """Parse block-level content.
 
@@ -293,18 +291,20 @@ HTML Output
 import pytest
 from markdown_it import MarkdownIt
 
+
 def test_basic_parsing():
     md = MarkdownIt()
     result = md.render("# Heading\n\nParagraph")
     assert "<h1>Heading</h1>" in result
     assert "<p>Paragraph</p>" in result
 
+
 @pytest.mark.parametrize(
     "input_text,expected",
     [
         ("**bold**", "<strong>bold</strong>"),
         ("*italic*", "<em>italic</em>"),
-    ]
+    ],
 )
 def test_emphasis(input_text, expected):
     md = MarkdownIt()
@@ -389,7 +389,7 @@ for token in tokens:
 print(md.get_all_rules())
 
 # Enable/disable specific rules
-md.disable(['emphasis'])
+md.disable(["emphasis"])
 result = md.render("*text*")  # Won't be emphasized
 ```
 
@@ -401,13 +401,13 @@ result = md.render("*text*")  # Won't be emphasized
 2. Create rule function in appropriate `rules_*/` directory
 3. Rule signature for block rules:
    ```python
-   def rule_name(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
-       ...
+   def rule_name(
+       state: StateBlock, startLine: int, endLine: int, silent: bool
+   ) -> bool: ...
    ```
 4. Rule signature for inline rules:
    ```python
-   def rule_name(state: StateInline, silent: bool) -> bool:
-       ...
+   def rule_name(state: StateInline, silent: bool) -> bool: ...
    ```
 5. Register the rule in the appropriate parser's `__init__` method
 6. Add tests for the new rule
@@ -434,10 +434,12 @@ result = md.render("*text*")  # Won't be emphasized
 ```python
 from markdown_it import MarkdownIt
 
+
 def render_custom_link(self, tokens, idx, options, env):
     tokens[idx].attrSet("target", "_blank")
     tokens[idx].attrSet("rel", "noopener noreferrer")
     return self.renderToken(tokens, idx, options, env)
+
 
 md = MarkdownIt()
 md.add_render_rule("link_open", render_custom_link)

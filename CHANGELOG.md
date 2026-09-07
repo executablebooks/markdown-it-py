@@ -263,6 +263,7 @@ It can then be activated by:
 
 ```python
 from markdown_it import MarkdownIt
+
 md = MarkdownIt().enable("linkify")
 md.options["linkify"] = True
 ```
@@ -280,6 +281,7 @@ It can be activated by:
 
 ```python
 from markdown_it import MarkdownIt
+
 md = MarkdownIt().enable("smartquotes")
 md.options["typographer"] = True
 ```
@@ -300,6 +302,7 @@ This plugin can be activated by:
 ```python
 from markdown_it import MarkdownIt
 from markdown_it.extensions.tasklists import tasklists_plugin
+
 md = MarkdownIt().use(tasklists_plugin)
 ```
 
