@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788871397325,
+  "lastUpdate": 1788871823142,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -29157,6 +29157,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.010574",
             "group": "packages",
             "extra": "mean: 712.75 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "8501cf3369dc879353c5e5a2280941f73c42d392",
+          "message": "🐛 FIX: render hardbreak and inline HTML in image alt text (#409)\n\n`RendererHTML.renderInlineAsText` builds the `alt` attribute for images\nby walking the inline token stream, but it only handles `text`, `image`\nand `softbreak` tokens. `hardbreak`, `html_inline` and `html_block` are\nsilently dropped, so a hard line break or inline HTML inside an image\ndescription disappears from the alt text.\n\n```python\nfrom markdown_it import MarkdownIt\nmd = MarkdownIt(\"commonmark\")\n\nmd.render(\"![foo\\\\\\nbar](/url)\")   # hard break (backslash)\n# now:  <p><img src=\"/url\" alt=\"foobar\" /></p>\n# want: <p><img src=\"/url\" alt=\"foo\\nbar\" /></p>   (soft break already does this)\n\nmd.render(\"![a<b>c](/url)\")        # inline HTML\n# now:  <p><img src=\"/url\" alt=\"ac\" /></p>\n# want: <p><img src=\"/url\" alt=\"a&lt;b&gt;c\" /></p>\n```\n\n### Why this is the intended behaviour\n\nTwo independent references, both pointing the same way:\n\n- **JS parity.** This project is a port of `markdown-it` and the\nchangelog pins the parser to `markdown-it v14.1.0`. Upstream\n`renderInlineAsText` at that version handles `text`, `image`,\n`html_inline`, `html_block`, `softbreak` **and** `hardbreak`. The Python\nport is behind its own declared target for the last three.\n- **Internal consistency.** `softbreak` and `hardbreak` are treated as\nan identical pair everywhere else in the codebase; #157 previously added\nthe `softbreak` branch to this very function but stopped there. This\nchange is the sibling of that fix.\n\nHTML content in `alt` is escaped downstream by `renderAttrs` →\n`escapeHtml` (so `<b>` becomes `&lt;b&gt;`), matching the JS behaviour —\nno markup reaches the attribute unescaped.\n\n### The fix\n\nTwo grouped branches added to `renderInlineAsText`, making it a 1:1\nmatch of the upstream reference:\n\n```python\nelif token.type in (\"html_inline\", \"html_block\"):\n    result += token.content\nelif token.type in (\"softbreak\", \"hardbreak\"):\n    result += \"\\n\"\n```\n\n### Verification\n\n- Added two cases to `tests/test_port/fixtures/commonmark_extras.md`\n(hard break and inline HTML in an image description), mirroring the\nexisting #157 soft-break fixture. Both **fail without the change** and\n**pass with it**.\n- `renderInlineAsText` has a single production caller (the `image`\nrenderer), and the soft-break / plain-text paths are unchanged (verified\nas controls).\n- Full test suite: **983 passed**. `pre-commit` ruff, ruff-format and\nmypy (strict) all clean.\n\n---\n\nThis PR was authored by an AI coding agent (Claude Code) running on this\naccount: the AI found the bug, ran the repro, wrote the tests, and wrote\nthis description. The human account holder reviews every change and is\naccountable for it. The verification above is real and re-runnable from\nthe diff. If this isn't the kind of contribution you want, say so and\nI'll close it.\n\nSigned-off-by: chuenchen309 <48723787+chuenchen309@users.noreply.github.com>\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2026-09-08T14:49:33+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/8501cf3369dc879353c5e5a2280941f73c42d392",
+          "distinct": true,
+          "tree_id": "a8ae84b9854d253754c5ef727035bfee6e54bb34"
+        },
+        "date": 1788871821951,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 13.818113748143448,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0066797",
+            "group": "packages",
+            "extra": "mean: 72.369 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 318.2717097554246,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000092558",
+            "group": "packages",
+            "extra": "mean: 3.1420 msec\nrounds: 167"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 22.1649364759737,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0029007",
+            "group": "packages",
+            "extra": "mean: 45.116 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 7.05396987448465,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018501",
+            "group": "packages",
+            "extra": "mean: 141.76 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 14.266708329734975,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0089743",
+            "group": "packages",
+            "extra": "mean: 70.093 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 10.628428878625773,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0064892",
+            "group": "packages",
+            "extra": "mean: 94.087 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 11.675243525309199,
+            "unit": "iter/sec",
+            "range": "stddev: 0.026212",
+            "group": "packages",
+            "extra": "mean: 85.651 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 2.3079858519797893,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010741",
+            "group": "packages",
+            "extra": "mean: 433.28 msec\nrounds: 20"
           }
         ]
       }
