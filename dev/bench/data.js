@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1783503510001,
+  "lastUpdate": 1788867617533,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -28469,6 +28469,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0057766",
             "group": "packages",
             "extra": "mean: 699.84 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "997232ee285f962232f660a34fac56a5e1f9ca5c",
+          "message": "👌 Fix quadratic inline tokenization on runs of special characters (#423)\n\n## Summary\n\nLong runs of characters that begin an inline rule but never complete a\nconstruct (bare `&`, `<`, `~`, `{`, incomplete entities, …) were\ntokenised in **O(n²)** time, so a few hundred KB of such input stalls\n`render()` for many seconds. Output was always correct; the cost is pure\nCPU. This is the same class as #367 and #389.\n\nSupersedes #411. The root causes and the core fix were independently\nidentified by @hdimer there, and the first commit here is code-identical\nto that PR (credited as co-author, thank you!). The second commit closes\na gap found while auditing it that made the fix ineffective for a common\nplugin configuration, and adds a few hardening changes.\n\n## Root causes\n\nTwo independent quadratic factors, each hit once per character in a run:\n\n1. **`state.pending` accumulation.** The inline tokenizer's fallback\npath did `state.pending += state.src[state.pos]` one character at a\ntime. Because `pending` is an *attribute*, `str += ch` can't use\nCPython's in-place concatenation optimisation (the attribute holds a\nsecond reference), so every append copies the whole accumulated string.\n2. **`src[pos:]` slicing in `entity` / `html_inline`.** Both matched\n`^`-anchored regexes against `state.src[pos:]`, copying the remainder of\nthe source on every `&` / `<`. On Python 3.10 this carried a *second*\nquadratic factor inside the regex engine: before 3.11, `search()` on a\n`^`-anchored pattern retries at every offset.\n\nNeither is quadratic in the JavaScript markdown-it (rope-backed concat,\nsticky regex matching), so this is Python-port-specific.\n\n## Fix\n\n**Commit 1** (as in #411):\n- `StateInline.pending` accumulates through a lazily-materialised list\nbuffer via a new `append_pending()` method, giving amortised O(1)\nappends. It's still exposed as a plain `str` property, so existing\nreaders and plugins doing `state.pending += x` keep working.\n- `entity` and `html_inline` anchor with `.match(state.src, pos)`\ninstead of slicing; the leading `^` is dropped since `.match` anchors at\n`pos`. Neither pattern uses `\\b` or lookbehind, so this is exactly\nequivalent.\n\n**Commit 2** (new):\n- The buffered getter materialised with `self._pending += joined`,\nitself an attribute concat. Any rule that reads `state.pending` before\nits cheap character check therefore re-introduced the quadratic on every\ncharacter. The mdit-py-plugins `attrs` rule does exactly that, and\nmyst-parser's `attrs_inline` extension enables it: with it, `\"~a~\" *\n400_000` still took **34 s** (5.7× per doubling) after commit 1. The\ngetter now moves the string into a local and drops the instance's\nreference before concatenating, so CPython resizes it in place: **3.0 s,\n2.0× per doubling**, verified on CPython 3.10–3.13.\n- The setter no longer depends on `__init__` having run (a subclass\nassigning `pending` before `super().__init__()` raised\n`AttributeError`).\n- `copy.copy(state)` no longer shares the mutable buffer with the\noriginal.\n\n## Results\n\n`\"&\" * 400_000`, before → after:\n\n| interpreter | before | after |\n|---|---|---|\n| CPython 3.10 | 653 s | 1.8 s |\n| CPython 3.11 | 6.8 s | 1.3 s |\n| CPython 3.13 | 6.6 s | 1.1 s |\n| PyPy 7.3 | 145 s | 0.2 s |\n\nAll affected inputs now grow ~2.0× per doubling out to 640k characters.\nRuns of `[` were also reported as superlinear, but once the `pending`\nquadratic is removed they measure a flat 2.0× per doubling: that path\nwas already linear (bounded by the `skipToken` cache), just with a large\nconstant.\n\n**Trade-off:** the property indirection costs ~2% on ordinary Markdown\n(up to ~4.7% on inline-dense files) — measured over 55 inputs × 3\npresets, 8 interleaved rounds. The regex half is a pure win at every\nsize. Memory is unchanged on realistic input. If wanted, most of the 2%\ncan be recovered by having `push()`/`pushPending()` read the private\nfields directly; happy to do that as a follow-up once benchmarked\nproperly.\n\n## Verification\n\n- **Output unchanged:** 47,936-case differential (repo fixtures,\nCommonMark spec, targeted constructs, 6k fuzzed inputs × 7 presets)\ncomparing HTML, `renderInline` and full token streams byte-for-byte: 0\ndifferences.\n- **Downstream:** mdit-py-plugins (511), myst-parser (1245), mdformat\n(4282), rich and mdformat-gfm test suites give identical results against\nthis branch and `master`; a 61-document differential through a full\nplugin stack shows 0 differing renders.\n- Full suite passes on CPython 3.10, 3.11, 3.12, 3.13 and PyPy. Pinned\n`ruff` and strict `mypy` clean.\n- New tests: `test_long_special_char_runs_are_linear`,\n`test_state_inline_pending_buffer_semantics`,\n`test_pending_reader_rule_stays_linear`. Each linearity test exceeds the\nglobal 10 s timeout on the pre-fix code.\n\n## Notes for reviewers\n\n- `HTML_TAG_RE`, `DIGITAL_RE` and `NAMED_RE` lose their `^` anchor\n(they're now applied with `.match(src, pos)`). No external consumer was\nfound in any scanned package or via code search, but any third-party\n`.search()` on them would now be unanchored. Probably worth a changelog\nline. `HTML_OPEN_CLOSE_TAG_RE` is untouched.\n- mdformat-gfm ships its own replacement `text` rule that still does\n`state.pending +=`; it keeps its quadratic and gains nothing from this\nfix.\n- **Not covered here, follow-up PR:** with `html=True` (the `commonmark`\nand `gfm-like` presets), runs of `<![CDATA[`, `<!--`, `<?` and `<!a` in\ninline context are still quadratic because the regex sub-patterns rescan\nto end-of-input on every attempt (`<![CDATA[` × 40k takes ~245 s). This\nis inherited from upstream (it's quadratic in markdown-it JS too),\npre-existing, and a different code path, so it's kept separate. A\nvalidated fix (terminator quick-reject, zero output change) is ready.\n- The changelog is left for the release, following prior PRs.\n\n---------\n\nCo-authored-by: Haim Dimer <haim@dimer.org>",
+          "timestamp": "2026-09-08T13:39:10+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/997232ee285f962232f660a34fac56a5e1f9ca5c",
+          "distinct": true,
+          "tree_id": "e010541caed96e06840799ca82bd7a265240b377"
+        },
+        "date": 1788867616148,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.372621669017085,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0052244",
+            "group": "packages",
+            "extra": "mean: 135.64 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 196.55471041397595,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000045776",
+            "group": "packages",
+            "extra": "mean: 5.0876 msec\nrounds: 121"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.784116859871837,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0037245",
+            "group": "packages",
+            "extra": "mean: 84.860 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.938112827754071,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016698",
+            "group": "packages",
+            "extra": "mean: 340.35 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.1940092463522065,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0077907",
+            "group": "packages",
+            "extra": "mean: 139.00 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.428906369292973,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0042100",
+            "group": "packages",
+            "extra": "mean: 184.20 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.150891854298013,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016220",
+            "group": "packages",
+            "extra": "mean: 139.84 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.420259746238923,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0069661",
+            "group": "packages",
+            "extra": "mean: 704.10 msec\nrounds: 20"
           }
         ]
       }
