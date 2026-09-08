@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788868044681,
+  "lastUpdate": 1788868781728,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -28727,6 +28727,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0073943",
             "group": "packages",
             "extra": "mean: 558.63 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "3.82",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "780892c5eec8ddc1cda148e5d0152155db3f6a15",
+          "message": "⬆️ Update flit-core requirement from <4,>=3.4 to >=3.4,<5 (#414)\n\nUpdates the requirements on [flit-core](https://github.com/pypa/flit) to\npermit the latest version.\n<details>\n<summary>Changelog</summary>\n<p><em>Sourced from <a\nhref=\"https://github.com/pypa/flit/blob/main/doc/history.rst\">flit-core's\nchangelog</a>.</em></p>\n<blockquote>\n<h2>Version 4.0.2</h2>\n<ul>\n<li>Fix invalid metadata files with <code>Import-Name</code>\n(:ghissue:<code>813</code>).</li>\n</ul>\n<h2>Version 4.0.1</h2>\n<p>No changes, but a new tag to trigger an upload to PyPI now that twine\nwill\naccept it.</p>\n<h2>Version 4.0</h2>\n<p>This version contains breaking changes, but most projects which are\nalready\nusing the <code>[project]</code> table for metadata shouldn't be\naffected, and can simply\nchange the <code>flit_core &lt;4</code> constraint to\n<code>&lt;5</code>.</p>\n<ul>\n<li>The <code>[tool.flit.metadata]</code> table is no longer used for\nproject metadata\n(:ghpull:<code>771</code>). Use the newer :ref:<code>[project] table\n&lt;pyproject_toml_project&gt;</code>\ninstead (or if that is not possible, build with <code>flit_core\n&lt;4</code>).</li>\n<li>:ref:<code>build_cmd</code> and :ref:<code>publish_cmd</code> no\nlonger include files in the sdist\nbased on what is committed in git or Mercurial\n(:ghpull:<code>772</code>). These commands\nnow build packages more like Flit does when called as a backend by e.g.\n<code>python -m build</code>. Specify :ref:<code>sdist include &amp;\nexclude patterns &lt;pyproject_toml_sdist&gt;</code> instead (Flit can\nhelp to generate these), or pass\nthe <code>--use-vcs</code> option to get the old behaviour back.</li>\n<li><code>flit_core</code> now requires Python 3.8 or above\n(:ghpull:<code>738</code>)</li>\n<li>The <code>--setup-py</code> option to generate sdists containing a\n<code>setup.py</code> file\nis no longer available (:ghpull:<code>776</code>).</li>\n<li>Making typing stubs packages with a <code>-stubs</code> suffix will\nnow work\n(:ghpull:<code>742</code>).</li>\n<li>The default glob patterns for license files have been extended to\ninclude\n<code>NOTICE*</code> and <code>AUTHORS*</code>\n(:ghpull:<code>758</code>).</li>\n<li><code>license-files</code> glob patterns can contain spaces\n(:ghpull:<code>797</code>).</li>\n<li>Fix a bug where license files could be found twice on Windows\n(:ghpull:<code>752</code>).</li>\n<li>The new <code>Import-Name</code> and <code>Import-Namespace</code>\nmetadata fields (metadata 2.5)\nare now supported (:ghpull:<code>774</code>). In most cases no new input\nis required,\nas Flit will create this metadata automatically.</li>\n<li>Fix creating RECORD files when file names include commas\n(:ghpull:<code>744</code>).</li>\n<li>The <code>--use-vcs</code> option now correctly recognises git from\ninside a git\nworktree folder (:ghpull:<code>799</code>).</li>\n<li>On Python 3.12 and above, <code>flit build</code> now uses the\n'data' filter when\nextracting the just-created sdist prior to building a wheel\n(:ghpull:<code>775</code>).\nThis restricts some special features of tar files, but sdists are\nunlikely\nto use these features, and they would probably break in other scenarios\nif\nyou did.</li>\n<li>The vendorised <code>readme_renderer</code> package was updated to\nversion 44.0\n(:ghpull:<code>760</code>).</li>\n</ul>\n<!-- raw HTML omitted -->\n</blockquote>\n<p>... (truncated)</p>\n</details>\n<details>\n<summary>Commits</summary>\n<ul>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/60c0b3d97bf095fbdb7671a02e51f8d8aba2fb85\"><code>60c0b3d</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/pypa/flit/issues/814\">#814</a> from\npypa/i813</li>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/58e7f412d19e80d69999fab964e4b714e7fe521e\"><code>58e7f41</code></a>\nBump version: 4.0.1 → 4.0.2</li>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/666e3c2aa432d3d9e97a0a30dae2c675d8b12855\"><code>666e3c2</code></a>\nFix METADATA format issue</li>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/81ac51d4b858972c6951914422906b01320ab0a1\"><code>81ac51d</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/pypa/flit/issues/812\">#812</a> from\npypa/prepare-4.0.1</li>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/41bdff139c9e52399463c6436d4b22dae0dbf153\"><code>41bdff1</code></a>\nAdd release note about 4.0.1</li>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/ff5bfad3ad132910a95949d291f9d4e6be183e7f\"><code>ff5bfad</code></a>\nBump version: 4.0.0 → 4.0.1</li>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/8faf7341c038567851be8210fa1b54915792ba07\"><code>8faf734</code></a>\nBump actions/setup-python from 6 to 7 (<a\nhref=\"https://redirect.github.com/pypa/flit/issues/807\">#807</a>)</li>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/ef7f31925305a50bd097f06b913717192490ad44\"><code>ef7f319</code></a>\nMerge pull request <a\nhref=\"https://redirect.github.com/pypa/flit/issues/800\">#800</a> from\npypa/prepare-4.0</li>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/431fbafe1242995b13fb2e64d5334bc6d17561be\"><code>431fbaf</code></a>\nRemind people in release notes to allow flit_core &lt;5</li>\n<li><a\nhref=\"https://github.com/pypa/flit/commit/38297e7d1603654b27637dcbde0f3d72d1f26d6b\"><code>38297e7</code></a>\nVersion number -&gt; 4.0.0</li>\n<li>Additional commits viewable in <a\nhref=\"https://github.com/pypa/flit/compare/3.4.0...4.0.2\">compare\nview</a></li>\n</ul>\n</details>\n<br />\n\n\nDependabot will resolve any conflicts with this PR as long as you don't\nalter it yourself. You can also trigger a rebase manually by commenting\n`@dependabot rebase`.\n\n[//]: # (dependabot-automerge-start)\n[//]: # (dependabot-automerge-end)\n\n---\n\n<details>\n<summary>Dependabot commands and options</summary>\n<br />\n\nYou can trigger Dependabot actions by commenting on this PR:\n- `@dependabot rebase` will rebase this PR\n- `@dependabot recreate` will recreate this PR, overwriting any edits\nthat have been made to it\n- `@dependabot show <dependency name> ignore conditions` will show all\nof the ignore conditions of the specified dependency\n- `@dependabot ignore this major version` will close this PR and stop\nDependabot creating any more for this major version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this minor version` will close this PR and stop\nDependabot creating any more for this minor version (unless you reopen\nthe PR or upgrade to it yourself)\n- `@dependabot ignore this dependency` will close this PR and stop\nDependabot creating any more for this dependency (unless you reopen the\nPR or upgrade to it yourself)\n\n\n</details>\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2026-09-08T13:58:41+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/780892c5eec8ddc1cda148e5d0152155db3f6a15",
+          "distinct": true,
+          "tree_id": "8354d441a366cebd179c663fd0d0be0be74ef9a7"
+        },
+        "date": 1788868780485,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 12.999733462565118,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0044014",
+            "group": "packages",
+            "extra": "mean: 76.925 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 269.5230868872258,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00016659",
+            "group": "packages",
+            "extra": "mean: 3.7103 msec\nrounds: 168"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 20.639118582498682,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0027329",
+            "group": "packages",
+            "extra": "mean: 48.452 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 4.736594282038264,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013042",
+            "group": "packages",
+            "extra": "mean: 211.12 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 12.874219169032052,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0064689",
+            "group": "packages",
+            "extra": "mean: 77.675 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 9.545939753205975,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0045070",
+            "group": "packages",
+            "extra": "mean: 104.76 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 11.961863469188067,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013982",
+            "group": "packages",
+            "extra": "mean: 83.599 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 2.1202017847644266,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0069751",
+            "group": "packages",
+            "extra": "mean: 471.65 msec\nrounds: 20"
           }
         ]
       }
