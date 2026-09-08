@@ -23,3 +23,23 @@ def test_fuzzing(raw_input, expected):
     md = MarkdownIt()
     md.parse(raw_input)
     assert md.render(raw_input) == expected
+
+
+# Input that ends on a blockquote marker while a table is open inside the quote
+# used to raise ``IndexError: string index out of range`` from the terminator
+# rules ``html_block`` and ``heading`` (gh-issue 415). ``table`` must be enabled
+# for the terminator rules to run on that line.
+GH_415_INPUT = "> | a | b |\n> |---|---|\n>"
+
+
+def test_gh_415_table_in_blockquote_at_eof_html_block() -> None:
+    # html_block runs first, so with html enabled it is the rule that used to raise
+    md = MarkdownIt().enable("table")
+    md.render(GH_415_INPUT)  # must not raise IndexError
+
+
+def test_gh_415_table_in_blockquote_at_eof_heading() -> None:
+    # with html disabled, html_block bails at its options check and heading is
+    # the terminator rule that used to raise
+    md = MarkdownIt("commonmark", {"html": False}).enable("table")
+    md.render(GH_415_INPUT)  # must not raise IndexError
