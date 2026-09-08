@@ -1,3 +1,5 @@
+import pytest
+
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
 
@@ -367,25 +369,17 @@ def test_text_join_merges_adjacent_text_special_tokens():
     assert children_on[0].content == "***"
 
 
-def test_long_special_char_runs_are_linear():
-    """Long runs of characters that start an inline rule but form no construct
-    must tokenise in linear time.
+def test_long_special_char_runs_render_correctly():
+    """Runs of characters that begin an inline rule but do not form a construct
+    render as literal text, however long the run.
 
-    Two independent O(n^2) factors used to be hit once per character in such
-    runs:
-
-    1. the inline tokenizer's fallback appended to ``state.pending`` one
-       character at a time, and ``str += ch`` on an *attribute* cannot reuse the
-       buffer in place, so every append copied the whole accumulated string;
-    2. the ``entity`` and ``html_inline`` rules matched ``^``-anchored regexes
-       against ``state.src[pos:]``, copying the rest of the source per ``&``/``<``.
-
-    The large inputs below took ~16s combined before the fix, so a regression
-    trips the global 10s test timeout.
+    These inputs were previously tokenised in O(n^2) time (see
+    `test_inline_rules_do_not_slice_remaining_source` and
+    `test_pending_appends_do_not_materialise` for the invariants that keep them
+    linear); this test pins the *output*.
     """
     md = MarkdownIt()
 
-    # Correctness of the affected constructs (small, exact).
     for src, expected in [
         ("&" * 32, "&amp;" * 32),  # entity rule rejects, falls back to pending
         ("&amp;" * 8, "&amp;" * 8),  # NAMED_RE still matches
@@ -406,14 +400,74 @@ def test_long_special_char_runs_are_linear():
     # ...while a matched pair still becomes code.
     assert md.renderInline("`a`") == "<code>a</code>"
 
-    # Headline: half a million bare ampersands exercises both the `pending`
-    # fallback and the `entity` rule's per-character regex match.
-    assert md.renderInline("&" * 500_000) == "&amp;" * 500_000
-
-    # `html_inline`'s slice was only reachable with `html=True`; `<a<a...` is
-    # never a valid tag, so it renders escaped.
+    # Longer runs, including the `html_inline` path (only reachable with
+    # `html=True`; `<a<a...` is never a valid tag, so it renders escaped).
+    assert md.renderInline("&" * 20_000) == "&amp;" * 20_000
     md_html = MarkdownIt("commonmark", {"html": True})
-    assert md_html.renderInline("<a" * 250_000) == "&lt;a" * 250_000
+    assert md_html.renderInline("<a" * 10_000) == "&lt;a" * 10_000
+
+
+class _SliceCountingStr(str):
+    """A ``str`` that records the length of every slice taken from it."""
+
+    slice_lengths: list[int]
+
+    def __new__(cls, value: str) -> "_SliceCountingStr":
+        self = super().__new__(cls, value)
+        self.slice_lengths = []
+        return self
+
+    def __getitem__(self, key):
+        if isinstance(key, slice):
+            start, stop, _ = key.indices(len(self))
+            self.slice_lengths.append(max(0, stop - start))
+        return str.__getitem__(self, key)
+
+
+@pytest.mark.parametrize(
+    "preset,options,src",
+    [
+        ("commonmark", {}, "&" * 5_000),  # entity rule
+        ("commonmark", {}, "&#" * 5_000),  # entity rule, numeric branch
+        ("commonmark", {"html": True}, "<a" * 5_000),  # html_inline rule
+    ],
+    ids=["entity-named", "entity-numeric", "html_inline"],
+)
+def test_inline_rules_do_not_slice_remaining_source(preset, options, src):
+    """Inline rules must not copy the rest of the source on every attempt.
+
+    `entity` and `html_inline` used to match ``^``-anchored regexes against
+    ``state.src[pos:]``, an O(len) copy per ``&`` / ``<`` and therefore O(n^2)
+    over a run.  They now anchor with ``.match(src, pos)``.  A run of 5 000
+    openers previously produced ~5 000 slices of up to 10 000 characters; the
+    only slices left are the ``text`` rule's single-character chunks.
+    """
+    md = MarkdownIt(preset, options)
+    counting = _SliceCountingStr(src)
+    md.inline.parse(counting, md, {}, [])
+    assert max(counting.slice_lengths, default=0) <= 1
+
+
+def test_pending_appends_do_not_materialise():
+    """`append_pending` must be amortised O(1): it buffers fragments and only
+    builds the string when `pending` is read.
+
+    The old ``state.pending += ch`` copied the whole accumulated string on
+    every character (``str += x`` on an attribute cannot resize in place).
+    """
+    from markdown_it.rules_inline.state_inline import StateInline
+
+    state = StateInline("", MarkdownIt(), {}, [])
+    for _ in range(10_000):
+        state.append_pending("x")
+    assert len(state._pending_buffer) == 10_000
+    assert state._pending == ""
+
+    assert state.pending == "x" * 10_000
+    assert state._pending_buffer == []
+
+    state.pending = ""
+    assert state.pending == ""
 
 
 def test_state_inline_pending_buffer_semantics():
@@ -468,20 +522,20 @@ def test_state_inline_pending_buffer_semantics():
     assert bare.pending == "pre"
 
 
-def test_pending_reader_rule_stays_linear():
+def test_rule_reading_pending_each_char_renders_correctly():
     """A rule that reads ``state.pending`` on every character (as some
-    attribute-syntax plugins do) must not make long runs quadratic again.
-
-    Reading materialises the buffer into a str; if that were done by copying
-    the whole accumulated string each time, the input below would take well
-    over the global 10s test timeout.
-    """
+    attribute-syntax plugins do) interleaves reads with appends; the output
+    must be unaffected."""
+    seen: list[int] = []
 
     def peek_rule(state, silent):
-        _ = state.pending
+        seen.append(len(state.pending))
         return False
 
     md = MarkdownIt()
     md.inline.ruler.before("text", "peek", peek_rule)
-    src = "{" * 800_000
-    assert md.renderInline(src) == src
+    src = "{" * 5_000 + "&" * 5_000
+    assert md.renderInline(src) == "{" * 5_000 + "&amp;" * 5_000
+    # the rule saw the text accumulate one character at a time
+    assert seen[:4] == [0, 1, 2, 3]
+    assert max(seen) == 9_999
