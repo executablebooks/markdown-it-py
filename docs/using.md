@@ -303,6 +303,45 @@ def function(renderer, tokens, idx, options, env):
 
 +++
 
+### Code highlighting
+
+Fenced code blocks are rendered as `<pre><code>...</code></pre>` by default.
+You can customize this with the `highlight` option, which should be a function
+`(content, lang, attrs) -> str` returning escaped HTML:
+
+```python
+from markdown_it import MarkdownIt
+
+def highlight(content, lang, attrs):
+    return f'<span class="hl">{content}</span>'
+
+md = MarkdownIt("commonmark", {"highlight": highlight})
+md.render("```python\nprint('hi')\n```")
+```
+
+If the highlighter returns a string starting with `<pre`, it is assumed to
+already be a complete block and is passed through verbatim (the
+"pre-continues" heuristic). Otherwise the returned HTML is wrapped in
+`<pre><code>...</code></pre>`.
+
+If your highlighter produces a complete block of HTML that does not start
+with `<pre` (for example a `<div>` wrapper, or a `<pre>` with custom
+attributes), set the Python-only `highlight_verbatim` option to `True` to
+skip the `<pre><code>` wrapper entirely and pass the highlighter output
+through verbatim (a trailing newline is added, as with the pre-continues
+heuristic):
+
+```python
+md = MarkdownIt("commonmark", {"highlight": highlight, "highlight_verbatim": True})
+md.render("```python\nprint('hi')\n```")
+```
+
+Note that `highlight_verbatim` only applies when the `highlight` function
+returns a non-empty string; if it returns an empty string (or `None`), the
+content is escaped and wrapped in `<pre><code>` as usual.
+
++++
+
 You can inject render methods into the instantiated render class.
 
 ```{jupyter-execute}

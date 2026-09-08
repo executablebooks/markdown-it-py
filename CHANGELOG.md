@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* ✨ Add `highlight_verbatim` option to pass highlighter output through verbatim, without the `<pre><code>` wrapper, in [#256](https://github.com/executablebooks/markdown-it-py/issues/256)
+
 ## 4.2.0 - 2026-05-07
 
 * ✨ Add `make_fence_rule()` factory for configurable fence markers in [#394](https://github.com/executablebooks/markdown-it-py/pull/394)
