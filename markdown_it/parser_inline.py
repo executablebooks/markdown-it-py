@@ -197,7 +197,7 @@ class ParserInline:
                     break
                 continue
 
-            state.pending += state.src[state.pos]
+            state.append_pending(state.src[state.pos])
             state.pos += 1
 
         if state.pending:

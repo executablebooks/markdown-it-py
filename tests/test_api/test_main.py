@@ -365,3 +365,52 @@ def test_text_join_merges_adjacent_text_special_tokens():
     assert len(children_on) == 1
     assert children_on[0].type == "text"
     assert children_on[0].content == "***"
+
+
+def test_long_special_char_runs_are_linear():
+    """Long runs of characters that start an inline rule but form no construct
+    must tokenise in linear time.
+
+    Two independent O(n^2) factors used to be hit once per character in such
+    runs:
+
+    1. the inline tokenizer's fallback appended to ``state.pending`` one
+       character at a time, and ``str += ch`` on an *attribute* cannot reuse the
+       buffer in place, so every append copied the whole accumulated string;
+    2. the ``entity`` and ``html_inline`` rules matched ``^``-anchored regexes
+       against ``state.src[pos:]``, copying the rest of the source per ``&``/``<``.
+
+    The large inputs below took ~16s combined before the fix, so a regression
+    trips the global 10s test timeout.
+    """
+    md = MarkdownIt()
+
+    # Correctness of the affected constructs (small, exact).
+    for src, expected in [
+        ("&" * 32, "&amp;" * 32),  # entity rule rejects, falls back to pending
+        ("&amp;" * 8, "&amp;" * 8),  # NAMED_RE still matches
+        ("&#35;" * 8, "#" * 8),  # DIGITAL_RE still matches
+        ("&#x23;" * 8, "#" * 8),  # DIGITAL_RE, hex form
+        ("&#" * 8, "&amp;#" * 8),  # `#` branch, no match
+        ("&am" * 8, "&amp;am" * 8),  # named prefix, unterminated
+        ("&nope;" * 4, "&amp;nope;" * 4),  # well-formed but unknown name
+        ("<" * 16, "&lt;" * 16),  # html_inline rejects (html=False anyway)
+        ("{" * 32, "{" * 32),  # no rule at all -> pure pending fallback
+        ("~" * 16, "~" * 16),  # sub-length strikethrough delimiters
+    ]:
+        assert md.renderInline(src) == expected, src
+
+    # Backtick markers also feed `pending`; unclosed runs stay literal.
+    assert md.renderInline("`" * 3 + "a") == "```a"
+    assert md.renderInline("`a``b") == "`a``b"
+    # ...while a matched pair still becomes code.
+    assert md.renderInline("`a`") == "<code>a</code>"
+
+    # Headline: half a million bare ampersands exercises both the `pending`
+    # fallback and the `entity` rule's per-character regex match.
+    assert md.renderInline("&" * 500_000) == "&amp;" * 500_000
+
+    # `html_inline`'s slice was only reachable with `html=True`; `<a<a...` is
+    # never a valid tag, so it renders escaped.
+    md_html = MarkdownIt("commonmark", {"html": True})
+    assert md_html.renderInline("<a" * 250_000) == "&lt;a" * 250_000
