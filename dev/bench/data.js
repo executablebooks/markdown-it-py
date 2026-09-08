@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788871051789,
+  "lastUpdate": 1788871397325,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -29071,6 +29071,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0040313",
             "group": "packages",
             "extra": "mean: 714.67 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "1b7ef6563902ab22deb8d4f3a9ce519bc382d190",
+          "message": "🐛 FIX: IndexError in html_block/heading terminator rules at EOF (#416)\n\n## Summary\nFixes #415. Input that ends on a blockquote marker while a table is open\ninside that quote raises `IndexError: string index out of range`:\n\n```python\nfrom markdown_it import MarkdownIt\n\n# html_block.py — raises IndexError\nMarkdownIt().enable(\"table\").parse(\"> | a | b |\\n> |---|---|\\n>\")\n\n# heading.py — same input, raises once html_block is out of the way\nMarkdownIt(\"commonmark\", {\"html\": False}).enable(\"table\").parse(\"> | a | b |\\n> |---|---|\\n>\")\n```\n\n## Root cause\nWith `table` enabled, `html_block` and `heading` run as **terminator\nrules** on the empty final line that a trailing `>` produces. There,\n`pos = state.bMarks[startLine] + state.tShift[startLine]` equals\n`len(state.src)`, and both rules index `state.src[pos]` without guarding\nthat boundary:\n\n- `html_block.py`: `if state.src[pos] != \"<\":`\n- `heading.py`: `ch = state.src[pos]` — its `pos >= maximum` check is on\nthe *next* line, after the index\n\nIn markdown-it (JS) the equivalent `state.src.charCodeAt(pos)` returns\n`NaN` out of range instead of raising — the port hazard tracked in #190.\n\n## Fix\nSibling terminator rules already defend against exactly this — `hr.py`\nand `blockquote.py` wrap the same index access in `try: ... except\nIndexError: return False` (added for #185 / #204). `html_block.py` and\n`heading.py` were missed. This applies the same established guard to\nboth.\n\n`html_block` runs before `heading`, so it shadows it (disabling `html`\nmoves the traceback to `heading` rather than fixing it) — hence both\nrules need the guard, and there is a regression test for each path.\n\n## Tests\nAdded two regression tests in `tests/test_fuzzer.py` (the existing home\nfor crash-regression cases), one per crash path — asserting the input\nrenders without raising.\n\n## Note on local verification\nI verified the guard logic in isolation (the old expression raises\n`IndexError` when `pos == len(src)`; the guarded version returns\n`False`, i.e. the rule declines, with identical behavior for in-range\ncharacters — matching how `hr.py`/`blockquote.py` already behave). I was\nnot able to run the full pytest suite locally (my environment's Python\npredates this package's minimum), so I'd appreciate CI confirming the\ntwo new tests pass and that the rendered output for that input is\nsensible. Happy to adjust the tests to assert exact rendered HTML if\nyou'd prefer that over \"does not raise\".\n\nCo-authored-by: saket3395 <sakettulsan95@gmail.com>\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2026-09-08T14:42:11+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/1b7ef6563902ab22deb8d4f3a9ce519bc382d190",
+          "distinct": true,
+          "tree_id": "473bae812bfa649fdbcc3c0e797066bd72cae389"
+        },
+        "date": 1788871395669,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.597194588360749,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0037001",
+            "group": "packages",
+            "extra": "mean: 131.63 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.24647228171827,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000063548",
+            "group": "packages",
+            "extra": "mean: 5.0698 msec\nrounds: 123"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 12.118557305190985,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0027793",
+            "group": "packages",
+            "extra": "mean: 82.518 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.2290360574389676,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016346",
+            "group": "packages",
+            "extra": "mean: 309.69 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.21951815069614,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0064226",
+            "group": "packages",
+            "extra": "mean: 138.51 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.477974604521739,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0036509",
+            "group": "packages",
+            "extra": "mean: 182.55 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.2591917758229485,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013772",
+            "group": "packages",
+            "extra": "mean: 137.76 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4030117097906576,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010574",
+            "group": "packages",
+            "extra": "mean: 712.75 msec\nrounds: 20"
           }
         ]
       }
