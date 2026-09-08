@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788870112249,
+  "lastUpdate": 1788871051789,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -28985,6 +28985,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.013916",
             "group": "packages",
             "extra": "mean: 716.72 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "c92ed7b02d090a900abfc1f683b919a9e37806f9",
+          "message": "🧪 Add fence in GFM alert test (#398)\n\nTo check upstream\nhttps://github.com/executablebooks/MyST-Parser/issues/1141",
+          "timestamp": "2026-09-08T14:36:24+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/c92ed7b02d090a900abfc1f683b919a9e37806f9",
+          "distinct": true,
+          "tree_id": "90611d895fbef96169d5db6270f1162221b0a9aa"
+        },
+        "date": 1788871050406,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.545970016325723,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0037851",
+            "group": "packages",
+            "extra": "mean: 132.52 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 196.78505438891273,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000038704",
+            "group": "packages",
+            "extra": "mean: 5.0817 msec\nrounds: 127"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 12.051002309820385,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0027250",
+            "group": "packages",
+            "extra": "mean: 82.981 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.2089627973919708,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014183",
+            "group": "packages",
+            "extra": "mean: 311.63 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.315851541291621,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0062985",
+            "group": "packages",
+            "extra": "mean: 136.69 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.520464985166289,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035199",
+            "group": "packages",
+            "extra": "mean: 181.14 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.1706470726591,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016247",
+            "group": "packages",
+            "extra": "mean: 139.46 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.3992500922161937,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0040313",
+            "group": "packages",
+            "extra": "mean: 714.67 msec\nrounds: 20"
           }
         ]
       }
