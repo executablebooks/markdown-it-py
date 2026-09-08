@@ -118,7 +118,12 @@ __Note:__ Don't try to replace text with HTML markup! That's not secure.
 
 ### Why is my inline rule not executed?
 
-The inline parser skips pieces of texts to optimize speed. It stops only on [a small set of chars](https://github.com/markdown-it/markdown-it/blob/master/lib/rules_inline/text.mjs), which can be tokens. We did not made this list extensible for performance reasons too.
+The inline parser skips pieces of texts to optimize speed. It stops only on [a small set of chars](https://github.com/executablebooks/markdown-it-py/blob/master/markdown_it/parser_inline.py), which can be tokens.
 
-If you are absolutely sure that something important is missing there - create a
-ticket and we will consider adding it as a new charcode.
+If your inline rule needs to trigger on a character that is not in the default terminator set, you can register it via `md.inline.add_terminator_char`:
+
+```python
+def my_plugin(md: MarkdownIt) -> None:
+    md.inline.add_terminator_char("w")  # stop text rule on 'w'
+    md.inline.ruler.push("my_rule", my_inline_rule)
+```

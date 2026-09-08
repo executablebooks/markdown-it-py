@@ -6,6 +6,8 @@ The following plugins are embedded within the core package:
 
 - [tables](https://help.github.com/articles/organizing-information-with-tables/) (GFM)
 - [strikethrough](https://help.github.com/articles/basic-writing-and-formatting-syntax/#styling-text) (GFM)
+- [task lists](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/about-task-lists) (GFM) — `- [x] done`
+- [alerts](https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax#alerts) (GFM) — `> [!NOTE]`
 
 These can be enabled individually:
 
@@ -18,7 +20,8 @@ or as part of a configuration:
 
 ```python
 from markdown_it import MarkdownIt
-md = MarkdownIt("gfm-like")
+md = MarkdownIt("gfm-like")   # tables, strikethrough, linkify
+md = MarkdownIt("gfm-like2")  # + task lists, alerts, single-tilde strikethrough
 ```
 
 ```{seealso}
