@@ -414,3 +414,74 @@ def test_long_special_char_runs_are_linear():
     # never a valid tag, so it renders escaped.
     md_html = MarkdownIt("commonmark", {"html": True})
     assert md_html.renderInline("<a" * 250_000) == "&lt;a" * 250_000
+
+
+def test_state_inline_pending_buffer_semantics():
+    """`StateInline.pending` is buffered internally but must behave exactly
+    like the plain ``str`` attribute it replaced."""
+    import copy
+
+    from markdown_it.rules_inline.state_inline import StateInline
+
+    md = MarkdownIt()
+    state = StateInline("", md, {}, [])
+
+    # append / read / append preserve order and the read materialises lazily
+    state.append_pending("a")
+    assert state.pending == "a"
+    state.append_pending("b")
+    state.append_pending("c")
+    assert state.pending == "abc"
+
+    # assignment replaces everything buffered so far
+    state.pending = "xy"
+    state.append_pending("z")
+    assert state.pending == "xyz"
+    state.pending = state.pending[:-1]
+    assert state.pending == "xy"
+
+    # flushing to a token empties both the string and the buffer
+    token = state.pushPending()
+    assert token.content == "xy"
+    assert state.pending == ""
+    assert not state._pending_buffer
+
+    # a str handed out earlier is never mutated by later appends
+    state.append_pending("hello")
+    held = state.pending
+    state.append_pending(" world")
+    assert state.pending == "hello world"
+    assert held == "hello"
+
+    # a shallow copy must not share the pending buffer with its original
+    state.pending = ""
+    state.append_pending("q")
+    clone = copy.copy(state)
+    clone.append_pending("r")
+    state.append_pending("s")
+    assert (state.pending, clone.pending) == ("qs", "qr")
+
+    # the setter works before __init__ has run (subclasses that set
+    # `pending` before calling super().__init__(), or __new__ + assignment)
+    bare = StateInline.__new__(StateInline)
+    bare.pending = "pre"
+    assert bare.pending == "pre"
+
+
+def test_pending_reader_rule_stays_linear():
+    """A rule that reads ``state.pending`` on every character (as some
+    attribute-syntax plugins do) must not make long runs quadratic again.
+
+    Reading materialises the buffer into a str; if that were done by copying
+    the whole accumulated string each time, the input below would take well
+    over the global 10s test timeout.
+    """
+
+    def peek_rule(state, silent):
+        _ = state.pending
+        return False
+
+    md = MarkdownIt()
+    md.inline.ruler.before("text", "peek", peek_rule)
+    src = "{" * 800_000
+    assert md.renderInline(src) == src

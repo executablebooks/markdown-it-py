@@ -93,15 +93,37 @@ class StateInline(StateBase):
     @property
     def pending(self) -> str:
         """Literal text accumulated so far, but not yet flushed to a token."""
-        if self._pending_buffer:
-            self._pending += "".join(self._pending_buffer)
-            self._pending_buffer.clear()
+        buffer = self._pending_buffer
+        if buffer:
+            # Move the string into a local and drop the instance's reference
+            # before concatenating.  With a single reference left, CPython
+            # resizes the string in place (amortised O(new chars)) rather
+            # than copying it, so a rule that reads `pending` on every
+            # character (e.g. an attribute-syntax plugin) stays linear.
+            text = self._pending
+            self._pending = ""
+            text += "".join(buffer)
+            buffer.clear()
+            self._pending = text
         return self._pending
 
     @pending.setter
     def pending(self, value: str) -> None:
         self._pending = value
-        self._pending_buffer.clear()
+        # Assign rather than `.clear()` so the setter also works on an
+        # instance whose `__init__` has not run yet (subclasses that set
+        # `pending` before calling `super().__init__()`), and so a copied
+        # state never shares a buffer with its original.
+        self._pending_buffer = []
+
+    def __copy__(self) -> StateInline:
+        """Shallow copy that does not share the pending text buffer."""
+        text = self.pending  # materialise (and clear) our own buffer first
+        new = self.__class__.__new__(self.__class__)
+        new.__dict__.update(self.__dict__)
+        new._pending = text
+        new._pending_buffer = []
+        return new
 
     def append_pending(self, text: str) -> None:
         """Append literal text to `pending`, in amortised O(1) time.
