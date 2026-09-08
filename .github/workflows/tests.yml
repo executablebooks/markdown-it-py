@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       with:
         python-version: '3.10'
     - uses: pre-commit/action@v3.0.1
@@ -37,7 +37,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       with:
         python-version: ${{ matrix.python-version }}
         allow-prereleases: true
@@ -52,7 +52,8 @@ jobs:
       run: |
         pytest tests/ --cov=markdown_it --cov-report=xml --cov-report=term-missing
     - name: Upload to Codecov
-      if: matrix.python-version == '3.10' && github.repository == 'executablebooks/markdown-it-py'
+      # note currently not working for external contributions
+      if: false && matrix.python-version == '3.10' && github.repository == 'executablebooks/markdown-it-py'
       uses: codecov/codecov-action@v5
       with:
         name: markdown-it-py-pytests
@@ -70,7 +71,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install markdown-it-py
@@ -91,7 +92,7 @@ jobs:
     - uses: actions/checkout@v4
 
     - name: Set up Python
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v7
       with:
         python-version: '3.10'
 
@@ -123,7 +124,7 @@ jobs:
       url: https://pypi.org/p/markdown-it-py
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v7
       with:
         python-version: '3.10'
     - run: pip install flit~=3.4
