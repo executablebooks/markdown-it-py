@@ -16,7 +16,7 @@ def text(state: StateInline, silent: bool) -> bool:
         return False
 
     if not silent:
-        state.pending += state.src[state.pos : pos]
+        state.append_pending(state.src[state.pos : pos])
 
     state.pos = pos
 
