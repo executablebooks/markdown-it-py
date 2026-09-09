@@ -3,23 +3,26 @@
 from __future__ import annotations
 
 from pathlib import Path
+import tarfile
+
+import pytest
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
-def test_flit_sdist_includes_tests_directory() -> None:
-    """sdist must ship tests/ (and tox.ini) so downstream packagers can run them."""
-    text = (Path(__file__).resolve().parents[2] / "pyproject.toml").read_text(
-        encoding="utf-8"
-    )
-    # Locate the flit sdist table without requiring tomllib (3.10 CI).
-    start = text.index("[tool.flit.sdist]")
-    rest = text[start + len("[tool.flit.sdist]") :]
-    end = rest.find("\n[")
-    block = rest if end < 0 else rest[:end]
-    assert "include = [" in block
-    assert '"tests/"' in block
-    assert '"tox.ini"' in block
-    # Still exclude heavy non-test trees.
-    assert '"docs/"' in block
-    assert '"benchmarking/"' in block
-    # Must not exclude tests anymore.
-    assert '"tests/"' not in block.split("exclude", 1)[-1]
+def test_sdist_contents(tmp_path: Path) -> None:
+    """The sdist must ship tests/ and tox.ini, so downstream packagers can run them."""
+    flit_sdist = pytest.importorskip("flit_core.sdist")
+    if not (ROOT / "pyproject.toml").is_file():
+        pytest.skip("not running from a source checkout")
+
+    builder = flit_sdist.SdistBuilder.from_ini_path(ROOT / "pyproject.toml")
+    with tarfile.open(builder.build(tmp_path)) as tar:
+        # strip the leading `markdown_it-<version>/` component
+        names = {name.split("/", 1)[1] for name in tar.getnames() if "/" in name}
+
+    assert "markdown_it/__init__.py" in names
+    assert "tests/test_api/test_main.py" in names
+    assert "tox.ini" in names
+    # heavy, non-essential trees are still excluded
+    assert not [name for name in names if name.startswith(("docs/", "benchmarking/"))]
