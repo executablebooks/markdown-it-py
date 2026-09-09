@@ -102,7 +102,7 @@ def replaceEntityPattern(match: str, name: str) -> str:
     if name in entities:
         return entities[name]
 
-    code: None | int = None
+    code: int | None = None
     if pat := DIGITAL_ENTITY_BASE10_RE.fullmatch(name):
         code = int(pat.group(1), 10)
     elif pat := DIGITAL_ENTITY_BASE16_RE.fullmatch(name):

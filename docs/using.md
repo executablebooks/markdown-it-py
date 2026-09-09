@@ -298,7 +298,7 @@ with the same signature:
 
 ```python
 def function(renderer, tokens, idx, options, env):
-  return htmlResult
+    return htmlResult
 ```
 
 +++

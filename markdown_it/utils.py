@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Iterable, MutableMapping
+from collections.abc import Callable, Iterator, MutableMapping
 from collections.abc import MutableMapping as MutableMappingABC
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, TypedDict, cast
@@ -78,7 +78,7 @@ class OptionsDict(MutableMappingABC):  # type: ignore
     def __delitem__(self, key: str) -> None:
         del self._options[key]  # type: ignore
 
-    def __iter__(self) -> Iterable[str]:  # type: ignore
+    def __iter__(self) -> Iterator[str]:
         return iter(self._options)
 
     def __len__(self) -> int:

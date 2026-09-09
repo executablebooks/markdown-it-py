@@ -61,7 +61,7 @@ class RendererHTML(RendererProtocol):
         self.rules = {
             k: v
             for k, v in inspect.getmembers(self, predicate=inspect.ismethod)
-            if not (k.startswith("render") or k.startswith("_"))
+            if not k.startswith(("render", "_"))
         }
 
     def render(

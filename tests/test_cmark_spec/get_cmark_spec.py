@@ -55,7 +55,7 @@ def _json_to_fixture(data: list[dict[str, Any]]) -> str:
 
 
 if __name__ == "__main__":
-    import requests  # type: ignore[import-untyped]
+    import requests
 
     args = create_argparser().parse_args()
     version: str = args.version

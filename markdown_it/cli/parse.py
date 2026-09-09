@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 CLI interface to markdown-it-py
 
