@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788955842492,
+  "lastUpdate": 1788957014250,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -29673,6 +29673,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0056431",
             "group": "packages",
             "extra": "mean: 703.25 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "2700cc3c3c46f8c23bfaa71b2c582b7b991fd6c6",
+          "message": "🔧 Include tests/ and tox.ini in the sdist (#426)\n\n## Summary\n\nSupersedes #420 by @BetterAndBetterII (GitHub refused to update that\nfork branch because the merge would carry workflow-file changes); their\ncommits are carried here verbatim with authorship preserved (thank\nyou!). Closes #261, open since 2023 from a distro packager.\n\nPyPI sdists shipped `tox.ini` but omitted `tests/`, so packagers could\nnot run the suite from the tarball. `tests/` is moved out of\n`[tool.flit.sdist] exclude` and `tests/` plus `tox.ini` are explicitly\nincluded; `docs/` and `benchmarking/` stay excluded.\n\n## Commits\n\n1. `fix: include tests/ (and tox.ini) in the flit sdist` and the\npre-commit.ci autofix — the contributor's commits, unchanged.\n2. `🧪 TEST: Assert sdist contents by building the sdist` — the original\ntest only string-matched `pyproject.toml`. It now builds a real sdist\nwith `flit_core` (no network, ~0.15 s) and asserts\n`markdown_it/__init__.py`, `tests/test_api/test_main.py` and `tox.ini`\nare members and nothing under `docs/` or `benchmarking/` is. It skips\ncleanly when `flit_core` is unavailable or when not run from a source\ncheckout. Verified negative: with the `include` reverted, the test fails\non `tests/test_api/test_main.py`.\n\n## Verification\n\n- 994 tests pass; the sdist test runs (not skipped) with flit_core\n4.0.2, which is what `pyproject.toml` now allows after #414.\n- All pre-commit hooks pass under the new pins.\n- No changelog entry in the commits; suggest adding one at release time\nunder 🔧.\n\n---------\n\nCo-authored-by: Yuzhong Zhang <BetterAndBetterII@users.noreply.github.com>",
+          "timestamp": "2026-09-09T14:29:13+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/2700cc3c3c46f8c23bfaa71b2c582b7b991fd6c6",
+          "distinct": true,
+          "tree_id": "5208c5ec432f197f57a6e3b48cb8e1b5c638ff60"
+        },
+        "date": 1788957013267,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.369660777355762,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0043909",
+            "group": "packages",
+            "extra": "mean: 135.69 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 195.51022188164217,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000050304",
+            "group": "packages",
+            "extra": "mean: 5.1148 msec\nrounds: 123"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.93459232592997,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0025932",
+            "group": "packages",
+            "extra": "mean: 83.790 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.1391697482349663,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014338",
+            "group": "packages",
+            "extra": "mean: 318.56 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.103245102502252,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0079627",
+            "group": "packages",
+            "extra": "mean: 140.78 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.406941211984517,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0031105",
+            "group": "packages",
+            "extra": "mean: 184.95 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.068174143381647,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015417",
+            "group": "packages",
+            "extra": "mean: 141.48 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.383649958141095,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010029",
+            "group": "packages",
+            "extra": "mean: 722.73 msec\nrounds: 20"
           }
         ]
       }
