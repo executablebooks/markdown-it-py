@@ -20,7 +20,7 @@ tox -e py311-bench-packages -- --benchmark-columns mean,stddev
 | pymarkdown (+extras) | 3.4.3   | 646.564   | 11.316  |
 | panflute             | 2.3.0   | 860.105   | 208.607 |
 
-As you can see, `markdown-it-py` doesn't pay with speed for it's flexibility.
+As you can see, `markdown-it-py` doesn't pay with speed for its flexibility.
 
 [^1]: `markdown-it-pyrs` is a Rust implementation of `markdown-it-py`'s parser, in beta development, check it out at: <https://github.com/chrisjsewell/markdown-it-pyrs>
 [^2]: `mistune` is not CommonMark compliant, which is what allows for its
