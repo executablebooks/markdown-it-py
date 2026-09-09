@@ -3,6 +3,7 @@
 ## Unreleased
 
 * 📚 Document the Python renderer constructor contract.
+* 🔧 Drop the optional dependency on the `commonmark` package, and its benchmark and performance table row, since the upstream package is unmaintained, in [#401](https://github.com/executablebooks/markdown-it-py/pull/401)
 
 ## 4.2.0 - 2026-05-07
 

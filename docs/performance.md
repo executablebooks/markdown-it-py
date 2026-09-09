@@ -15,7 +15,6 @@ tox -e py311-bench-packages -- --benchmark-columns mean,stddev
 | mistune[^2]          | 3.0.1   | 80.409    | 2.335   |
 | **markdown-it-py**   | 3.0.0   | 97.242    | 4.427   |
 | mistletoe            | 1.1.0   | 99.633    | 4.628   |
-| commonmark-py        | 0.9.1   | 300.403   | 9.706   |
 | pymarkdown           | 3.4.3   | 387.775   | 10.394  |
 | pymarkdown (+extras) | 3.4.3   | 646.564   | 11.316  |
 | panflute             | 2.3.0   | 860.105   | 208.607 |
