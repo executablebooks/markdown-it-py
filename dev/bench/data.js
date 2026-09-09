@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788953524777,
+  "lastUpdate": 1788954952351,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -29501,6 +29501,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0087268",
             "group": "packages",
             "extra": "mean: 530.32 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "d9b0526122d793a2157be689633114525a761e4e",
+          "message": "🔧 Update pre-commit hooks (ruff 0.16.6, mypy 2.3.1) (#424)\n\n## Summary\n\nA fresh `pre-commit autoupdate` on current master, replacing #396 (the\nbot's May branch), whose CI was red because the ruff autofix had\ninserted an unguarded `from typing_extensions import Self` into\n`markdown_it/tree.py` while `typing_extensions` is not a runtime\ndependency.\n\n| hook | before | after |\n|---|---|---|\n| `astral-sh/ruff-pre-commit` | v0.15.12 | v0.16.6 |\n| `pre-commit/mirrors-mypy` | v1.20.2 | v2.3.1 |\n| `pre-commit/pre-commit-hooks` | v6.0.0 | v6.0.0 (unchanged) |\n\nTwo commits: the hook bump plus the hooks' own auto-fixes, then the\nmanual fixes for what remained. The first commit alone is not\nruntime-safe (see below), so squash-merge is the right choice here.\n\n## What changed and why\n\n**Runtime-safety fix.** ruff's PYI019 autofix rewrites the `self:\n_NodeType` pattern in `SyntaxTreeNode` to `Self`, importing it from\n`typing_extensions`. That import is now under `if TYPE_CHECKING:` (the\nmodule already has `from __future__ import annotations`, and every use\nof `Self` is annotation-only). Verified by importing `markdown_it.tree`\nand calling `SyntaxTreeNode(...).pretty()` with `typing_extensions`\nblocked via a meta-path finder. Nothing was added to `dependencies`.\n\n**Manual lint fixes** (all from ruff 0.16's expanded default rule set,\nnone from rules this repo selects):\n- `EXE001`: removed the vestigial shebang from\n`markdown_it/cli/parse.py` (the CLI ships via the console script;\n`python -m markdown_it.cli.parse` still works).\n- `PIE810`: `k.startswith((\"render\", \"_\"))` in `renderer.py`.\n- `PYI045`: `OptionsDict.__iter__` now declares `Iterator[str]` (it\nalways returned one), dropping a `type: ignore`.\n- `PYI034`: `__new__` in a test helper annotated with `Self`.\n- `RUF036`/`UP045`: `None | X` unions reordered to `X | None`.\nType-equivalent.\n- mypy 2.3: one now-unused `type: ignore[import-untyped]` removed.\n\n**Autofix changes worth knowing about** (all type-equivalent or\ncomment-only):\n- `Token.attrSet(value: str | int | float)` now reads `str | float`\n(PYI041). Under PEP 484's numeric tower `float` already accepts `int`,\nso nothing changes for callers, but rendered signatures will look\nnarrower.\n- Two `# noqa: E731` comments in `fence.py` removed by RUF100: ruff 0.16\nno longer flags those lambdas, so the comments were dead, and the hook\nauto-removes them if restored.\n- ruff-format 0.16 now formats Python code inside Markdown fences, hence\nthe diffs in `README.md`, `AGENTS.md`, `CHANGELOG.md` and `docs/`. All\nare formatting-only inside fenced examples (quotes, wrapping, `...`\nstubs); no prose changed.\n\n## For the maintainers to decide (not changed here)\n\nWith `pyproject.toml` untouched, ruff 0.16.6 enables **463** rules\nversus **253** under 0.15.12: the defaults grew substantially (EXE, PIE,\nPYI, UP007/UP045 and more are now on without being selected). It may be\nworth pinning an explicit `select` so future ruff releases don't\nsilently change what's enforced.\n\n## Verification\n\n- `pre-commit run --all-files`: every hook passes under the new pins.\n- 993 tests pass.\n- `import markdown_it, markdown_it.tree, markdown_it.cli.parse` succeeds\nwith `typing_extensions` unavailable.\n\nSupersedes #396.",
+          "timestamp": "2026-09-09T13:54:42+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/d9b0526122d793a2157be689633114525a761e4e",
+          "distinct": true,
+          "tree_id": "749f820b5a33a5b5edcfe8f96057671e0d083bcf"
+        },
+        "date": 1788954950902,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.5218548838180554,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0037664",
+            "group": "packages",
+            "extra": "mean: 132.95 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 195.18859510055609,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000073516",
+            "group": "packages",
+            "extra": "mean: 5.1233 msec\nrounds: 123"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.946156581708864,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0029442",
+            "group": "packages",
+            "extra": "mean: 83.709 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.2161476847246573,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014076",
+            "group": "packages",
+            "extra": "mean: 310.93 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.127118314755672,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0068328",
+            "group": "packages",
+            "extra": "mean: 140.31 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.4813705915678685,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0037529",
+            "group": "packages",
+            "extra": "mean: 182.44 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.131575225174144,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015059",
+            "group": "packages",
+            "extra": "mean: 140.22 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4064092024232198,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0068457",
+            "group": "packages",
+            "extra": "mean: 711.03 msec\nrounds: 20"
           }
         ]
       }
