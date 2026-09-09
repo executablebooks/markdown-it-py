@@ -1,7 +1,12 @@
+from typing import TYPE_CHECKING
+
 import pytest
 
 from markdown_it import MarkdownIt
 from markdown_it.token import Token
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
 
 
 def test_get_rules():
@@ -412,7 +417,7 @@ class _SliceCountingStr(str):
 
     slice_lengths: list[int]
 
-    def __new__(cls, value: str) -> "_SliceCountingStr":
+    def __new__(cls, value: str) -> "Self":
         self = super().__new__(cls, value)
         self.slice_lengths = []
         return self

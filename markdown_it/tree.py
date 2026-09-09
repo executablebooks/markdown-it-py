@@ -7,11 +7,12 @@ from __future__ import annotations
 
 from collections.abc import Generator, Sequence
 import textwrap
-from typing import Any, NamedTuple, TypeVar, overload
-
-from typing_extensions import Self
+from typing import TYPE_CHECKING, Any, NamedTuple, TypeVar, overload
 
 from .token import Token
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
 
 
 class _NesterTokens(NamedTuple):
