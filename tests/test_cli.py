@@ -95,3 +95,51 @@ def test_interactive_render():
     # The rendered output is prefixed by a newline
     assert "\n<h1>hello</h1>\n" in output
     assert "Exiting" in output
+
+
+def test_interactive_hard_line_break():
+    """Interactive input lines are joined as typed, see issue #172."""
+    # Simulate user typing 'foo\\' then 'bar', Ctrl-D (renders), then Ctrl-C (exits)
+    mock_input = patch(
+        "builtins.input", side_effect=["foo\\", "bar", EOFError, KeyboardInterrupt]
+    )
+    string_io = io.StringIO()
+    with redirect_stdout(string_io), mock_input:
+        parse.interactive()
+
+    # a single paragraph with a hard break, not two paragraphs
+    assert "\n<p>foo<br />\nbar</p>\n" in string_io.getvalue()
+
+
+@pytest.mark.parametrize("route", ["files", "stdin", "interactive"])
+@pytest.mark.parametrize("enable_tables", [False, True])
+def test_tables(route, enable_tables, tmp_path, capsys):
+    """Table parsing is opt-in on every CLI route, preserving HTML settings."""
+    source = "a | b\n--- | ---\n1 | 2\n\n<em>raw</em> ~~plain~~\n"
+    expected = (
+        "<table>\n<thead>\n<tr>\n<th>a</th>\n<th>b</th>\n</tr>\n</thead>\n"
+        "<tbody>\n<tr>\n<td>1</td>\n<td>2</td>\n</tr>\n</tbody>\n</table>\n"
+        if enable_tables
+        else "<p>a | b\n--- | ---\n1 | 2</p>\n"
+    ) + "<p><em>raw</em> ~~plain~~</p>\n"
+    args = ["--enable-tables"] if enable_tables else []
+    if route == "files":
+        paths = [tmp_path / "first.md", tmp_path / "second.md"]
+        for path in paths:
+            path.write_text(source, encoding="utf8")
+        assert parse.main([*args, *map(str, paths)]) == 0
+        expected *= 2
+    elif route == "stdin":
+        with patch("sys.stdin", io.StringIO(source)):
+            assert parse.main([*args, "--stdin"]) == 0
+    else:
+        inputs = [*source.splitlines(), EOFError] * 2 + [KeyboardInterrupt]
+        with patch("builtins.input", side_effect=inputs):
+            assert parse.main(args) == 0
+        expected = (
+            f"{parse.version_str} (interactive)\n"
+            "Type Ctrl-D to complete input, or Ctrl-C to exit.\n"
+            + ("\n" + expected) * 2
+            + "\nExiting.\n"
+        )
+    assert capsys.readouterr().out == expected
