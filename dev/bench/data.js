@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788953140048,
+  "lastUpdate": 1788953284675,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -29329,6 +29329,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0047029",
             "group": "packages",
             "extra": "mean: 686.63 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "d6ccfdddf9ded2a22831e020fb8429e2be0f785f",
+          "message": "📚 fix typo and use HTTPS for CommonMark spec links (#408)\n\n## Summary\n\nA few small documentation fixes across `docs/`:\n\n- **`docs/performance.md`**: fix a typo in footnote `[^2]` —\n`mistletoes's` → `mistletoe's`. The project being referenced is named\n**mistletoe** (singular), so the possessive was incorrectly formed with\nan extra `s`. (The unrelated `it's` → `its` fix on the same file is\nalready handled in #402, so it is intentionally left untouched here to\navoid duplicating that change.)\n- **`docs/index.md`** and **`docs/using.md`**: update the CommonMark\nspecification link from `http://spec.commonmark.org/` to\n`https://spec.commonmark.org/`. The site serves over HTTPS and this\nkeeps the docs consistent with the HTTPS links already used elsewhere in\nthe project (e.g. the GitHub Flavored Markdown link in `using.md`).\n\nThese are documentation-only changes; no code or tests are affected.\n\n## Notes\n\n- There is no corresponding open issue for these; they are minor\ndocs/typo corrections spotted while reading the documentation. Happy to\nopen an issue if the maintainers prefer one linked.\n- I checked that no existing open PR already covers the `mistletoe's`\ntypo or these `http` → `https` spec-link updates (#402 only touches the\n`it's`/`its` line).\n\n## AI usage disclosure\n\nAn AI assistant was used to help locate the relevant code and draft this\nchange. I have reviewed and understand every line of the diff, and I am\nthe sole author of this contribution.",
+          "timestamp": "2026-09-09T13:26:53+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/d6ccfdddf9ded2a22831e020fb8429e2be0f785f",
+          "distinct": true,
+          "tree_id": "fd1d33862635cf22d856a7fe5c3b3bf7a87eb4f7"
+        },
+        "date": 1788953283213,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.509507449453907,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0044811",
+            "group": "packages",
+            "extra": "mean: 133.16 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 195.14669636919047,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000068575",
+            "group": "packages",
+            "extra": "mean: 5.1244 msec\nrounds: 118"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.803922972183386,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0034272",
+            "group": "packages",
+            "extra": "mean: 84.718 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 3.1205143970767053,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014918",
+            "group": "packages",
+            "extra": "mean: 320.46 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.186802068427688,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0073451",
+            "group": "packages",
+            "extra": "mean: 139.14 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.434749698923265,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0042241",
+            "group": "packages",
+            "extra": "mean: 184.00 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 6.969718378454284,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018264",
+            "group": "packages",
+            "extra": "mean: 143.48 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.3663928722902834,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0089957",
+            "group": "packages",
+            "extra": "mean: 731.85 msec\nrounds: 20"
           }
         ]
       }
