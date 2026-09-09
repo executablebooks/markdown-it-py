@@ -5,7 +5,7 @@
 * ✨ Add `--enable-tables` to the CLI for file, standard input and interactive parsing in [#422](https://github.com/executablebooks/markdown-it-py/pull/422)
 * 🐛 Fix CLI interactive mode joining input lines with an extra newline, which split every line into its own paragraph and broke hard line breaks, in [#172](https://github.com/executablebooks/markdown-it-py/issues/172)
 * 📚 Document the Python renderer constructor contract.
-* 🔧 Drop the optional dependency on the `commonmark` package, and its benchmark and performance table row, since the upstream package is unmaintained, in [#401](https://github.com/executablebooks/markdown-it-py/pull/401)
+* 🔧 Drop the optional dependency on the `commonmark` package and its benchmark, since the upstream package is unmaintained, in [#401](https://github.com/executablebooks/markdown-it-py/pull/401)
 
 ## 4.2.0 - 2026-05-07
 
