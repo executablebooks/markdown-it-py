@@ -97,6 +97,20 @@ def test_interactive_render():
     assert "Exiting" in output
 
 
+def test_interactive_hard_line_break():
+    """Interactive input lines are joined as typed, see issue #172."""
+    # Simulate user typing 'foo\\' then 'bar', Ctrl-D (renders), then Ctrl-C (exits)
+    mock_input = patch(
+        "builtins.input", side_effect=["foo\\", "bar", EOFError, KeyboardInterrupt]
+    )
+    string_io = io.StringIO()
+    with redirect_stdout(string_io), mock_input:
+        parse.interactive()
+
+    # a single paragraph with a hard break, not two paragraphs
+    assert "\n<p>foo<br />\nbar</p>\n" in string_io.getvalue()
+
+
 @pytest.mark.parametrize("route", ["files", "stdin", "interactive"])
 @pytest.mark.parametrize("enable_tables", [False, True])
 def test_tables(route, enable_tables, tmp_path, capsys):
