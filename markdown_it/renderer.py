@@ -202,7 +202,9 @@ class RendererHTML(RendererProtocol):
             elif token.type == "image":
                 if token.children:
                     result += self.renderInlineAsText(token.children, options, env)
-            elif token.type == "softbreak":
+            elif token.type in ("html_inline", "html_block"):
+                result += token.content
+            elif token.type in ("softbreak", "hardbreak"):
                 result += "\n"
 
         return result

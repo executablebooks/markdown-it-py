@@ -170,3 +170,20 @@ Alert with list
 </ul>
 </div>
 .
+
+Fence in alert
+.
+> [!NOTE]  
+> Note
+>
+> ```py
+> code
+> ```
+.
+<div class="markdown-alert markdown-alert-note">
+<p class="markdown-alert-title">Note</p>
+<p>Note</p>
+<pre><code class="language-py">code
+</code></pre>
+</div>
+.
