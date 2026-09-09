@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788954952351,
+  "lastUpdate": 1788955842492,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -29587,6 +29587,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0068457",
             "group": "packages",
             "extra": "mean: 711.03 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "c02f6b1fcd6af070f0fa82b5758f5b36e3e814ee",
+          "message": "✨ Add `--enable-tables` to the CLI, and fix interactive-mode line joining (#425)\n\n## Summary\n\nSupersedes #422 by @user01010111, whose fork does not allow maintainer\npushes; their commit is carried here verbatim with authorship preserved\n(thank you!). Closes #352 and closes #172.\n\n- Adds `--enable-tables` to the `markdown-it` CLI for file, stdin and\ninteractive input, by threading one `MarkdownIt` instance through every\nroute (each function keeps an `md=None` default, so existing callers are\nunaffected).\n- Also fixes the interactive mode's line joining, the root cause of #172\n(five years old): each input line already ends in `\"\\n\"`, so the old\n`\"\\n\".join(contents)` doubled every newline, split every line into its\nown paragraph and broke hard line breaks. Now `\"\".join`. This change was\nin #422 but not called out there; this PR adds a changelog line and a\nregression test for it.\n\n## Commits\n\n1. `✨ NEW: Add --enable-tables to the CLI` — the contributor's commit,\nunchanged.\n2. `🐛 FIX: Note and test interactive-mode line joining fix (#172)` —\nchangelog entries and `test_interactive_hard_line_break`, which drives\n`interactive()` with patched `input` and asserts `foo\\` + `bar` renders\nas one paragraph with `<br />`.\n\n## Verification\n\n- 1000 tests pass (+7 over master), all pre-commit hooks pass under the\nnew ruff 0.16 / mypy 2.3 pins.\n- Local docs build adds no warnings over master.\n- Smoke-checked: `--help` matches the README block, `--enable-tables\n--stdin` renders a `<table>`, and without the flag the same input stays\na paragraph.\n\n---------\n\nCo-authored-by: jf nz <talon_usable_9k@icloud.com>",
+          "timestamp": "2026-09-09T14:09:37+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/c02f6b1fcd6af070f0fa82b5758f5b36e3e814ee",
+          "distinct": true,
+          "tree_id": "b1417a3cd9beef1bd6aae0c8f5a5d9c0dcfea603"
+        },
+        "date": 1788955841273,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.54699965922962,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0040944",
+            "group": "packages",
+            "extra": "mean: 132.50 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 196.6809284570847,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000042736",
+            "group": "packages",
+            "extra": "mean: 5.0844 msec\nrounds: 125"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 12.118779948178755,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0028431",
+            "group": "packages",
+            "extra": "mean: 82.517 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 2.986047393753541,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012091",
+            "group": "packages",
+            "extra": "mean: 334.89 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.182029811034337,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0063628",
+            "group": "packages",
+            "extra": "mean: 139.24 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.491359995224458,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0034175",
+            "group": "packages",
+            "extra": "mean: 182.10 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.394861392383665,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012701",
+            "group": "packages",
+            "extra": "mean: 135.23 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4219743037199173,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0056431",
+            "group": "packages",
+            "extra": "mean: 703.25 msec\nrounds: 20"
           }
         ]
       }
