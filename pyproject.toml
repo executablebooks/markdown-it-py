@@ -57,6 +57,7 @@ rtd = [
 ]
 testing = [
     "coverage",
+    "flit_core>=3.4,<5",  # lets tests/test_packaging build the sdist
     "pytest",
     "pytest-cov",
     "pytest-regressions",
