@@ -2,7 +2,7 @@
 
 > Markdown parser done right.
 
-- {fa}`check,text-success mr-1` Follows the __[CommonMark spec](http://spec.commonmark.org/)__ for baseline parsing
+- {fa}`check,text-success mr-1` Follows the __[CommonMark spec](https://spec.commonmark.org/)__ for baseline parsing
 - {fa}`check,text-success mr-1` Configurable syntax: you can add new rules and even replace existing ones.
 - {fa}`check,text-success mr-1` Pluggable: Adds syntax extensions to extend the parser (see the [plugin list](md/plugins))
 - {fa}`check,text-success mr-1` High speed (see our [benchmarking tests](md/performance))
