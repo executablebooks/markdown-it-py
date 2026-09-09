@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788957014250,
+  "lastUpdate": 1788958076072,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -29759,6 +29759,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.010029",
             "group": "packages",
             "extra": "mean: 722.73 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "3.13",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "a5950caef3434ed83045b43311aefcf7e0578aa3",
+          "message": "🔧 Remove optional dependency on the unmaintained `commonmark` package (#427)\n\n## Summary\n\nSupersedes #401 by @nikolas, whose fork does not allow maintainer\npushes; their commit is carried here verbatim with authorship preserved\n(thank you!).\n\nThe `commonmark` PyPI package was deprecated in 2022 (last release\n2019). #401 dropped it from the `compare` extra but left\n`benchmarking/bench_packages.py::test_commonmark_py` importing it\nunguarded, so `tox -e py311-bench-packages` (which installs\n`benchmarking,compare`) would have errored. This PR removes that\nbenchmark too.\n\nThe `commonmark-py` row in `docs/performance.md` is **kept**, with a\nfootnote explaining that the package is deprecated, has been removed\nfrom the benchmark suite, and that the figures are from the last run\nthat included it. The historical comparison is still informative.\n\nA changelog line with the rationale is added.\n\n## Commits\n\n1. `Remove optional dependency on commonmark` — the contributor's\ncommit, unchanged.\n2. `🔧 MAINTAIN: Remove remaining commonmark references` — drops the\norphaned benchmark, adds the changelog line.\n3. `📚 DOCS: Keep the commonmark-py benchmark row, with a deprecation\nfootnote`, plus a changelog wording tweak.\n\n## Verification\n\n- All tests pass; all pre-commit hooks pass under the new pins.\n- Local docs build renders the footnote and adds no warnings over\nmaster.\n- Remaining `commonmark` mentions in `pyproject.toml`, `tox.ini` and\n`benchmarking/` refer to the CommonMark spec or the `commonmark` preset,\nnone to the package.\n\n---------\n\nCo-authored-by: Nikolas Nyby <nikolas@gnu.org>",
+          "timestamp": "2026-09-09T14:46:58+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/a5950caef3434ed83045b43311aefcf7e0578aa3",
+          "distinct": true,
+          "tree_id": "ef405ae2f42de68a04b57d6f24094c379a544209"
+        },
+        "date": 1788958074207,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 9.595491486934392,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0040409",
+            "group": "packages",
+            "extra": "mean: 104.22 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 205.71430799471617,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00010951",
+            "group": "packages",
+            "extra": "mean: 4.8611 msec\nrounds: 130"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 15.475150897925325,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0024599",
+            "group": "packages",
+            "extra": "mean: 64.620 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 9.358231455889992,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0043355",
+            "group": "packages",
+            "extra": "mean: 106.86 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 6.9374288105768835,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035509",
+            "group": "packages",
+            "extra": "mean: 144.15 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 9.076474315855027,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013919",
+            "group": "packages",
+            "extra": "mean: 110.17 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.6853157431814838,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0063219",
+            "group": "packages",
+            "extra": "mean: 593.36 msec\nrounds: 20"
           }
         ]
       }
