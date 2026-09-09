@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1788953284675,
+  "lastUpdate": 1788953524777,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -29415,6 +29415,92 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0089957",
             "group": "packages",
             "extra": "mean: 731.85 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "3.59",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "0198992a9cd3f292ba586cb1a48fbdbee69d32ac",
+          "message": "📚 DOCS: Document renderer constructor differences (#421)\n\nDocument that `MarkdownIt` passes itself to `renderer_cls`, unlike the\nargument-free JavaScript renderer constructor. Clarify the custom\nconstructor contract and that `RendererHTML` accepts but ignores an\noptional parser argument.\n\nCloses #127.\n\nValidation: 981 tests passed; all pre-commit checks passed; strict docs\nbuild passed on Python 3.10 with Sphinx 8.1.3. Sphinx 9 fails in the\nunchanged API-doc configuration on both upstream and this branch.\n\nCo-authored-by: jf nz <talon_usable_9k@icloud.com>",
+          "timestamp": "2026-09-09T13:31:01+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/0198992a9cd3f292ba586cb1a48fbdbee69d32ac",
+          "distinct": true,
+          "tree_id": "c5c7cc1e89235b83c855f5c27a61767a3c58334a"
+        },
+        "date": 1788953523026,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 10.618763871088472,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0042722",
+            "group": "packages",
+            "extra": "mean: 94.173 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 215.45348757799854,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00058924",
+            "group": "packages",
+            "extra": "mean: 4.6414 msec\nrounds: 132"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 17.078335503613197,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0026071",
+            "group": "packages",
+            "extra": "mean: 58.554 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_commonmark_py",
+            "value": 4.1589245556767995,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017459",
+            "group": "packages",
+            "extra": "mean: 240.45 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 10.603028106285478,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0057014",
+            "group": "packages",
+            "extra": "mean: 94.313 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 7.6897661210887716,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0069867",
+            "group": "packages",
+            "extra": "mean: 130.04 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 10.323852016213733,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012112",
+            "group": "packages",
+            "extra": "mean: 96.863 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.8856419541859972,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0087268",
+            "group": "packages",
+            "extra": "mean: 530.32 msec\nrounds: 20"
           }
         ]
       }
