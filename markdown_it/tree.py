@@ -9,6 +9,8 @@ from collections.abc import Generator, Sequence
 import textwrap
 from typing import Any, NamedTuple, TypeVar, overload
 
+from typing_extensions import Self
+
 from .token import Token
 
 
@@ -84,13 +86,13 @@ class SyntaxTreeNode:
     @overload
     def __getitem__(self: _NodeType, item: slice) -> list[_NodeType]: ...
 
-    def __getitem__(self: _NodeType, item: int | slice) -> _NodeType | list[_NodeType]:
+    def __getitem__(self, item: int | slice) -> Self | list[Self]:
         return self.children[item]
 
-    def to_tokens(self: _NodeType) -> list[Token]:
+    def to_tokens(self) -> list[Token]:
         """Recover the linear token stream."""
 
-        def recursive_collect_tokens(node: _NodeType, token_list: list[Token]) -> None:
+        def recursive_collect_tokens(node: Self, token_list: list[Token]) -> None:
             if node.type == "root":
                 for child in node.children:
                     recursive_collect_tokens(child, token_list)
@@ -108,19 +110,19 @@ class SyntaxTreeNode:
         return tokens
 
     @property
-    def children(self: _NodeType) -> list[_NodeType]:
+    def children(self) -> list[Self]:
         return self._children
 
     @children.setter
-    def children(self: _NodeType, value: list[_NodeType]) -> None:
+    def children(self, value: list[Self]) -> None:
         self._children = value
 
     @property
-    def parent(self: _NodeType) -> _NodeType | None:
+    def parent(self) -> Self | None:
         return self._parent  # type: ignore
 
     @parent.setter
-    def parent(self: _NodeType, value: _NodeType | None) -> None:
+    def parent(self, value: Self | None) -> None:
         self._parent = value
 
     @property
@@ -139,7 +141,7 @@ class SyntaxTreeNode:
         return bool(self.nester_tokens)
 
     @property
-    def siblings(self: _NodeType) -> Sequence[_NodeType]:
+    def siblings(self) -> Sequence[Self]:
         """Get siblings of the node.
 
         Gets the whole group of siblings, including self.
@@ -165,7 +167,7 @@ class SyntaxTreeNode:
         return self.nester_tokens.opening.type.removesuffix("_open")
 
     @property
-    def next_sibling(self: _NodeType) -> _NodeType | None:
+    def next_sibling(self) -> Self | None:
         """Get the next node in the sequence of siblings.
 
         Returns `None` if this is the last sibling.
@@ -176,7 +178,7 @@ class SyntaxTreeNode:
         return None
 
     @property
-    def previous_sibling(self: _NodeType) -> _NodeType | None:
+    def previous_sibling(self) -> Self | None:
         """Get the previous node in the sequence of siblings.
 
         Returns `None` if this is the first sibling.
@@ -241,9 +243,7 @@ class SyntaxTreeNode:
             )
         return text
 
-    def walk(
-        self: _NodeType, *, include_self: bool = True
-    ) -> Generator[_NodeType, None, None]:
+    def walk(self, *, include_self: bool = True) -> Generator[Self, None, None]:
         """Recursively yield all descendant nodes in the tree starting at self.
 
         The order mimics the order of the underlying linear token
@@ -282,7 +282,7 @@ class SyntaxTreeNode:
         """Html attributes."""
         return self._attribute_token().attrs
 
-    def attrGet(self, name: str) -> None | str | int | float:
+    def attrGet(self, name: str) -> str | int | float | None:
         """Get the value of attribute `name`, or null if it does not exist."""
         return self._attribute_token().attrGet(name)
 

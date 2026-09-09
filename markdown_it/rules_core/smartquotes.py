@@ -58,7 +58,7 @@ def process_inlines(tokens: list[Token], state: StateCore) -> None:
 
             # Find previous character,
             # default to space if it's the beginning of the line
-            lastChar: None | int = 0x20
+            lastChar: int | None = 0x20
 
             if t.start(0) + lastIndex - 1 >= 0:
                 lastChar = charCodeAt(text, t.start(0) + lastIndex - 1)
@@ -75,7 +75,7 @@ def process_inlines(tokens: list[Token], state: StateCore) -> None:
 
             # Find next character,
             # default to space if it's the end of the line
-            nextChar: None | int = 0x20
+            nextChar: int | None = 0x20
 
             if pos < maximum:
                 nextChar = charCodeAt(text, pos)
