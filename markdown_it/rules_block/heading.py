@@ -19,7 +19,10 @@ def heading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bo
     if state.is_code_block(startLine):
         return False
 
-    ch: str | None = state.src[pos]
+    try:
+        ch: str | None = state.src[pos]
+    except IndexError:
+        return False
 
     if ch != "#" or pos >= maximum:
         return False

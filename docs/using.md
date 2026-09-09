@@ -52,7 +52,7 @@ dictating the syntax rules and additional options for the parser and renderer.
 You can define this configuration *via* directly supplying a dictionary or a preset name:
 
 - `zero`: This configures the minimum components to parse text (i.e. just paragraphs and text)
-- `commonmark` (default): This configures the parser to strictly comply with the [CommonMark specification](http://spec.commonmark.org/).
+- `commonmark` (default): This configures the parser to strictly comply with the [CommonMark specification](https://spec.commonmark.org/).
 - `js-default`: This is the default in the JavaScript version.
   Compared to `commonmark`, it disables HTML parsing and enables the table and strikethrough components.
 - `gfm-like`: This configures the parser to approximately comply with the [GitHub Flavored Markdown specification](https://github.github.com/gfm/).
