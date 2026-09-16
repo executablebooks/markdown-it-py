@@ -4,13 +4,17 @@ import warnings
 import pytest
 
 from markdown_it import MarkdownIt
+from markdown_it.rules_block.state_block import StateBlock
 from markdown_it.token import MappedToken, Token
 
 if TYPE_CHECKING:
     from typing_extensions import assert_type
 
-    def check_mapped_token_type(token: MappedToken) -> None:
-        assert_type(token.map, list[int])
+    def check_mapped_token_type(source: str) -> None:
+        for token in MarkdownIt().parse(source):
+            if isinstance(token, MappedToken):
+                assert_type(token.map, list[int])
+                assert_type(token.copy(), MappedToken)
 
 
 def test_token():
@@ -85,4 +89,16 @@ def test_mapped_token_serialization_with_unmapped_child():
     token = MappedToken("custom", "", 0, map=[0, 1], children=[Token("text", "", 0)])
     assert MappedToken.from_dict(token.as_dict()) == token
     assert Token.from_dict(token.as_dict()) == token
-    assert token.copy() == token
+    copied = token.copy()
+    assert isinstance(copied, MappedToken)
+    assert copied == token
+    assert copied is not token
+
+
+def test_push_mapped_preserves_block_nesting():
+    tokens: list[Token] = []
+    state = StateBlock("", MarkdownIt(), {}, tokens)
+    opening = state.push_mapped("custom_open", "div", 1, map=[0, 1])
+    closing = state.push_mapped("custom_close", "div", -1, map=[0, 1])
+    assert opening.level == closing.level == state.level == 0
+    assert tokens == [opening, closing]

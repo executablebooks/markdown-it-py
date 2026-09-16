@@ -198,6 +198,10 @@ class MappedToken(Token):
             for field in dc.fields(Token)
         )
 
+    def copy(self, **changes: Any) -> MappedToken:
+        """Return a shallow copy that retains the mapped token type."""
+        return dc.replace(self, **changes)
+
     @classmethod
     def from_dict(cls, dct: MutableMapping[str, Any]) -> MappedToken:
         """Restore a mapped token and its potentially unmapped children."""
