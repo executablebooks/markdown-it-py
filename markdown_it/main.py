@@ -228,6 +228,11 @@ class MarkdownIt:
         """Add a rule for rendering a particular Token type.
 
         Only applied when ``renderer.__output__ == fmt``
+
+        :param name: must equal the ``type`` of the token(s) this should render
+            (e.g. ``"heading_open"``, ``"fence"``); it is not an arbitrary label.
+            If it does not match any token type actually produced by the active
+            rules, ``function`` will silently never be called.
         """
         if self.renderer.__output__ == fmt:
             self.renderer.rules[name] = function.__get__(self.renderer)  # type: ignore
