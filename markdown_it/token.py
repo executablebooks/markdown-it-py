@@ -176,3 +176,36 @@ class Token:
         if token.children:
             token.children = [cls.from_dict(c) for c in token.children]  # type: ignore[arg-type]
         return token
+
+
+@dc.dataclass(slots=True, eq=False)
+class MappedToken(Token):
+    """A token with source line information available at construction."""
+
+    map: list[int] = dc.field(kw_only=True)
+
+    def __post_init__(self) -> None:
+        Token.__post_init__(self)
+        if self.map is None:
+            raise TypeError("MappedToken requires a source map")
+
+    def __eq__(self, other: object) -> bool:
+        """Retain value equality with existing ``Token`` instances."""
+        if not isinstance(other, Token):
+            return NotImplemented
+        return all(
+            getattr(self, field.name) == getattr(other, field.name)
+            for field in dc.fields(Token)
+        )
+
+    @classmethod
+    def from_dict(cls, dct: MutableMapping[str, Any]) -> MappedToken:
+        """Restore a mapped token and its potentially unmapped children."""
+        children = dct.get("children")
+        if isinstance(children, list):
+            dct = dict(dct)
+            dct["children"] = [
+                Token.from_dict(child) if isinstance(child, MutableMapping) else child
+                for child in children
+            ]
+        return cls(**dct)

@@ -131,11 +131,10 @@ def make_fence_rule(
 
         state.line = nextLine + (1 if haveEndMarker else 0)
 
-        token = state.push(token_type, "code", 0)
+        token = state.push_mapped(token_type, "code", 0, map=[startLine, state.line])
         token.info = params
         token.content = state.getLines(startLine + 1, nextLine, length, True)
         token.markup = markup
-        token.map = [startLine, state.line]
 
         return True
 

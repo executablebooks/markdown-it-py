@@ -43,6 +43,21 @@ for token in md.parse("some *text*"):
     print()
 ```
 
+The built-in fenced-code and HTML-block rules emit `MappedToken` instances.
+Unlike a general `Token`, a `MappedToken` has a non-optional source line map:
+
+```python
+from markdown_it.token import MappedToken
+
+for token in MarkdownIt().parse("```python\npass\n```\n"):
+    if isinstance(token, MappedToken) and token.type == "fence":
+        start_line, end_line = token.map
+```
+
+Plugins can create these tokens using `StateBlock.push_mapped(..., map=[start, end])`.
+Checking only `token.type` does not narrow its map type: plugins can emit
+arbitrary token types, and a general `Token` may have no map.
+
 ## The Parser
 
 +++

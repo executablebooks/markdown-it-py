@@ -1,6 +1,16 @@
+from typing import TYPE_CHECKING
 import warnings
 
-from markdown_it.token import Token
+import pytest
+
+from markdown_it import MarkdownIt
+from markdown_it.token import MappedToken, Token
+
+if TYPE_CHECKING:
+    from typing_extensions import assert_type
+
+    def check_mapped_token_type(token: MappedToken) -> None:
+        assert_type(token.map, list[int])
 
 
 def test_token():
@@ -36,3 +46,43 @@ def test_token():
 def test_serialization():
     token = Token("name", "tag", 0, children=[Token("other", "tag2", 0)])
     assert token == Token.from_dict(token.as_dict())
+
+
+@pytest.mark.parametrize(
+    ("source", "token_type", "source_map"),
+    [
+        ("```python\npass\n```\n", "fence", [0, 3]),
+        ("<!-- comment -->\n", "html_block", [0, 1]),
+    ],
+)
+def test_builtin_mapped_tokens(source, token_type, source_map):
+    token = MarkdownIt().parse(source)[0]
+    assert isinstance(token, MappedToken)
+    assert token.type == token_type
+    assert token.map == source_map
+    assert token == Token(
+        token_type,
+        token.tag,
+        token.nesting,
+        map=source_map,
+        content=token.content,
+        markup=token.markup,
+        info=token.info,
+        block=True,
+    )
+
+
+def test_mapped_token_requires_map():
+    with pytest.raises(TypeError):
+        MappedToken.from_dict({"type": "fence", "tag": "code", "nesting": 0})
+    with pytest.raises(TypeError, match="requires a source map"):
+        MappedToken.from_dict(
+            {"type": "fence", "tag": "code", "nesting": 0, "map": None}
+        )
+
+
+def test_mapped_token_serialization_with_unmapped_child():
+    token = MappedToken("custom", "", 0, map=[0, 1], children=[Token("text", "", 0)])
+    assert MappedToken.from_dict(token.as_dict()) == token
+    assert Token.from_dict(token.as_dict()) == token
+    assert token.copy() == token

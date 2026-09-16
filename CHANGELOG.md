@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+* 👌 Expose mapped token types for fenced code and HTML blocks, with non-optional source maps, in [#430](https://github.com/executablebooks/markdown-it-py/issues/430).
 * ✨ Add `--enable-tables` to the CLI for file, standard input and interactive parsing in [#422](https://github.com/executablebooks/markdown-it-py/pull/422)
 * 🐛 Fix CLI interactive mode joining input lines with an extra newline, which split every line into its own paragraph and broke hard line breaks, in [#172](https://github.com/executablebooks/markdown-it-py/issues/172)
 * 📚 Document the Python renderer constructor contract.

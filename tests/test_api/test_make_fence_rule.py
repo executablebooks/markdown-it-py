@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from markdown_it import MarkdownIt
 from markdown_it.rules_block.fence import make_fence_rule
+from markdown_it.token import MappedToken
 
 
 def _make_colon_fence_md() -> MarkdownIt:
@@ -30,6 +31,7 @@ class TestColonFenceMarker:
         md = _make_colon_fence_md()
         tokens = md.parse(":::\nfoo\n:::\n")
         assert len(tokens) == 1
+        assert isinstance(tokens[0], MappedToken)
         assert tokens[0].type == "colon_fence"
         assert tokens[0].content == "foo\n"
         assert tokens[0].markup == ":::"
