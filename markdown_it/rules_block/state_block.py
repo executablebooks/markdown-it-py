@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Literal
 
 from ..common.utils import isStrSpace
 from ..ruler import StateBase
-from ..token import Token
+from ..token import MappedToken, Token
 from ..utils import EnvType
 
 if TYPE_CHECKING:
@@ -119,6 +119,20 @@ class StateBlock(StateBase):
     def push(self, ttype: str, tag: str, nesting: Literal[-1, 0, 1]) -> Token:
         """Push new token to "stream"."""
         token = Token(ttype, tag, nesting)
+        token.block = True
+        if nesting < 0:
+            self.level -= 1  # closing tag
+        token.level = self.level
+        if nesting > 0:
+            self.level += 1  # opening tag
+        self.tokens.append(token)
+        return token
+
+    def push_mapped(
+        self, ttype: str, tag: str, nesting: Literal[-1, 0, 1], *, map: list[int]
+    ) -> MappedToken:
+        """Push a block token whose source map is known."""
+        token = MappedToken(ttype, tag, nesting, map=map)
         token.block = True
         if nesting < 0:
             self.level -= 1  # closing tag

@@ -86,8 +86,7 @@ def html_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
     state.line = nextLine
 
-    token = state.push("html_block", "", 0)
-    token.map = [startLine, nextLine]
+    token = state.push_mapped("html_block", "", 0, map=[startLine, nextLine])
     token.content = state.getLines(startLine, nextLine, state.blkIndent, True)
 
     return True
