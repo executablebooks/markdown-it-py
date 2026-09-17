@@ -84,6 +84,27 @@ class StateInline(StateBase):
         # inside <a> and markdown links
         self.linkLevel = 0
 
+        # Lazy cache of `terminator -> last index in src`, see
+        # `html_terminator_last`.
+        self._html_terminators: dict[str, int] | None = None
+
+    def html_terminator_last(self, term: str) -> int:
+        """Index of the last occurrence of `term` in `self.src`, or -1.
+
+        The result is cached per terminator, for the life of the state.
+        It is used by the `html_inline` rule to reject, in constant time, a
+        position at which the terminator required to close an HTML construct
+        cannot possibly occur -- without running the tag regex, whose lazy
+        sub-patterns would otherwise rescan to the end of the input on every
+        such (failing) attempt.
+        """
+        if self._html_terminators is None:
+            self._html_terminators = {}
+        elif (last := self._html_terminators.get(term)) is not None:
+            return last
+        last = self._html_terminators[term] = self.src.rfind(term)
+        return last
+
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}"
