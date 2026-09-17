@@ -207,6 +207,10 @@ MD_TRIM_CHARS = "".join(
 )
 
 
+#: A run of one or more characters from :data:`MD_TRIM_CHARS`.
+MD_TRIM_RE = re.compile("[" + re.escape(MD_TRIM_CHARS) + "]+")
+
+
 def mdTrim(string: str) -> str:
     """Strip leading and trailing whitespace, using the CommonMark set."""
     return string.strip(MD_TRIM_CHARS)
@@ -275,7 +279,7 @@ def normalizeReference(string: str) -> str:
     """Helper to unify [reference labels]."""
     # Trim and collapse whitespace
     #
-    string = re.sub("[" + re.escape(MD_TRIM_CHARS) + "]+", " ", mdTrim(string))
+    string = MD_TRIM_RE.sub(" ", mdTrim(string))
 
     # In node v10 'ẞ'.toLowerCase() === 'Ṿ', which is presumed to be a bug
     # fixed in v12 (couldn't find any details).

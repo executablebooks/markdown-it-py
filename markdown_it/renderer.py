@@ -10,10 +10,9 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 import inspect
-import re
 from typing import Any, ClassVar, Protocol
 
-from .common.utils import MD_TRIM_CHARS, escapeHtml, mdTrim, unescapeAll
+from .common.utils import MD_TRIM_RE, escapeHtml, mdTrim, unescapeAll
 from .token import Token
 from .utils import EnvType, OptionsDict
 
@@ -276,7 +275,7 @@ class RendererHTML(RendererProtocol):
         if info:
             # Not ``str.split()``: it splits on the Python whitespace set,
             # which is wider than the one upstream uses here.
-            arr = re.split("[" + re.escape(MD_TRIM_CHARS) + "]+", info, maxsplit=1)
+            arr = MD_TRIM_RE.split(info, maxsplit=1)
             langName = arr[0]
             if len(arr) == 2:
                 langAttrs = arr[1]
