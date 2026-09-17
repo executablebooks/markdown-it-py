@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1789643889226,
+  "lastUpdate": 1789644175421,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -29993,6 +29993,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0086739",
             "group": "packages",
             "extra": "mean: 699.29 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.21"
+        },
+        "commit": {
+          "id": "337c2d544ca68d815f2943325d0e892b02c074d1",
+          "message": "🔧 Clarify that add_render_rule's name must match a token type (#432)\n\n## Summary\nFixes #308.\n\n`MarkdownIt.add_render_rule`'s docstring gave no indication of what\n`name` should be, which led to confusion (as described in the issue): a\nrule silently never fires if `name` doesn't match a token's `.type`,\nsince `RendererHTML.render`/`renderInline` just do\n`self.rules.get(token.type, ...)`.\n\n## Why not the suggested runtime warning?\nThe issue suggests logging a warning when `name` isn't a \"preset rule\".\nI implemented and tested that first, but `self.renderer.rules`\n(populated in `RendererHTML.__init__` via `inspect.getmembers`) only\ncontains methods for token types that already have a dedicated renderer\nmethod (e.g. `fence`, `code_inline`, `image`). Most token types —\n`paragraph_open`, `heading_open`, etc. — have no such method and fall\nback to the generic `renderToken`, so they're simply not keys in that\ndict.\n\nThat means a `name not in self.renderer.rules` check produces a false\nwarning for the single most common use of this method: adding a custom\nrenderer for a standard token type that didn't previously have a\ndedicated one (verified with a quick test:\n`md.add_render_rule(\"paragraph_open\", ...)` would warn even though\n`\"paragraph_open\"` is a perfectly valid token type). There's also no\nother registry of \"valid\" token type names to check against, since\nplugins are free to introduce their own.\n\nGiven that, documenting the actual contract (`name` must equal a token's\n`.type`) is the fix that resolves the reported confusion without adding\nnoisy false positives. Happy to revisit a runtime check if maintainers\nhave a different validation approach in mind.\n\n## Test plan\n- Ran `pytest tests/test_api/test_main.py` before and after: 20 passed\nboth times (2 pre-existing unrelated failures due to the optional\n`linkify-it-py` dependency not being installed in this sandbox).\n- Docs-only change to a docstring, no behavior change, so no new test\nwas added.\n\nCo-authored-by: hikmetba-bit <hikmetba-bit@users.noreply.github.com>\nCo-authored-by: Chris Sewell <chrisj_sewell@hotmail.com>",
+          "timestamp": "2026-09-17T13:21:58+02:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/337c2d544ca68d815f2943325d0e892b02c074d1",
+          "distinct": true,
+          "tree_id": "d593681247473d770edbd46646e51425e571a1e7"
+        },
+        "date": 1789644174382,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.544130306841712,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035713",
+            "group": "packages",
+            "extra": "mean: 132.55 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 196.90798691131192,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000047371",
+            "group": "packages",
+            "extra": "mean: 5.0785 msec\nrounds: 124"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 11.905770295159034,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0025442",
+            "group": "packages",
+            "extra": "mean: 83.993 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.195690557627142,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0014471",
+            "group": "packages",
+            "extra": "mean: 138.97 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.45051212908405,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0033895",
+            "group": "packages",
+            "extra": "mean: 183.47 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.033518750216055,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017064",
+            "group": "packages",
+            "extra": "mean: 142.18 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.3836002441406976,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0068927",
+            "group": "packages",
+            "extra": "mean: 722.75 msec\nrounds: 20"
           }
         ]
       }
