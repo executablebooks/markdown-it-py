@@ -174,6 +174,41 @@ def test_reset():
     }
 
 
+def test_reset_after_exception() -> None:
+    """Restore all rule chains without swallowing the original exception."""
+    md = MarkdownIt("zero")
+    original_rules = md.get_active_rules()
+    error = RuntimeError("rendering failed")
+
+    with pytest.raises(RuntimeError) as exc_info, md.reset_rules():
+        md.enable(["heading", "emphasis"])
+        md.disable("text_join")
+        assert md.render("# *heading*") == "<h1><em>heading</em></h1>\n"
+        raise error
+
+    assert exc_info.value is error
+    assert md.get_active_rules() == original_rules
+    assert md.render("# *heading*") == "<p># *heading*</p>\n"
+
+
+def test_nested_reset_after_exception() -> None:
+    """An inner failure restores the outer context's temporary configuration."""
+    md = MarkdownIt()
+    original_rules = md.get_active_rules()
+
+    with md.reset_rules():
+        md.disable("heading")
+        outer_rules = md.get_active_rules()
+        with pytest.raises(RuntimeError), md.reset_rules():
+            md.disable("emphasis")
+            raise RuntimeError("inner rendering failed")
+        assert md.get_active_rules() == outer_rules
+        assert md.render("# *heading*") == "<p># <em>heading</em></p>\n"
+
+    assert md.get_active_rules() == original_rules
+    assert md.render("# *heading*") == "<h1><em>heading</em></h1>\n"
+
+
 def test_parseInline():
     md = MarkdownIt()
     tokens = md.parseInline("abc\n\n> xyz")
