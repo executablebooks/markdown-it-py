@@ -102,6 +102,7 @@ md.enable(["list", "emphasis"]).render("- __*emphasise this*__")
 ```
 
 You can temporarily modify rules with the `reset_rules` context manager.
+The previous rule configuration is restored when the context exits, including when an exception is raised.
 
 ```{jupyter-execute}
 with md.reset_rules():

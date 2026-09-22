@@ -216,11 +216,13 @@ class MarkdownIt:
     def reset_rules(self) -> Generator[None, None, None]:
         """A context manager, that will reset the current enabled rules on exit."""
         chain_rules = self.get_active_rules()
-        yield
-        for chain, rules in chain_rules.items():
-            if chain != "inline2":
-                self[chain].ruler.enableOnly(rules)
-        self.inline.ruler2.enableOnly(chain_rules["inline2"])
+        try:
+            yield
+        finally:
+            for chain, rules in chain_rules.items():
+                if chain != "inline2":
+                    self[chain].ruler.enableOnly(rules)
+            self.inline.ruler2.enableOnly(chain_rules["inline2"])
 
     def add_render_rule(
         self, name: str, function: Callable[..., Any], fmt: str = "html"
