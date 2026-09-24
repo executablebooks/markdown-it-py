@@ -1,72 +1,72 @@
 # Parse backticks
-import re
-
 from .state_inline import StateInline
 
-regex = re.compile("^ (.+) $")
+
+def _build_last_runs(src: str) -> dict[int, int]:
+    """Map each backtick run length to its last position in the source."""
+    last_runs: dict[int, int] = {}
+    pos = 0
+
+    while (start := src.find("`", pos)) != -1:
+        pos = start + 1
+        while pos < len(src) and src[pos] == "`":
+            pos += 1
+        last_runs[pos - start] = start
+
+    return last_runs
 
 
 def backtick(state: StateInline, silent: bool) -> bool:
-    pos = state.pos
+    """Parse an inline code span or consume an unmatched backtick run."""
+    start = state.pos
 
-    if state.src[pos] != "`":
+    if state.src[start] != "`":
         return False
 
-    start = pos
-    pos += 1
     maximum = state.posMax
+    pos = start + 1
 
-    # scan marker length
-    while pos < maximum and (state.src[pos] == "`"):
+    # Scan marker length.
+    while pos < maximum and state.src[pos] == "`":
         pos += 1
 
     marker = state.src[start:pos]
-    openerLength = len(marker)
+    opener_length = len(marker)
 
-    if state.backticksScanned and state.backticks.get(openerLength, 0) <= start:
-        if not silent:
-            state.append_pending(marker)
-        state.pos += openerLength
-        return True
+    if not state.backticksScanned:
+        # Lookaheads may visit runs out of order, so build this cache from the
+        # whole source independently of the parser's current position.
+        state.backticks = _build_last_runs(state.src)
+        state.backticksScanned = True
 
-    matchStart = matchEnd = pos
+    if state.backticks.get(opener_length, -1) >= pos:
+        match_end = pos
 
-    # Nothing found in the cache, scan until the end of the line (or until marker is found)
-    while True:
-        try:
-            matchStart = state.src.index("`", matchEnd)
-        except ValueError:
-            break
-        matchEnd = matchStart + 1
+        while (
+            match_start := state.src.find("`", match_end)
+        ) != -1 and match_start < maximum:
+            match_end = match_start + 1
+            # A run crossing posMax cannot be a closer in this parse range.
+            while match_end < len(state.src) and state.src[match_end] == "`":
+                match_end += 1
+            if match_end > maximum:
+                break
 
-        # scan marker length
-        while matchEnd < maximum and (state.src[matchEnd] == "`"):
-            matchEnd += 1
-
-        closerLength = matchEnd - matchStart
-
-        if closerLength == openerLength:
-            # Found matching closer length.
-            if not silent:
-                token = state.push("code_inline", "code", 0)
-                token.markup = marker
-                token.content = state.src[pos:matchStart].replace("\n", " ")
-                if (
-                    token.content.startswith(" ")
-                    and token.content.endswith(" ")
-                    and len(token.content.strip()) > 0
-                ):
-                    token.content = token.content[1:-1]
-            state.pos = matchEnd
-            return True
-
-        # Some different length found, put it in cache as upper limit of where closer can be found
-        state.backticks[closerLength] = matchStart
-
-    # Scanned through the end, didn't find anything
-    state.backticksScanned = True
+            if match_end - match_start == opener_length:
+                if not silent:
+                    token = state.push("code_inline", "code", 0)
+                    token.markup = marker
+                    token.content = state.src[pos:match_start].replace("\n", " ")
+                    if (
+                        token.content.startswith(" ")
+                        and token.content.endswith(" ")
+                        and token.content.strip()
+                    ):
+                        token.content = token.content[1:-1]
+                state.pos = match_end
+                return True
 
     if not silent:
         state.append_pending(marker)
-    state.pos += openerLength
+    state.pos = pos
     return True
