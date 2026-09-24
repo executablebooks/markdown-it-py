@@ -765,3 +765,31 @@ Inline HTML in image description
 .
 <p><img src="/url" alt="a&lt;b&gt;c" /></p>
 .
+
+Unclosed link labels must not suppress a later code span (#438).
+.
+[foo `bar` baz`
+.
+<p>[foo <code>bar</code> baz`</p>
+.
+
+Unclosed image labels must not suppress a later code span (#438).
+.
+![alt `code` x`
+.
+<p>![alt <code>code</code> x`</p>
+.
+
+A longer backtick run outside a link label must not close a shorter opener.
+.
+[`](``)
+.
+<p><a href="%60%60">`</a></p>
+.
+
+Code spans still take precedence over links when the closer follows the label.
+.
+[foo `bar](/url)` baz
+.
+<p>[foo <code>bar](/url)</code> baz</p>
+.
