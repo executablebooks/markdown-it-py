@@ -143,6 +143,7 @@ class ParserInline:
             state.pos = cache[pos]
             return
 
+        oldPos = state.pos
         if state.level < maxNesting:
             for rule in rules:
                 #  Increment state.level and decrement it later to limit recursion.
@@ -167,6 +168,16 @@ class ParserInline:
             #
             state.pos = state.posMax
 
+        if ok and state.pos == oldPos:
+            # A validation rule reported a match but did not advance the position.
+            # Without this guard the caller would loop forever, as markdown-it JS
+            # does since 13.0.2.
+            raise RuntimeError(
+                f"Inline rule {getattr(rule, '__name__', repr(rule))!r} "
+                "returned True but did not advance state.pos, which would cause "
+                "an infinite loop. Make sure the rule increments state.pos when "
+                "it reports a match."
+            )
         if not ok:
             state.pos += 1
         cache[pos] = state.pos
@@ -186,6 +197,7 @@ class ParserInline:
             # - update `state.tokens`
             # - return true
 
+            oldPos = state.pos
             if state.level < maxNesting:
                 for rule in rules:
                     ok = rule(state, False)
@@ -195,6 +207,16 @@ class ParserInline:
             if ok:
                 if state.pos >= end:
                     break
+                if state.pos == oldPos:
+                    # A rule reported a match but did not advance the position.
+                    # Without this guard the parser would loop forever, as
+                    # markdown-it JS does since 13.0.2.
+                    raise RuntimeError(
+                        f"Inline rule {getattr(rule, '__name__', repr(rule))!r} "
+                        "returned True but did not advance state.pos, which would "
+                        "cause an infinite loop. Make sure the rule increments "
+                        "state.pos when it reports a match."
+                    )
                 continue
 
             state.append_pending(state.src[state.pos])

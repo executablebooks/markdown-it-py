@@ -83,9 +83,21 @@ class ParserBlock:
             # - update `state.line`
             # - update `state.tokens`
             # - return True
+            ok = False
             for rule in rules:
                 if rule(state, line, endLine, False):
+                    ok = True
                     break
+            if ok and state.line == line:
+                # A rule reported a match but did not advance the line. Without
+                # this guard the parser would loop forever (and usually exhaust
+                # memory), as markdown-it JS does since 13.0.2.
+                raise RuntimeError(
+                    f"Block rule {getattr(rule, '__name__', repr(rule))!r} "
+                    "returned True but did not advance state.line, which would "
+                    "cause an infinite loop. Make sure the rule increments "
+                    "state.line when it reports a match."
+                )
 
             # set state.tight if we had an empty line before current tag
             # i.e. latest empty line should not count
