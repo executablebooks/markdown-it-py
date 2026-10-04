@@ -85,6 +85,8 @@ class ParserBlock:
             # - return True
             for rule in rules:
                 if rule(state, line, endLine, False):
+                    if state.line <= line:
+                        raise RuntimeError("block rule didn't increment state.line")
                     break
 
             # set state.tight if we had an empty line before current tag
