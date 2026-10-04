@@ -152,6 +152,8 @@ class ParserInline:
                 ok = rule(state, True)
                 state.level -= 1
                 if ok:
+                    if state.pos <= pos:
+                        raise RuntimeError("inline rule didn't increment state.pos")
                     break
         else:
             # Too much nesting, just skip until the end of the paragraph.
@@ -179,6 +181,7 @@ class ParserInline:
         maxNesting = state.md.options["maxNesting"]
 
         while state.pos < end:
+            pos = state.pos
             # Try all possible rules.
             # On success, rule should:
             #
@@ -190,6 +193,8 @@ class ParserInline:
                 for rule in rules:
                     ok = rule(state, False)
                     if ok:
+                        if state.pos <= pos:
+                            raise RuntimeError("inline rule didn't increment state.pos")
                         break
 
             if ok:
