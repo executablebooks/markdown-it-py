@@ -54,3 +54,22 @@ Fix parsing of incorrect numeric character references
 <p><a href="&amp;#X22y;"></a> &amp;#X22y;
 <a href="&amp;#35y;"></a> &amp;#35y;</p>
 .
+
+#445 Image alt keeps backslash escapes and entities
+.
+![a \* b](/u)
+
+![a &amp; b](/u)
+
+![a &lt; b](/u)
+
+![a \* *b* &amp; c](/u)
+
+![C:\Python26](/u)
+.
+<p><img src="/u" alt="a * b" /></p>
+<p><img src="/u" alt="a &amp; b" /></p>
+<p><img src="/u" alt="a &lt; b" /></p>
+<p><img src="/u" alt="a * b &amp; c" /></p>
+<p><img src="/u" alt="C:\Python26" /></p>
+.
