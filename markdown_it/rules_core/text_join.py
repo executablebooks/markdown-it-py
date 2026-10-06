@@ -19,35 +19,39 @@ def text_join(state: StateCore) -> None:
         if inline_token.type != "inline":
             continue
 
-        # convert text_special to text and join all adjacent text nodes
-        new_tokens: list[Token] = []
         children = inline_token.children or []
-        i = 0
-        while i < len(children):
-            child_token = children[i]
-            if child_token.type == "text_special":
-                child_token.type = "text"
-            if (
-                child_token.type == "text"
-                and new_tokens
-                and new_tokens[-1].type == "text"
-            ):
-                # Collapse a run of adjacent text nodes in a single join, instead
-                # of pairwise `a + b` concatenation. The pairwise form is O(L*k)
-                # in the size of the run because each step rebuilds the growing
-                # prefix; "".join is O(L).
-                parts = [new_tokens[-1].content, child_token.content]
+        for child_token in children:
+            # image `alt` is parsed into its own token tree
+            if child_token.children:
+                child_token.children = _join_text_tokens(child_token.children)
+        inline_token.children = _join_text_tokens(children)
+
+
+def _join_text_tokens(tokens: list[Token]) -> list[Token]:
+    """Convert `text_special` to `text` and join all adjacent text tokens"""
+    new_tokens: list[Token] = []
+    i = 0
+    while i < len(tokens):
+        token = tokens[i]
+        if token.type == "text_special":
+            token.type = "text"
+        if token.type == "text" and new_tokens and new_tokens[-1].type == "text":
+            # Collapse a run of adjacent text nodes in a single join, instead
+            # of pairwise `a + b` concatenation. The pairwise form is O(L*k)
+            # in the size of the run because each step rebuilds the growing
+            # prefix; "".join is O(L).
+            parts = [new_tokens[-1].content, token.content]
+            i += 1
+            while i < len(tokens):
+                next_token = tokens[i]
+                if next_token.type == "text_special":
+                    next_token.type = "text"
+                if next_token.type != "text":
+                    break
+                parts.append(next_token.content)
                 i += 1
-                while i < len(children):
-                    next_token = children[i]
-                    if next_token.type == "text_special":
-                        next_token.type = "text"
-                    if next_token.type != "text":
-                        break
-                    parts.append(next_token.content)
-                    i += 1
-                new_tokens[-1].content = "".join(parts)
-            else:
-                new_tokens.append(child_token)
-                i += 1
-        inline_token.children = new_tokens
+            new_tokens[-1].content = "".join(parts)
+        else:
+            new_tokens.append(token)
+            i += 1
+    return new_tokens
