@@ -544,3 +544,56 @@ def test_rule_reading_pending_each_char_renders_correctly():
     # the rule saw the text accumulate one character at a time
     assert seen[:4] == [0, 1, 2, 3]
     assert max(seen) == 9_999
+
+
+def _check_rule_names_generator_applies_to_all_chains(method: str) -> None:
+    """An iterator must be reused across each rule chain."""
+    md = MarkdownIt("zero" if method == "enable" else "commonmark")
+    core_rule = "smartquotes" if method == "enable" else "normalize"
+    names = (name for name in [core_rule, "heading", "emphasis"])
+    assert getattr(md, method)(names) is md
+    active = md.get_active_rules()
+    for chain, name in [
+        ("core", core_rule),
+        ("block", "heading"),
+        ("inline", "emphasis"),
+        ("inline2", "emphasis"),
+    ]:
+        assert (name in active[chain]) is (method == "enable")
+
+
+def _check_rule_names_generator_reports_unknown_rules(method: str) -> None:
+    """Unknown names are checked after all chains have inspected an iterator."""
+    with pytest.raises(ValueError, match="unknown rule"):
+        getattr(MarkdownIt(), method)(name for name in ["missing-rule"])
+
+
+def _check_rule_names_generator_ignores_unknown_rules(method: str) -> None:
+    """Ignoring an unknown name must still apply the known iterator names."""
+    md = MarkdownIt("zero" if method == "enable" else "commonmark")
+    getattr(md, method)((name for name in ["missing-rule", "heading"]), True)
+    assert ("heading" in md.get_active_rules()["block"]) is (method == "enable")
+
+
+def test_enable_generator_applies_to_all_chains() -> None:
+    _check_rule_names_generator_applies_to_all_chains("enable")
+
+
+def test_disable_generator_applies_to_all_chains() -> None:
+    _check_rule_names_generator_applies_to_all_chains("disable")
+
+
+def test_enable_generator_reports_unknown_rules() -> None:
+    _check_rule_names_generator_reports_unknown_rules("enable")
+
+
+def test_disable_generator_reports_unknown_rules() -> None:
+    _check_rule_names_generator_reports_unknown_rules("disable")
+
+
+def test_enable_generator_ignores_unknown_rules() -> None:
+    _check_rule_names_generator_ignores_unknown_rules("enable")
+
+
+def test_disable_generator_ignores_unknown_rules() -> None:
+    _check_rule_names_generator_ignores_unknown_rules("disable")
