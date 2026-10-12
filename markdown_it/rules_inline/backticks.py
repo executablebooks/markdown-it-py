@@ -54,7 +54,7 @@ def backtick(state: StateInline, silent: bool) -> bool:
                 if (
                     token.content.startswith(" ")
                     and token.content.endswith(" ")
-                    and len(token.content.strip()) > 0
+                    and len(token.content.strip(" ")) > 0
                 ):
                     token.content = token.content[1:-1]
             state.pos = matchEnd
