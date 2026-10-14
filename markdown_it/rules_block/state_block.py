@@ -66,37 +66,37 @@ class StateBlock(StateBase):
 
         # Create caches
         # Generate markers.
-        indent_found = False
-
-        start = pos = indent = offset = 0
+        # NOTE: this loop runs once per line, not once per character:
+        # `str.find` locates each line break at C speed and only leading
+        # whitespace is scanned (usually zero iterations), instead of
+        # dispatching every character through `isStrSpace`. The recorded
+        # markers are identical to the previous per-character scan.
+        start = 0
         length = len(self.src)
+        find = self.src.find
 
-        for pos, character in enumerate(self.src):
-            if not indent_found:
-                if isStrSpace(character):
-                    indent += 1
-
-                    if character == "\t":
-                        offset += 4 - offset % 4
-                    else:
-                        offset += 1
-                    continue
+        while start < length:
+            end = find("\n", start)
+            if end < 0:
+                end = length
+            indent = offset = 0
+            pos = start
+            while pos < end:
+                character = self.src[pos]
+                if not isStrSpace(character):
+                    break
+                indent += 1
+                if character == "\t":
+                    offset += 4 - offset % 4
                 else:
-                    indent_found = True
-
-            if character == "\n" or pos == length - 1:
-                if character != "\n":
-                    pos += 1
-                self.bMarks.append(start)
-                self.eMarks.append(pos)
-                self.tShift.append(indent)
-                self.sCount.append(offset)
-                self.bsCount.append(0)
-
-                indent_found = False
-                indent = 0
-                offset = 0
-                start = pos + 1
+                    offset += 1
+                pos += 1
+            self.bMarks.append(start)
+            self.eMarks.append(end)
+            self.tShift.append(indent)
+            self.sCount.append(offset)
+            self.bsCount.append(0)
+            start = end + 1 if end < length else length
 
         # Push fake entry to simplify cache bounds checks
         self.bMarks.append(length)
