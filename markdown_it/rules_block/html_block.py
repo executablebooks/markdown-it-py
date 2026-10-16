@@ -31,6 +31,16 @@ HTML_SEQUENCES: list[tuple[re.Pattern[str], re.Pattern[str], bool]] = [
 ]
 
 
+def html_block_starts(state: StateBlock, line: int) -> bool:
+    """Whether `line` begins an HTML block of any type (issue #434)."""
+    pos = state.bMarks[line] + state.tShift[line]
+    maximum = state.eMarks[line]
+    if pos >= maximum or state.src[pos] != "<":
+        return False
+    lineText = state.src[pos:maximum]
+    return any(sequence[0].search(lineText) for sequence in HTML_SEQUENCES)
+
+
 def html_block(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool:
     LOGGER.debug(
         "entering html_block: %s, %s, %s, %s", state, startLine, endLine, silent

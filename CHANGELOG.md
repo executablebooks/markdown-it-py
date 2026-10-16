@@ -5,6 +5,7 @@
 * ✨ Add `--enable-tables` to the CLI for file, standard input and interactive parsing in [#422](https://github.com/executablebooks/markdown-it-py/pull/422)
 * 🐛 Fix CLI interactive mode joining input lines with an extra newline, which split every line into its own paragraph and broke hard line breaks, in [#172](https://github.com/executablebooks/markdown-it-py/issues/172)
 * 🐛 Fix trimming and splitting with the Python whitespace set instead of the CommonMark one, which dropped U+001C–U+001F and U+0085 from paragraphs, headings, table cells and fence info strings and let distinct reference labels resolve each other, in [#418](https://github.com/executablebooks/markdown-it-py/pull/418), thanks to [@Nexory](https://github.com/Nexory)
+* 🐛 Fix HTML blocks on under-indented lines being absorbed as lazy continuations of a list item's paragraph: a line that starts an HTML block outside the item's content indent now ends the list, like cmark and commonmark.js, in [#442](https://github.com/executablebooks/markdown-it-py/pull/442)
 * 📚 Document the Python renderer constructor contract.
 * 🔧 Drop the optional dependency on the `commonmark` package and its benchmark, since the upstream package is unmaintained, in [#401](https://github.com/executablebooks/markdown-it-py/pull/401)
 
