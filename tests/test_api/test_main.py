@@ -544,3 +544,15 @@ def test_rule_reading_pending_each_char_renders_correctly():
     # the rule saw the text accumulate one character at a time
     assert seen[:4] == [0, 1, 2, 3]
     assert max(seen) == 9_999
+
+
+def test_src_char_code_follows_src():
+    """The deprecated ``srcCharCode`` is rebuilt when ``src`` is reassigned."""
+    from markdown_it.rules_block.state_block import StateBlock
+
+    state = StateBlock("ab", MarkdownIt(), {}, [])
+    with pytest.warns(DeprecationWarning):
+        assert state.srcCharCode == (97, 98)
+    state.src = "xyz"
+    with pytest.warns(DeprecationWarning):
+        assert list(state.srcCharCode) == [120, 121, 122]

@@ -30,19 +30,18 @@ if TYPE_CHECKING:
 
 
 class StateBase:
+    # `src` is a plain attribute, not a property: rules read it on almost
+    # every step, and a property call there costs ~5% of total parse time.
+    src: str
+
+    # Cache for the deprecated `srcCharCode`, as `(src, char_codes)`.
+    # This is a class-level default, since subclasses do not call `__init__`.
+    _src_char_code: tuple[str, tuple[int, ...]] | None = None
+
     def __init__(self, src: str, md: MarkdownIt, env: EnvType):
         self.src = src
         self.env = env
         self.md = md
-
-    @property
-    def src(self) -> str:
-        return self._src
-
-    @src.setter
-    def src(self, value: str) -> None:
-        self._src = value
-        self._srcCharCode: tuple[int, ...] | None = None
 
     @property
     def srcCharCode(self) -> tuple[int, ...]:
@@ -51,9 +50,10 @@ class StateBase:
             DeprecationWarning,
             stacklevel=2,
         )
-        if self._srcCharCode is None:
-            self._srcCharCode = tuple(ord(c) for c in self._src)
-        return self._srcCharCode
+        # rebuild the cache if `src` has been reassigned since it was built
+        if self._src_char_code is None or self._src_char_code[0] is not self.src:
+            self._src_char_code = (self.src, tuple(ord(c) for c in self.src))
+        return self._src_char_code[1]
 
 
 class RuleOptionsType(TypedDict, total=False):
