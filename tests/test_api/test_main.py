@@ -555,4 +555,4 @@ def test_src_char_code_follows_src():
         assert state.srcCharCode == (97, 98)
     state.src = "xyz"
     with pytest.warns(DeprecationWarning):
-        assert state.srcCharCode == (120, 121, 122)
+        assert list(state.srcCharCode) == [120, 121, 122]
