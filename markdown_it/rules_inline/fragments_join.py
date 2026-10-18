@@ -52,3 +52,12 @@ def fragments_join(state: StateInline) -> None:
 
     if curr != last:
         del state.tokens[last:]
+
+    # Drop zero-length text tokens.  Emphasis post-processing merges a ``**``
+    # delimiter run into a single ``strong`` token pair and blanks out the
+    # content of the two "inner" marker tokens instead of removing them.  They
+    # render as nothing, but would surface as empty ``text`` nodes in
+    # ``SyntaxTreeNode`` (see executablebooks/markdown-it-py#374).
+    state.tokens[:] = [
+        token for token in state.tokens if token.type != "text" or token.content
+    ]

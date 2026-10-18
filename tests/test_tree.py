@@ -83,6 +83,30 @@ def test_pretty_text_special(file_regression):
     file_regression.check(tree.pretty(show_text=True), extension=".xml")
 
 
+def test_no_empty_text_node():
+    """Regression test for https://github.com/executablebooks/markdown-it-py/issues/374
+
+    Emphasis post-processing turns a ``**`` delimiter run into a single
+    ``strong`` token pair, leaving the two "inner" marker tokens behind with
+    empty content.  These zero-length text tokens must not show up as empty
+    ``text`` nodes in the syntax tree.
+    """
+    tokens = MarkdownIt("commonmark").parse("new _li**ne**_\na")
+    tree = SyntaxTreeNode(tokens)
+    inline = tree[0].children[0]
+    assert [child.type for child in inline.children] == [
+        "text",
+        "em",
+        "softbreak",
+        "text",
+    ]
+    assert [child.type for child in inline[1].children] == ["text", "strong"]
+    # no empty text nodes anywhere in the tree
+    assert all(node.content for node in tree.walk() if node.type == "text")
+    # dropping the empty tokens must not break token round-tripping
+    assert tree.to_tokens() == tokens
+
+
 def test_walk():
     tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
     tree = SyntaxTreeNode(tokens)
