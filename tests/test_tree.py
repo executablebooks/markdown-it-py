@@ -8,10 +8,71 @@ Some paragraph text and **emphasis here** and more text here.
 """
 
 
-def test_tree_to_tokens_conversion():
+def test_tree_to_tokens_conversion() -> None:
     tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
+    serialized_tokens = [token.as_dict() for token in tokens]
     tokens_after_roundtrip = SyntaxTreeNode(tokens).to_tokens()
     assert tokens == tokens_after_roundtrip
+    assert [token.as_dict() for token in tokens_after_roundtrip] == serialized_tokens
+    assert all(
+        before is after
+        for before, after in zip(tokens, tokens_after_roundtrip, strict=True)
+    )
+
+
+def test_tree_to_tokens_reordered_children() -> None:
+    cases: list[tuple[str, tuple[int, ...], str]] = [
+        ("one\n\ntwo", (), "<p>two</p>\n<p>one</p>\n"),
+        (
+            "before *nested* after",
+            (0, 0),
+            "<p> after<em>nested</em>before </p>\n",
+        ),
+        (
+            "![before *nested* after](image.png)",
+            (0, 0, 0),
+            '<p><img src="image.png" alt=" afternestedbefore " /></p>\n',
+        ),
+    ]
+    for source, path, expected in cases:
+        md = MarkdownIt()
+        tree = SyntaxTreeNode(md.parse(source))
+        node = tree
+        for index in path:
+            node = node[index]
+        node.children.reverse()
+
+        assert md.renderer.render(tree.to_tokens(), md.options, {}) == expected
+
+
+def test_tree_to_tokens_cleared_children() -> None:
+    cases: list[tuple[str, tuple[int, ...], str]] = [
+        ("before *nested* after", (0, 0), "<p></p>\n"),
+        ("before *nested* after", (0, 0, 1), "<p>before <em></em> after</p>\n"),
+        (
+            "![old alt](image.png)",
+            (0, 0, 0),
+            '<p><img src="image.png" alt="" /></p>\n',
+        ),
+    ]
+    for source, path, expected in cases:
+        md = MarkdownIt()
+        tree = SyntaxTreeNode(md.parse(source))
+        node = tree
+        for index in path:
+            node = node[index]
+        node.children.clear()
+
+        assert md.renderer.render(tree.to_tokens(), md.options, {}) == expected
+
+
+def test_tree_to_tokens_replaced_empty_inline_children() -> None:
+    md = MarkdownIt()
+    tree = SyntaxTreeNode(md.parseInline(""))
+    replacement = SyntaxTreeNode(md.parseInline("*new*"))
+    tree[0].children = replacement[0].children
+
+    assert md.renderer.render(tree.to_tokens(), md.options, {}) == "<em>new</em>"
 
 
 def test_property_passthrough():

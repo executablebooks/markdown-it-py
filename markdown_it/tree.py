@@ -91,13 +91,22 @@ class SyntaxTreeNode:
         return self.children[item]
 
     def to_tokens(self) -> list[Token]:
-        """Recover the linear token stream."""
+        """Recover the linear token stream, including changes to the tree.
+
+        The original tokens are reused, with their child lists updated to match
+        the tree.
+        """
 
         def recursive_collect_tokens(node: Self, token_list: list[Token]) -> None:
             if node.type == "root":
                 for child in node.children:
                     recursive_collect_tokens(child, token_list)
             elif node.token:
+                if node.token.children is not None:
+                    children: list[Token] = []
+                    for child in node.children:
+                        recursive_collect_tokens(child, children)
+                    node.token.children = children
                 token_list.append(node.token)
             else:
                 assert node.nester_tokens
