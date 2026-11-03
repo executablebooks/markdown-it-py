@@ -72,7 +72,7 @@ if __name__ == "__main__":
         print(f"Downloading CommonMark spec from {url}")
         response = requests.get(url)
         response.raise_for_status()
-        if not output_path.exists() or output_path.read_text() != response.text:
+        if not output_path.exists() or output_path.read_text(encoding="utf-8") != response.text:
             changed = True
             with output_path.open("w") as f:
                 f.write(response.text)
@@ -85,7 +85,7 @@ if __name__ == "__main__":
     response.raise_for_status()
     data = response.json()
     text = _json_to_fixture(data)
-    if not test_fixture.exists() or test_fixture.read_text() != text:
+    if not test_fixture.exists() or test_fixture.read_text(encoding="utf-8") != text:
         changed = True
         with test_fixture.open("w") as f:
             f.write(text)
