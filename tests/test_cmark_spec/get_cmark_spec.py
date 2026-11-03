@@ -72,7 +72,10 @@ if __name__ == "__main__":
         print(f"Downloading CommonMark spec from {url}")
         response = requests.get(url)
         response.raise_for_status()
-        if not output_path.exists() or output_path.read_text(encoding="utf-8") != response.text:
+        if (
+            not output_path.exists()
+            or output_path.read_text(encoding="utf-8") != response.text
+        ):
             changed = True
             with output_path.open("w") as f:
                 f.write(response.text)

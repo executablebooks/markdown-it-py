@@ -15,7 +15,9 @@ TESTS_INPUT = Path(__file__).parent.joinpath("commonmark.json")
 
 def test_file(file_regression):
     md = MarkdownIt("commonmark")
-    file_regression.check(md.render(SPEC_INPUT.read_text(encoding="utf-8")), extension=".html")
+    file_regression.check(
+        md.render(SPEC_INPUT.read_text(encoding="utf-8")), extension=".html"
+    )
 
 
 @pytest.mark.parametrize("entry", json.loads(TESTS_INPUT.read_text(encoding="utf-8")))
