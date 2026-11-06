@@ -11,6 +11,9 @@ Helper class, used by [[MarkdownIt#core]], [[MarkdownIt#block]] and
 - allow assign rules to additional named chains (in the same)
 - caching lists of active rules
 
+If an invalid rule name raises during an enable/disable operation, changes
+to earlier rule names are retained and used by subsequent parsing.
+
 You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 [[MarkdownIt.use]].
@@ -201,15 +204,17 @@ class Ruler(Generic[RuleFuncTv]):
         if isinstance(names, str):
             names = [names]
         result: list[str] = []
-        for name in names:
-            idx = self.__find__(name)
-            if (idx < 0) and ignoreInvalid:
-                continue
-            if (idx < 0) and not ignoreInvalid:
-                raise KeyError(f"Rules manager: invalid rule name {name}")
-            self.__rules__[idx].enabled = True
-            result.append(name)
-        self.__cache__ = None
+        try:
+            for name in names:
+                idx = self.__find__(name)
+                if (idx < 0) and ignoreInvalid:
+                    continue
+                if (idx < 0) and not ignoreInvalid:
+                    raise KeyError(f"Rules manager: invalid rule name {name}")
+                self.__rules__[idx].enabled = True
+                result.append(name)
+        finally:
+            self.__cache__ = None
         return result
 
     def enableOnly(
@@ -241,15 +246,17 @@ class Ruler(Generic[RuleFuncTv]):
         if isinstance(names, str):
             names = [names]
         result = []
-        for name in names:
-            idx = self.__find__(name)
-            if (idx < 0) and ignoreInvalid:
-                continue
-            if (idx < 0) and not ignoreInvalid:
-                raise KeyError(f"Rules manager: invalid rule name {name}")
-            self.__rules__[idx].enabled = False
-            result.append(name)
-        self.__cache__ = None
+        try:
+            for name in names:
+                idx = self.__find__(name)
+                if (idx < 0) and ignoreInvalid:
+                    continue
+                if (idx < 0) and not ignoreInvalid:
+                    raise KeyError(f"Rules manager: invalid rule name {name}")
+                self.__rules__[idx].enabled = False
+                result.append(name)
+        finally:
+            self.__cache__ = None
         return result
 
     def getRules(self, chainName: str = "") -> list[RuleFuncTv]:
