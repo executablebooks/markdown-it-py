@@ -401,7 +401,10 @@ def _render_buffered(
     """Render PyPy fragments without repeatedly copying the output prefix."""
     # PyPy cannot extend a local string in place like CPython. Collecting
     # fragments avoids repeatedly copying the entire rendered prefix.
-    fragments: list[str] = []
+    # Keep the initial empty operand: joining one fragment would return that
+    # same object, whereas PyPy string addition creates a new string. A custom
+    # reflected addition can observe the identity of the accumulated prefix.
+    fragments: list[str] = [""]
     result = ""
     collect = True
     for i, token in enumerate(tokens):

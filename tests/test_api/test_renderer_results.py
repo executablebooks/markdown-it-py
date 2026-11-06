@@ -61,3 +61,45 @@ def test_renderer_pickle(protocol):
     assert sorted(restored.rules) == sorted(renderer.rules)
     tokens = [Token("text", "", 0, content="a&b")]
     assert restored.renderInline(tokens, MarkdownIt().options, {}) == "a&amp;b"
+
+
+@pytest.mark.parametrize("method", ["render", "renderInline"])
+@pytest.mark.parametrize("empty_before", [False, True])
+@pytest.mark.parametrize("empty_after", [False, True])
+def test_render_rule_prefix_identity(method, empty_before, empty_after):
+    source = "".join(["original", " fragment" * 10])
+
+    class InspectPrefix(str):
+        def __radd__(self, other):
+            return "original object" if other is source else "new object"
+
+    values = ([""] if empty_before else []) + [source]
+    if empty_after:
+        values.append("")
+    values.append(InspectPrefix("probe"))
+    expected = ""
+    for value in values:
+        expected += value
+
+    renderer = RendererHTML()
+    renderer.rules["custom"] = MethodType(
+        lambda self, tokens, idx, opts, env: values[idx], renderer
+    )
+    tokens = [Token("custom", "", 0) for _ in values]
+    assert getattr(renderer, method)(tokens, MarkdownIt().options, {}) == expected
+
+
+@pytest.mark.parametrize("method", ["render", "renderInline"])
+def test_render_single_fragment_identity(method):
+    source = "".join(["original", " fragment" * 10])
+    expected = ""
+    expected += source
+    renderer = RendererHTML()
+    renderer.rules["custom"] = MethodType(
+        lambda self, tokens, idx, opts, env: source, renderer
+    )
+    result = getattr(renderer, method)(
+        [Token("custom", "", 0)], MarkdownIt().options, {}
+    )
+    assert result == expected
+    assert (result is source) == (expected is source)
