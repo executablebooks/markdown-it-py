@@ -6,6 +6,7 @@ from unittest.mock import patch
 
 import pytest
 
+from markdown_it import MarkdownIt
 from markdown_it.cli import parse
 
 
@@ -143,3 +144,61 @@ def test_tables(route, enable_tables, tmp_path, capsys):
             + "\nExiting.\n"
         )
     assert capsys.readouterr().out == expected
+
+
+class FalseyMarkdownIt(MarkdownIt):
+    """A configured parser whose truth value does not indicate its availability."""
+
+    def __bool__(self) -> bool:
+        return False
+
+
+def assert_helpers_preserve_falsey_parser(
+    route: str, tmp_path: pathlib.Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """CLI helpers retain the supplied parser's enabled rules."""
+    md = FalseyMarkdownIt().enable("table")
+    source = "a | b\n--- | ---\n1 | 2\n"
+    expected = (
+        "<table>\n<thead>\n<tr>\n<th>a</th>\n<th>b</th>\n</tr>\n</thead>\n"
+        "<tbody>\n<tr>\n<td>1</td>\n<td>2</td>\n</tr>\n</tbody>\n</table>\n"
+    )
+    assert md.render(source) == expected
+    if route == "stdin":
+        with patch("sys.stdin", io.StringIO(source)):
+            parse.convert_stdin(md)
+    elif route == "file":
+        path = tmp_path / "table.md"
+        path.write_text(source, encoding="utf8")
+        parse.convert_file(str(path), md)
+    else:
+        inputs = [*source.splitlines(), EOFError, KeyboardInterrupt]
+        with patch("builtins.input", side_effect=inputs):
+            parse.interactive(md)
+        expected = (
+            f"{parse.version_str} (interactive)\n"
+            "Type Ctrl-D to complete input, or Ctrl-C to exit.\n"
+            f"\n{expected}\nExiting.\n"
+        )
+    assert capsys.readouterr().out == expected
+
+
+def test_stdin_preserves_falsey_parser(
+    tmp_path: pathlib.Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Standard input keeps the supplied parser's enabled rules."""
+    assert_helpers_preserve_falsey_parser("stdin", tmp_path, capsys)
+
+
+def test_file_preserves_falsey_parser(
+    tmp_path: pathlib.Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """File conversion keeps the supplied parser's enabled rules."""
+    assert_helpers_preserve_falsey_parser("file", tmp_path, capsys)
+
+
+def test_interactive_preserves_falsey_parser(
+    tmp_path: pathlib.Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Interactive input keeps the supplied parser's enabled rules."""
+    assert_helpers_preserve_falsey_parser("interactive", tmp_path, capsys)
