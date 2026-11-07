@@ -54,3 +54,10 @@ Fix parsing of incorrect numeric character references
 <p><a href="&amp;#X22y;"></a> &amp;#X22y;
 <a href="&amp;#35y;"></a> &amp;#35y;</p>
 .
+
+Keep the text of a code span in image alt text
+.
+![a `code` b](x.png)
+.
+<p><img src="x.png" alt="a code b" /></p>
+.
