@@ -56,13 +56,15 @@ def backtick(state: StateInline, silent: bool) -> bool:
                 if not silent:
                     token = state.push("code_inline", "code", 0)
                     token.markup = marker
-                    token.content = state.src[pos:match_start].replace("\n", " ")
+                    content = state.src[pos:match_start].replace("\n", " ")
+                    # Strip one space from each side, unless the content is all spaces
                     if (
-                        token.content.startswith(" ")
-                        and token.content.endswith(" ")
-                        and token.content.strip()
+                        content.startswith(" ")
+                        and content.endswith(" ")
+                        and any(c != " " for c in content)
                     ):
-                        token.content = token.content[1:-1]
+                        content = content[1:-1]
+                    token.content = content
                 state.pos = match_end
                 return True
 

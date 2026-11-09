@@ -800,3 +800,17 @@ Code spans still take precedence over links when the closer follows the label.
 .
 <p>[foo <code>bar](/url)</code> baz</p>
 .
+
+No stripping when a code span is all spaces (CommonMark 0.31.2 6.1).
+.
+`   `
+.
+<p><code>   </code></p>
+.
+
+A code span holding a tab between single spaces is not all spaces, so one space is stripped from each side.
+.
+` 	 `
+.
+<p><code>	</code></p>
+.
