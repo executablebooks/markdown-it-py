@@ -772,3 +772,111 @@ Code in image description (markdown-it#1142)
 .
 <p><img src="image.png" alt="foo bar baz bla" /></p>
 .
+
+Unclosed link labels must not suppress a later code span (#438).
+.
+[foo `bar` baz`
+.
+<p>[foo <code>bar</code> baz`</p>
+.
+
+Unclosed image labels must not suppress a later code span (#438).
+.
+![alt `code` x`
+.
+<p>![alt <code>code</code> x`</p>
+.
+
+A longer backtick run outside a link label must not close a shorter opener.
+.
+[`](``)
+.
+<p><a href="%60%60">`</a></p>
+.
+
+A code span opener inside a valid link label must not pair with a longer run outside the link.
+.
+[`a](/x)``b
+.
+<p><a href="/x">`a</a>``b</p>
+.
+
+Code spans still take precedence over links when the closer follows the label.
+.
+[foo `bar](/url)` baz
+.
+<p>[foo <code>bar](/url)</code> baz</p>
+.
+
+No stripping when a code span is all spaces (CommonMark 0.31.2 6.1).
+.
+`   `
+.
+<p><code>   </code></p>
+.
+
+A code span holding a tab between single spaces is not all spaces, so one space is stripped from each side.
+.
+` 	 `
+.
+<p><code>	</code></p>
+.
+
+A no-break space is not a space, so a code span holding one between single spaces is not all spaces and one space is stripped from each side.
+.
+`   `
+.
+<p><code> </code></p>
+.
+
+Issue #1144. Comment HTML block (type 2) must not end on a blank line inside a list
+.
+1. item
+
+    <!--
+    a
+
+    b
+    -->
+    c
+.
+<ol>
+<li>
+<p>item</p>
+ <!--
+ a
+
+ b
+ -->
+<p>c</p>
+</li>
+</ol>
+.
+
+Issue #1144. Comment HTML block spanning a blank line inside a blockquote
+.
+> <!--
+> a
+>
+> b
+> -->
+> c
+.
+<blockquote>
+<!--
+a
+
+b
+-->
+<p>c</p>
+</blockquote>
+.
+
+HTML block type 4 (declaration) starts with `<!` plus any ASCII letter, not only uppercase (CommonMark 4.6, start condition 4). A lowercase declaration must interrupt a paragraph.
+.
+foo
+<!bar baz>
+.
+<p>foo</p>
+<!bar baz>
+.
