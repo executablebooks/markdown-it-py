@@ -98,8 +98,10 @@ class SyntaxTreeNode:
 
         The ``children`` of inline and image tokens are replaced in place.
         These ``Token`` objects are shared with the token stream the tree was
-        built from, and with any other tree built from it, so those see the
-        edits too. Build the tree from ``copy.deepcopy(tokens)`` to avoid this.
+        built from, so that stream sees the edits too.
+        Another tree built from the same tokens keeps its own nodes,
+        and its ``to_tokens()`` writes its own children back.
+        Build the tree from ``copy.deepcopy(tokens)`` to avoid sharing.
         """
 
         def recursive_collect_tokens(node: Self, token_list: list[Token]) -> None:
