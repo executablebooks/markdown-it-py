@@ -21,11 +21,22 @@ _IS_PYPY = sys.implementation.name == "pypy"
 
 
 class RendererProtocol(Protocol):
+    """The interface a renderer passed to ``MarkdownIt(renderer_cls=...)`` must have.
+
+    ``MarkdownIt`` creates the renderer as ``renderer_cls(md)``, and its
+    ``render`` and ``renderInline`` methods call only :meth:`render`.
+    """
+
     __output__: ClassVar[str]
+    """The name of the output format, e.g. ``"html"``.
+
+    ``MarkdownIt.add_render_rule`` only applies rules whose ``fmt`` matches it.
+    """
 
     def render(
         self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
-    ) -> Any: ...
+    ) -> Any:
+        """Render a token stream to the output format."""
 
 
 class RendererHTML(RendererProtocol):

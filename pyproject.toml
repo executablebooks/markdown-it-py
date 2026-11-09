@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -55,13 +56,15 @@ rtd = [
     "ipykernel",
 ]
 testing = [
-    "coverage",
     "flit_core>=3.4,<5",  # lets tests/test_packaging build the sdist
     "pytest",
-    "pytest-cov",
     "pytest-regressions",
     "pytest-timeout",
     "requests",
+]
+coverage = [
+    "coverage",
+    "pytest-cov",
 ]
 benchmarking = [
     "psutil",
@@ -82,6 +85,7 @@ name = "markdown_it"
 
 [tool.flit.sdist]
 include = [
+    "CHANGELOG.md",
     "tests/",
     "tox.ini",
 ]
