@@ -589,3 +589,35 @@ def test_rule_reading_pending_each_char_renders_correctly():
     # the rule saw the text accumulate one character at a time
     assert seen[:4] == [0, 1, 2, 3]
     assert max(seen) == 9_999
+
+
+@pytest.mark.parametrize("method", ["enable", "disable"])
+def test_rule_names_generator_applies_to_all_chains(method):
+    """An iterator must be reused across each rule chain."""
+    md = MarkdownIt("zero" if method == "enable" else "commonmark")
+    core_rule = "smartquotes" if method == "enable" else "normalize"
+    names = (name for name in [core_rule, "heading", "emphasis"])
+    assert getattr(md, method)(names) is md
+    active = md.get_active_rules()
+    for chain, name in [
+        ("core", core_rule),
+        ("block", "heading"),
+        ("inline", "emphasis"),
+        ("inline2", "emphasis"),
+    ]:
+        assert (name in active[chain]) is (method == "enable")
+
+
+@pytest.mark.parametrize("method", ["enable", "disable"])
+def test_rule_names_generator_reports_unknown_rules(method):
+    """Unknown names are checked after all chains have inspected an iterator."""
+    with pytest.raises(ValueError, match="unknown rule"):
+        getattr(MarkdownIt(), method)(name for name in ["missing-rule"])
+
+
+@pytest.mark.parametrize("method", ["enable", "disable"])
+def test_rule_names_generator_ignores_unknown_rules(method):
+    """Ignoring an unknown name must still apply the known iterator names."""
+    md = MarkdownIt("zero" if method == "enable" else "commonmark")
+    getattr(md, method)((name for name in ["missing-rule", "heading"]), True)
+    assert ("heading" in md.get_active_rules()["block"]) is (method == "enable")
