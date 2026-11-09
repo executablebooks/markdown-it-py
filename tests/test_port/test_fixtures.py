@@ -13,6 +13,7 @@ FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures")
     read_fixture_file(FIXTURE_PATH.joinpath("linkify.md")),
 )
 def test_linkify(line, title, input, expected):
+    pytest.importorskip("linkify_it")
     md = MarkdownIt().enable("linkify")
     md.options["linkify"] = True
     text = md.render(input)
@@ -109,6 +110,7 @@ def test_strikethrough(line, title, input, expected):
     read_fixture_file(FIXTURE_PATH.joinpath("strikethrough_single_tilde.md")),
 )
 def test_strikethrough_single_tilde(line, title, input, expected):
+    pytest.importorskip("linkify_it")  # gfm-like2 enables linkify
     md = MarkdownIt("gfm-like2")
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
@@ -130,6 +132,7 @@ def test_disable_code_block(line, title, input, expected):
     read_fixture_file(FIXTURE_PATH.joinpath("tasklists.md")),
 )
 def test_tasklists(line, title, input, expected):
+    pytest.importorskip("linkify_it")  # gfm-like2 enables linkify
     md = MarkdownIt("gfm-like2")
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
@@ -140,6 +143,7 @@ def test_tasklists(line, title, input, expected):
     read_fixture_file(FIXTURE_PATH.joinpath("alerts.md")),
 )
 def test_alerts(line, title, input, expected):
+    pytest.importorskip("linkify_it")  # gfm-like2 enables linkify
     md = MarkdownIt("gfm-like2")
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()

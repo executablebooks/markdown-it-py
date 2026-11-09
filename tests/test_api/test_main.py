@@ -100,6 +100,7 @@ def test_override_options():
 
 
 def test_gfm_like2_tasklists_editable():
+    pytest.importorskip("linkify_it")  # gfm-like2 enables linkify
     md_default = MarkdownIt("gfm-like2")
     assert md_default.options["tasklists_editable"] is False
     assert (
@@ -116,6 +117,7 @@ def test_gfm_like2_tasklists_editable():
 
 
 def test_gfm_like2_alert_token_map():
+    pytest.importorskip("linkify_it")  # gfm-like2 enables linkify
     md = MarkdownIt("gfm-like2")
     tokens = md.parse("> [!NOTE]\n> body")
     assert tokens[0].type == "alert_open"
