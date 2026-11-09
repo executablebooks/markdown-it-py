@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794260197988,
+  "lastUpdate": 1794260523488,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30617,6 +30617,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.015693",
             "group": "packages",
             "extra": "mean: 707.91 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.80",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "4d7bf9e948d948860fa68394dfa1ef6d74812b92",
+          "message": "🐛 FIX: Keep inline and image child edits in SyntaxTreeNode.to_tokens (#453)\n\n`SyntaxTreeNode.to_tokens()` appended inline and image tokens unchanged, so edits\nto their children in the tree were silently dropped. Their `children` lists are\nnow rebuilt from the tree. The original Token objects are reused and their\n`children` are replaced in place, so the token stream the tree was built from\nsees the edits too; this is documented and tested.",
+          "timestamp": "2026-11-09T22:41:05+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/4d7bf9e948d948860fa68394dfa1ef6d74812b92",
+          "distinct": true,
+          "tree_id": "6a68d47ac4f27d7a3e52c56af53930e08cf8f839"
+        },
+        "date": 1794260521908,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 8.510228036075008,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0037190",
+            "group": "packages",
+            "extra": "mean: 117.51 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 202.70207672931357,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000043099",
+            "group": "packages",
+            "extra": "mean: 4.9333 msec\nrounds: 132"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 15.600602291204755,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0022823",
+            "group": "packages",
+            "extra": "mean: 64.100 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 8.734505952694622,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00062453",
+            "group": "packages",
+            "extra": "mean: 114.49 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 6.448225026597511,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0031673",
+            "group": "packages",
+            "extra": "mean: 155.08 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 8.295244769931683,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014406",
+            "group": "packages",
+            "extra": "mean: 120.55 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.6157224556171945,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0083473",
+            "group": "packages",
+            "extra": "mean: 618.92 msec\nrounds: 20"
           }
         ]
       }
