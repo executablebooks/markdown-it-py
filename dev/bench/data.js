@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794264578311,
+  "lastUpdate": 1794264938830,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -31397,6 +31397,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.014240",
             "group": "packages",
             "extra": "mean: 550.05 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "cb36d3a1e7bfcc35e07c96d581f4a2e7ade04eda",
+          "message": "🐛 FIX: HTML block types 1–5 ending at a blank line inside a container (#406)\n\nInside a list item or other container, a blank line inside an HTML block\nof types 1-5 (comments, processing instructions, declarations, CDATA,\nscript/pre/style/textarea) ended the block early, because a blank line is\n\"outdented\" (sCount 0 < blkIndent). Per CommonMark these blocks run to\ntheir closing sequence; only types 6 and 7 end on a blank line.\n\nPorts markdown-it 68cfb8c (markdown-it#1155, released in 14.2.0) with its\nendsOnBlankLine form and its two \"Issue #1144\" fixtures, plus two local\nfixtures checking that such a block in a list item still ends at an\noutdented line. Output matches markdown-it 15.0.3.\n\nFixes #377.",
+          "timestamp": "2026-11-09T23:54:38+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/cb36d3a1e7bfcc35e07c96d581f4a2e7ade04eda",
+          "distinct": true,
+          "tree_id": "9e32983baa4dc3155bfbc92136fab24be9ca94a6"
+        },
+        "date": 1794264937758,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 9.087943219984819,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0044493",
+            "group": "packages",
+            "extra": "mean: 110.04 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.003542302619,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000058763",
+            "group": "packages",
+            "extra": "mean: 5.0761 msec\nrounds: 120"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.40712294713911,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0030398",
+            "group": "packages",
+            "extra": "mean: 74.587 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.779698390818054,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0014971",
+            "group": "packages",
+            "extra": "mean: 128.54 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.541310256840828,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0047900",
+            "group": "packages",
+            "extra": "mean: 180.46 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.307067893166118,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016268",
+            "group": "packages",
+            "extra": "mean: 136.85 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.3713505307692926,
+            "unit": "iter/sec",
+            "range": "stddev: 0.010079",
+            "group": "packages",
+            "extra": "mean: 729.21 msec\nrounds: 20"
           }
         ]
       }
