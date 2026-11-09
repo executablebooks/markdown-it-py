@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794250729339,
+  "lastUpdate": 1794254133741,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30383,6 +30383,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.014549",
             "group": "packages",
             "extra": "mean: 733.40 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "5e02f526b0955897a0d102ecae4cebc68762c8ac",
+          "message": "⬆️ Update ruff to v0.17.4 and mypy to v2.4.1, pin ruff's base rule set (#435)\n\nBump the pre-commit hooks (ruff-pre-commit v0.16.7 → v0.17.4, mirrors-mypy v2.3.1 → v2.4.1),\nand select ruff's base rule set (E4, E7, E9, F) explicitly in [tool.ruff.lint]:\nruff 0.16 widened its default set to ~400 rules.\nE731 is ignored for the two lambdas in rules_block/fence.py.",
+          "timestamp": "2026-11-09T20:54:40+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/5e02f526b0955897a0d102ecae4cebc68762c8ac",
+          "distinct": true,
+          "tree_id": "6a5a4473d63629a750bb750b031226cc2a2edaf9"
+        },
+        "date": 1794254132331,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 10.095042752987984,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0038475",
+            "group": "packages",
+            "extra": "mean: 99.059 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 238.33796061746924,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000043762",
+            "group": "packages",
+            "extra": "mean: 4.1957 msec\nrounds: 151"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 19.101880212395635,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0022714",
+            "group": "packages",
+            "extra": "mean: 52.351 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 10.164219498094944,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00085872",
+            "group": "packages",
+            "extra": "mean: 98.384 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 7.572272964889742,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0031250",
+            "group": "packages",
+            "extra": "mean: 132.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 9.574691788612908,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015181",
+            "group": "packages",
+            "extra": "mean: 104.44 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.7903694263787908,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016732",
+            "group": "packages",
+            "extra": "mean: 558.54 msec\nrounds: 20"
           }
         ]
       }
