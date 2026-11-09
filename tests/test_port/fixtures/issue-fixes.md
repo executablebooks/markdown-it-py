@@ -55,13 +55,18 @@ Fix parsing of incorrect numeric character references
 <a href="&amp;#35y;"></a> &amp;#35y;</p>
 .
 
-#437 a lowercase declaration interrupts a paragraph
+#437 a lowercase declaration interrupts a paragraph, as an uppercase one does
 .
 para
 <!doctype html>
+
+para
+<!DOCTYPE html>
 .
 <p>para</p>
 <!doctype html>
+<p>para</p>
+<!DOCTYPE html>
 .
 
 #437 Unicode lookalikes that case-fold to ASCII (U+017F, U+0130, U+0131) do not start an HTML block
