@@ -212,7 +212,7 @@ class RendererHTML(RendererProtocol):
         out: list[str] = []
 
         for token in tokens or []:
-            if token.type == "text":
+            if token.type in ("text", "code_inline"):
                 out.append(token.content)
             elif token.type == "image":
                 if token.children:
