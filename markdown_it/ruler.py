@@ -196,20 +196,23 @@ class Ruler(Generic[RuleFuncTv]):
         :param names: name or list of rule names to enable.
         :param ignoreInvalid: ignore errors when rule not found
         :raises: KeyError if name not found and not ignoreInvalid
+            (the rules named before it are still enabled)
         :return: list of found rule names
         """
         if isinstance(names, str):
             names = [names]
         result: list[str] = []
-        for name in names:
-            idx = self.__find__(name)
-            if (idx < 0) and ignoreInvalid:
-                continue
-            if (idx < 0) and not ignoreInvalid:
-                raise KeyError(f"Rules manager: invalid rule name {name}")
-            self.__rules__[idx].enabled = True
-            result.append(name)
-        self.__cache__ = None
+        try:
+            for name in names:
+                idx = self.__find__(name)
+                if (idx < 0) and ignoreInvalid:
+                    continue
+                if (idx < 0) and not ignoreInvalid:
+                    raise KeyError(f"Rules manager: invalid rule name {name}")
+                self.__rules__[idx].enabled = True
+                result.append(name)
+        finally:
+            self.__cache__ = None
         return result
 
     def enableOnly(
@@ -220,6 +223,7 @@ class Ruler(Generic[RuleFuncTv]):
         :param names: name or list of rule names to enable.
         :param ignoreInvalid: ignore errors when rule not found
         :raises: KeyError if name not found and not ignoreInvalid
+            (all rules are still disabled, and the rules named before it enabled)
         :return: list of found rule names
         """
         if isinstance(names, str):
@@ -236,20 +240,23 @@ class Ruler(Generic[RuleFuncTv]):
         :param names: name or list of rule names to enable.
         :param ignoreInvalid: ignore errors when rule not found
         :raises: KeyError if name not found and not ignoreInvalid
+            (the rules named before it are still disabled)
         :return: list of found rule names
         """
         if isinstance(names, str):
             names = [names]
         result = []
-        for name in names:
-            idx = self.__find__(name)
-            if (idx < 0) and ignoreInvalid:
-                continue
-            if (idx < 0) and not ignoreInvalid:
-                raise KeyError(f"Rules manager: invalid rule name {name}")
-            self.__rules__[idx].enabled = False
-            result.append(name)
-        self.__cache__ = None
+        try:
+            for name in names:
+                idx = self.__find__(name)
+                if (idx < 0) and ignoreInvalid:
+                    continue
+                if (idx < 0) and not ignoreInvalid:
+                    raise KeyError(f"Rules manager: invalid rule name {name}")
+                self.__rules__[idx].enabled = False
+                result.append(name)
+        finally:
+            self.__cache__ = None
         return result
 
     def getRules(self, chainName: str = "") -> list[RuleFuncTv]:
