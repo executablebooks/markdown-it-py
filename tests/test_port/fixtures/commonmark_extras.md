@@ -766,6 +766,13 @@ Inline HTML in image description
 <p><img src="/url" alt="a&lt;b&gt;c" /></p>
 .
 
+Code in image description (markdown-it#1142)
+.
+![foo *bar* `baz` bla](image.png)
+.
+<p><img src="image.png" alt="foo bar baz bla" /></p>
+.
+
 Unclosed link labels must not suppress a later code span (#438).
 .
 [foo `bar` baz`
