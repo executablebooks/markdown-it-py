@@ -56,13 +56,15 @@ rtd = [
     "ipykernel",
 ]
 testing = [
-    "coverage",
     "flit_core>=3.4,<5",  # lets tests/test_packaging build the sdist
     "pytest",
-    "pytest-cov",
     "pytest-regressions",
     "pytest-timeout",
     "requests",
+]
+coverage = [
+    "coverage",
+    "pytest-cov",
 ]
 benchmarking = [
     "psutil",
