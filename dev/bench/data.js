@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794261899795,
+  "lastUpdate": 1794262527678,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -31007,6 +31007,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.011817",
             "group": "packages",
             "extra": "mean: 723.66 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "2fcca3a970520693269fc3af5734e3e71b8168eb",
+          "message": "🐛 Keep backslash escapes and entities in image alt text (#446)\n\n`text_join` now also joins the `text_special` tokens held by an image, so the\nimage's `children` carry joined `text` tokens and the alt text keeps backslash\nescapes and entities (`![a \\* b](/u)` gives `alt=\"a * b\"`, not `alt=\"a  b\"`).\nPorted from markdown-it 15.0.0 (974e2d7), with the same one-level scope: a\nnested image's own children are still not joined, as in markdown-it 15.0.3.\n\nFixes #445",
+          "timestamp": "2026-11-09T23:14:33+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/2fcca3a970520693269fc3af5734e3e71b8168eb",
+          "distinct": true,
+          "tree_id": "238f7ecbe697373629cca4da81542953d0ac7e6c"
+        },
+        "date": 1794262526532,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 11.351084714678167,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0037528",
+            "group": "packages",
+            "extra": "mean: 88.097 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 246.1479751926625,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000046540",
+            "group": "packages",
+            "extra": "mean: 4.0626 msec\nrounds: 154"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 19.48484169287522,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0028879",
+            "group": "packages",
+            "extra": "mean: 51.322 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 10.01525256865554,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0013944",
+            "group": "packages",
+            "extra": "mean: 99.848 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 7.506827733823198,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0043115",
+            "group": "packages",
+            "extra": "mean: 133.21 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 9.28283773156153,
+            "unit": "iter/sec",
+            "range": "stddev: 0.020991",
+            "group": "packages",
+            "extra": "mean: 107.73 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.7781029004949833,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0059851",
+            "group": "packages",
+            "extra": "mean: 562.40 msec\nrounds: 20"
           }
         ]
       }
