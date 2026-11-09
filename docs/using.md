@@ -411,9 +411,11 @@ md.add_render_rule("link_open", render_blank_link)
 print(md.render("[a]\n\n[a]: b"))
 ```
 
+(md/markdown-renderer)=
+
 ### Markdown renderer
 
-You can also render a token stream directly to markdown via the `MDRenderer` class from [`mdformat`](https://github.com/executablebooks/mdformat):
+You can also render a token stream directly to markdown via the `MDRenderer` class from [`mdformat`](https://github.com/hukkin/mdformat):
 
 ```python
 from markdown_it import MarkdownIt
@@ -436,3 +438,5 @@ env = {}
 
 output_markdown = renderer.render(tokens, options, env)
 ```
+
+For other third-party renderers, and how to write your own, see [](md/third-party).
