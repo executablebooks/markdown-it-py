@@ -93,15 +93,10 @@ class SyntaxTreeNode:
     def to_tokens(self) -> list[Token]:
         """Recover the linear token stream, including changes to the tree.
 
-        The original tokens are reused, with their child lists updated to match
-        the tree.
-
-        The ``children`` of inline and image tokens are replaced in place.
-        These ``Token`` objects are shared with the token stream the tree was
-        built from, so that stream sees the edits too.
-        Another tree built from the same tokens keeps its own nodes,
-        and its ``to_tokens()`` writes its own children back.
-        Build the tree from ``copy.deepcopy(tokens)`` to avoid sharing.
+        Unchanged tokens are reused as they are.
+        A token whose children were edited, such as an inline or image token,
+        is returned as a shallow copy with the new children,
+        so the tokens the tree was built from are not modified.
         """
 
         def recursive_collect_tokens(node: Self, token_list: list[Token]) -> None:
@@ -109,12 +104,16 @@ class SyntaxTreeNode:
                 for child in node.children:
                     recursive_collect_tokens(child, token_list)
             elif node.token:
-                if node.token.children is not None:
+                token = node.token
+                if token.children is not None:
                     children: list[Token] = []
                     for child in node.children:
                         recursive_collect_tokens(child, children)
-                    node.token.children = children
-                token_list.append(node.token)
+                    if len(children) != len(token.children) or any(
+                        a is not b for a, b in zip(children, token.children)
+                    ):
+                        token = token.copy(children=children)
+                token_list.append(token)
             else:
                 assert node.nester_tokens
                 token_list.append(node.nester_tokens.opening)

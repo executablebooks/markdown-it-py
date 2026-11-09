@@ -84,22 +84,117 @@ def test_tree_to_tokens_replaced_empty_inline_children():
     assert md.renderer.render(tree.to_tokens(), md.options, {}) == "<em>new</em>"
 
 
-def test_tree_to_tokens_updates_original_tokens():
-    """Inline child edits are written in place on the shared tokens.
+def test_tree_to_tokens_leaves_original_tokens_unchanged():
+    """Edits reach the output of ``to_tokens``, not the tokens the tree came from.
 
-    This pins the documented behaviour of ``to_tokens``: the token stream the
-    tree was built from sees the edit as well.
+    An inline token whose children were edited is copied, so the original stream
+    still renders the source, while unedited tokens are reused as they are.
     """
     md = MarkdownIt()
     tokens = md.parse("before *nested* after")
+    original_children = tokens[1].children
+    original_dicts = [token.as_dict() for token in tokens]
     tree = SyntaxTreeNode(tokens)
     tree[0][0].children.clear()
 
-    tree.to_tokens()
+    result = tree.to_tokens()
 
-    assert tokens[1].type == "inline"
-    assert tokens[1].children == []
-    assert md.renderer.render(tokens, md.options, {}) == "<p></p>\n"
+    assert md.renderer.render(result, md.options, {}) == "<p></p>\n"
+    assert result[0] is tokens[0]
+    assert result[1] is not tokens[1]
+    assert result[1].children == []
+    assert result[2] is tokens[2]
+    assert tokens[1].children is original_children
+    assert [token.as_dict() for token in tokens] == original_dicts
+    assert (
+        md.renderer.render(tokens, md.options, {})
+        == "<p>before <em>nested</em> after</p>\n"
+    )
+
+
+def test_tree_to_tokens_output_is_stable():
+    """A returned token list is not changed by a later ``to_tokens`` call.
+
+    Two trees built from the same tokens are edited differently;
+    converting the second must not undo the edit in the first one's output.
+    """
+    md = MarkdownIt()
+    tokens = md.parse("before *nested* after")
+    first = SyntaxTreeNode(tokens)
+    first[0][0].children.pop()
+    result = first.to_tokens()
+
+    second = SyntaxTreeNode(tokens)
+    second[0][0].children.reverse()
+    second.to_tokens()
+    unedited = SyntaxTreeNode(tokens)
+    unedited.to_tokens()
+
+    expected = "<p>before <em>nested</em></p>\n"
+    assert md.renderer.render(result, md.options, {}) == expected
+    assert md.renderer.render(first.to_tokens(), md.options, {}) == expected
+
+
+def test_tree_to_tokens_unedited_reuses_tokens():
+    """An unedited round trip returns the original tokens and child lists.
+
+    Copies are only made for edited children, so nothing is copied or written
+    here, including the nested inline and image tokens.
+    """
+
+    def flatten(tokens):
+        for token in tokens:
+            yield token, token.children
+            if token.children is not None:
+                yield from flatten(token.children)
+
+    md = MarkdownIt()
+    tokens = md.parse("before *nested* after\n\n![alt *x*](image.png)\n")
+    before = list(flatten(tokens))
+
+    after = list(flatten(SyntaxTreeNode(tokens).to_tokens()))
+
+    assert len(after) == len(before)
+    for (token_before, children_before), (token_after, children_after) in zip(
+        before, after, strict=True
+    ):
+        assert token_after is token_before
+        assert children_after is children_before
+        assert token_before.children is children_before
+
+
+def test_tree_to_tokens_nested_image_edit():
+    """An edit inside an image nested in an inline token reaches the output.
+
+    The image token is copied, which changes the inline token's children,
+    so the inline token is copied too; the original tokens are untouched.
+    """
+    md = MarkdownIt()
+    tokens = md.parse("before ![alt *x*](image.png)")
+    inline_children = tokens[1].children
+    assert inline_children is not None
+    text, image = inline_children
+    assert image.type == "image"
+    tree = SyntaxTreeNode(tokens)
+    tree[0][0][1].children.reverse()
+
+    result = tree.to_tokens()
+
+    assert (
+        md.renderer.render(result, md.options, {})
+        == '<p>before <img src="image.png" alt="xalt " /></p>\n'
+    )
+    assert result[1] is not tokens[1]
+    result_children = result[1].children
+    assert result_children is not None
+    assert result_children[0] is text
+    assert result_children[1] is not image
+    assert tokens[1].children is inline_children
+    assert inline_children == [text, image]
+    assert (
+        md.renderer.render(tokens, md.options, {})
+        == '<p>before <img src="image.png" alt="alt x" /></p>\n'
+    )
 
 
 def test_property_passthrough():
