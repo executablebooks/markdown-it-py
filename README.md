@@ -133,6 +133,9 @@ Batch:
 
 ```
 
+In interactive mode, end each input with Ctrl-D,
+or on Windows with Ctrl-Z then Enter (the prompt names the keys for your platform).
+
 Tables are disabled by default, as in CommonMark.
 Use `--enable-tables` with any input mode to enable them:
 
