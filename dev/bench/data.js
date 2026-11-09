@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794262527678,
+  "lastUpdate": 1794262978424,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -31085,6 +31085,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0059851",
             "group": "packages",
             "extra": "mean: 562.40 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "01d077a5dd9c4464d436ba6df5992e359e397e4d",
+          "message": "🐛 FIX: Keep literal task markers in indented code blocks in list items (#451)\n\nWith `tasklists` on, a list item whose content starts with an indented code block\n(`-     [x] literal`) had its `[x] ` consumed as a checkbox, deleting the text from\nthe code block. Task detection now runs after the item's indentation is set and\nskips items that open with indented code (honouring `md.disable(\"code\")`), matching\ncmark-gfm.",
+          "timestamp": "2026-11-09T23:22:12+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/01d077a5dd9c4464d436ba6df5992e359e397e4d",
+          "distinct": true,
+          "tree_id": "521429500e57e9992e0a99cc40336058152b82e2"
+        },
+        "date": 1794262977349,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 14.911233501521302,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0052464",
+            "group": "packages",
+            "extra": "mean: 67.064 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 297.2452021261127,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00014726",
+            "group": "packages",
+            "extra": "mean: 3.3642 msec\nrounds: 175"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 23.503466351044047,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0065510",
+            "group": "packages",
+            "extra": "mean: 42.547 msec\nrounds: 22"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 13.609622590018208,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011466",
+            "group": "packages",
+            "extra": "mean: 73.477 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 10.63517929269413,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0041371",
+            "group": "packages",
+            "extra": "mean: 94.028 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 12.477730627615733,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017390",
+            "group": "packages",
+            "extra": "mean: 80.143 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 2.1362553793209598,
+            "unit": "iter/sec",
+            "range": "stddev: 0.017458",
+            "group": "packages",
+            "extra": "mean: 468.11 msec\nrounds: 20"
           }
         ]
       }
