@@ -63,3 +63,18 @@ Preserve IPv6 host brackets while encoding brackets in the path, query and fragm
 .
 <p><img src="https://[::1]/a.png" alt="foo" /></p>
 .
+
+
+IPv6 address literals should preserve brackets while encoding other components:
+
+.
+[foo](http://[2001:db8::1]:1896/a[b]?x=[y])
+.
+<p><a href="http://[2001:db8::1]:1896/a%5Bb%5D?x=%5By%5D">foo</a></p>
+.
+
+.
+[foo](http://user:password@[2001:db8:0:0:0:0:0:1]:1926/)
+.
+<p><a href="http://user:password@[2001:db8:0:0:0:0:0:1]:1926/">foo</a></p>
+.
