@@ -765,3 +765,12 @@ Inline HTML in image description
 .
 <p><img src="/url" alt="a&lt;b&gt;c" /></p>
 .
+
+HTML block type 4 (declaration) starts with `<!` plus any ASCII letter, not only uppercase (CommonMark 4.6, start condition 4). A lowercase declaration must interrupt a paragraph.
+.
+foo
+<!bar baz>
+.
+<p>foo</p>
+<!bar baz>
+.
