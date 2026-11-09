@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794262978424,
+  "lastUpdate": 1794263850545,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -31163,6 +31163,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.017458",
             "group": "packages",
             "extra": "mean: 468.11 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "2787da18ed25292da1b44f03385c4fbba159c35a",
+          "message": "🐛 Keep code span text in image alt text (#460)\n\n`renderInlineAsText` now keeps `code_inline` content, so\n`` ![a `code` b](x.png) `` gives `alt=\"a code b\"`, not `alt=\"a  b\"`.\nThe text is escaped in the attribute as usual.\nPorted from markdown-it 15.0.0 (54289c4 / markdown-it#1142), with its fixture.",
+          "timestamp": "2026-11-09T23:36:29+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/2787da18ed25292da1b44f03385c4fbba159c35a",
+          "distinct": true,
+          "tree_id": "d82b1efaee09904b01ae6b8bee92029bd2255274"
+        },
+        "date": 1794263849745,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 8.399224087910243,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0034042",
+            "group": "packages",
+            "extra": "mean: 119.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.3507055403815,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000041931",
+            "group": "packages",
+            "extra": "mean: 5.0671 msec\nrounds: 128"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.609359802363766,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0025415",
+            "group": "packages",
+            "extra": "mean: 73.479 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.746878078050085,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0012170",
+            "group": "packages",
+            "extra": "mean: 129.08 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.644809165988713,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0033717",
+            "group": "packages",
+            "extra": "mean: 177.15 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.340843881375715,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016798",
+            "group": "packages",
+            "extra": "mean: 136.22 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4268439805662305,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011480",
+            "group": "packages",
+            "extra": "mean: 700.85 msec\nrounds: 20"
           }
         ]
       }
