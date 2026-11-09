@@ -814,3 +814,10 @@ A code span holding a tab between single spaces is not all spaces, so one space 
 .
 <p><code>	</code></p>
 .
+
+A no-break space is not a space, so a code span holding one between single spaces is not all spaces and one space is stripped from each side.
+.
+`   `
+.
+<p><code> </code></p>
+.
