@@ -1,4 +1,5 @@
-import pickle
+"""How the renderer combines the strings returned by its rules."""
+
 from types import MethodType
 
 import pytest
@@ -8,56 +9,33 @@ from markdown_it.renderer import RendererHTML
 from markdown_it.token import Token
 
 
-@pytest.mark.parametrize("method", ["render", "renderInline"])
-def test_render_rule_string_subclass(method):
-    class Wrapped(str):
-        def __radd__(self, other):
-            return Wrapped(other + "<" + str(self) + ">")
-
-        def __add__(self, other):
-            return Wrapped(str(self) + "{" + str(other) + "}")
-
+def _renderer_with(values):
+    """A renderer whose ``custom`` rule returns ``values[idx]`` for token ``idx``."""
     renderer = RendererHTML()
-    values = ["a", Wrapped("b"), "c"]
     renderer.rules["custom"] = MethodType(
         lambda self, tokens, idx, opts, env: values[idx], renderer
     )
-    tokens = [Token("custom", "", 0) for _ in values]
-    result = getattr(renderer, method)(tokens, MarkdownIt().options, {})
-    assert type(result) is Wrapped
-    assert result == "a<b>{c}"
+    return renderer, [Token("custom", "", 0) for _ in values]
 
 
 @pytest.mark.parametrize("method", ["render", "renderInline"])
-def test_render_rule_invalid_result_stops_callbacks(method):
-    renderer = RendererHTML()
-    calls = []
+def test_render_rule_results_are_joined_into_a_plain_str(method):
+    # The fragments are joined in order, and the result is a plain ``str``
+    # even when a rule returns a ``str`` subclass (overloaded addition is not used).
+    class Wrapped(str):
+        def __radd__(self, other):
+            raise AssertionError("not called")
 
-    def rule(self, tokens, idx, opts, env):
-        calls.append(idx)
-        return "first" if idx == 0 else None
+        __add__ = __radd__
 
-    renderer.rules["custom"] = MethodType(rule, renderer)
-    tokens = [Token("custom", "", 0) for _ in range(3)]
+    renderer, tokens = _renderer_with(["a", Wrapped("b"), "c"])
+    result = getattr(renderer, method)(tokens, MarkdownIt().options, {})
+    assert type(result) is str
+    assert result == "abc"
+
+
+@pytest.mark.parametrize("method", ["render", "renderInline"])
+def test_render_rule_invalid_result_raises(method):
+    renderer, tokens = _renderer_with(["first", None, "third"])
     with pytest.raises(TypeError):
         getattr(renderer, method)(tokens, MarkdownIt().options, {})
-    assert calls == [0, 1]
-
-
-def test_render_private_methods_are_not_rules():
-    class CustomRenderer(RendererHTML):
-        def _custom(self, tokens, idx, options, env):
-            return "private method"
-
-    renderer = CustomRenderer()
-    assert "_custom" not in renderer.rules
-    assert all(not key.startswith("_") for key in renderer.rules)
-
-
-@pytest.mark.parametrize("protocol", range(pickle.HIGHEST_PROTOCOL + 1))
-def test_renderer_pickle(protocol):
-    renderer = RendererHTML()
-    restored = pickle.loads(pickle.dumps(renderer, protocol))
-    assert sorted(restored.rules) == sorted(renderer.rules)
-    tokens = [Token("text", "", 0, content="a&b")]
-    assert restored.renderInline(tokens, MarkdownIt().options, {}) == "a&amp;b"

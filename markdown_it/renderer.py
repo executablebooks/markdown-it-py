@@ -10,14 +10,11 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 import inspect
-import sys
 from typing import Any, ClassVar, Protocol
 
 from .common.utils import MD_TRIM_RE, escapeHtml, mdTrim, unescapeAll
 from .token import Token
 from .utils import EnvType, OptionsDict
-
-_IS_PYPY = sys.implementation.name == "pypy"
 
 
 class RendererProtocol(Protocol):
@@ -78,74 +75,51 @@ class RendererHTML(RendererProtocol):
             if not k.startswith(("render", "_"))
         }
 
-    if _IS_PYPY:
+    def render(
+        self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
+    ) -> str:
+        """Takes token stream and generates HTML.
 
-        def render(
-            self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
-        ) -> str:
-            """Takes token stream and generates HTML.
+        :param tokens: list on block tokens to render
+        :param options: params of parser instance
+        :param env: additional data from parsed input
 
-            :param tokens: list on block tokens to render
-            :param options: params of parser instance
-            :param env: additional data from parsed input
+        """
+        # Collect the fragments and join them once: repeated ``str +=`` is only
+        # linear on interpreters that can extend a string in place (the default
+        # CPython build), and quadratic in the output size elsewhere (e.g. PyPy,
+        # GraalPy and free-threaded CPython 3.13).
+        out: list[str] = []
 
-            """
-            return _render_buffered(self, tokens, options, env, inline=False)
+        for i, token in enumerate(tokens):
+            if token.type == "inline":
+                if token.children:
+                    out.append(self.renderInline(token.children, options, env))
+            elif token.type in self.rules:
+                out.append(self.rules[token.type](tokens, i, options, env))
+            else:
+                out.append(self.renderToken(tokens, i, options, env))
 
-        def renderInline(
-            self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
-        ) -> str:
-            """The same as ``render``, but for single token of `inline` type.
+        return "".join(out)
 
-            :param tokens: list on block tokens to render
-            :param options: params of parser instance
-            :param env: additional data from parsed input (references, for example)
-            """
-            return _render_buffered(self, tokens, options, env, inline=True)
+    def renderInline(
+        self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
+    ) -> str:
+        """The same as ``render``, but for single token of `inline` type.
 
-    else:
+        :param tokens: list on block tokens to render
+        :param options: params of parser instance
+        :param env: additional data from parsed input (references, for example)
+        """
+        out: list[str] = []
 
-        def render(
-            self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
-        ) -> str:
-            """Takes token stream and generates HTML.
+        for i, token in enumerate(tokens):
+            if token.type in self.rules:
+                out.append(self.rules[token.type](tokens, i, options, env))
+            else:
+                out.append(self.renderToken(tokens, i, options, env))
 
-            :param tokens: list on block tokens to render
-            :param options: params of parser instance
-            :param env: additional data from parsed input
-
-            """
-            result = ""
-
-            for i, token in enumerate(tokens):
-                if token.type == "inline":
-                    if token.children:
-                        result += self.renderInline(token.children, options, env)
-                elif token.type in self.rules:
-                    result += self.rules[token.type](tokens, i, options, env)
-                else:
-                    result += self.renderToken(tokens, i, options, env)
-
-            return result
-
-        def renderInline(
-            self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
-        ) -> str:
-            """The same as ``render``, but for single token of `inline` type.
-
-            :param tokens: list on block tokens to render
-            :param options: params of parser instance
-            :param env: additional data from parsed input (references, for example)
-            """
-            result = ""
-
-            for i, token in enumerate(tokens):
-                if token.type in self.rules:
-                    result += self.rules[token.type](tokens, i, options, env)
-                else:
-                    result += self.renderToken(tokens, i, options, env)
-
-            return result
+        return "".join(out)
 
     def renderToken(
         self,
@@ -235,20 +209,20 @@ class RendererHTML(RendererProtocol):
         :param options: params of parser instance
         :param env: additional data from parsed input
         """
-        result = ""
+        out: list[str] = []
 
         for token in tokens or []:
             if token.type == "text":
-                result += token.content
+                out.append(token.content)
             elif token.type == "image":
                 if token.children:
-                    result += self.renderInlineAsText(token.children, options, env)
+                    out.append(self.renderInlineAsText(token.children, options, env))
             elif token.type in ("html_inline", "html_block"):
-                result += token.content
+                out.append(token.content)
             elif token.type in ("softbreak", "hardbreak"):
-                result += "\n"
+                out.append("\n")
 
-        return result
+        return "".join(out)
 
     ###################################################
 
@@ -399,43 +373,3 @@ class RendererHTML(RendererProtocol):
         self, tokens: Sequence[Token], idx: int, options: OptionsDict, env: EnvType
     ) -> str:
         return tokens[idx].content
-
-
-def _render_buffered(
-    self: RendererHTML,
-    tokens: Sequence[Token],
-    options: OptionsDict,
-    env: EnvType,
-    *,
-    inline: bool,
-) -> str:
-    """Render PyPy fragments without repeatedly copying the output prefix."""
-    # PyPy cannot extend a local string in place like CPython. Collecting
-    # fragments avoids repeatedly copying the entire rendered prefix.
-    # Keep the initial empty operand: joining one fragment would return that
-    # same object, whereas PyPy string addition creates a new string. A custom
-    # reflected addition can observe the identity of the accumulated prefix.
-    fragments: list[str] = [""]
-    result = ""
-    collect = True
-    for i, token in enumerate(tokens):
-        if not inline and token.type == "inline":
-            if not token.children:
-                continue
-            fragment = self.renderInline(token.children, options, env)
-        elif token.type in self.rules:
-            fragment = self.rules[token.type](tokens, i, options, env)
-        else:
-            fragment = self.renderToken(tokens, i, options, env)
-
-        if collect and type(fragment) is str:
-            fragments.append(fragment)
-        else:
-            # Preserve overloaded string addition and raise for an invalid
-            # result before invoking any subsequent rendering rule.
-            if collect:
-                result = "".join(fragments)
-                collect = False
-            result += fragment
-
-    return "".join(fragments) if collect else result
