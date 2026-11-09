@@ -208,7 +208,7 @@ class RendererHTML(RendererProtocol):
         result = ""
 
         for token in tokens or []:
-            if token.type == "text":
+            if token.type in ("text", "code_inline"):
                 result += token.content
             elif token.type == "image":
                 if token.children:
