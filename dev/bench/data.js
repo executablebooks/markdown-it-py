@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794265291905,
+  "lastUpdate": 1794265893028,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -31553,6 +31553,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.013653",
             "group": "packages",
             "extra": "mean: 736.69 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "17b7227e8b287f1a158914bd02f4b6a3a620c813",
+          "message": "👌 Copy edited tokens in SyntaxTreeNode.to_tokens instead of writing in place (#464)\n\n#453 made `SyntaxTreeNode.to_tokens()` keep edits to the children of inline and image nodes by assigning the rebuilt child list to the shared Token objects. That also changed the token stream the tree was built from, and a list returned earlier could change again after another tree built from the same tokens called `to_tokens()`.\n\nA token is now replaced by `token.copy(children=...)` only when its rebuilt children differ by identity from its current ones. Edits still reach the output, the original tokens are left unchanged, and an unedited round trip still returns the same Token objects and child lists. A copied image token makes the enclosing inline token's children differ, so it is copied too. The edit check compares the rebuilt children by identity, so a child replaced by an equal but distinct token still reaches the output.\n\nThe docstring and `docs/using.md` drop the shared-state caveats and the deepcopy advice. They now say that the tree's `children` are the source of truth, so a change made directly to a token's `children` list does not appear in the output, and that `to_tokens()` does not modify the token stream the tree was built from, although nodes share their `Token` objects with it.",
+          "timestamp": "2026-11-10T00:10:33+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/17b7227e8b287f1a158914bd02f4b6a3a620c813",
+          "distinct": true,
+          "tree_id": "fb7eb637182b7357157fdb00b8639c173af869e4"
+        },
+        "date": 1794265892186,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 9.178017601733103,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0043493",
+            "group": "packages",
+            "extra": "mean: 108.96 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 198.15211328143636,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000063889",
+            "group": "packages",
+            "extra": "mean: 5.0466 msec\nrounds: 126"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.290320716570502,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0024547",
+            "group": "packages",
+            "extra": "mean: 75.243 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.681286995334594,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0020629",
+            "group": "packages",
+            "extra": "mean: 130.19 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.624660731010904,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035310",
+            "group": "packages",
+            "extra": "mean: 177.79 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.45303314556464,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013395",
+            "group": "packages",
+            "extra": "mean: 134.17 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4044717617422984,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0082926",
+            "group": "packages",
+            "extra": "mean: 712.01 msec\nrounds: 20"
           }
         ]
       }
