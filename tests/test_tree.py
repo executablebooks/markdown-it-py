@@ -1,3 +1,5 @@
+import pytest
+
 from markdown_it import MarkdownIt
 from markdown_it.tree import SyntaxTreeNode
 
@@ -10,8 +12,94 @@ Some paragraph text and **emphasis here** and more text here.
 
 def test_tree_to_tokens_conversion():
     tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
+    serialized_tokens = [token.as_dict() for token in tokens]
     tokens_after_roundtrip = SyntaxTreeNode(tokens).to_tokens()
     assert tokens == tokens_after_roundtrip
+    assert [token.as_dict() for token in tokens_after_roundtrip] == serialized_tokens
+    assert all(
+        before is after
+        for before, after in zip(tokens, tokens_after_roundtrip, strict=True)
+    )
+
+
+def _node_at(tree, path):
+    node = tree
+    for index in path:
+        node = node[index]
+    return node
+
+
+@pytest.mark.parametrize(
+    "source,path,expected",
+    [
+        ("one\n\ntwo", (), "<p>two</p>\n<p>one</p>\n"),
+        (
+            "before *nested* after",
+            (0, 0),
+            "<p> after<em>nested</em>before </p>\n",
+        ),
+        (
+            "![before *nested* after](image.png)",
+            (0, 0, 0),
+            '<p><img src="image.png" alt=" afternestedbefore " /></p>\n',
+        ),
+    ],
+    ids=["blocks", "inline", "image"],
+)
+def test_tree_to_tokens_reordered_children(source, path, expected):
+    md = MarkdownIt()
+    tree = SyntaxTreeNode(md.parse(source))
+    _node_at(tree, path).children.reverse()
+
+    assert md.renderer.render(tree.to_tokens(), md.options, {}) == expected
+
+
+@pytest.mark.parametrize(
+    "source,path,expected",
+    [
+        ("before *nested* after", (0, 0), "<p></p>\n"),
+        ("before *nested* after", (0, 0, 1), "<p>before <em></em> after</p>\n"),
+        (
+            "![old alt](image.png)",
+            (0, 0, 0),
+            '<p><img src="image.png" alt="" /></p>\n',
+        ),
+    ],
+    ids=["inline", "nested-inline", "image"],
+)
+def test_tree_to_tokens_cleared_children(source, path, expected):
+    md = MarkdownIt()
+    tree = SyntaxTreeNode(md.parse(source))
+    _node_at(tree, path).children.clear()
+
+    assert md.renderer.render(tree.to_tokens(), md.options, {}) == expected
+
+
+def test_tree_to_tokens_replaced_empty_inline_children():
+    md = MarkdownIt()
+    tree = SyntaxTreeNode(md.parseInline(""))
+    replacement = SyntaxTreeNode(md.parseInline("*new*"))
+    tree[0].children = replacement[0].children
+
+    assert md.renderer.render(tree.to_tokens(), md.options, {}) == "<em>new</em>"
+
+
+def test_tree_to_tokens_updates_original_tokens():
+    """Inline child edits are written in place on the shared tokens.
+
+    This pins the documented behaviour of ``to_tokens``: the token stream the
+    tree was built from sees the edit as well.
+    """
+    md = MarkdownIt()
+    tokens = md.parse("before *nested* after")
+    tree = SyntaxTreeNode(tokens)
+    tree[0][0].children.clear()
+
+    tree.to_tokens()
+
+    assert tokens[1].type == "inline"
+    assert tokens[1].children == []
+    assert md.renderer.render(tokens, md.options, {}) == "<p></p>\n"
 
 
 def test_property_passthrough():
