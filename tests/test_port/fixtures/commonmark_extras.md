@@ -765,3 +765,10 @@ Inline HTML in image description
 .
 <p><img src="/url" alt="a&lt;b&gt;c" /></p>
 .
+
+Code in image description (markdown-it#1142)
+.
+![foo *bar* `baz` bla](image.png)
+.
+<p><img src="image.png" alt="foo bar baz bla" /></p>
+.
