@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794264169315,
+  "lastUpdate": 1794264578311,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -31319,6 +31319,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0060740",
             "group": "packages",
             "extra": "mean: 550.92 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "3.64",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "f5af61fc11ca1c8f8601f2cc8df3cb2955a45f6d",
+          "message": "🐛 FIX: Preserve code spans after unclosed link and image labels (#439)\n\nPort markdown-it 5e9b1cc (15.0.1): build the backticks cache once from\nthe whole source instead of incrementally, so the silent lookahead that\nsearches for a link or image label's closing `]` can no longer mark a\nlater code span's opener as closer-less (rendering it as literal\nbackticks). A closer run is now measured in full and must end within\nposMax (the current parse range), so a lookahead or nested parse cannot\ntake a closer from beyond it.\n\nAlso port markdown-it 988c82b: a code span loses one space from each\nside unless its content is all U+0020 spaces (previously `str.strip()`,\nwhich also treated tabs and no-break spaces as spaces).\n\nFixes #438",
+          "timestamp": "2026-11-09T23:48:44+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/f5af61fc11ca1c8f8601f2cc8df3cb2955a45f6d",
+          "distinct": true,
+          "tree_id": "de6892ada23ff1fc46601da27925c423e374edbc"
+        },
+        "date": 1794264576867,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 13.013255975321558,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0045710",
+            "group": "packages",
+            "extra": "mean: 76.845 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 212.74591085375764,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00030212",
+            "group": "packages",
+            "extra": "mean: 4.7004 msec\nrounds: 155"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 18.47589483442383,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0045502",
+            "group": "packages",
+            "extra": "mean: 54.125 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 10.135619550978085,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0043306",
+            "group": "packages",
+            "extra": "mean: 98.662 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 7.5520512235455435,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0075863",
+            "group": "packages",
+            "extra": "mean: 132.41 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 9.812209258781499,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013269",
+            "group": "packages",
+            "extra": "mean: 101.91 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.8180225668423329,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014240",
+            "group": "packages",
+            "extra": "mean: 550.05 msec\nrounds: 20"
           }
         ]
       }
