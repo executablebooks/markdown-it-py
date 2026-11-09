@@ -83,9 +83,17 @@ class ParserBlock:
             # - update `state.line`
             # - update `state.tokens`
             # - return True
+            ok = False
             for rule in rules:
-                if rule(state, line, endLine, False):
+                ok = rule(state, line, endLine, False)
+                if ok:
+                    if state.line <= line:
+                        raise RuntimeError("block rule didn't increment state.line")
                     break
+
+            # this can only happen if user disables paragraph rule
+            if not ok:
+                raise RuntimeError("none of the block rules matched")
 
             # set state.tight if we had an empty line before current tag
             # i.e. latest empty line should not count
