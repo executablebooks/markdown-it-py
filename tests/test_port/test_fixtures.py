@@ -1,3 +1,4 @@
+from importlib.util import find_spec
 from pathlib import Path
 
 import pytest
@@ -6,6 +7,12 @@ from markdown_it import MarkdownIt
 from markdown_it.utils import read_fixture_file
 
 FIXTURE_PATH = Path(__file__).parent.joinpath("fixtures")
+
+# gfm-like2 enables linkify, which needs linkify-it-py. These inputs contain no
+# linkable text, so without it they run with linkify off rather than being skipped.
+GFM_LIKE2_OPTIONS: dict[str, bool] = (
+    {} if find_spec("linkify_it") else {"linkify": False}
+)
 
 
 @pytest.mark.parametrize(
@@ -19,8 +26,16 @@ def test_linkify(line, title, input, expected):
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
 
-    # if not install linkify-it-py
-    md.linkify = None
+
+@pytest.mark.parametrize(
+    "line,title,input,expected",
+    read_fixture_file(FIXTURE_PATH.joinpath("linkify.md")),
+)
+def test_linkify_not_installed(line, title, input, expected):
+    """Linkify enabled without linkify-it-py raises, instead of leaving links unlinked."""
+    md = MarkdownIt().enable("linkify")
+    md.options["linkify"] = True
+    md.linkify = None  # as when linkify-it-py is not installed
     with pytest.raises(ModuleNotFoundError):
         md.render(input)
 
@@ -110,8 +125,7 @@ def test_strikethrough(line, title, input, expected):
     read_fixture_file(FIXTURE_PATH.joinpath("strikethrough_single_tilde.md")),
 )
 def test_strikethrough_single_tilde(line, title, input, expected):
-    pytest.importorskip("linkify_it")  # gfm-like2 enables linkify
-    md = MarkdownIt("gfm-like2")
+    md = MarkdownIt("gfm-like2", GFM_LIKE2_OPTIONS)
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
 
@@ -132,8 +146,7 @@ def test_disable_code_block(line, title, input, expected):
     read_fixture_file(FIXTURE_PATH.joinpath("tasklists.md")),
 )
 def test_tasklists(line, title, input, expected):
-    pytest.importorskip("linkify_it")  # gfm-like2 enables linkify
-    md = MarkdownIt("gfm-like2")
+    md = MarkdownIt("gfm-like2", GFM_LIKE2_OPTIONS)
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
 
@@ -143,8 +156,7 @@ def test_tasklists(line, title, input, expected):
     read_fixture_file(FIXTURE_PATH.joinpath("alerts.md")),
 )
 def test_alerts(line, title, input, expected):
-    pytest.importorskip("linkify_it")  # gfm-like2 enables linkify
-    md = MarkdownIt("gfm-like2")
+    md = MarkdownIt("gfm-like2", GFM_LIKE2_OPTIONS)
     text = md.render(input)
     assert text.rstrip() == expected.rstrip()
 
