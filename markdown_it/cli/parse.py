@@ -16,6 +16,11 @@ from markdown_it.main import MarkdownIt
 version_str = f"markdown-it-py [version {__version__}]"
 
 
+def _eof_keys() -> str:
+    """The keys that end interactive input (send EOF) on this platform."""
+    return "Ctrl-Z then Enter" if sys.platform == "win32" else "Ctrl-D"
+
+
 def main(args: Sequence[str] | None = None) -> int:
     namespace = parse_args(args)
     md = MarkdownIt()
@@ -94,7 +99,7 @@ Interactive:
 
   $ markdown-it
   markdown-it-py [version {__version__}] (interactive)
-  Type Ctrl-D to complete input, or Ctrl-C to exit.
+  Type {_eof_keys()} to complete input, or Ctrl-C to exit.
   >>> # Example
   ... > markdown *input*
   ...
@@ -125,7 +130,7 @@ Batch:
 
 def print_heading() -> None:
     print(f"{version_str} (interactive)")
-    print("Type Ctrl-D to complete input, or Ctrl-C to exit.")
+    print(f"Type {_eof_keys()} to complete input, or Ctrl-C to exit.")
 
 
 if __name__ == "__main__":
