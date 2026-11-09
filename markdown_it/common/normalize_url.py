@@ -34,7 +34,20 @@ def normalizeLink(url: str) -> str:
         with suppress(Exception):
             parsed = parsed._replace(hostname=_punycode.to_ascii(parsed.hostname))
 
-    return mdurl.encode(mdurl.format(parsed))
+    if not parsed.hostname or ":" not in parsed.hostname:
+        return mdurl.encode(mdurl.format(parsed))
+
+    # Encode components before format() adds the IPv6 host brackets.
+    return mdurl.format(
+        parsed._replace(
+            protocol=parsed.protocol and mdurl.encode(parsed.protocol),
+            auth=parsed.auth and mdurl.encode(parsed.auth),
+            hostname=mdurl.encode(parsed.hostname),
+            pathname=parsed.pathname and mdurl.encode(parsed.pathname),
+            search=parsed.search and mdurl.encode(parsed.search),
+            hash=parsed.hash and mdurl.encode(parsed.hash),
+        )
+    )
 
 
 def normalizeLinkText(url: str) -> str:
