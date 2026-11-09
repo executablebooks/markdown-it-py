@@ -7,6 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
+from markdown_it import MarkdownIt
 from markdown_it.cli import parse
 
 
@@ -177,5 +178,41 @@ def test_tables(route, enable_tables, tmp_path, capsys, monkeypatch):
             "Type Ctrl-D to complete input, or Ctrl-C to exit.\n"
             + ("\n" + expected) * 2
             + "\nExiting.\n"
+        )
+    assert capsys.readouterr().out == expected
+
+
+class FalseyMarkdownIt(MarkdownIt):
+    """A configured parser whose truth value does not indicate its availability."""
+
+    def __bool__(self):
+        return False
+
+
+@pytest.mark.parametrize("route", ["stdin", "file", "interactive"])
+def test_helpers_preserve_falsey_parser(route, tmp_path, capsys, monkeypatch):
+    """CLI helpers use a supplied parser even when it is falsey."""
+    monkeypatch.setattr(sys, "platform", "linux")  # fixes the interactive heading
+    md = FalseyMarkdownIt().enable("table")
+    source = "a | b\n--- | ---\n1 | 2\n"
+    expected = (
+        "<table>\n<thead>\n<tr>\n<th>a</th>\n<th>b</th>\n</tr>\n</thead>\n"
+        "<tbody>\n<tr>\n<td>1</td>\n<td>2</td>\n</tr>\n</tbody>\n</table>\n"
+    )
+    if route == "stdin":
+        with patch("sys.stdin", io.StringIO(source)):
+            parse.convert_stdin(md)
+    elif route == "file":
+        path = tmp_path / "table.md"
+        path.write_text(source, encoding="utf8")
+        parse.convert_file(str(path), md)
+    else:
+        inputs = [*source.splitlines(), EOFError, KeyboardInterrupt]
+        with patch("builtins.input", side_effect=inputs):
+            parse.interactive(md)
+        expected = (
+            f"{parse.version_str} (interactive)\n"
+            "Type Ctrl-D to complete input, or Ctrl-C to exit.\n"
+            f"\n{expected}\nExiting.\n"
         )
     assert capsys.readouterr().out == expected
