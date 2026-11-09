@@ -1,3 +1,4 @@
+from collections.abc import Iterator
 from importlib.util import find_spec
 from typing import TYPE_CHECKING
 
@@ -163,6 +164,41 @@ def test_disable():
         "inline": [],
         "inline2": ["balance_pairs", "fragments_join"],
     }
+
+
+@pytest.mark.parametrize("method", ["enable", "disable", "enableOnly"])
+def test_ruler_cache_after_invalid_rule(method):
+    """Rule chains reflect changes made before an invalid name raises."""
+    ruler = MarkdownIt().inline.ruler
+    if method == "enable":
+        ruler.disable("emphasis")
+    ruler.getRules()  # compile and cache the chain
+
+    with pytest.raises(KeyError, match="invalid rule name missing"):
+        getattr(ruler, method)(["emphasis", "missing"])
+
+    reference = MarkdownIt().inline.ruler
+    getattr(reference, method)("emphasis")
+    assert ruler.getRules() == reference.getRules()
+
+
+@pytest.mark.parametrize("method", ["enable", "disable"])
+def test_ruler_cache_after_generator_reads_rules(method):
+    """Reading a rule chain mid-update must not leave the final chain stale."""
+    ruler = MarkdownIt().inline.ruler
+    if method == "enable":
+        ruler.disable(["emphasis", "link"])
+
+    def names() -> Iterator[str]:
+        yield "emphasis"
+        ruler.getRules()
+        yield "link"
+
+    getattr(ruler, method)(names())
+    reference = MarkdownIt().inline.ruler
+    if method == "disable":
+        reference.disable(["emphasis", "link"])
+    assert ruler.getRules() == reference.getRules()
 
 
 def test_reset():
@@ -553,6 +589,38 @@ def test_rule_reading_pending_each_char_renders_correctly():
     # the rule saw the text accumulate one character at a time
     assert seen[:4] == [0, 1, 2, 3]
     assert max(seen) == 9_999
+
+
+@pytest.mark.parametrize("method", ["enable", "disable"])
+def test_rule_names_generator_applies_to_all_chains(method):
+    """An iterator must be reused across each rule chain."""
+    md = MarkdownIt("zero" if method == "enable" else "commonmark")
+    core_rule = "smartquotes" if method == "enable" else "normalize"
+    names = (name for name in [core_rule, "heading", "emphasis"])
+    assert getattr(md, method)(names) is md
+    active = md.get_active_rules()
+    for chain, name in [
+        ("core", core_rule),
+        ("block", "heading"),
+        ("inline", "emphasis"),
+        ("inline2", "emphasis"),
+    ]:
+        assert (name in active[chain]) is (method == "enable")
+
+
+@pytest.mark.parametrize("method", ["enable", "disable"])
+def test_rule_names_generator_reports_unknown_rules(method):
+    """Unknown names are checked after all chains have inspected an iterator."""
+    with pytest.raises(ValueError, match="unknown rule"):
+        getattr(MarkdownIt(), method)(name for name in ["missing-rule"])
+
+
+@pytest.mark.parametrize("method", ["enable", "disable"])
+def test_rule_names_generator_ignores_unknown_rules(method):
+    """Ignoring an unknown name must still apply the known iterator names."""
+    md = MarkdownIt("zero" if method == "enable" else "commonmark")
+    getattr(md, method)((name for name in ["missing-rule", "heading"]), True)
+    assert ("heading" in md.get_active_rules()["block"]) is (method == "enable")
 
 
 def test_src_char_code_follows_src():

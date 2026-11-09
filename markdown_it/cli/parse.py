@@ -43,9 +43,11 @@ def convert(filenames: Iterable[str], md: MarkdownIt | None = None) -> None:
 def convert_stdin(md: MarkdownIt | None = None) -> None:
     """
     Parse a Markdown file and dump the output to stdout.
+
+    Use the supplied parser, creating a default only when it is None.
     """
     try:
-        rendered = (md or MarkdownIt()).render(sys.stdin.read())
+        rendered = (MarkdownIt() if md is None else md).render(sys.stdin.read())
         print(rendered, end="")
     except OSError:
         sys.stderr.write("Cannot parse Markdown from the standard input.\n")
@@ -55,10 +57,12 @@ def convert_stdin(md: MarkdownIt | None = None) -> None:
 def convert_file(filename: str, md: MarkdownIt | None = None) -> None:
     """
     Parse a Markdown file and dump the output to stdout.
+
+    Use the supplied parser, creating a default only when it is None.
     """
     try:
         with open(filename, encoding="utf8", errors="ignore") as fin:
-            rendered = (md or MarkdownIt()).render(fin.read())
+            rendered = (MarkdownIt() if md is None else md).render(fin.read())
             print(rendered, end="")
     except OSError:
         sys.stderr.write(f'Cannot open file "{filename}".\n')
@@ -69,8 +73,10 @@ def interactive(md: MarkdownIt | None = None) -> None:
     """
     Parse user input, dump to stdout, rinse and repeat.
     Python REPL style.
+
+    Use the supplied parser, creating a default only when it is None.
     """
-    md = md or MarkdownIt()
+    md = MarkdownIt() if md is None else md
     print_heading()
     contents = []
     more = False
