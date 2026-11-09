@@ -106,3 +106,22 @@ def test_silent_rule_must_advance_through_link_label() -> None:
 
     with pytest.raises(RuntimeError, match=r"inline rule didn't increment state\.pos"):
         md.parse("[x](u)")
+
+
+def test_silent_rule_must_not_move_position_backwards() -> None:
+    """``skipToken`` also rejects a backward move (``<=``, not ``==``)."""
+    fired: list[bool] = []
+
+    def rewind(state: StateInline, silent: bool) -> bool:
+        if not silent or fired or state.pos == 0:
+            return False
+        fired.append(True)
+        state.pos -= 1
+        return True
+
+    md = MarkdownIt("commonmark")
+    md.inline.ruler.before("text", "rewind", rewind)
+
+    # reached through link-label scanning, in silent mode
+    with pytest.raises(RuntimeError, match=r"inline rule didn't increment state\.pos"):
+        md.parse("[xy](u)")
