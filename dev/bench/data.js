@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794249997966,
+  "lastUpdate": 1794250352947,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30227,6 +30227,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0089269",
             "group": "packages",
             "extra": "mean: 712.56 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "95a215eaba31abddcad97d701ee7fd9dbd4d2620",
+          "message": "🔧 Build the docs on Python 3.13 and Sphinx 9, add Python 3.14 (#462)\n\n## What and why\n\n**Docs (Read the Docs).**\n`docs/requirements.txt` pinned MyST-Parser to its\n`update-markdown-parser` git branch\nuntil a release allowed markdown-it-py v4.\nmyst-parser 5 does, so the pin and its `.readthedocs.yml` line are\nremoved.\nmyst-parser 5 needs Python >= 3.11, so on 3.10 the `rtd` extra no longer\nresolves\n(`uv pip compile --python-version 3.10` gives \"No solution found\").\nRTD therefore moves to `ubuntu-24.04` and Python `\"3.13\"`.\n\nOn 3.13 the `rtd` extra resolves to Sphinx 9.2.0, myst-parser 5.1.0 and\ndocutils 0.22.4,\nwhich the docs had never been built with, and `docs/conf.py` needed\nthree fixes:\n\n- `run_apidoc` used `sphinx.ext.apidoc.OPTIONS`, which is gone from\nSphinx 8.2\n(`sphinx.ext.apidoc` became a package), so the build crashed with an\n`AttributeError`.\n`ignore-module-all` is now set through `autodoc_default_options`, which\napplies it to every\n  `automodule`, as the old code did.\n(Sphinx's `--automodule-options` flag is not a substitute: Sphinx 9.2\nignores it for package files,\nso `markdown_it.rst` documented `MarkdownIt` a second time and nine\nambiguous-reference warnings followed.)\n- `Token` gets a one-line docstring.\nWithout one, autodoc reads the signature from the docstring that\n`dataclass` generates,\nwhose annotations are strings it cannot resolve (`'dict[str` and\n`'dict[Any` reference warnings).\n- The Python intersphinx inventory moves from 3.10 to 3.13:\nthe 3.10 inventory has no `re.Pattern` class, which the annotations of\nthe parser modules use.\n\n**Python versions.**\n3.14 is added to the `tests` matrix, the tox test environments and the\nclassifiers.\n3.10 stays.\nThe PyPy cell moves from `pypy-3.10` to `pypy-3.11`: PyPy 3.10's last\nrelease was 7.3.19.\n\n## How it was tested\n\n- Docs, the way RTD builds them: fresh clone of this branch, fresh\nPython 3.13.13 venv,\n  `python -m pip install \".[linkify,rtd]\"`, then from `docs/`\n`python -m sphinx -T -nW --keep-going -b html -d _build/doctrees -D\nlanguage=en . <out>`:\n**green, 0 warnings** (Sphinx 9.2.0, myst-parser 5.1.0, docutils 0.22.4,\nsphinx-book-theme 1.4.0,\nmdit-py-plugins 0.6.1). Both intersphinx inventories loaded; nothing was\nignored.\n- The same build before each fix: master's `conf.py` crashes\n(`AttributeError: module 'sphinx.ext.apidoc' has no attribute\n'OPTIONS'`);\nwith `--automodule-options` instead, 12 warnings; with\n`autodoc_default_options`, 3 warnings\n(`re.Pattern`, `'dict[str`, `'dict[Any`); with the docstring and the\n3.13 inventory, 0.\n- Tests, as CI runs them (`pip install -e .[testing,linkify]`,\n`get_cmark_spec.py`, `pytest tests/ --cov=markdown_it`):\n  CPython 3.14.7 1032 passed; PyPy 3.11.17 (PyPy 8.0.1) 1032 passed.\n  `tox -e py314` and `tox -e py310` (tox-uv): 1032 passed each.\n- `pre-commit run --all-files`: all hooks pass.\n\n## Notes for the reviewer\n\n- The tox `envlist` stays `py310`: 3.14 is added to the four `py{...}`\nfactor lists,\nwhich is what makes `tox -e py314` (and `py314-plugins`, `-bench-*`)\nwork.\nAdding `py314` to `envlist` would make a bare `tox` fail on machines\nwithout 3.14.\n- The tox `docs-{update,clean}` envs have no `basepython`, so they now\nneed Python >= 3.11 to resolve,\n  like RTD.\n- A few long signatures render as plain text rather than linked\nparameters\n(e.g. `Token`, whose `nesting: Literal[-1, 0, 1]` Sphinx 9.2 does not\nparse); no warning is emitted.\n  This is cosmetic and left alone here.\n- No 3.15 yet: it is added once there is a green cell for it.",
+          "timestamp": "2026-11-09T19:51:42+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/95a215eaba31abddcad97d701ee7fd9dbd4d2620",
+          "distinct": true,
+          "tree_id": "cd08fe0972ca024713269bf614dc604ea91839b3"
+        },
+        "date": 1794250352211,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 10.133679260932261,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0033643",
+            "group": "packages",
+            "extra": "mean: 98.681 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 239.93829077614689,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00037373",
+            "group": "packages",
+            "extra": "mean: 4.1677 msec\nrounds: 152"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 19.917389599193836,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0024879",
+            "group": "packages",
+            "extra": "mean: 50.207 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 10.02963798142065,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0026662",
+            "group": "packages",
+            "extra": "mean: 99.704 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 7.531727706113926,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035763",
+            "group": "packages",
+            "extra": "mean: 132.77 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 9.570960619749918,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014908",
+            "group": "packages",
+            "extra": "mean: 104.48 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.7860467747466586,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0076036",
+            "group": "packages",
+            "extra": "mean: 559.90 msec\nrounds: 20"
           }
         ]
       }
