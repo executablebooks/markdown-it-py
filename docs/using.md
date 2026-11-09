@@ -411,7 +411,7 @@ print(md.render("[a]\n\n[a]: b"))
 
 ### Markdown renderer
 
-You can also render a token stream directly to markdown via the `MDRenderer` class from [`mdformat`](https://github.com/executablebooks/mdformat):
+You can also render a token stream directly to markdown via the `MDRenderer` class from [`mdformat`](https://github.com/hukkin/mdformat):
 
 ```python
 from markdown_it import MarkdownIt

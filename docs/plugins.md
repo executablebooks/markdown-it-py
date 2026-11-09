@@ -68,7 +68,7 @@ Syntax plugins:
 
 Renderers, which turn the token stream into another format:
 
-- [mdformat](https://github.com/executablebooks/mdformat) (Markdown to Markdown): a CommonMark formatter,
+- [mdformat](https://github.com/hukkin/mdformat) (Markdown to Markdown): a CommonMark formatter,
   whose `mdformat.renderer.MDRenderer` renders tokens back to Markdown (see [](md/markdown-renderer)).
 - [mdit_plain](https://github.com/elespike/mdit_plain) (Markdown to plain text): `mdit_plain.renderer.RendererPlain` drops all markup,
   for example to prepare text for natural language processing.
@@ -104,9 +104,10 @@ with the tokens from `parse` (or `parseInline`), `md.options` and the `env`.
 from markdown_it import MarkdownIt
 
 class RendererText:
-    """Render only the text of each block, one block per line."""
+    """Render only the text of each block, starting each block on a new line."""
 
     __output__ = "text"
+    breaks = {"softbreak": " ", "hardbreak": "\n"}
 
     def __init__(self, parser=None):
         pass
@@ -117,15 +118,16 @@ class RendererText:
             if token.type == "inline":
                 lines.append("".join(
                     child.content
-                    for child in token.children
                     if child.type in ("text", "code_inline")
+                    else self.breaks.get(child.type, "")
+                    for child in token.children
                 ))
             elif token.type in ("fence", "code_block"):
                 lines.append(token.content.rstrip("\n"))
         return "\n".join(lines)
 
 md = MarkdownIt("commonmark", renderer_cls=RendererText)
-print(md.render("# Title\n\nSome *emphasised* `code`.\n\n    indented code"))
+print(md.render("# Title\n\nSome *emphasised*\n`code`.\n\n    indented code"))
 ```
 
 Plugins add render rules with `md.add_render_rule(name, function, fmt="html")`,
