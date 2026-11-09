@@ -1,2 +1,0 @@
-# temporary requirement until myst-parser is updated to allow markdown-it-py v4
-git+https://github.com/executablebooks/MyST-Parser.git@update-markdown-parser
