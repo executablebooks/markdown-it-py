@@ -108,3 +108,35 @@ Image alt keeps escapes, entities and code span text together
 .
 <p><img src="/u" alt="a * c&lt;d &amp; e" /></p>
 .
+
+#377 comment HTML block in a list item still ends at the next item after a blank line
+.
+- <!--
+
+- b
+.
+<ul>
+<li>
+<!--
+
+</li>
+<li>
+<p>b</p>
+</li>
+</ul>
+.
+
+#377 comment HTML block in a list item still ends at an outdented non-blank line
+.
+- <!--
+foo
+-->
+.
+<ul>
+<li>
+<!--
+</li>
+</ul>
+<p>foo
+--&gt;</p>
+.

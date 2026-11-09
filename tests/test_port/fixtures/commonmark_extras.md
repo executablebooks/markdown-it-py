@@ -828,3 +828,46 @@ A no-break space is not a space, so a code span holding one between single space
 .
 <p><code> </code></p>
 .
+
+Issue #1144. Comment HTML block (type 2) must not end on a blank line inside a list
+.
+1. item
+
+    <!--
+    a
+
+    b
+    -->
+    c
+.
+<ol>
+<li>
+<p>item</p>
+ <!--
+ a
+
+ b
+ -->
+<p>c</p>
+</li>
+</ol>
+.
+
+Issue #1144. Comment HTML block spanning a blank line inside a blockquote
+.
+> <!--
+> a
+>
+> b
+> -->
+> c
+.
+<blockquote>
+<!--
+a
+
+b
+-->
+<p>c</p>
+</blockquote>
+.
