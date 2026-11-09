@@ -1,3 +1,4 @@
+from collections.abc import Iterator
 from importlib.util import find_spec
 from typing import TYPE_CHECKING
 
@@ -163,6 +164,41 @@ def test_disable():
         "inline": [],
         "inline2": ["balance_pairs", "fragments_join"],
     }
+
+
+@pytest.mark.parametrize("method", ["enable", "disable", "enableOnly"])
+def test_ruler_cache_after_invalid_rule(method):
+    """Rule chains reflect changes made before an invalid name raises."""
+    ruler = MarkdownIt().inline.ruler
+    if method == "enable":
+        ruler.disable("emphasis")
+    ruler.getRules()  # compile and cache the chain
+
+    with pytest.raises(KeyError, match="invalid rule name missing"):
+        getattr(ruler, method)(["emphasis", "missing"])
+
+    reference = MarkdownIt().inline.ruler
+    getattr(reference, method)("emphasis")
+    assert ruler.getRules() == reference.getRules()
+
+
+@pytest.mark.parametrize("method", ["enable", "disable"])
+def test_ruler_cache_after_generator_reads_rules(method):
+    """Reading a rule chain mid-update must not leave the final chain stale."""
+    ruler = MarkdownIt().inline.ruler
+    if method == "enable":
+        ruler.disable(["emphasis", "link"])
+
+    def names() -> Iterator[str]:
+        yield "emphasis"
+        ruler.getRules()
+        yield "link"
+
+    getattr(ruler, method)(names())
+    reference = MarkdownIt().inline.ruler
+    if method == "disable":
+        reference.disable(["emphasis", "link"])
+    assert ruler.getRules() == reference.getRules()
 
 
 def test_reset():
