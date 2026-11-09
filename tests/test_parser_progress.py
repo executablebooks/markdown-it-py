@@ -29,3 +29,11 @@ def test_inline_validation_rule_must_advance_position() -> None:
 
     with pytest.raises(RuntimeError, match=r"inline rule didn't increment state\.pos"):
         md.inline.skipToken(state)
+
+
+def test_no_block_rule_matched() -> None:
+    """Without the paragraph fallback, a line no rule accepts must raise, not hang."""
+    md = MarkdownIt("commonmark").disable("paragraph")
+
+    with pytest.raises(RuntimeError, match=r"none of the block rules matched"):
+        md.parse("text\n")
