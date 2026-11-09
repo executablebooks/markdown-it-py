@@ -55,6 +55,39 @@ Fix parsing of incorrect numeric character references
 <a href="&amp;#35y;"></a> &amp;#35y;</p>
 .
 
+#445 Image alt keeps backslash escapes and entities
+.
+![a \* b](/u)
+
+![a &amp; b](/u)
+
+![a &lt; b](/u)
+
+![a \* *b* &amp; c](/u)
+
+![C:\Python26](/u)
+.
+<p><img src="/u" alt="a * b" /></p>
+<p><img src="/u" alt="a &amp; b" /></p>
+<p><img src="/u" alt="a &lt; b" /></p>
+<p><img src="/u" alt="a * b &amp; c" /></p>
+<p><img src="/u" alt="C:\Python26" /></p>
+.
+
+#445 Image alt keeps backslash escapes when the image is a link's text
+.
+[![a \* b](x)](y)
+.
+<p><a href="y"><img src="x" alt="a * b" /></a></p>
+.
+
+#445 Nested image alt: only one level is joined, as in markdown-it 15.0.3
+.
+![a ![b \* c](x) d](y)
+.
+<p><img src="y" alt="a b  c d" /></p>
+.
+
 Keep the text of a code span in image alt text
 .
 ![a `code` b](x.png)
@@ -67,4 +100,11 @@ Code span text in image alt is HTML-escaped, as in markdown-it 15.0.3
 ![a `c<d` e](/u)
 .
 <p><img src="/u" alt="a c&lt;d e" /></p>
+.
+
+Image alt keeps escapes, entities and code span text together
+.
+![a \* `c<d` &amp; e](/u)
+.
+<p><img src="/u" alt="a * c&lt;d &amp; e" /></p>
 .
