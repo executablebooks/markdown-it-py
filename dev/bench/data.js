@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794264938830,
+  "lastUpdate": 1794265291905,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -31475,6 +31475,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.010079",
             "group": "packages",
             "extra": "mean: 729.21 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "2542e66f123f4f23f0156b353c53c2fddc536719",
+          "message": "🐛 Fix HTML block start conditions per CommonMark 0.31.2 (#440)\n\nLowercase declarations such as `<!doctype html>` now start an HTML block\nand interrupt a paragraph (CommonMark 0.31.2 start condition 4, as in\nupstream markdown-it 15.0.0).\n\nBlock tag names for types 1 and 6 now match case-insensitively in ASCII\nonly, so Unicode lookalikes that Python case-folds to ASCII, such as\nU+017F, U+0130, U+0131 and U+212A, no longer open or close an HTML block.\nA Unicode space such as a no-break space after the tag name still starts\none, as in markdown-it and commonmark.js.\n\nFixes #437, reported by @p5ych0.",
+          "timestamp": "2026-11-10T00:00:28+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/2542e66f123f4f23f0156b353c53c2fddc536719",
+          "distinct": true,
+          "tree_id": "6c66c4bfbbd65a0a65fb491c7a80187f22cc0385"
+        },
+        "date": 1794265290693,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 8.943614672296757,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0039123",
+            "group": "packages",
+            "extra": "mean: 111.81 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 194.21316144522748,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000068384",
+            "group": "packages",
+            "extra": "mean: 5.1490 msec\nrounds: 126"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 12.921374644084693,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035139",
+            "group": "packages",
+            "extra": "mean: 77.391 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.682870600727431,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0019268",
+            "group": "packages",
+            "extra": "mean: 130.16 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.518928623124162,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0053653",
+            "group": "packages",
+            "extra": "mean: 181.19 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.0640030018481905,
+            "unit": "iter/sec",
+            "range": "stddev: 0.020084",
+            "group": "packages",
+            "extra": "mean: 141.56 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.357417517522075,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013653",
+            "group": "packages",
+            "extra": "mean: 736.69 msec\nrounds: 20"
           }
         ]
       }
