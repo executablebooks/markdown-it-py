@@ -11,9 +11,6 @@ Helper class, used by [[MarkdownIt#core]], [[MarkdownIt#block]] and
 - allow assign rules to additional named chains (in the same)
 - caching lists of active rules
 
-If an invalid rule name raises during an enable/disable operation, changes
-to earlier rule names are retained and used by subsequent parsing.
-
 You will not need use this class directly until write plugins. For simple
 rules control use [[MarkdownIt.disable]], [[MarkdownIt.enable]] and
 [[MarkdownIt.use]].
@@ -199,6 +196,7 @@ class Ruler(Generic[RuleFuncTv]):
         :param names: name or list of rule names to enable.
         :param ignoreInvalid: ignore errors when rule not found
         :raises: KeyError if name not found and not ignoreInvalid
+            (the rules named before it are still enabled)
         :return: list of found rule names
         """
         if isinstance(names, str):
@@ -225,6 +223,7 @@ class Ruler(Generic[RuleFuncTv]):
         :param names: name or list of rule names to enable.
         :param ignoreInvalid: ignore errors when rule not found
         :raises: KeyError if name not found and not ignoreInvalid
+            (all rules are still disabled, and the rules named before it enabled)
         :return: list of found rule names
         """
         if isinstance(names, str):
@@ -241,6 +240,7 @@ class Ruler(Generic[RuleFuncTv]):
         :param names: name or list of rule names to enable.
         :param ignoreInvalid: ignore errors when rule not found
         :raises: KeyError if name not found and not ignoreInvalid
+            (the rules named before it are still disabled)
         :return: list of found rule names
         """
         if isinstance(names, str):

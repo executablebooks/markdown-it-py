@@ -166,21 +166,20 @@ def test_disable():
     }
 
 
-def test_ruler_cache_after_invalid_rule() -> None:
+@pytest.mark.parametrize("method", ["enable", "disable", "enableOnly"])
+def test_ruler_cache_after_invalid_rule(method):
     """Rule chains reflect changes made before an invalid name raises."""
-    for method in ("enable", "disable", "enableOnly"):
-        md = MarkdownIt()
-        ruler = md.inline.ruler
-        if method == "enable":
-            ruler.disable("emphasis")
-        ruler.getRules()
+    ruler = MarkdownIt().inline.ruler
+    if method == "enable":
+        ruler.disable("emphasis")
+    ruler.getRules()  # compile and cache the chain
 
-        with pytest.raises(KeyError, match="invalid rule name missing"):
-            getattr(ruler, method)(["emphasis", "missing"])
+    with pytest.raises(KeyError, match="invalid rule name missing"):
+        getattr(ruler, method)(["emphasis", "missing"])
 
-        reference = MarkdownIt()
-        getattr(reference.inline.ruler, method)("emphasis")
-        assert ruler.getRules() == reference.inline.ruler.getRules(), method
+    reference = MarkdownIt().inline.ruler
+    getattr(reference, method)("emphasis")
+    assert ruler.getRules() == reference.getRules()
 
 
 def test_ruler_cache_after_generator_reads_rules() -> None:
