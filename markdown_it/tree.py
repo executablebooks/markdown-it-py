@@ -6,6 +6,7 @@ This module is not part of upstream JavaScript markdown-it.
 from __future__ import annotations
 
 from collections.abc import Generator, Sequence
+import operator
 import textwrap
 from typing import TYPE_CHECKING, Any, NamedTuple, TypeVar, overload
 
@@ -93,10 +94,16 @@ class SyntaxTreeNode:
     def to_tokens(self) -> list[Token]:
         """Recover the linear token stream, including changes to the tree.
 
+        The tree's ``children`` are the source of truth:
+        changes made directly to a token's ``children`` list
+        do not appear in the output.
+
         Unchanged tokens are reused as they are.
         A token whose children were edited, such as an inline or image token,
         is returned as a shallow copy with the new children,
-        so the tokens the tree was built from are not modified.
+        so this method does not modify the tokens the tree was built from.
+        Nodes do share their ``Token`` objects with that token stream, though,
+        so setting a field such as ``node.token.content`` changes both.
         """
 
         def recursive_collect_tokens(node: Self, token_list: list[Token]) -> None:
@@ -109,8 +116,8 @@ class SyntaxTreeNode:
                     children: list[Token] = []
                     for child in node.children:
                         recursive_collect_tokens(child, children)
-                    if len(children) != len(token.children) or any(
-                        a is not b for a, b in zip(children, token.children)
+                    if len(children) != len(token.children) or not all(
+                        map(operator.is_, children, token.children)
                     ):
                         token = token.copy(children=children)
                 token_list.append(token)

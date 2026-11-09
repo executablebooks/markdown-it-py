@@ -197,6 +197,59 @@ def test_tree_to_tokens_nested_image_edit():
     )
 
 
+def test_tree_to_tokens_replaced_child_with_equal_token():
+    """A child node replaced by one wrapping an equal but distinct token is kept.
+
+    Edits are detected by identity, not equality,
+    so the output holds the new token rather than the original one.
+    """
+    md = MarkdownIt()
+    tokens = md.parse("before *nested* after")
+    original_children = tokens[1].children
+    assert original_children is not None
+    original_text = original_children[0]
+    replacement = original_text.copy()
+    assert replacement == original_text
+    tree = SyntaxTreeNode(tokens)
+    tree[0][0].children[0] = SyntaxTreeNode([replacement], create_root=False)
+
+    result = tree.to_tokens()
+
+    assert result[1] is not tokens[1]
+    result_children = result[1].children
+    assert result_children is not None
+    assert result_children[0] is replacement
+    assert tokens[1].children is original_children
+    assert original_children[0] is original_text
+
+
+def test_tree_to_tokens_tree_children_are_source_of_truth():
+    """Changes made directly to a token's ``children`` do not reach the output.
+
+    The output follows the tree's ``children``;
+    the token stream the tree was built from keeps the direct change.
+    """
+    md = MarkdownIt()
+    tokens = md.parse("before *nested* after")
+    tree = SyntaxTreeNode(tokens)
+    inline_token = tree[0][0].token
+    assert inline_token is tokens[1]
+    assert inline_token.children is not None
+    appended = inline_token.children[-1].copy(content=" appended")
+    inline_token.children.append(appended)
+
+    result = tree.to_tokens()
+
+    assert (
+        md.renderer.render(result, md.options, {})
+        == "<p>before <em>nested</em> after</p>\n"
+    )
+    assert (
+        md.renderer.render(tokens, md.options, {})
+        == "<p>before <em>nested</em> after appended</p>\n"
+    )
+
+
 def test_property_passthrough():
     tokens = MarkdownIt().parse(EXAMPLE_MARKDOWN)
     heading_open = tokens[0]

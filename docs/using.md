@@ -287,9 +287,13 @@ node[0].next_sibling
 ```
 
 Use `node.to_tokens()` to recover the linear token stream after modifying the
-tree's `children`, including those of inline and image nodes. Unchanged tokens
-are reused, and a token whose children were edited is returned as a copy,
-so the token stream the tree was built from is not modified.
+tree's `children`, including those of inline and image nodes. The tree's
+`children` are the source of truth: changes made directly to a token's
+`children` list do not appear in the output. Unchanged tokens are reused, and a
+token whose children were edited is returned as a copy, so `to_tokens()` does
+not modify the token stream the tree was built from. Nodes do share their
+`Token` objects with that stream, though, so setting a field such as
+`node.token.content` changes both.
 
 ## Renderers
 
