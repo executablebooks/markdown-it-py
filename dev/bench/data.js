@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794260847889,
+  "lastUpdate": 1794261234927,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30773,6 +30773,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0060409",
             "group": "packages",
             "extra": "mean: 566.55 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "3.10",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "d774374b523bcd99e676446800610e74c5528ab2",
+          "message": "🐛 FIX: Preserve IPv6 host brackets in normalized URLs (#459)\n\n`normalizeLink` percent-encoded the brackets that `mdurl.format` adds around an\nIPv6 host, so `http://[::1]:8000/` rendered as `http://%5B::1%5D:8000/`.\nEncode the URL components separately when the host is IPv6, so the brackets stay\nliteral while brackets in the path, query and fragment are still encoded.\nPorts markdown-it#1204 (markdown-it 15.0.1), with its fixtures.",
+          "timestamp": "2026-11-09T22:53:00+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/d774374b523bcd99e676446800610e74c5528ab2",
+          "distinct": true,
+          "tree_id": "23d195dda9b50053f7637d243f33423d63eae8ed"
+        },
+        "date": 1794261233925,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 10.493201636454446,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0040786",
+            "group": "packages",
+            "extra": "mean: 95.300 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 202.47396359517396,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000045540",
+            "group": "packages",
+            "extra": "mean: 4.9389 msec\nrounds: 133"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 16.873727993525698,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0027302",
+            "group": "packages",
+            "extra": "mean: 59.264 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 9.308811805593036,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00087633",
+            "group": "packages",
+            "extra": "mean: 107.43 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 6.865795283799304,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035463",
+            "group": "packages",
+            "extra": "mean: 145.65 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 8.993260008031928,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015993",
+            "group": "packages",
+            "extra": "mean: 111.19 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.630411946474154,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0072210",
+            "group": "packages",
+            "extra": "mean: 613.34 msec\nrounds: 20"
           }
         ]
       }
