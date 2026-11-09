@@ -14,10 +14,8 @@ LOGGER = logging.getLogger(__name__)
 # last argument defines whether it can terminate a paragraph or not
 HTML_SEQUENCES: list[tuple[re.Pattern[str], re.Pattern[str], bool]] = [
     (
-        re.compile(
-            r"^<(script|pre|style|textarea)(?=(\s|>|$))", re.IGNORECASE | re.ASCII
-        ),
-        re.compile(r"<\/(script|pre|style|textarea)>", re.IGNORECASE | re.ASCII),
+        re.compile(r"^<(?a:(script|pre|style|textarea))(?=(\s|>|$))", re.IGNORECASE),
+        re.compile(r"<\/(?a:(script|pre|style|textarea))>", re.IGNORECASE),
         True,
     ),
     (re.compile(r"^<!--"), re.compile(r"-->"), True),
@@ -26,8 +24,7 @@ HTML_SEQUENCES: list[tuple[re.Pattern[str], re.Pattern[str], bool]] = [
     (re.compile(r"^<!\[CDATA\["), re.compile(r"\]\]>"), True),
     (
         re.compile(
-            "^</?(" + "|".join(block_names) + ")(?=(\\s|/?>|$))",
-            re.IGNORECASE | re.ASCII,
+            "^</?(?a:(" + "|".join(block_names) + "))(?=(\\s|/?>|$))", re.IGNORECASE
         ),
         re.compile(r"^$"),
         True,
