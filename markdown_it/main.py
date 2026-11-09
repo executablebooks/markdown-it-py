@@ -160,7 +160,7 @@ class MarkdownIt:
     def enable(
         self, names: str | Iterable[str], ignoreInvalid: bool = False
     ) -> MarkdownIt:
-        """Enable list or rules. (chainable)
+        """Enable list of rules. (chainable)
 
         :param names: rule name or iterable of rule names to enable.
         :param ignoreInvalid: set `true` to ignore errors when rule not found.
@@ -193,7 +193,7 @@ class MarkdownIt:
     ) -> MarkdownIt:
         """The same as [[MarkdownIt.enable]], but turn specified rules off. (chainable)
 
-        :param names: rule name or list of rule names to disable.
+        :param names: rule name or iterable of rule names to disable.
         :param ignoreInvalid: set `true` to ignore errors when rule not found.
 
         """
