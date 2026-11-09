@@ -85,18 +85,22 @@ class RendererHTML(RendererProtocol):
         :param env: additional data from parsed input
 
         """
-        result = ""
+        # Collect the fragments and join them once: repeated ``str +=`` is only
+        # linear on interpreters that can extend a string in place (the default
+        # CPython build), and quadratic in the output size elsewhere (e.g. PyPy,
+        # GraalPy and free-threaded CPython 3.13).
+        out: list[str] = []
 
         for i, token in enumerate(tokens):
             if token.type == "inline":
                 if token.children:
-                    result += self.renderInline(token.children, options, env)
+                    out.append(self.renderInline(token.children, options, env))
             elif token.type in self.rules:
-                result += self.rules[token.type](tokens, i, options, env)
+                out.append(self.rules[token.type](tokens, i, options, env))
             else:
-                result += self.renderToken(tokens, i, options, env)
+                out.append(self.renderToken(tokens, i, options, env))
 
-        return result
+        return "".join(out)
 
     def renderInline(
         self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
@@ -107,15 +111,15 @@ class RendererHTML(RendererProtocol):
         :param options: params of parser instance
         :param env: additional data from parsed input (references, for example)
         """
-        result = ""
+        out: list[str] = []
 
         for i, token in enumerate(tokens):
             if token.type in self.rules:
-                result += self.rules[token.type](tokens, i, options, env)
+                out.append(self.rules[token.type](tokens, i, options, env))
             else:
-                result += self.renderToken(tokens, i, options, env)
+                out.append(self.renderToken(tokens, i, options, env))
 
-        return result
+        return "".join(out)
 
     def renderToken(
         self,
@@ -205,20 +209,20 @@ class RendererHTML(RendererProtocol):
         :param options: params of parser instance
         :param env: additional data from parsed input
         """
-        result = ""
+        out: list[str] = []
 
         for token in tokens or []:
             if token.type in ("text", "code_inline"):
-                result += token.content
+                out.append(token.content)
             elif token.type == "image":
                 if token.children:
-                    result += self.renderInlineAsText(token.children, options, env)
+                    out.append(self.renderInlineAsText(token.children, options, env))
             elif token.type in ("html_inline", "html_block"):
-                result += token.content
+                out.append(token.content)
             elif token.type in ("softbreak", "hardbreak"):
-                result += "\n"
+                out.append("\n")
 
-        return result
+        return "".join(out)
 
     ###################################################
 
