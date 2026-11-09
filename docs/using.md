@@ -286,6 +286,14 @@ print(node[0])
 node[0].next_sibling
 ```
 
+Use `node.to_tokens()` to recover the linear token stream after modifying the
+tree's `children`, including those of inline and image nodes. This reuses the
+original token objects and updates their child lists to match the tree.
+The child lists are replaced in place, so the token stream the tree was built
+from sees the same edits. Another tree built from the same tokens keeps its own
+nodes, and its `to_tokens()` writes its own children back.
+Build the tree from `copy.deepcopy(tokens)` to avoid sharing.
+
 ## Renderers
 
 +++
@@ -407,9 +415,11 @@ md.add_render_rule("link_open", render_blank_link)
 print(md.render("[a]\n\n[a]: b"))
 ```
 
+(md/markdown-renderer)=
+
 ### Markdown renderer
 
-You can also render a token stream directly to markdown via the `MDRenderer` class from [`mdformat`](https://github.com/executablebooks/mdformat):
+You can also render a token stream directly to markdown via the `MDRenderer` class from [`mdformat`](https://github.com/hukkin/mdformat):
 
 ```python
 from markdown_it import MarkdownIt
@@ -432,3 +442,5 @@ env = {}
 
 output_markdown = renderer.render(tokens, options, env)
 ```
+
+For other third-party renderers, and how to write your own, see [](md/third-party).
