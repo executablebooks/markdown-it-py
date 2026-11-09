@@ -1,4 +1,5 @@
 from collections.abc import Iterator
+from importlib.util import find_spec
 from typing import TYPE_CHECKING
 
 import pytest
@@ -8,6 +9,12 @@ from markdown_it.token import Token
 
 if TYPE_CHECKING:
     from typing_extensions import Self
+
+# gfm-like2 enables linkify, which needs linkify-it-py. These inputs contain no
+# linkable text, so without it they run with linkify off rather than being skipped.
+GFM_LIKE2_OPTIONS: dict[str, bool] = (
+    {} if find_spec("linkify_it") else {"linkify": False}
+)
 
 
 def test_get_rules():
@@ -101,14 +108,16 @@ def test_override_options():
 
 
 def test_gfm_like2_tasklists_editable():
-    md_default = MarkdownIt("gfm-like2")
+    md_default = MarkdownIt("gfm-like2", GFM_LIKE2_OPTIONS)
     assert md_default.options["tasklists_editable"] is False
     assert (
         '<input class="task-list-item-checkbox" disabled="" type="checkbox" checked="">'
         in md_default.render("- [x] done")
     )
 
-    md_editable = MarkdownIt("gfm-like2", {"tasklists_editable": True})
+    md_editable = MarkdownIt(
+        "gfm-like2", {**GFM_LIKE2_OPTIONS, "tasklists_editable": True}
+    )
     assert md_editable.options["tasklists_editable"] is True
     assert (
         '<input class="task-list-item-checkbox" type="checkbox" checked="">'
@@ -117,7 +126,7 @@ def test_gfm_like2_tasklists_editable():
 
 
 def test_gfm_like2_alert_token_map():
-    md = MarkdownIt("gfm-like2")
+    md = MarkdownIt("gfm-like2", GFM_LIKE2_OPTIONS)
     tokens = md.parse("> [!NOTE]\n> body")
     assert tokens[0].type == "alert_open"
     assert tokens[0].map == [0, 2]
