@@ -20,6 +20,8 @@ def convert_attrs(value: Any) -> Any:
 
 @dc.dataclass(slots=True)
 class Token:
+    """A single token in the stream produced by the parser."""
+
     type: str
     """Type of the token (string, e.g. "paragraph_open")"""
 
