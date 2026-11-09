@@ -1,6 +1,10 @@
+from importlib.util import find_spec
+
 import pytest
 
 from markdown_it import MarkdownIt, presets
+
+NO_LINKIFY: dict[str, bool] = {} if find_spec("linkify_it") else {"linkify": False}
 
 
 def test_highlight_arguments():
@@ -60,20 +64,20 @@ def test_ordered_list_info():
 )
 def test_task_marker_in_indented_code(source, code, editable):
     """Task detection must preserve literal markers and indentation in code."""
-    md = MarkdownIt("gfm-like2", {"tasklists_editable": editable})
+    md = MarkdownIt("gfm-like2", {**NO_LINKIFY, "tasklists_editable": editable})
     tokens = md.parse(source)
     assert [token.content for token in tokens if token.type == "code_block"] == [code]
     assert all("checked" not in token.meta for token in tokens)
-    assert md.render(source) == MarkdownIt("gfm-like2", {"tasklists": False}).render(
-        source
-    )
+    assert md.render(source) == MarkdownIt(
+        "gfm-like2", {**NO_LINKIFY, "tasklists": False}
+    ).render(source)
 
 
 @pytest.mark.parametrize("spacing", [" ", "    ", "\t"])
 @pytest.mark.parametrize("code_enabled", [False, True])
 def test_task_marker_in_paragraph(spacing, code_enabled):
     """Keep recognizing tasks up to the paragraph indentation boundary."""
-    md = MarkdownIt("gfm-like2")
+    md = MarkdownIt("gfm-like2", NO_LINKIFY)
     if not code_enabled:
         md.disable("code")
     tokens = md.parse(f"-{spacing}[x] task\n")
@@ -84,7 +88,7 @@ def test_task_marker_in_paragraph(spacing, code_enabled):
 
 def test_indented_task_marker_with_code_disabled():
     """Without the code rule, the indented text is still eligible for a task."""
-    md = MarkdownIt("gfm-like2").disable("code")
+    md = MarkdownIt("gfm-like2", NO_LINKIFY).disable("code")
     tokens = md.parse("-     [x] task\n")
     item = next(token for token in tokens if token.type == "list_item_open")
     assert item.meta["checked"] is True
