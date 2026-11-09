@@ -289,6 +289,8 @@ node[0].next_sibling
 Use `node.to_tokens()` to recover the linear token stream after modifying the
 tree's `children`, including those of inline and image nodes. This reuses the
 original token objects and updates their child lists to match the tree.
+The child lists are replaced in place, so the token stream the tree was built
+from (and any other tree built from it) sees the same edits.
 
 ## Renderers
 
