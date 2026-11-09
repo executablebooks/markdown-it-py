@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794250352947,
+  "lastUpdate": 1794250729339,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30305,6 +30305,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0076036",
             "group": "packages",
             "extra": "mean: 559.90 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "4b21567579a670e225bef5594ad6e48cc9c5bcc4",
+          "message": "📚 Release prep: third-party renderers docs, Windows EOF hint, `coverage` extra, linkify skips (#463)\n\n## What and why\n\nFour small, independent changes ahead of 4.3.0, one commit each, plus\nthree follow-up commits from review (folded into the items below):\n\n1. **🧪 Skip linkify-dependent tests without linkify-it-py.**\n`linkify-it-py` is an optional extra, but 74 tests failed with\n`ModuleNotFoundError` without it:\nthe linkify fixtures, plus every `gfm-like2` test, because that preset\nenables linkify.\nThis is what happens when running the tests from the sdist with only the\n`testing` extra.\n   Now, without linkify-it-py:\n- the tests that need it (the `linkify.md` fixtures and\n`test_linkify.py`) call `pytest.importorskip(\"linkify_it\")` and skip (32\ntests);\n- the `gfm-like2` tests (tasklists, alerts, single-tilde strikethrough\nfixtures and two API tests, 42 in all) still run, with `{\"linkify\":\nFalse}`,\nbecause their inputs contain no linkable text (all 40 fixture cases\nrender identically with linkify on and off);\n- the check that rendering with linkify enabled raises\n`ModuleNotFoundError` when linkify-it-py is missing is split into its\nown test, `test_linkify_not_installed`, which runs in every environment.\n2. **🔧 Move `coverage` and `pytest-cov` to a new `coverage` extra.**\n`testing` now holds only what the suite needs, so downstream packagers\ncan run the tests without coverage tooling.\nThe CI `tests` job installs `'.[testing,coverage,linkify]'` and the tox\n`py3*` envs add the `coverage` extra,\n   so `--cov` (and `tox -- --cov=...` from AGENTS.md) keeps working.\n`test-plugins` (CI and tox) runs mdit-py-plugins' suite without `--cov`,\nso it stays on `.[testing]`.\nThe extras specs in `tests.yml` are now quoted, which clears shellcheck\nSC2102 (unquoted `.[...]` is a glob; both lines had it on master).\n3. **👌 Name the Windows EOF keys in the CLI interactive prompt.**\nCtrl-D does not end input in the Windows console; Ctrl-Z then Enter\ndoes.\nThe interactive heading and the `-h` epilog now name the keys for\n`sys.platform`\n   (only `win32` gets Ctrl-Z; cygwin keeps Ctrl-D).\nThe README keeps the POSIX `-h` copy and adds one sentence about Windows\nbelow it.\n4. **📚 Third-party renderers and plugins docs section** (end of the\nPlugins page).\nIt lists mdformat (Markdown to Markdown), mdit_plain (plain text) and\nMyST-Parser (docutils),\nwith mdformat linked at github.com/hukkin/mdformat (the old\nexecutablebooks URL in `using.md` only redirected there, so it is\nupdated too),\n   and explains how to write your own renderer:\nany class satisfying `RendererProtocol` (an `__output__` class attribute\nand a `render(tokens, options, env)` method)\n   can be passed as `renderer_cls`.\n   `MarkdownIt.render` and `renderInline` call only `render`.\nThe section has a live (`jupyter-execute`) example, which keeps soft\nbreaks as spaces and hard breaks as newlines,\nand a note on how `add_render_rule(..., fmt=...)` interacts with\n`__output__`.\n`RendererProtocol` gets docstrings, so the API page states the contract\ntoo,\nand the existing \"Markdown renderer\" subsection in `using.md` links to\nthe new section.\n\n## How it was tested\n\n- Full suite, `.[testing,coverage,linkify]`, py3.12: `pytest tests/\n--cov=markdown_it --cov-report=xml --cov-report=term-missing` (the CI\ncommand): 1071 passed, 0 skipped; coverage 96%.\n- `.[testing]` only (no linkify, no coverage), `pytest tests`:\n  - master: **74 failed**, 958 passed.\n  - this branch: 1039 passed, **32 skipped**, 0 failed.\n- with `--cov` passed: exits 4 (unrecognised argument), as expected now\nthat the plugin lives in the `coverage` extra.\n- The no-linkify fallback is load-bearing: with `GFM_LIKE2_OPTIONS`\nforced to `{}` in the `.[testing]` env, the 42 `gfm-like2` tests fail\nwith `ModuleNotFoundError: Linkify enabled but not installed.`\n`test_linkify_not_installed` is load-bearing too: with both linkify\nrules changed to return instead of raising, its 31 cases fail, with and\nwithout linkify-it-py installed; restored, they pass.\n- Built sdist (`uv build --sdist`), unpacked, installed `[testing]` and\nran `pytest tests` inside it: 1039 passed, 32 skipped. `pytest_cov`,\n`coverage` and `linkify_it` were all absent.\n- CI's `test-plugins` route (py3.10): `.[testing]` plus mdit-py-plugins\nmaster (`--no-deps -e`), then `pytest`: 511 passed.\n- `actionlint .github/workflows/tests.yml`: clean (master: 2 SC2102\ninfos).\n- CLI regression tests (`test_print_heading_eof_keys`,\n`test_help_eof_keys`), parametrised over\n`win32`/`linux`/`darwin`/`cygwin` with `sys.platform` monkeypatched:\nwith `parse.py` reverted to master, the two `win32` cases fail. With the\nchange, all 25 CLI tests pass.\n`test_tables` now pins `sys.platform` to `linux`, because it asserts the\nliteral heading text and would otherwise fail on a Windows runner.\n- `pre-commit run --all-files` (ruff, ruff-format, mypy, file hooks):\nclean after every commit.\n- Docs: `sphinx -T -nW --keep-going -E -b html docs` on py3.12 with\nSphinx 8.1.3, myst-parser 5.1.0 and `.[linkify,plugins,rtd]`: clean on\nmaster and on this branch.\nThe new example executes (\"Title / Some emphasised code. / indented\ncode\", from a paragraph split by a soft break).\nRun directly, it renders `\"line one\\nline two\"` as `'line one line two'`\nand a hard break as a newline.\n  Both cross-references and the `RendererProtocol` API link resolve.\n- The `mdit_plain` snippet in the docs was run (`'Some bold text'`), and\n`MarkdownIt(renderer_cls=MDRenderer)` and `RendererPlain` were checked\nagainst mdformat 1.0.0 and mdit_plain 1.0.1.\n\nCloses #10\nCloses #103\nCloses #354\nCloses #195\nPart of #53\n\n## Notes for the reviewer\n\n- **#53 is \"Part of\", not \"Closes\".** This PR does the last open\ndocumentation/UX item (the Windows Ctrl-Z note from the thread).\nThe other asks there (output paths, a configuration file) are not\nimplemented.\nThe issue can then be closed with a comment declining those, or left\nopen.\n- **#354** asked for an abstract class with `__init__`, `render` and\n`renderInline`.\nThe PR documents the existing `RendererProtocol` instead, which needs\nonly `render`, because `MarkdownIt.renderInline` calls\n`renderer.render`.\n  No new API.\n- A warning in `add_render_rule` for unknown token types was considered\nand deliberately left out: it would fire on legitimate plugin token\ntypes.\n- **Pre-existing docs breakage, not caused here:** `docs/conf.py`'s\n`run_apidoc` uses `sphinx.ext.apidoc.OPTIONS`, which no longer exists in\nSphinx 8.2 or 9.x.\nThe docs build therefore fails before reading any page on Sphinx >= 8.2,\non master too.\n  RTD (py3.10) resolves Sphinx 8.1.x, so it is unaffected today.\nMoving RTD to py3.11+ will pull Sphinx >= 8.2 and break the build unless\n`run_apidoc` is ported or Sphinx is capped;\nthe separate PR that moves the docs build to Python 3.13 and Sphinx 9\nports it.\nOn py3.13 there is also one nitpick warning on master,\n`pathlib._local.Path`, from `read_fixture_file`'s annotation.\n- No CHANGELOG edits; entries go in the release PR.",
+          "timestamp": "2026-11-09T19:57:50+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/4b21567579a670e225bef5594ad6e48cc9c5bcc4",
+          "distinct": true,
+          "tree_id": "2f5e4a4d6b3b37fa6e2e45d4764a39605e6abae9"
+        },
+        "date": 1794250728602,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.402832026753841,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0040829",
+            "group": "packages",
+            "extra": "mean: 135.08 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 195.644898596238,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000039730",
+            "group": "packages",
+            "extra": "mean: 5.1113 msec\nrounds: 126"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.393528430687898,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0024576",
+            "group": "packages",
+            "extra": "mean: 74.663 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.7096235483105175,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0014488",
+            "group": "packages",
+            "extra": "mean: 129.71 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.574824869580508,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0028448",
+            "group": "packages",
+            "extra": "mean: 179.38 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.299732191330761,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015874",
+            "group": "packages",
+            "extra": "mean: 136.99 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.3635203699811296,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014549",
+            "group": "packages",
+            "extra": "mean: 733.40 msec\nrounds: 20"
           }
         ]
       }
