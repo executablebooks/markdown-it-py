@@ -30,19 +30,18 @@ if TYPE_CHECKING:
 
 
 class StateBase:
+    # `src` is a plain attribute, not a property: rules read it on almost
+    # every step, and a property call there costs ~5% of total parse time.
+    src: str
+
+    # Cache for the deprecated `srcCharCode`, as `(src, char_codes)`.
+    # This is a class-level default, since subclasses do not call `__init__`.
+    _src_char_code: tuple[str, tuple[int, ...]] | None = None
+
     def __init__(self, src: str, md: MarkdownIt, env: EnvType):
         self.src = src
         self.env = env
         self.md = md
-
-    @property
-    def src(self) -> str:
-        return self._src
-
-    @src.setter
-    def src(self, value: str) -> None:
-        self._src = value
-        self._srcCharCode: tuple[int, ...] | None = None
 
     @property
     def srcCharCode(self) -> tuple[int, ...]:
@@ -51,9 +50,10 @@ class StateBase:
             DeprecationWarning,
             stacklevel=2,
         )
-        if self._srcCharCode is None:
-            self._srcCharCode = tuple(ord(c) for c in self._src)
-        return self._srcCharCode
+        # rebuild the cache if `src` has been reassigned since it was built
+        if self._src_char_code is None or self._src_char_code[0] is not self.src:
+            self._src_char_code = (self.src, tuple(ord(c) for c in self.src))
+        return self._src_char_code[1]
 
 
 class RuleOptionsType(TypedDict, total=False):
@@ -196,20 +196,23 @@ class Ruler(Generic[RuleFuncTv]):
         :param names: name or list of rule names to enable.
         :param ignoreInvalid: ignore errors when rule not found
         :raises: KeyError if name not found and not ignoreInvalid
+            (the rules named before it are still enabled)
         :return: list of found rule names
         """
         if isinstance(names, str):
             names = [names]
         result: list[str] = []
-        for name in names:
-            idx = self.__find__(name)
-            if (idx < 0) and ignoreInvalid:
-                continue
-            if (idx < 0) and not ignoreInvalid:
-                raise KeyError(f"Rules manager: invalid rule name {name}")
-            self.__rules__[idx].enabled = True
-            result.append(name)
-        self.__cache__ = None
+        try:
+            for name in names:
+                idx = self.__find__(name)
+                if (idx < 0) and ignoreInvalid:
+                    continue
+                if (idx < 0) and not ignoreInvalid:
+                    raise KeyError(f"Rules manager: invalid rule name {name}")
+                self.__rules__[idx].enabled = True
+                result.append(name)
+        finally:
+            self.__cache__ = None
         return result
 
     def enableOnly(
@@ -220,6 +223,7 @@ class Ruler(Generic[RuleFuncTv]):
         :param names: name or list of rule names to enable.
         :param ignoreInvalid: ignore errors when rule not found
         :raises: KeyError if name not found and not ignoreInvalid
+            (all rules are still disabled, and the rules named before it enabled)
         :return: list of found rule names
         """
         if isinstance(names, str):
@@ -236,20 +240,23 @@ class Ruler(Generic[RuleFuncTv]):
         :param names: name or list of rule names to enable.
         :param ignoreInvalid: ignore errors when rule not found
         :raises: KeyError if name not found and not ignoreInvalid
+            (the rules named before it are still disabled)
         :return: list of found rule names
         """
         if isinstance(names, str):
             names = [names]
         result = []
-        for name in names:
-            idx = self.__find__(name)
-            if (idx < 0) and ignoreInvalid:
-                continue
-            if (idx < 0) and not ignoreInvalid:
-                raise KeyError(f"Rules manager: invalid rule name {name}")
-            self.__rules__[idx].enabled = False
-            result.append(name)
-        self.__cache__ = None
+        try:
+            for name in names:
+                idx = self.__find__(name)
+                if (idx < 0) and ignoreInvalid:
+                    continue
+                if (idx < 0) and not ignoreInvalid:
+                    raise KeyError(f"Rules manager: invalid rule name {name}")
+                self.__rules__[idx].enabled = False
+                result.append(name)
+        finally:
+            self.__cache__ = None
         return result
 
     def getRules(self, chainName: str = "") -> list[RuleFuncTv]:
