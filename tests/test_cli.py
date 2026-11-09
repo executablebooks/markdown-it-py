@@ -1,6 +1,7 @@
 from contextlib import redirect_stdout
 import io
 import pathlib
+import sys
 import tempfile
 from unittest.mock import patch
 
@@ -33,6 +34,40 @@ def test_print_heading():
     with patch("builtins.print") as patched:
         parse.print_heading()
     patched.assert_called()
+
+
+EOF_PLATFORMS = [
+    ("win32", "Ctrl-Z then Enter"),
+    ("linux", "Ctrl-D"),
+    ("darwin", "Ctrl-D"),
+    ("cygwin", "Ctrl-D"),
+]
+
+
+@pytest.mark.parametrize(("platform", "keys"), EOF_PLATFORMS)
+def test_print_heading_eof_keys(platform, keys, monkeypatch, capsys):
+    """The interactive heading names the EOF keys of the platform (#53).
+
+    Ctrl-D does not end input on the Windows console; Ctrl-Z then Enter does.
+    """
+    monkeypatch.setattr(sys, "platform", platform)
+    parse.print_heading()
+    assert capsys.readouterr().out == (
+        f"{parse.version_str} (interactive)\n"
+        f"Type {keys} to complete input, or Ctrl-C to exit.\n"
+    )
+
+
+@pytest.mark.parametrize(("platform", "keys"), EOF_PLATFORMS)
+def test_help_eof_keys(platform, keys, monkeypatch, capsys):
+    """The ``-h`` epilog shows the same interactive heading as the platform."""
+    monkeypatch.setattr(sys, "platform", platform)
+    with pytest.raises(SystemExit) as exc_info:
+        parse.main(["-h"])
+    assert exc_info.value.code == 0
+    out = capsys.readouterr().out
+    assert f"  Type {keys} to complete input, or Ctrl-C to exit.\n" in out
+    assert out.count("to complete input") == 1
 
 
 def test_interactive():
@@ -113,8 +148,9 @@ def test_interactive_hard_line_break():
 
 @pytest.mark.parametrize("route", ["files", "stdin", "interactive"])
 @pytest.mark.parametrize("enable_tables", [False, True])
-def test_tables(route, enable_tables, tmp_path, capsys):
+def test_tables(route, enable_tables, tmp_path, capsys, monkeypatch):
     """Table parsing is opt-in on every CLI route, preserving HTML settings."""
+    monkeypatch.setattr(sys, "platform", "linux")  # fixes the interactive heading
     source = "a | b\n--- | ---\n1 | 2\n\n<em>raw</em> ~~plain~~\n"
     expected = (
         "<table>\n<thead>\n<tr>\n<th>a</th>\n<th>b</th>\n</tr>\n</thead>\n"

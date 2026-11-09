@@ -86,8 +86,12 @@ html_css_files = ["custom.css"]
 # html_static_path = ["_static"]
 
 
+# document each object where it is defined, not where it is re-exported via __all__
+# (set here rather than through sphinx.ext.apidoc.OPTIONS, which Sphinx 8.2 removed)
+autodoc_default_options = {"ignore-module-all": True}
+
 intersphinx_mapping = {
-    "python": ("https://docs.python.org/3.10", None),
+    "python": ("https://docs.python.org/3.13", None),
     "mdit-py-plugins": ("https://mdit-py-plugins.readthedocs.io/en/latest/", None),
 }
 
@@ -129,7 +133,6 @@ def run_apidoc(app):
 
     argv = ["-M", "--separate", "-o", api_folder, module_path, *ignore_paths]
 
-    apidoc.OPTIONS.append("ignore-module-all")
     apidoc.main(argv)
 
     # we don't use this

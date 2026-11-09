@@ -1,4 +1,8 @@
+import pytest
+
 from markdown_it import MarkdownIt
+
+pytest.importorskip("linkify_it")
 
 
 def test_token_levels():
