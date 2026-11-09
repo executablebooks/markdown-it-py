@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794261555548,
+  "lastUpdate": 1794261899795,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30929,6 +30929,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.012677",
             "group": "packages",
             "extra": "mean: 473.98 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "2028cc2aad87d72cc4fa328f4695a2f76a996b91",
+          "message": "🐛 Clear rule caches when Ruler.enable/disable raise on an unknown name (#457)\n\n`Ruler.enable` and `Ruler.disable` (and `enableOnly`, which calls `enable`)\nupdated the rules named before an unknown one, then raised before clearing the\ncached chain, so parsing kept using the old chain. The cache is now cleared in\na `finally`, and the `:raises:` docs say that the earlier changes are kept.\n\nFixes #456",
+          "timestamp": "2026-11-09T23:03:56+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/2028cc2aad87d72cc4fa328f4695a2f76a996b91",
+          "distinct": true,
+          "tree_id": "38892b0ee950f651be96f873ec469d276da16c3b"
+        },
+        "date": 1794261898480,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 8.222726682118665,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0045842",
+            "group": "packages",
+            "extra": "mean: 121.61 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.01441331914836,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000070155",
+            "group": "packages",
+            "extra": "mean: 5.0758 msec\nrounds: 125"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.176693830571999,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0032159",
+            "group": "packages",
+            "extra": "mean: 75.892 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.721203437932811,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0018473",
+            "group": "packages",
+            "extra": "mean: 129.51 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.492550025980767,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0051804",
+            "group": "packages",
+            "extra": "mean: 182.06 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.1976233421810765,
+            "unit": "iter/sec",
+            "range": "stddev: 0.018258",
+            "group": "packages",
+            "extra": "mean: 138.93 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.3818680658734934,
+            "unit": "iter/sec",
+            "range": "stddev: 0.011817",
+            "group": "packages",
+            "extra": "mean: 723.66 msec\nrounds: 20"
           }
         ]
       }
