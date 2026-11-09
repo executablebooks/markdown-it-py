@@ -95,8 +95,10 @@ exclude = [
 ]
 
 [tool.ruff.lint]
+# Pin the base rule set (ruff 0.16 grew its default from these 4 families to ~400 rules).
+select = ["E4", "E7", "E9", "F"]
 extend-select = ["B0", "C4", "I", "ICN", "ISC", "N", "RUF", "SIM", "UP"]
-extend-ignore = ["ISC001", "ISC003", "N802", "N803", "N806", "N816", "RUF003"]
+extend-ignore = ["E731", "ISC001", "ISC003", "N802", "N803", "N806", "N816", "RUF003"]
 
 [tool.ruff.lint.isort]
 force-sort-within-sections = true
