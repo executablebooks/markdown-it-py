@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794254133741,
+  "lastUpdate": 1794259997108,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30461,6 +30461,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.016732",
             "group": "packages",
             "extra": "mean: 558.54 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "ebec0218fae58baf2adcb6e47957884e9bf7fa04",
+          "message": "🐛 CLI helpers create a default parser only when none is given (#455)\n\n`convert_stdin`, `convert_file` and `interactive` used `md or MarkdownIt()`,\nwhich replaced a supplied parser whose truth value is false. They now create\na default only when `md is None`.",
+          "timestamp": "2026-11-09T22:32:14+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/ebec0218fae58baf2adcb6e47957884e9bf7fa04",
+          "distinct": true,
+          "tree_id": "a7bbf8fe2ffe2ca2290047d9db49e62290600020"
+        },
+        "date": 1794259996023,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.546197172000596,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0041751",
+            "group": "packages",
+            "extra": "mean: 132.52 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.36685117540657,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000047197",
+            "group": "packages",
+            "extra": "mean: 5.0667 msec\nrounds: 123"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.482336248616742,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0026276",
+            "group": "packages",
+            "extra": "mean: 74.171 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.762578141328231,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0013170",
+            "group": "packages",
+            "extra": "mean: 128.82 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.572419792147672,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0033139",
+            "group": "packages",
+            "extra": "mean: 179.46 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.359239102364673,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016507",
+            "group": "packages",
+            "extra": "mean: 135.88 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.3972778647630233,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012144",
+            "group": "packages",
+            "extra": "mean: 715.68 msec\nrounds: 20"
           }
         ]
       }
