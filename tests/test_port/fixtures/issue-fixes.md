@@ -54,3 +54,35 @@ Fix parsing of incorrect numeric character references
 <p><a href="&amp;#X22y;"></a> &amp;#X22y;
 <a href="&amp;#35y;"></a> &amp;#35y;</p>
 .
+
+#377 comment HTML block in a list item still ends at the next item after a blank line
+.
+- <!--
+
+- b
+.
+<ul>
+<li>
+<!--
+
+</li>
+<li>
+<p>b</p>
+</li>
+</ul>
+.
+
+#377 comment HTML block in a list item still ends at an outdented non-blank line
+.
+- <!--
+foo
+-->
+.
+<ul>
+<li>
+<!--
+</li>
+</ul>
+<p>foo
+--&gt;</p>
+.
