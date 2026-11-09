@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794259997108,
+  "lastUpdate": 1794260197988,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30539,6 +30539,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.012144",
             "group": "packages",
             "extra": "mean: 715.68 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "1b604f735521d547796ad7d8d9446a5a34b8e202",
+          "message": "🧪 TEST: Read and write the CommonMark spec fixtures as UTF-8 (#454)\n\nThe spec tests read `spec.md` and `commonmark.json` with the platform's default\nencoding, so they failed on Windows with a non-UTF-8 locale (e.g. GBK).\nRead and write them as UTF-8.",
+          "timestamp": "2026-11-09T22:35:36+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/1b604f735521d547796ad7d8d9446a5a34b8e202",
+          "distinct": true,
+          "tree_id": "d60eaeb9957e083ef62bac83ac6059a39c6368b2"
+        },
+        "date": 1794260196781,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.522576145258359,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0033884",
+            "group": "packages",
+            "extra": "mean: 132.93 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.36034425097844,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000061288",
+            "group": "packages",
+            "extra": "mean: 5.0669 msec\nrounds: 128"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.454465355953598,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0022019",
+            "group": "packages",
+            "extra": "mean: 74.325 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.769481844907644,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0014521",
+            "group": "packages",
+            "extra": "mean: 128.71 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.63090763577599,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0029679",
+            "group": "packages",
+            "extra": "mean: 177.59 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.462890234451031,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013261",
+            "group": "packages",
+            "extra": "mean: 134.00 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4126016215559425,
+            "unit": "iter/sec",
+            "range": "stddev: 0.015693",
+            "group": "packages",
+            "extra": "mean: 707.91 msec\nrounds: 20"
           }
         ]
       }
