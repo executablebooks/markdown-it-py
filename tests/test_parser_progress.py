@@ -37,3 +37,25 @@ def test_no_block_rule_matched() -> None:
 
     with pytest.raises(RuntimeError, match=r"none of the block rules matched"):
         md.parse("text\n")
+
+
+def test_inline_ok_is_reset_at_max_nesting() -> None:
+    """A match must not carry over to an iteration where nesting skips the rules.
+
+    The rule below opens a ``sup`` token and never closes it, so with
+    ``maxNesting=1`` the next iteration skips every rule. The text must then
+    fall through as plain text, as in markdown-it, instead of looping.
+    """
+
+    def caret(state: StateInline, silent: bool) -> bool:
+        if state.src[state.pos] != "^":
+            return False
+        if not silent:
+            state.push("sup_open", "sup", 1)
+        state.pos += 1
+        return True
+
+    md = MarkdownIt("commonmark", {"maxNesting": 1})
+    md.inline.ruler.before("text", "caret", caret)
+
+    assert md.render("^ab\n") == "<p><sup>ab</p>\n"

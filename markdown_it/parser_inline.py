@@ -175,13 +175,13 @@ class ParserInline:
 
     def tokenize(self, state: StateInline) -> None:
         """Generate tokens for input range."""
-        ok = False
         rules = self.ruler.getRules("")
         end = state.posMax
         maxNesting = state.md.options["maxNesting"]
 
         while state.pos < end:
             pos = state.pos
+            ok = False
             # Try all possible rules.
             # On success, rule should:
             #
