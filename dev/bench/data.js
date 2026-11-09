@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794265893028,
+  "lastUpdate": 1794266217230,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -31631,6 +31631,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0082926",
             "group": "packages",
             "extra": "mean: 712.01 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "2.80",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "9aa1aae4765cddd5890a53acf0b5b523a12a72eb",
+          "message": "👌 Fix quadratic-time rendering on PyPy and other interpreters (#458)\n\nRendererHTML.render, renderInline and renderInlineAsText now collect the\nrendered fragments in a list and join them once, instead of building the\nresult with str +=. Repeated += is only linear where the interpreter can\nextend a string in place (the default CPython build); on PyPy, GraalPy\nand free-threaded CPython 3.13 it copies the prefix every time, so\nrendering was quadratic in the output size. CPython timings are unchanged.\n\nRule results are now joined with str.join rather than added. A rule that\nreturns a str subclass (e.g. markupsafe.Markup) now comes back from render\nas a plain str; previously a single Markup fragment among plain str\nfragments made the result Markup and HTML-escaped the rest of the output.\nAny non-str result, including an object that relied on __radd__, raises\nTypeError after every rule of the call has run, so if a later rule raises,\nits exception surfaces instead of the TypeError. Rules are typed to return\nstr, and every built-in and mdit-py-plugins rule does.",
+          "timestamp": "2026-11-10T00:15:59+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/9aa1aae4765cddd5890a53acf0b5b523a12a72eb",
+          "distinct": true,
+          "tree_id": "a397db8cb3018071ac933947bb942a2023e34994"
+        },
+        "date": 1794266216175,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 10.20206811397207,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0046592",
+            "group": "packages",
+            "extra": "mean: 98.019 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.77141419890458,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000058591",
+            "group": "packages",
+            "extra": "mean: 5.0563 msec\nrounds: 129"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 15.397209010589592,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0027985",
+            "group": "packages",
+            "extra": "mean: 64.947 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 8.707774156522634,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0011122",
+            "group": "packages",
+            "extra": "mean: 114.84 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 6.397904857111378,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0044727",
+            "group": "packages",
+            "extra": "mean: 156.30 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.945026745518377,
+            "unit": "iter/sec",
+            "range": "stddev: 0.022111",
+            "group": "packages",
+            "extra": "mean: 125.86 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.589301098997068,
+            "unit": "iter/sec",
+            "range": "stddev: 0.014398",
+            "group": "packages",
+            "extra": "mean: 629.21 msec\nrounds: 20"
           }
         ]
       }
