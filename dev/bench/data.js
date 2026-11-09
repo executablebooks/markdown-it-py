@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1789644997868,
+  "lastUpdate": 1794249997966,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30149,6 +30149,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0092409",
             "group": "packages",
             "extra": "mean: 544.71 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "dc2b933add3b0661a1e0f318865faff5a4150a24",
+          "message": "🐛 Fix the release build: `python -m build` in a PR-time `build` job (#461)\n\n## What and why\n\nThe `publish` job built with `pip install flit~=3.4 && flit build`.\nThat now resolves flit 3.12.0 with flit_core 4.2.0 and crashes:\n\n```\nTypeError: SdistBuilder.build() got an unexpected keyword argument 'gen_setup_py'\n```\n\nSo the next tag would fail at the build step, before anything was\nuploaded.\n\nThis PR:\n\n- **Adds a `build` job that runs on every push and PR.**\nIt runs `python -m build`, which uses the backend declared in\n`[build-system]`,\n  so the release build can no longer leave the declared range.\n  It then runs `twine check --strict`.\nOn a tag push it also checks that the tag matches the built version (PEP\n440 comparison),\nand it uploads `dist/` as an artifact (default retention, so a delayed\n`publish` can still download it).\n- **Changes `publish`.**\nIt now needs `allgood` and `build`, downloads the artifact that was\nalready built and checked, and uploads it with\n`pypa/gh-action-pypi-publish` (attestations on by default).\nIt has no checkout and no rebuild, and `id-token: write` is its only\npermission.\nIt still uses the `pypi` environment and still lives in `tests.yml`, the\nfilename the trusted publisher names.\n- **Makes `allgood` a real gate.**\n`allgood` is the required status check, but as an echo job it was\n*skipped* when a job it needs failed,\n  and GitHub counts a skipped required check as passing.\nIt now runs `if: always()` with `re-actors/alls-green` (pinned to the\nv1.3.0 commit, since it gates `publish`)\n  and also needs `build`.\n  The job id is unchanged, so the required check keeps its name.\n- **Sets a top-level `permissions: contents: read`.**\n- **Keeps `CHANGELOG.md` in the sdist.**\n  The flit 3.x CLI picked it up from git; `python -m build` does not,\nso it is now listed in `[tool.flit.sdist] include`, and `test_packaging`\nasserts it.\n\n## Sdist and wheel contents\n\nCompared with the 4.2.0 files on PyPI, which the old flit 3.x CLI built\nfrom git:\n\n- **Wheel:** identical file list (74 files).\nThe metadata now comes from flit_core 4.2.0: `Metadata-Version` 2.4 →\n2.5, a new `Import-Name: markdown_it` line,\n  and the `WHEEL` generator flit 3.12.0 → 4.2.0.\n`twine check --strict` passes it, as do the twine 7.0.0 and packaging\n26.2 that `pypa/gh-action-pypi-publish` bundles,\nand PyPI already hosts Metadata-Version 2.5 wheels (flit_core 4.2.0's\nown).\n- **sdist:** 91 → 122 files. It now ships the `tests/` tree, as intended\nby #426, which landed after 4.2.0.\n`tox.ini` and `CHANGELOG.md` are still included, and `docs/` and\n`benchmarking/` are still excluded.\n- **No longer in the sdist** (the repository files the flit CLI picked\nup from git):\n`.github/`, `.gitignore`, `.pre-commit-config.yaml`, `.readthedocs.yml`,\n`AGENTS.md`,\n  `SECURITY.md`, `codecov.yml` and `scripts/`.\n\n## How it was tested\n\n- **Old command:** `pip install \"flit~=3.4\" && flit build` exits 1 with\nthe `TypeError` above (flit 3.12.0, flit-core 4.2.0).\n- **New build:** `python -m build` exits 0 and `python -m twine check\n--strict dist/*` exits 0, both files PASSED (build 1.6.1, twine 7.0.0,\nPython 3.13).\n- **Tag check script**, run locally:\n  - `v4.2.0` against the 4.2.0 dist passes; `v4.3.0` fails.\n- Against a 4.3.0rc1 dist, `v4.3.0rc1` and `v4.3.0-rc.1` pass; `v4.3.0`\nfails.\n  - An empty `dist/` fails.\n- **actionlint 1.7.12:** no findings on the new jobs.\nThe only output is two existing SC2102 infos on the unchanged `pip\ninstall -e .[testing,linkify]` lines.\n- **`pre-commit run --all-files`:** passes.\n- **`pytest tests/`** (Python 3.10, `.[testing,linkify]`): 1032 passed,\nincluding `tests/test_packaging`.\nThe new `CHANGELOG.md` assertion fails without the `include` line and\npasses with it.\n\n## Notes for the reviewer\n\n- **The first run of the new `build` job is on this PR.**\n  `publish` is exercised only by the next tag.\n- **The tag check compares PEP 440 versions**, so `v4.3.0-rc.1` matches\na `4.3.0rc1` build\n(and `v4.2.0.0` would match `4.2.0`, which PyPI treats as the same\nversion).\n- **Separable commits:** the `permissions` and `CHANGELOG.md` changes\nare separate commits,\n  and each can be dropped on its own.\nThe `allgood` change is also its own commit, but a later commit re-pins\nthe `re-actors/alls-green` line it adds,\n  so dropping it also means reverting that pin.",
+          "timestamp": "2026-11-09T19:45:33+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/dc2b933add3b0661a1e0f318865faff5a4150a24",
+          "distinct": true,
+          "tree_id": "7949a6f86fb76634449ee05aeba52bf7df042efe"
+        },
+        "date": 1794249997181,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 7.432121369027351,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0043879",
+            "group": "packages",
+            "extra": "mean: 134.55 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 197.41031693941042,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000049281",
+            "group": "packages",
+            "extra": "mean: 5.0656 msec\nrounds: 126"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 13.40312168126332,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0028453",
+            "group": "packages",
+            "extra": "mean: 74.609 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 7.76673965329446,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0013675",
+            "group": "packages",
+            "extra": "mean: 128.75 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 5.585379313652959,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0041066",
+            "group": "packages",
+            "extra": "mean: 179.04 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 7.179025699933996,
+            "unit": "iter/sec",
+            "range": "stddev: 0.016310",
+            "group": "packages",
+            "extra": "mean: 139.29 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.4033904543949758,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0089269",
+            "group": "packages",
+            "extra": "mean: 712.56 msec\nrounds: 20"
           }
         ]
       }
