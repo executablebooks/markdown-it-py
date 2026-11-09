@@ -36,6 +36,12 @@
     - The default configuration preset for `MarkdownIt` is "commonmark" not "default"
     - Allow custom renderer to be passed to `MarkdownIt`
     - |
+      `MarkdownIt` constructs its renderer with `renderer_cls(self)`, passing the
+      parser instance as a positional argument; JavaScript constructs its renderer
+      with no arguments. Custom renderer constructors must accept this argument.
+      `RendererHTML` accepts an optional `parser=None` argument but does not use it,
+      so it can also be instantiated directly without a parser.
+    - |
       change render method signatures
       `func(tokens, idx, options, env, slf)` to
       `func(self, tokens, idx, options, env)`

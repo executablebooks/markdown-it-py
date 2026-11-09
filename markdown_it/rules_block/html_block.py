@@ -44,7 +44,10 @@ def html_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
     if not state.md.options.get("html", None):
         return False
 
-    if state.src[pos] != "<":
+    try:
+        if state.src[pos] != "<":
+            return False
+    except IndexError:
         return False
 
     lineText = state.src[pos:maximum]

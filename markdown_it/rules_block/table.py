@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 
-from ..common.utils import charStrAt, isStrSpace
+from ..common.utils import charStrAt, isStrSpace, mdTrim
 from .state_block import StateBlock
 
 headerLineRe = re.compile(r"^:?-+:?$")
@@ -108,7 +108,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
     columns = lineText.split("|")
     aligns = []
     for i in range(len(columns)):
-        t = columns[i].strip()
+        t = mdTrim(columns[i])
         if not t:
             # allow empty columns before and after table, but not in between columns;
             # e.g. allow ` |---| `, disallow ` ---||--- `
@@ -126,7 +126,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
         else:
             aligns.append("")
 
-    lineText = getLine(state, startLine).strip()
+    lineText = mdTrim(getLine(state, startLine))
     if "|" not in lineText:
         return False
     if state.is_code_block(startLine):
@@ -171,7 +171,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
         # note in markdown-it this map was removed in v12.0.0 however, we keep it,
         # since it is helpful to propagate to children tokens
         token.map = [startLine, startLine + 1]
-        token.content = columns[i].strip()
+        token.content = mdTrim(columns[i])
         token.children = []
 
         token = state.push("th_close", "th", -1)
@@ -193,7 +193,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
 
         if terminate:
             break
-        lineText = getLine(state, nextLine).strip()
+        lineText = mdTrim(getLine(state, nextLine))
         if not lineText:
             break
         if state.is_code_block(nextLine):
@@ -227,7 +227,7 @@ def table(state: StateBlock, startLine: int, endLine: int, silent: bool) -> bool
             # since it is helpful to propagate to children tokens
             token.map = [nextLine, nextLine + 1]
             try:
-                token.content = columns[i].strip() if columns[i] else ""
+                token.content = mdTrim(columns[i]) if columns[i] else ""
             except IndexError:
                 token.content = ""
             token.children = []

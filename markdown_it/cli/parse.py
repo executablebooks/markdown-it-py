@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 CLI interface to markdown-it-py
 
@@ -17,52 +16,61 @@ from markdown_it.main import MarkdownIt
 version_str = f"markdown-it-py [version {__version__}]"
 
 
+def _eof_keys() -> str:
+    """The keys that end interactive input (send EOF) on this platform."""
+    return "Ctrl-Z then Enter" if sys.platform == "win32" else "Ctrl-D"
+
+
 def main(args: Sequence[str] | None = None) -> int:
     namespace = parse_args(args)
+    md = MarkdownIt()
+    if namespace.enable_tables:
+        md.enable("table")
     if namespace.filenames:
-        convert(namespace.filenames)
+        convert(namespace.filenames, md)
     elif namespace.stdin:
-        convert_stdin()
+        convert_stdin(md)
     else:
-        interactive()
+        interactive(md)
     return 0
 
 
-def convert(filenames: Iterable[str]) -> None:
+def convert(filenames: Iterable[str], md: MarkdownIt | None = None) -> None:
     for filename in filenames:
-        convert_file(filename)
+        convert_file(filename, md)
 
 
-def convert_stdin() -> None:
+def convert_stdin(md: MarkdownIt | None = None) -> None:
     """
     Parse a Markdown file and dump the output to stdout.
     """
     try:
-        rendered = MarkdownIt().render(sys.stdin.read())
+        rendered = (md or MarkdownIt()).render(sys.stdin.read())
         print(rendered, end="")
     except OSError:
         sys.stderr.write("Cannot parse Markdown from the standard input.\n")
         sys.exit(1)
 
 
-def convert_file(filename: str) -> None:
+def convert_file(filename: str, md: MarkdownIt | None = None) -> None:
     """
     Parse a Markdown file and dump the output to stdout.
     """
     try:
         with open(filename, encoding="utf8", errors="ignore") as fin:
-            rendered = MarkdownIt().render(fin.read())
+            rendered = (md or MarkdownIt()).render(fin.read())
             print(rendered, end="")
     except OSError:
         sys.stderr.write(f'Cannot open file "{filename}".\n')
         sys.exit(1)
 
 
-def interactive() -> None:
+def interactive(md: MarkdownIt | None = None) -> None:
     """
     Parse user input, dump to stdout, rinse and repeat.
     Python REPL style.
     """
+    md = md or MarkdownIt()
     print_heading()
     contents = []
     more = False
@@ -71,7 +79,7 @@ def interactive() -> None:
             prompt, more = ("... ", True) if more else (">>> ", True)
             contents.append(input(prompt) + "\n")
         except EOFError:
-            print("\n" + MarkdownIt().render("\n".join(contents)), end="")
+            print("\n" + md.render("".join(contents)), end="")
             more = False
             contents = []
         except KeyboardInterrupt:
@@ -91,7 +99,7 @@ Interactive:
 
   $ markdown-it
   markdown-it-py [version {__version__}] (interactive)
-  Type Ctrl-D to complete input, or Ctrl-C to exit.
+  Type {_eof_keys()} to complete input, or Ctrl-C to exit.
   >>> # Example
   ... > markdown *input*
   ...
@@ -112,6 +120,9 @@ Batch:
         "--stdin", action="store_true", help="read Markdown from standard input"
     )
     parser.add_argument(
+        "--enable-tables", action="store_true", help="enable table parsing"
+    )
+    parser.add_argument(
         "filenames", nargs="*", help="specify an optional list of files to convert"
     )
     return parser.parse_args(args)
@@ -119,7 +130,7 @@ Batch:
 
 def print_heading() -> None:
     print(f"{version_str} (interactive)")
-    print("Type Ctrl-D to complete input, or Ctrl-C to exit.")
+    print(f"Type {_eof_keys()} to complete input, or Ctrl-C to exit.")
 
 
 if __name__ == "__main__":

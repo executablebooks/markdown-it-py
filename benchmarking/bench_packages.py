@@ -36,14 +36,6 @@ def test_mistune(benchmark, spec_text):
 
 
 @pytest.mark.benchmark(group="packages")
-def test_commonmark_py(benchmark, spec_text):
-    import commonmark
-
-    benchmark.extra_info["version"] = "0.9.1"
-    benchmark(commonmark.commonmark, spec_text)
-
-
-@pytest.mark.benchmark(group="packages")
 def test_pymarkdown(benchmark, spec_text):
     import markdown
 

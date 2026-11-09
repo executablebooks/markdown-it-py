@@ -54,7 +54,16 @@ class StateInline(StateBase):
         self.pos = 0
         self.posMax = len(self.src)
         self.level = 0
-        self.pending = ""
+        # `pending` holds literal text not yet flushed to a token.  It is
+        # exposed as a plain `str` (see the property below), but is accumulated
+        # through a list buffer so that appending one character at a time -- the
+        # inline tokenizer's fallback path -- stays amortised O(1).  Appending
+        # to a `str` *attribute* cannot use CPython's in-place concatenation
+        # optimisation (the attribute holds a second reference), so each `+=`
+        # copies the whole string, making long runs of non-markup characters
+        # quadratic.
+        self._pending = ""
+        self._pending_buffer: list[str] = []
         self.pendingLevel = 0
 
         # Stores { start: end } pairs. Useful for backtrack
@@ -75,11 +84,75 @@ class StateInline(StateBase):
         # inside <a> and markdown links
         self.linkLevel = 0
 
+        # Lazy cache of `terminator -> last index in src`, see
+        # `html_terminator_last`.
+        self._html_terminators: dict[str, int] | None = None
+
+    def html_terminator_last(self, term: str) -> int:
+        """Index of the last occurrence of `term` in `self.src`, or -1.
+
+        The result is cached per terminator, for the life of the state.
+        It is used by the `html_inline` rule to reject, in constant time, a
+        position at which the terminator required to close an HTML construct
+        cannot possibly occur -- without running the tag regex, whose lazy
+        sub-patterns would otherwise rescan to the end of the input on every
+        such (failing) attempt.
+        """
+        if self._html_terminators is None:
+            self._html_terminators = {}
+        elif (last := self._html_terminators.get(term)) is not None:
+            return last
+        last = self._html_terminators[term] = self.src.rfind(term)
+        return last
+
     def __repr__(self) -> str:
         return (
             f"{self.__class__.__name__}"
             f"(pos=[{self.pos} of {self.posMax}], token={len(self.tokens)})"
         )
+
+    @property
+    def pending(self) -> str:
+        """Literal text accumulated so far, but not yet flushed to a token."""
+        buffer = self._pending_buffer
+        if buffer:
+            # Move the string into a local and drop the instance's reference
+            # before concatenating.  With a single reference left, CPython
+            # resizes the string in place (amortised O(new chars)) rather
+            # than copying it, so a rule that reads `pending` on every
+            # character (e.g. an attribute-syntax plugin) stays linear.
+            text = self._pending
+            self._pending = ""
+            text += "".join(buffer)
+            buffer.clear()
+            self._pending = text
+        return self._pending
+
+    @pending.setter
+    def pending(self, value: str) -> None:
+        self._pending = value
+        # Assign rather than `.clear()` so the setter also works on an
+        # instance whose `__init__` has not run yet (subclasses that set
+        # `pending` before calling `super().__init__()`), and so a copied
+        # state never shares a buffer with its original.
+        self._pending_buffer = []
+
+    def __copy__(self) -> StateInline:
+        """Shallow copy that does not share the pending text buffer."""
+        text = self.pending  # materialise (and clear) our own buffer first
+        new = self.__class__.__new__(self.__class__)
+        new.__dict__.update(self.__dict__)
+        new._pending = text
+        new._pending_buffer = []
+        return new
+
+    def append_pending(self, text: str) -> None:
+        """Append literal text to `pending`, in amortised O(1) time.
+
+        Prefer this to ``state.pending += text`` on hot paths: it buffers the
+        fragment rather than rebuilding the whole ``pending`` string per call.
+        """
+        self._pending_buffer.append(text)
 
     def pushPending(self) -> Token:
         token = Token("text", "", 0)

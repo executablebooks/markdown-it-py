@@ -37,10 +37,10 @@ def make_fence_rule(
     closing_matcher: Callable[[int, int], bool]
     if exact_match:
         # closing code fence must have exactly the same number of markers as the opening one
-        closing_matcher = lambda opening_len, closing_len: closing_len == opening_len  # noqa: E731
+        closing_matcher = lambda opening_len, closing_len: closing_len == opening_len
     else:
         # closing code fence must be at least as long as the opening one
-        closing_matcher = lambda opening_len, closing_len: closing_len >= opening_len  # noqa: E731
+        closing_matcher = lambda opening_len, closing_len: closing_len >= opening_len
 
     def _fence_rule(
         state: StateBlock, startLine: int, endLine: int, silent: bool

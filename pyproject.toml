@@ -1,5 +1,5 @@
 [build-system]
-requires = ["flit_core >=3.4,<4"]
+requires = ["flit_core >=3.4,<5"]
 build-backend = "flit_core.buildapi"
 
 [project]
@@ -18,6 +18,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -35,7 +36,6 @@ Documentation = "https://markdown-it-py.readthedocs.io"
 
 [project.optional-dependencies]
 compare = [
-    "commonmark~=0.9",
     "markdown~=3.4",
     "mistletoe~=1.0",
     "mistune~=3.0",
@@ -56,12 +56,15 @@ rtd = [
     "ipykernel",
 ]
 testing = [
-    "coverage",
+    "flit_core>=3.4,<5",  # lets tests/test_packaging build the sdist
     "pytest",
-    "pytest-cov",
     "pytest-regressions",
     "pytest-timeout",
     "requests",
+]
+coverage = [
+    "coverage",
+    "pytest-cov",
 ]
 benchmarking = [
     "psutil",
@@ -81,9 +84,13 @@ markdown-it = "markdown_it.cli.parse:main"
 name = "markdown_it"
 
 [tool.flit.sdist]
+include = [
+    "CHANGELOG.md",
+    "tests/",
+    "tox.ini",
+]
 exclude = [
     "docs/",
-    "tests/",
     "benchmarking/"
 ]
 

@@ -12,17 +12,28 @@ from collections.abc import Sequence
 import inspect
 from typing import Any, ClassVar, Protocol
 
-from .common.utils import escapeHtml, unescapeAll
+from .common.utils import MD_TRIM_RE, escapeHtml, mdTrim, unescapeAll
 from .token import Token
 from .utils import EnvType, OptionsDict
 
 
 class RendererProtocol(Protocol):
+    """The interface a renderer passed to ``MarkdownIt(renderer_cls=...)`` must have.
+
+    ``MarkdownIt`` creates the renderer as ``renderer_cls(md)``, and its
+    ``render`` and ``renderInline`` methods call only :meth:`render`.
+    """
+
     __output__: ClassVar[str]
+    """The name of the output format, e.g. ``"html"``.
+
+    ``MarkdownIt.add_render_rule`` only applies rules whose ``fmt`` matches it.
+    """
 
     def render(
         self, tokens: Sequence[Token], options: OptionsDict, env: EnvType
-    ) -> Any: ...
+    ) -> Any:
+        """Render a token stream to the output format."""
 
 
 class RendererHTML(RendererProtocol):
@@ -61,7 +72,7 @@ class RendererHTML(RendererProtocol):
         self.rules = {
             k: v
             for k, v in inspect.getmembers(self, predicate=inspect.ismethod)
-            if not (k.startswith("render") or k.startswith("_"))
+            if not k.startswith(("render", "_"))
         }
 
     def render(
@@ -202,7 +213,9 @@ class RendererHTML(RendererProtocol):
             elif token.type == "image":
                 if token.children:
                     result += self.renderInlineAsText(token.children, options, env)
-            elif token.type == "softbreak":
+            elif token.type in ("html_inline", "html_block"):
+                result += token.content
+            elif token.type in ("softbreak", "hardbreak"):
                 result += "\n"
 
         return result
@@ -266,12 +279,14 @@ class RendererHTML(RendererProtocol):
         env: EnvType,
     ) -> str:
         token = tokens[idx]
-        info = unescapeAll(token.info).strip() if token.info else ""
+        info = mdTrim(unescapeAll(token.info)) if token.info else ""
         langName = ""
         langAttrs = ""
 
         if info:
-            arr = info.split(maxsplit=1)
+            # Not ``str.split()``: it splits on the Python whitespace set,
+            # which is wider than the one upstream uses here.
+            arr = MD_TRIM_RE.split(info, maxsplit=1)
             langName = arr[0]
             if len(arr) == 2:
                 langAttrs = arr[1]

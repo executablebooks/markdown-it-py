@@ -192,7 +192,7 @@ def reference(state: StateBlock, startLine: int, _endLine: int, silent: bool) ->
     return True
 
 
-def getNextLine(state: StateBlock, nextLine: int) -> None | str:
+def getNextLine(state: StateBlock, nextLine: int) -> str | None:
     endLine = state.lineMax
 
     if nextLine >= endLine or state.isEmpty(nextLine):
