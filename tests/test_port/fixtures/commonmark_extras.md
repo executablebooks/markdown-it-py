@@ -766,26 +766,45 @@ Inline HTML in image description
 <p><img src="/url" alt="a&lt;b&gt;c" /></p>
 .
 
-Issue #377. HTML comment block inside list item should not end at blank line
+Issue #1144. Comment HTML block (type 2) must not end on a blank line inside a list
 .
 1. item
 
     <!--
-    comment with
+    a
 
-    blank line inside
+    b
     -->
-    paragraph
+    c
 .
 <ol>
 <li>
 <p>item</p>
  <!--
- comment with
+ a
 
- blank line inside
+ b
  -->
-<p>paragraph</p>
+<p>c</p>
 </li>
 </ol>
+.
+
+Issue #1144. Comment HTML block spanning a blank line inside a blockquote
+.
+> <!--
+> a
+>
+> b
+> -->
+> c
+.
+<blockquote>
+<!--
+a
+
+b
+-->
+<p>c</p>
+</blockquote>
 .
