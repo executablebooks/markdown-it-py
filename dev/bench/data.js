@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794260523488,
+  "lastUpdate": 1794260847889,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30695,6 +30695,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0083473",
             "group": "packages",
             "extra": "mean: 618.92 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "59256adff15380d2515038528397e16cb64899c6",
+          "message": "👌 Build block line markers once per line, not per character (#449)\n\nStateBlock.__init__ now finds each line break with str.find and scans only\nthe leading whitespace of each line, instead of dispatching every character.\nThe markers are identical to the old scan, including its upstream quirk: a\nfinal line of only spaces/tabs with no \"\\n\" gets no marker. A new test pins\nthe markers.",
+          "timestamp": "2026-11-09T22:46:33+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/59256adff15380d2515038528397e16cb64899c6",
+          "distinct": true,
+          "tree_id": "a40920d4803084ace769a5056dbc6c5942fc054f"
+        },
+        "date": 1794260846440,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 11.358940267940328,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0047695",
+            "group": "packages",
+            "extra": "mean: 88.036 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 245.68337563101198,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000039020",
+            "group": "packages",
+            "extra": "mean: 4.0703 msec\nrounds: 151"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 18.92859856170366,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0030275",
+            "group": "packages",
+            "extra": "mean: 52.830 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 9.989310089647189,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0017452",
+            "group": "packages",
+            "extra": "mean: 100.11 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 7.4551090580115655,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0032699",
+            "group": "packages",
+            "extra": "mean: 134.14 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 8.79498539659732,
+            "unit": "iter/sec",
+            "range": "stddev: 0.028054",
+            "group": "packages",
+            "extra": "mean: 113.70 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.7650620092067006,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0060409",
+            "group": "packages",
+            "extra": "mean: 566.55 msec\nrounds: 20"
           }
         ]
       }
