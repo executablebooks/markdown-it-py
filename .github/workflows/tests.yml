@@ -126,8 +126,8 @@ jobs:
       uses: actions/setup-python@v7
       with:
         python-version: '3.13'
-    # `python -m build` builds with the backend pinned in pyproject.toml's [build-system],
-    # so the release build cannot drift from it
+    # `python -m build` builds with the backend declared in pyproject.toml's [build-system],
+    # so the release build cannot leave the declared range
     # (`pip install flit~=3.4 && flit build` now resolves flit 3.12 + flit_core 4.2 and crashes)
     - name: Install build tools
       run: python -m pip install --upgrade build twine
@@ -157,7 +157,6 @@ jobs:
         name: dist
         path: dist/
         if-no-files-found: error
-        retention-days: 7
 
   publish:
 
@@ -190,6 +189,6 @@ jobs:
     - tests
     - build
     steps:
-    - uses: re-actors/alls-green@release/v1
+    - uses: re-actors/alls-green@b5b5b37504aa4183270bd3d855c52a67f212be35  # v1.3.0
       with:
         jobs: ${{ toJSON(needs) }}
