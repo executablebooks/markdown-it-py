@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794263850545,
+  "lastUpdate": 1794264169315,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -31241,6 +31241,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.011480",
             "group": "packages",
             "extra": "mean: 700.85 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "1c70dcec10b245bfac7349a31725cc3a8ee06d40",
+          "message": "👌 Make `StateBase.src` a plain attribute (#450)\n\nsrc was a property only so that its setter could reset the cache behind the\ndeprecated srcCharCode. It is now a plain attribute, which rules read on\nalmost every step; the cache is rebuilt when src is no longer the string it\nwas built from. The private _src and _srcCharCode attributes are gone.",
+          "timestamp": "2026-11-09T23:41:56+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/1c70dcec10b245bfac7349a31725cc3a8ee06d40",
+          "distinct": true,
+          "tree_id": "0f80096ee4f1efebd6ee3208e115c35d8246a142"
+        },
+        "date": 1794264168210,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 12.967391546901526,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0034006",
+            "group": "packages",
+            "extra": "mean: 77.117 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 239.22791735058178,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00012198",
+            "group": "packages",
+            "extra": "mean: 4.1801 msec\nrounds: 150"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 19.81803406140625,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0024882",
+            "group": "packages",
+            "extra": "mean: 50.459 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 10.017775089318663,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0055147",
+            "group": "packages",
+            "extra": "mean: 99.823 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 7.606931949860611,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0029901",
+            "group": "packages",
+            "extra": "mean: 131.46 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 9.778507902456482,
+            "unit": "iter/sec",
+            "range": "stddev: 0.013653",
+            "group": "packages",
+            "extra": "mean: 102.27 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 1.8151343180549762,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0060740",
+            "group": "packages",
+            "extra": "mean: 550.92 msec\nrounds: 20"
           }
         ]
       }
