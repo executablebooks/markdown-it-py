@@ -73,3 +73,17 @@ Fix parsing of incorrect numeric character references
 <p><img src="/u" alt="a * b &amp; c" /></p>
 <p><img src="/u" alt="C:\Python26" /></p>
 .
+
+#445 Image alt keeps backslash escapes when the image is a link's text
+.
+[![a \* b](x)](y)
+.
+<p><a href="y"><img src="x" alt="a * b" /></a></p>
+.
+
+#445 Nested image alt: only one level is joined, as in markdown-it 15.0.3
+.
+![a ![b \* c](x) d](y)
+.
+<p><img src="y" alt="a b  c d" /></p>
+.
