@@ -61,3 +61,10 @@ Keep the text of a code span in image alt text
 .
 <p><img src="x.png" alt="a code b" /></p>
 .
+
+Code span text in image alt is HTML-escaped, as in markdown-it 15.0.3
+.
+![a `c<d` e](/u)
+.
+<p><img src="/u" alt="a c&lt;d e" /></p>
+.
