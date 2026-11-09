@@ -131,3 +131,116 @@ Ordered list starting from non-1
 <li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> task four</li>
 </ol>
 .
+
+Checkbox-like text in an indented code block is literal
+.
+-     [x] literal
+.
+<ul>
+<li>
+<pre><code>[x] literal
+</code></pre>
+</li>
+</ul>
+.
+
+Checkbox-like text in an indented code block keeps its extra indentation
+.
+-      [ ] literal
+.
+<ul>
+<li>
+<pre><code> [ ] literal
+</code></pre>
+</li>
+</ul>
+.
+
+Checkbox-like text in an indented code block in an ordered list
+.
+1.     [X] literal
+.
+<ol>
+<li>
+<pre><code>[X] literal
+</code></pre>
+</li>
+</ol>
+.
+
+Checkbox-like text in an indented code block after tabs
+.
+-		[x] literal
+.
+<ul>
+<li>
+<pre><code>  [x] literal
+</code></pre>
+</li>
+</ul>
+.
+
+Checkbox-like text in an indented code block in a blockquote
+.
+> -     [X] literal
+.
+<blockquote>
+<ul>
+<li>
+<pre><code>[X] literal
+</code></pre>
+</li>
+</ul>
+</blockquote>
+.
+
+Checkbox-like text in an indented code block in a nested list
+.
+- outer
+  -     [ ] literal
+.
+<ul>
+<li>outer
+<ul>
+<li>
+<pre><code>[ ] literal
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+.
+
+Indented code item between task items
+.
+- a
+-     [x] literal
+- [ ] b
+.
+<ul class="contains-task-list">
+<li>a</li>
+<li>
+<pre><code>[x] literal
+</code></pre>
+</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> b</li>
+</ul>
+.
+
+Four spaces after the marker is still a task
+.
+-    [x] task
+.
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> task</li>
+</ul>
+.
+
+A tab after the marker is still a task
+.
+-	[x] task
+.
+<ul class="contains-task-list">
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> task</li>
+</ul>
+.

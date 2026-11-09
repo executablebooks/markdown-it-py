@@ -621,3 +621,15 @@ def test_rule_names_generator_ignores_unknown_rules(method):
     md = MarkdownIt("zero" if method == "enable" else "commonmark")
     getattr(md, method)((name for name in ["missing-rule", "heading"]), True)
     assert ("heading" in md.get_active_rules()["block"]) is (method == "enable")
+
+
+def test_src_char_code_follows_src():
+    """The deprecated ``srcCharCode`` is rebuilt when ``src`` is reassigned."""
+    from markdown_it.rules_block.state_block import StateBlock
+
+    state = StateBlock("ab", MarkdownIt(), {}, [])
+    with pytest.warns(DeprecationWarning):
+        assert state.srcCharCode == (97, 98)
+    state.src = "xyz"
+    with pytest.warns(DeprecationWarning):
+        assert list(state.srcCharCode) == [120, 121, 122]

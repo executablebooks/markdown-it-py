@@ -14,16 +14,18 @@ LOGGER = logging.getLogger(__name__)
 # last argument defines whether it can terminate a paragraph or not
 HTML_SEQUENCES: list[tuple[re.Pattern[str], re.Pattern[str], bool]] = [
     (
-        re.compile(r"^<(script|pre|style|textarea)(?=(\s|>|$))", re.IGNORECASE),
-        re.compile(r"<\/(script|pre|style|textarea)>", re.IGNORECASE),
+        re.compile(r"^<(?a:(script|pre|style|textarea))(?=(\s|>|$))", re.IGNORECASE),
+        re.compile(r"<\/(?a:(script|pre|style|textarea))>", re.IGNORECASE),
         True,
     ),
     (re.compile(r"^<!--"), re.compile(r"-->"), True),
     (re.compile(r"^<\?"), re.compile(r"\?>"), True),
-    (re.compile(r"^<![A-Z]"), re.compile(r">"), True),
+    (re.compile(r"^<![A-Za-z]"), re.compile(r">"), True),
     (re.compile(r"^<!\[CDATA\["), re.compile(r"\]\]>"), True),
     (
-        re.compile("^</?(" + "|".join(block_names) + ")(?=(\\s|/?>|$))", re.IGNORECASE),
+        re.compile(
+            "^</?(?a:(" + "|".join(block_names) + "))(?=(\\s|/?>|$))", re.IGNORECASE
+        ),
         re.compile(r"^$"),
         True,
     ),
@@ -67,11 +69,22 @@ def html_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
     nextLine = startLine + 1
 
+    # Block types 6 and 7 (the only ones whose end condition is a blank line)
+    # have `^$` as their closing regexp. For all other types (1-5, e.g.
+    # `<!--` comments), a blank line is regular content and must not terminate
+    # the block - it ends only when its closing sequence is found.
+    endsOnBlankLine = bool(html_seq[1].search(""))
+
     # If we are here - we detected HTML block.
     # Let's roll down till block end.
     if not html_seq[1].search(lineText):
         while nextLine < endLine:
-            if state.sCount[nextLine] < state.blkIndent:
+            # An outdented blank line shouldn't end a block that doesn't end on a
+            # blank line (e.g. a `<!--` comment inside a list item). Such blocks
+            # must continue until their closing sequence regardless of indent.
+            if state.sCount[nextLine] < state.blkIndent and (
+                endsOnBlankLine or not state.isEmpty(nextLine)
+            ):
                 break
 
             pos = state.bMarks[nextLine] + state.tShift[nextLine]
