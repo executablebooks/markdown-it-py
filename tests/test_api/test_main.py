@@ -182,18 +182,22 @@ def test_ruler_cache_after_invalid_rule(method):
     assert ruler.getRules() == reference.getRules()
 
 
-def test_ruler_cache_after_generator_reads_rules() -> None:
+@pytest.mark.parametrize("method", ["enable", "disable"])
+def test_ruler_cache_after_generator_reads_rules(method):
     """Reading a rule chain mid-update must not leave the final chain stale."""
     ruler = MarkdownIt().inline.ruler
+    if method == "enable":
+        ruler.disable(["emphasis", "link"])
 
     def names() -> Iterator[str]:
         yield "emphasis"
         ruler.getRules()
         yield "link"
 
-    ruler.disable(names())
+    getattr(ruler, method)(names())
     reference = MarkdownIt().inline.ruler
-    reference.disable(["emphasis", "link"])
+    if method == "disable":
+        reference.disable(["emphasis", "link"])
     assert ruler.getRules() == reference.getRules()
 
 
