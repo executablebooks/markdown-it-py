@@ -787,6 +787,13 @@ A longer backtick run outside a link label must not close a shorter opener.
 <p><a href="%60%60">`</a></p>
 .
 
+A code span opener inside a valid link label must not pair with a longer run outside the link.
+.
+[`a](/x)``b
+.
+<p><a href="/x">`a</a>``b</p>
+.
+
 Code spans still take precedence over links when the closer follows the label.
 .
 [foo `bar](/url)` baz
