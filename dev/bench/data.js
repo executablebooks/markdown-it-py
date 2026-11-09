@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794261234927,
+  "lastUpdate": 1794261555548,
   "repoUrl": "https://github.com/executablebooks/markdown-it-py",
   "xAxis": "id",
   "oneChartGroups": [
@@ -30851,6 +30851,84 @@ window.BENCHMARK_DATA = {
             "range": "stddev: 0.0072210",
             "group": "packages",
             "extra": "mean: 613.34 msec\nrounds: 20"
+          }
+        ]
+      },
+      {
+        "cpu": {
+          "speed": "0.00",
+          "cores": 4,
+          "physicalCores": 2,
+          "processors": 1
+        },
+        "extra": {
+          "pythonVersion": "3.10.22"
+        },
+        "commit": {
+          "id": "759f39e95af31a8d69b2e77485ec27dc804fd143",
+          "message": "🐛 Raise instead of hanging when a parser rule does not advance (#444)\n\nA block or inline rule that reports a match without advancing\n`state.line` / `state.pos` (or moving it backwards) now raises\n`RuntimeError`, as markdown-it does, instead of looping forever.\nThis covers block tokenize, inline tokenize and inline validation\n(`skipToken`).\n\nAlso ported from markdown-it 14.1.0:\n- raise `none of the block rules matched` when no block rule accepts\n  a line (only possible with `paragraph` disabled);\n- reset `ok` on every inline tokenize iteration, so a match from the\n  previous iteration no longer causes an infinite loop once nesting\n  reaches `maxNesting`.\n\nCloses #441.\n\nCo-authored-by: Taneli Hukkinen <3275109+hukkin@users.noreply.github.com>",
+          "timestamp": "2026-11-09T22:58:27+01:00",
+          "url": "https://github.com/executablebooks/markdown-it-py/commit/759f39e95af31a8d69b2e77485ec27dc804fd143",
+          "distinct": true,
+          "tree_id": "ed44329514dbf927a6800d0c0c253bbc5f768333"
+        },
+        "date": 1794261554485,
+        "benches": [
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_py",
+            "value": 14.698702782374852,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0047894",
+            "group": "packages",
+            "extra": "mean: 68.033 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_markdown_it_pyrs",
+            "value": 294.2537859127955,
+            "unit": "iter/sec",
+            "range": "stddev: 0.000036461",
+            "group": "packages",
+            "extra": "mean: 3.3984 msec\nrounds: 162"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistune",
+            "value": 22.41003335494077,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0061319",
+            "group": "packages",
+            "extra": "mean: 44.623 msec\nrounds: 22"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown",
+            "value": 14.132165281608662,
+            "unit": "iter/sec",
+            "range": "stddev: 0.00067326",
+            "group": "packages",
+            "extra": "mean: 70.761 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_pymarkdown_extra",
+            "value": 10.322514085590468,
+            "unit": "iter/sec",
+            "range": "stddev: 0.0035375",
+            "group": "packages",
+            "extra": "mean: 96.876 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_mistletoe",
+            "value": 11.583401816190591,
+            "unit": "iter/sec",
+            "range": "stddev: 0.024784",
+            "group": "packages",
+            "extra": "mean: 86.330 msec\nrounds: 20"
+          },
+          {
+            "name": "benchmarking/bench_packages.py::test_panflute",
+            "value": 2.109805577742842,
+            "unit": "iter/sec",
+            "range": "stddev: 0.012677",
+            "group": "packages",
+            "extra": "mean: 473.98 msec\nrounds: 20"
           }
         ]
       }
