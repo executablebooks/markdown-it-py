@@ -44,7 +44,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -e .[testing,coverage,linkify]
+        pip install -e '.[testing,coverage,linkify]'
     - name: Check spec file is up to date
       run: |
         python tests/test_cmark_spec/get_cmark_spec.py
@@ -77,7 +77,7 @@ jobs:
     - name: Install markdown-it-py
       run: |
         python -m pip install --upgrade pip
-        pip install .[testing]
+        pip install '.[testing]'
     - name: clone and install mdit-py-plugins
       run: |
         git clone https://github.com/executablebooks/mdit-py-plugins.git
