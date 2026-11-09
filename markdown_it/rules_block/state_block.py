@@ -91,6 +91,10 @@ class StateBlock(StateBase):
                 else:
                     offset += 1
                 pos += 1
+            if pos == end == length:
+                # A final line of only spaces/tabs with no "\n" gets no marker,
+                # matching upstream markdown-it's per-character scan.
+                break
             self.bMarks.append(start)
             self.eMarks.append(end)
             self.tShift.append(indent)
