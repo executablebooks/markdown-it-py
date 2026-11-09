@@ -76,7 +76,7 @@ class StateInline(StateBase):
         # Stack of delimiter lists for upper level tags
         self._prev_delimiters: list[list[Delimiter]] = []
 
-        # backticklength => last seen position
+        # Backtick run length => last position, built lazily on first use
         self.backticks: dict[int, int] = {}
         self.backticksScanned = False
 
