@@ -82,6 +82,7 @@ name = "markdown_it"
 
 [tool.flit.sdist]
 include = [
+    "CHANGELOG.md",
     "tests/",
     "tox.ini",
 ]

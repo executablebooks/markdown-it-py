@@ -11,7 +11,8 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def test_sdist_contents(tmp_path: Path) -> None:
-    """The sdist must ship tests/ and tox.ini, so downstream packagers can run them."""
+    """The sdist must ship tests/ and tox.ini, so downstream packagers can run them,
+    and CHANGELOG.md, which the sdists built by the flit 3.x CLI shipped."""
     flit_sdist = pytest.importorskip("flit_core.sdist")
     if not (ROOT / "pyproject.toml").is_file():
         pytest.skip("not running from a source checkout")
@@ -24,5 +25,6 @@ def test_sdist_contents(tmp_path: Path) -> None:
     assert "markdown_it/__init__.py" in names
     assert "tests/test_api/test_main.py" in names
     assert "tox.ini" in names
+    assert "CHANGELOG.md" in names
     # heavy, non-essential trees are still excluded
     assert not [name for name in names if name.startswith(("docs/", "benchmarking/"))]
