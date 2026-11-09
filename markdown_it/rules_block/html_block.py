@@ -67,11 +67,22 @@ def html_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
     nextLine = startLine + 1
 
+    # Block types 6 and 7 (the only ones whose end condition is a blank line)
+    # have `^$` as their closing regexp. For all other types (1-5, e.g.
+    # `<!--` comments), a blank line is regular content and must not terminate
+    # the block - it ends only when its closing sequence is found.
+    endsOnBlankLine = bool(html_seq[1].search(""))
+
     # If we are here - we detected HTML block.
     # Let's roll down till block end.
     if not html_seq[1].search(lineText):
         while nextLine < endLine:
-            if state.sCount[nextLine] < state.blkIndent and not state.isEmpty(nextLine):
+            # An outdented blank line shouldn't end a block that doesn't end on a
+            # blank line (e.g. a `<!--` comment inside a list item). Such blocks
+            # must continue until their closing sequence regardless of indent.
+            if state.sCount[nextLine] < state.blkIndent and (
+                endsOnBlankLine or not state.isEmpty(nextLine)
+            ):
                 break
 
             pos = state.bMarks[nextLine] + state.tShift[nextLine]
