@@ -177,10 +177,16 @@ jobs:
     - uses: pypa/gh-action-pypi-publish@release/v1
 
   allgood:
+    # the required status check: keep the job id, and do not give it a `name:`.
+    # It runs even when a job it needs fails or is skipped, and fails then,
+    # whereas a skipped required check would count as passing
+    if: always()
     runs-on: ubuntu-latest
     needs:
     - pre-commit
     - tests
     - build
     steps:
-    - run: echo "Great success!"
+    - uses: re-actors/alls-green@release/v1
+      with:
+        jobs: ${{ toJSON(needs) }}
