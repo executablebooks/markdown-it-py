@@ -155,6 +155,16 @@ mailto:test@example.com
 <p><a href="mailto:test@example.com">mailto:test@example.com</a></p>
 .
 
+emails with a punycode domain
+.
+test@xn--n3h.net
+
+mailto:test@xn--n3h.net
+.
+<p><a href="mailto:test@xn--n3h.net">test@☃.net</a></p>
+<p><a href="mailto:test@xn--n3h.net">mailto:test@☃.net</a></p>
+.
+
 
 typorgapher should not break href
 .

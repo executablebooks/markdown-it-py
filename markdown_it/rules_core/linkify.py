@@ -95,7 +95,9 @@ def linkify(state: StateCore) -> None:
                         urlText = HTTP_RE.sub(
                             "", state.md.normalizeLinkText("http://" + urlText)
                         )
-                    elif link.schema == "mailto:" and TEST_MAILTO_RE.search(urlText):
+                    elif link.schema == "mailto:" and not TEST_MAILTO_RE.search(
+                        urlText
+                    ):
                         urlText = MAILTO_RE.sub(
                             "", state.md.normalizeLinkText("mailto:" + urlText)
                         )
