@@ -40,7 +40,7 @@ If you write plugins or render rules, or edit `SyntaxTreeNode` trees, please rea
 * 🐛 Keep code span text in image alt text, porting markdown-it 15.0.0, in [#460](https://github.com/executablebooks/markdown-it-py/pull/460), thanks to [@jayhemnani9910](https://github.com/jayhemnani9910)
 * 🐛 Keep hard breaks and inline HTML in image alt text in [#409](https://github.com/executablebooks/markdown-it-py/pull/409), thanks to [@chuenchen309](https://github.com/chuenchen309)
 * 🐛 Keep edits to the children of inline and image nodes in `SyntaxTreeNode.to_tokens()` in [#453](https://github.com/executablebooks/markdown-it-py/pull/453), thanks to [@KennyMcSimpson](https://github.com/KennyMcSimpson); edited tokens are copied, so the token stream the tree was built from is left unchanged ([#464](https://github.com/executablebooks/markdown-it-py/pull/464))
-* 🐛 Fix rule chains staying stale after `Ruler.enable`, `disable` or `enableOnly` raised on an unknown rule name in [#457](https://github.com/executablebooks/markdown-it-py/pull/457), thanks to [@IlyaKhalafi](https://github.com/IlyaKhalafi) ([#456](https://github.com/executablebooks/markdown-it-py/issues/456))
+* 🐛 Fix rule chains staying stale after `Ruler.enable`, `disable` or `enableOnly` raised on an unknown rule name in [#457](https://github.com/executablebooks/markdown-it-py/pull/457), thanks to [@IlyaKhalafi](https://github.com/IlyaKhalafi); reported in [#456](https://github.com/executablebooks/markdown-it-py/issues/456)
 * 🐛 Fix `MarkdownIt.enable()` and `disable()` applying a generator of rule names only to the core chain in [#447](https://github.com/executablebooks/markdown-it-py/pull/447), thanks to [@muneikh](https://github.com/muneikh)
 * 🐛 Fix the CLI's interactive mode joining input lines with an extra newline, which split every line into its own paragraph and broke hard line breaks, in [#425](https://github.com/executablebooks/markdown-it-py/pull/425); reported by [@jamesquilty](https://github.com/jamesquilty) in [#172](https://github.com/executablebooks/markdown-it-py/issues/172)
 * 🐛 CLI helpers create a default parser only when none is given in [#455](https://github.com/executablebooks/markdown-it-py/pull/455), thanks to [@Quinnod345](https://github.com/Quinnod345)
@@ -55,7 +55,7 @@ If you write plugins or render rules, or edit `SyntaxTreeNode` trees, please rea
 ### 🔧 Maintenance
 
 * 🔧 Publish to PyPI with trusted publishing and attestations, uploading distributions built with `python -m build` and checked on every pull request, in [#397](https://github.com/executablebooks/markdown-it-py/pull/397) and [#461](https://github.com/executablebooks/markdown-it-py/pull/461)
-* 🔧 Include `tests/`, `tox.ini` and `CHANGELOG.md` in the sdist, so packagers can run the test suite from it, in [#426](https://github.com/executablebooks/markdown-it-py/pull/426), thanks to [@BetterAndBetterII](https://github.com/BetterAndBetterII) ([#420](https://github.com/executablebooks/markdown-it-py/pull/420)), and [#461](https://github.com/executablebooks/markdown-it-py/pull/461); requested by [@mtelka](https://github.com/mtelka) in [#261](https://github.com/executablebooks/markdown-it-py/issues/261)
+* 🔧 Include `tests/` in the sdist (next to `tox.ini` and `CHANGELOG.md`), so packagers can run the test suite from it, in [#426](https://github.com/executablebooks/markdown-it-py/pull/426), thanks to [@BetterAndBetterII](https://github.com/BetterAndBetterII) ([#420](https://github.com/executablebooks/markdown-it-py/pull/420)), and [#461](https://github.com/executablebooks/markdown-it-py/pull/461); requested by [@mtelka](https://github.com/mtelka) in [#261](https://github.com/executablebooks/markdown-it-py/issues/261)
 * 🔧 Move `coverage` and `pytest-cov` from the `testing` extra to a new `coverage` extra, and skip the linkify tests when linkify-it-py is not installed, in [#463](https://github.com/executablebooks/markdown-it-py/pull/463); requested by [@befeleme](https://github.com/befeleme) in [#195](https://github.com/executablebooks/markdown-it-py/issues/195)
 * 🔧 Read the CommonMark spec fixtures as UTF-8, so the tests pass on Windows with a non-UTF-8 locale, in [#454](https://github.com/executablebooks/markdown-it-py/pull/454), thanks to [@Aschenbath](https://github.com/Aschenbath)
 * 🔧 Drop the optional dependency on the unmaintained `commonmark` package from the `compare` extra in [#427](https://github.com/executablebooks/markdown-it-py/pull/427), thanks to [@nikolas](https://github.com/nikolas) ([#401](https://github.com/executablebooks/markdown-it-py/pull/401))
@@ -69,7 +69,7 @@ If you write plugins or render rules, or edit `SyntaxTreeNode` trees, please rea
 * **Image `children` hold joined `text` tokens.**
   As in markdown-it 15, `text_join` now also joins the `text_special` tokens among an image token's `children`, so code that reads alt text from them gets escaped characters and entities as plain `text` tokens (a nested image's own `children` are still not joined, as upstream).
 * **Render rules must return `str`.**
-  The rendered fragments are now joined with `str.join`, so a rule that returns a `str` subclass (such as `markupsafe.Markup`) gives a plain `str` from `render()`, and a rule that returns anything that is not a `str` raises `TypeError`.
+  The rendered fragments are now joined with `str.join`, so a rule that returns a `str` subclass (such as `markupsafe.Markup`) gives a plain `str` from `render()`, and any non-`str` result (even one that defines `__radd__`, which 4.2.0 let through) raises `TypeError` when the fragments are joined.
 * **`SyntaxTreeNode.to_tokens()` follows the tree.**
   The tree's `children` are the source of truth: a change made directly to a token's `children` list no longer appears in the output, and `to_tokens()` does not modify the token stream the tree was built from.
 * **Rule names given as a generator** to `MarkdownIt.enable()` or `disable()` are validated like a list, so an unknown name now raises `ValueError`.
@@ -79,7 +79,7 @@ If you write plugins or render rules, or edit `SyntaxTreeNode` trees, please rea
   The private `StateBase._src` and `_srcCharCode` attributes are gone (`srcCharCode` itself is still there, and still deprecated).
 * **Packaging.**
   The `testing` extra no longer installs `coverage` and `pytest-cov`: install `.[testing,coverage]` to run the tests with `--cov`.
-  The sdist now contains `tests/`, `tox.ini` and `CHANGELOG.md`, and no longer contains repository files such as `.github/`, `.pre-commit-config.yaml` and `scripts/`.
+  The sdist now contains `tests/`, and no longer contains repository files such as `.github/`, `.pre-commit-config.yaml` and `scripts/`.
 
 **Full Changelog**: <https://github.com/executablebooks/markdown-it-py/compare/v4.2.0...v4.3.0>
 
