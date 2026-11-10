@@ -633,3 +633,24 @@ def test_src_char_code_follows_src():
     state.src = "xyz"
     with pytest.warns(DeprecationWarning):
         assert list(state.srcCharCode) == [120, 121, 122]
+
+
+@pytest.mark.parametrize(
+    "src,expected",
+    [
+        ("a\r\nb", "a\nb"),
+        ("a\rb", "a\nb"),
+        ("a\r\r\nb", "a\n\nb"),
+        ("a\n\rb", "a\n\nb"),
+        ("a\0b\r\n\0", "a�b\n�"),
+        ("plain\ntext", "plain\ntext"),
+    ],
+)
+def test_normalize(src, expected):
+    """Line endings become ``\\n`` and NULL characters become U+FFFD."""
+    from markdown_it.rules_core.normalize import normalize
+    from markdown_it.rules_core.state_core import StateCore
+
+    state = StateCore(src, MarkdownIt(), {})
+    normalize(state)
+    assert state.src == expected
