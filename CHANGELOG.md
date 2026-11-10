@@ -231,7 +231,7 @@ This should not be a breaking change, for most use cases.
 - ✨ NEW: Save ordered list numbering (#192)
 - 🐛 FIX: Combination of blockquotes, list and newlines causes `IndexError` (#207)
 
-## 2.0.1 - 2022-24-01
+## 2.0.1 - 2022-01-24
 
 - 🐛 FIX: Crash when file ends with empty blockquote line.
 - ✨ NEW: Add `inline_definitions` option.
