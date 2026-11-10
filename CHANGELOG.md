@@ -1,18 +1,95 @@
 # Change Log
 
-## Unreleased
+## 4.3.0 - 2026-11-10
 
-* ✨ Add `--enable-tables` to the CLI for file, standard input and interactive parsing in [#422](https://github.com/executablebooks/markdown-it-py/pull/422)
-* 🐛 Fix CLI interactive mode joining input lines with an extra newline, which split every line into its own paragraph and broke hard line breaks, in [#172](https://github.com/executablebooks/markdown-it-py/issues/172)
-* 🐛 Fix trimming and splitting with the Python whitespace set instead of the CommonMark one, which dropped U+001C–U+001F and U+0085 from paragraphs, headings, table cells and fence info strings and let distinct reference labels resolve each other, in [#418](https://github.com/executablebooks/markdown-it-py/pull/418), thanks to [@Nexory](https://github.com/Nexory)
-* 📚 Document the Python renderer constructor contract.
-* 🔧 Drop the optional dependency on the `commonmark` package and its benchmark, since the upstream package is unmaintained, in [#401](https://github.com/executablebooks/markdown-it-py/pull/401)
+This release fixes two quadratic-time parsing paths that let crafted input stall rendering for minutes (security),
+aligns several parsing rules with CommonMark 0.31.2 and markdown-it 15.0.x,
+turns parser rules that never advance into a `RuntimeError` instead of an infinite loop,
+makes rendering linear on PyPy and free-threaded CPython, and adds support for Python 3.14.
+Python 3.10 is still supported.
+If you write plugins or render rules, or edit `SyntaxTreeNode` trees, please read the upgrade notes at the end.
+
+### 🔒 Security
+
+* 👌 Fix quadratic-time inline parsing of long runs of characters that start an inline rule without completing one (such as `&`, `<`, `~` or incomplete entities), which let a few hundred kilobytes of input stall rendering for seconds to minutes, in [#423](https://github.com/executablebooks/markdown-it-py/pull/423), thanks to [@hdimer](https://github.com/hdimer) ([#411](https://github.com/executablebooks/markdown-it-py/pull/411))
+* 👌 Reject unterminated inline HTML (`<!--`, `<?`, `<![CDATA[`, `<!X`) in constant time when `html` is enabled (as in the default `commonmark` preset), instead of rescanning to the end of the input for every opener, in [#428](https://github.com/executablebooks/markdown-it-py/pull/428)
+
+### ✨ New
+
+* ✨ Add `--enable-tables` to the CLI for file, standard input and interactive parsing in [#425](https://github.com/executablebooks/markdown-it-py/pull/425), thanks to [@user01010111](https://github.com/user01010111) ([#422](https://github.com/executablebooks/markdown-it-py/pull/422)); requested by [@hartwork](https://github.com/hartwork) in [#352](https://github.com/executablebooks/markdown-it-py/issues/352)
+* ⬆️ Add support for Python 3.14 in [#462](https://github.com/executablebooks/markdown-it-py/pull/462)
+
+### 👌 Improved
+
+* 👌 Raise `RuntimeError` instead of looping forever when a block or inline rule reports a match without advancing (or moves backwards), or when no block rule matches a line, as markdown-it does, in [#444](https://github.com/executablebooks/markdown-it-py/pull/444), thanks to [@rupayon123](https://github.com/rupayon123), [@hukkin](https://github.com/hukkin) ([#336](https://github.com/executablebooks/markdown-it-py/pull/336)) and [@inchang-ing](https://github.com/inchang-ing) ([#443](https://github.com/executablebooks/markdown-it-py/pull/443)); requested by [@acaprino](https://github.com/acaprino) in [#441](https://github.com/executablebooks/markdown-it-py/issues/441)
+* 👌 Fix quadratic-time HTML rendering on PyPy, GraalPy and free-threaded CPython by joining the rendered fragments once, in [#458](https://github.com/executablebooks/markdown-it-py/pull/458), thanks to [@DicksonWu654](https://github.com/DicksonWu654)
+* 👌 Make `StateBase.src` a plain attribute, for about 4–11% faster parsing on CPython, in [#450](https://github.com/executablebooks/markdown-it-py/pull/450), thanks to [@deadstrobe5](https://github.com/deadstrobe5)
+* 👌 Build block line markers with one scan per line instead of one step per character in [#449](https://github.com/executablebooks/markdown-it-py/pull/449), thanks to [@John-Cusack](https://github.com/John-Cusack)
+* 👌 Name the Windows end-of-input keys (Ctrl-Z then Enter) in the CLI's interactive prompt and `-h` text in [#463](https://github.com/executablebooks/markdown-it-py/pull/463)
+
+### 🐛 Fixed
+
+* 🐛 Fix HTML blocks of types 1–5 (comments, processing instructions, declarations, CDATA, `script`/`pre`/`style`/`textarea`) ending at a blank line inside a list item or blockquote, porting markdown-it 14.2.0, in [#406](https://github.com/executablebooks/markdown-it-py/pull/406), thanks to [@binggao1230](https://github.com/binggao1230); reported by [@Jayman2000](https://github.com/Jayman2000) in [#377](https://github.com/executablebooks/markdown-it-py/issues/377)
+* 🐛 Fix HTML block starts per CommonMark 0.31.2: lowercase declarations such as `<!doctype html>` start a block and interrupt a paragraph, and tag names match case-insensitively in ASCII only, in [#440](https://github.com/executablebooks/markdown-it-py/pull/440), thanks to [@rupayon123](https://github.com/rupayon123); reported by [@p5ych0](https://github.com/p5ych0) in [#437](https://github.com/executablebooks/markdown-it-py/issues/437)
+* 🐛 Fix code spans rendered as literal backticks after an unclosed link or image label, and count only U+0020 spaces (not tabs or no-break spaces) when deciding whether to strip a code span's padding, porting markdown-it 15.0.1, in [#439](https://github.com/executablebooks/markdown-it-py/pull/439), thanks to [@SparkUiX](https://github.com/SparkUiX); reported by [@felzab](https://github.com/felzab) in [#438](https://github.com/executablebooks/markdown-it-py/issues/438)
+* 🐛 Trim and split with the CommonMark whitespace set instead of Python's, so U+001C–U+001F and U+0085 are no longer dropped from paragraphs, headings, table cells and fence info strings, and distinct reference labels no longer match each other, in [#433](https://github.com/executablebooks/markdown-it-py/pull/433), thanks to [@Nexory](https://github.com/Nexory) ([#418](https://github.com/executablebooks/markdown-it-py/pull/418))
+* 🐛 Preserve IPv6 host brackets (e.g. `http://[::1]:8000/`) in normalized link and image URLs, porting markdown-it 15.0.1, in [#459](https://github.com/executablebooks/markdown-it-py/pull/459), thanks to [@Jinyong-Li](https://github.com/Jinyong-Li)
+* 🐛 Fix task-list detection consuming a literal `[ ]`/`[x]` at the start of an indented code block in a list item in [#451](https://github.com/executablebooks/markdown-it-py/pull/451), thanks to [@AryanRG](https://github.com/AryanRG)
+* 🐛 Fix an `IndexError` in the `html_block` and `heading` rules at the end of the input (a table in a blockquote that ends on `>`) in [#416](https://github.com/executablebooks/markdown-it-py/pull/416), thanks to [@saket3395](https://github.com/saket3395); reported by [@WilcoPancras](https://github.com/WilcoPancras) in [#415](https://github.com/executablebooks/markdown-it-py/issues/415)
+* 🐛 Keep backslash escapes and entities in image alt text (`![a \* b](/u)` gives `alt="a * b"`), porting markdown-it 15.0.0, in [#446](https://github.com/executablebooks/markdown-it-py/pull/446), thanks to [@gyanu2507](https://github.com/gyanu2507); reported by [@kdeldycke](https://github.com/kdeldycke) in [#445](https://github.com/executablebooks/markdown-it-py/issues/445)
+* 🐛 Keep code span text in image alt text, porting markdown-it 15.0.0, in [#460](https://github.com/executablebooks/markdown-it-py/pull/460), thanks to [@jayhemnani9910](https://github.com/jayhemnani9910)
+* 🐛 Keep hard breaks and inline HTML in image alt text in [#409](https://github.com/executablebooks/markdown-it-py/pull/409), thanks to [@chuenchen309](https://github.com/chuenchen309)
+* 🐛 Keep edits to the children of inline and image nodes in `SyntaxTreeNode.to_tokens()` in [#453](https://github.com/executablebooks/markdown-it-py/pull/453), thanks to [@KennyMcSimpson](https://github.com/KennyMcSimpson); edited tokens are copied, so the token stream the tree was built from is left unchanged ([#464](https://github.com/executablebooks/markdown-it-py/pull/464))
+* 🐛 Fix rule chains staying stale after `Ruler.enable`, `disable` or `enableOnly` raised on an unknown rule name in [#457](https://github.com/executablebooks/markdown-it-py/pull/457), thanks to [@IlyaKhalafi](https://github.com/IlyaKhalafi); reported in [#456](https://github.com/executablebooks/markdown-it-py/issues/456)
+* 🐛 Fix `MarkdownIt.enable()` and `disable()` applying a generator of rule names only to the core chain in [#447](https://github.com/executablebooks/markdown-it-py/pull/447), thanks to [@muneikh](https://github.com/muneikh)
+* 🐛 Fix the CLI's interactive mode joining input lines with an extra newline, which split every line into its own paragraph and broke hard line breaks, in [#425](https://github.com/executablebooks/markdown-it-py/pull/425); reported by [@jamesquilty](https://github.com/jamesquilty) in [#172](https://github.com/executablebooks/markdown-it-py/issues/172)
+* 🐛 CLI helpers create a default parser only when none is given in [#455](https://github.com/executablebooks/markdown-it-py/pull/455), thanks to [@Quinnod345](https://github.com/Quinnod345)
+
+### 📚 Documentation
+
+* 📚 Add a "Third-party renderers" section (mdformat, mdit_plain, MyST-Parser) and document `RendererProtocol` for writing your own renderer, in [#463](https://github.com/executablebooks/markdown-it-py/pull/463)
+* 📚 Document that `MarkdownIt` passes itself to `renderer_cls`, unlike markdown-it's renderer constructor, in [#421](https://github.com/executablebooks/markdown-it-py/pull/421), thanks to [@user01010111](https://github.com/user01010111)
+* 📚 Clarify that the name given to `add_render_rule` must match a token type in [#432](https://github.com/executablebooks/markdown-it-py/pull/432), thanks to [@hikmetba-bit](https://github.com/hikmetba-bit)
+* 📚 Fix typos and use HTTPS for the CommonMark spec links in [#402](https://github.com/executablebooks/markdown-it-py/pull/402), [#407](https://github.com/executablebooks/markdown-it-py/pull/407) and [#408](https://github.com/executablebooks/markdown-it-py/pull/408), thanks to [@nikolas](https://github.com/nikolas), [@maxtaran2010](https://github.com/maxtaran2010) and [@deeferentleeg](https://github.com/deeferentleeg)
+
+### 🔧 Maintenance
+
+* 🔧 Publish to PyPI with trusted publishing and attestations, uploading distributions built with `python -m build` and checked on every pull request, in [#397](https://github.com/executablebooks/markdown-it-py/pull/397) and [#461](https://github.com/executablebooks/markdown-it-py/pull/461)
+* 🔧 Include `tests/` in the sdist (next to `tox.ini` and `CHANGELOG.md`), so packagers can run the test suite from it, in [#426](https://github.com/executablebooks/markdown-it-py/pull/426), thanks to [@BetterAndBetterII](https://github.com/BetterAndBetterII) ([#420](https://github.com/executablebooks/markdown-it-py/pull/420)), and [#461](https://github.com/executablebooks/markdown-it-py/pull/461); requested by [@mtelka](https://github.com/mtelka) in [#261](https://github.com/executablebooks/markdown-it-py/issues/261)
+* 🔧 Move `coverage` and `pytest-cov` from the `testing` extra to a new `coverage` extra, and skip the linkify tests when linkify-it-py is not installed, in [#463](https://github.com/executablebooks/markdown-it-py/pull/463); requested by [@befeleme](https://github.com/befeleme) in [#195](https://github.com/executablebooks/markdown-it-py/issues/195)
+* 🔧 Read the CommonMark spec fixtures as UTF-8, so the tests pass on Windows with a non-UTF-8 locale, in [#454](https://github.com/executablebooks/markdown-it-py/pull/454), thanks to [@Aschenbath](https://github.com/Aschenbath)
+* 🔧 Drop the optional dependency on the unmaintained `commonmark` package from the `compare` extra in [#427](https://github.com/executablebooks/markdown-it-py/pull/427), thanks to [@nikolas](https://github.com/nikolas) ([#401](https://github.com/executablebooks/markdown-it-py/pull/401))
+* 🔧 Build the documentation on Python 3.13 and Sphinx 9 in [#462](https://github.com/executablebooks/markdown-it-py/pull/462)
+
+### Upgrade notes
+
+* **Rules that do not advance now raise.**
+  A block or inline rule that returns `True` without moving `state.line` or `state.pos` forward now raises `RuntimeError` (`block rule didn't increment state.line`, `inline rule didn't increment state.pos`), where it used to hang.
+  So does a line that no block rule accepts, which is only possible with the `paragraph` rule disabled (`none of the block rules matched`).
+* **Image `children` hold joined `text` tokens.**
+  As in markdown-it 15, `text_join` now also joins the `text_special` tokens among an image token's `children`, so code that reads alt text from them gets escaped characters and entities as plain `text` tokens (a nested image's own `children` are still not joined, as upstream).
+* **Render rules must return `str`.**
+  The rendered fragments are now joined with `str.join`, so a rule that returns a `str` subclass (such as `markupsafe.Markup`) gives a plain `str` from `render()`, and any non-`str` result (even one that defines `__radd__`, which 4.2.0 let through) raises `TypeError` when the fragments are joined.
+* **`SyntaxTreeNode.to_tokens()` follows the tree.**
+  The tree's `children` are the source of truth: a change made directly to a token's `children` list no longer appears in the output, and `to_tokens()` does not modify the token stream the tree was built from.
+* **Rule names given as a generator** to `MarkdownIt.enable()` or `disable()` are validated like a list, so an unknown name now raises `ValueError`.
+* **Internals plugins may touch.**
+  `StateInline.pending` is now a property backed by a buffer: `state.pending += text` still works, and the new `state.append_pending(text)` appends in constant time.
+  `HTML_TAG_RE` (`markdown_it.common.html_re`) and `DIGITAL_RE` and `NAMED_RE` (`markdown_it.rules_inline.entity`) no longer start with `^`, because they are applied with `.match(src, pos)`; code that calls `.search()` on them now matches anywhere in the string.
+  The private `StateBase._src` and `_srcCharCode` attributes are gone (`srcCharCode` itself is still there, and still deprecated).
+* **Packaging.**
+  The `testing` extra no longer installs `coverage` and `pytest-cov`: install `.[testing,coverage]` to run the tests with `--cov`.
+  The sdist now contains `tests/`, and no longer contains repository files such as `.github/`, `.pre-commit-config.yaml` and `scripts/`.
+
+**Full Changelog**: <https://github.com/executablebooks/markdown-it-py/compare/v4.2.0...v4.3.0>
 
 ## 4.2.0 - 2026-05-07
 
 * ✨ Add `make_fence_rule()` factory for configurable fence markers in [#394](https://github.com/executablebooks/markdown-it-py/pull/394)
 
-## 4.1.0 - 2025-05-06
+**Full Changelog**: <https://github.com/executablebooks/markdown-it-py/compare/v4.1.0...v4.2.0>
+
+## 4.1.0 - 2026-05-06
 
 * ✨ Add `gfm-like2` preset with task lists, alerts, and single-tilde strikethrough core plugins in [#388](https://github.com/executablebooks/markdown-it-py/pull/388)
 * ✨ Allow plugins to register inline terminator characters in [#391](https://github.com/executablebooks/markdown-it-py/pull/391)
@@ -22,7 +99,7 @@
 
 **Full Changelog**: <https://github.com/executablebooks/markdown-it-py/compare/v4.0.0...v4.1.0>
 
-## 4.0.0 - 2024-08-10
+## 4.0.0 - 2025-08-11
 
 This primarily drops support for Python 3.9, adds support for Python 3.13,
 and updates the parser to comply with Commonmark 0.31.2 and Markdown-It v14.1.0.
@@ -154,7 +231,7 @@ This should not be a breaking change, for most use cases.
 - ✨ NEW: Save ordered list numbering (#192)
 - 🐛 FIX: Combination of blockquotes, list and newlines causes `IndexError` (#207)
 
-## 2.0.1 - 2022-24-01
+## 2.0.1 - 2022-01-24
 
 - 🐛 FIX: Crash when file ends with empty blockquote line.
 - ✨ NEW: Add `inline_definitions` option.
