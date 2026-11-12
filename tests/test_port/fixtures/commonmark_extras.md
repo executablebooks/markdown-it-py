@@ -324,6 +324,21 @@ Escaped space is not allowed in link destination, commonmark/CommonMark#493.
 <p>[link](a\ b)</p>
 .
 
+Backslash before a space in a link destination is a literal backslash, and the space ends the destination (CommonMark 0.31.2 6.3)
+.
+[a](/url\ )
+
+[b](/url\ "title")
+
+[c]
+
+[c]: /url\ "title"
+.
+<p><a href="/url%5C">a</a></p>
+<p><a href="/url%5C" title="title">b</a></p>
+<p><a href="/url%5C" title="title">c</a></p>
+.
+
 Link destination cannot contain '<'
 .
 [](<foo<bar>)
