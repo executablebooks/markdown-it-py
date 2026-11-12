@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from markdown_it import MarkdownIt
+from markdown_it import MarkdownIt, presets
 from markdown_it.token import Token
 
 if TYPE_CHECKING:
@@ -105,6 +105,34 @@ def test_override_options():
     assert md.options["maxNesting"] == 20
     md = MarkdownIt("zero", {"maxNesting": 99})
     assert md.options["maxNesting"] == 99
+
+
+def test_preset_empty_rules() -> None:
+    """An empty preset rule list disables the entire specified chain."""
+    for component, key, chain in (
+        ("core", "rules", "core"),
+        ("block", "rules", "block"),
+        ("inline", "rules", "inline"),
+        ("inline", "rules2", "inline2"),
+    ):
+        config = presets.commonmark.make()
+        config["components"][component][key] = []
+
+        md = MarkdownIt(config)
+
+        assert md.get_active_rules()[chain] == []
+
+
+def test_preset_empty_inline_rules_render_literal_text() -> None:
+    """Custom presets can disable all inline markup without individual names."""
+    config = presets.commonmark.make()
+    config["components"]["inline"]["rules"] = []
+
+    md = MarkdownIt(config)
+
+    assert md.renderInline("**bold** [link](https://example.com)") == (
+        "**bold** [link](https://example.com)"
+    )
 
 
 def test_gfm_like2_tasklists_editable():
