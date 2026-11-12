@@ -67,6 +67,10 @@ from markdown_it.presets import zero
 zero.make()
 ```
 
+In a custom preset's `components`, an empty `rules` list disables all rules in that component.
+The same applies to `rules2` for inline post-processing rules.
+Omitting either list leaves the corresponding rules unchanged.
+
 ```{jupyter-execute}
 md = MarkdownIt("zero")
 md.options

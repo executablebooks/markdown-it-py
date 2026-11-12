@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+* 🐛 Honor empty `rules` and `rules2` lists in custom presets by disabling every rule in the specified chain.
+
 ## 4.3.0 - 2026-11-10
 
 This release fixes two quadratic-time parsing paths that let crafted input stall rendering for minutes (security),
