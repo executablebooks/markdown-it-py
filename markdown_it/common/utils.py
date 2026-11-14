@@ -216,6 +216,21 @@ def mdTrim(string: str) -> str:
     return string.strip(MD_TRIM_CHARS)
 
 
+#: The characters trimmed from headings and paragraphs.
+#:
+#: Only ASCII whitespace may be removed from block content: CommonMark's
+#: definition of whitespace does not include Unicode space characters such as
+#: U+00A0 or U+3000, and upstream markdown-it preserves them (markdown-it
+#: #1074, released in 14.2.0). :py:func:`mdTrim` is still used where upstream
+#: trims with ``String.prototype.trim`` (table cells and fence info).
+ASCII_TRIM_CHARS = " \t\n\r"
+
+
+def asciiTrim(string: str) -> str:
+    """Strip leading and trailing ASCII whitespace from block content."""
+    return string.strip(ASCII_TRIM_CHARS)
+
+
 # //////////////////////////////////////////////////////////////////////////////
 
 

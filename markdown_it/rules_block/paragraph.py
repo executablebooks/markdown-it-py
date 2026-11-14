@@ -2,7 +2,7 @@
 
 import logging
 
-from ..common.utils import mdTrim
+from ..common.utils import asciiTrim
 from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
@@ -48,7 +48,7 @@ def paragraph(state: StateBlock, startLine: int, endLine: int, silent: bool) -> 
 
         nextLine += 1
 
-    content = mdTrim(state.getLines(startLine, nextLine, state.blkIndent, False))
+    content = asciiTrim(state.getLines(startLine, nextLine, state.blkIndent, False))
 
     state.line = nextLine
 

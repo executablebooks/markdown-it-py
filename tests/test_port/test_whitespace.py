@@ -6,8 +6,10 @@ whitespace. CommonMark and ``String.prototype.trim`` do not, so relying on them
 drops those characters from the output and folds two distinct reference labels
 into one.
 
-The expected values below are what ``markdown-it@14.1.0`` produces for the same
-input.
+The expected values below are what upstream markdown-it produces for the same
+input: ``14.1.0`` for reference labels and fence info, and ``15.0.x`` for block
+content, where only ASCII whitespace is trimmed from headings and paragraphs
+(upstream #1074, released in 14.2.0).
 """
 
 import pytest
@@ -54,8 +56,35 @@ def test_character_survives_in_output(char):
 def test_real_whitespace_is_still_trimmed():
     """Control: what CommonMark does call whitespace is still removed."""
     md = MarkdownIt("js-default")
-    for char in ["\t", " ", "\xa0", " ", "　"]:
+    for char in ["\t", " "]:
         assert md.render(f"# h{char}") == "<h1>h</h1>\n", repr(char)
+
+
+@pytest.mark.parametrize("char", ["\xa0", "\u3000"])
+def test_non_ascii_whitespace_is_preserved_in_blocks(char):
+    """Unicode whitespace is content, so it is not trimmed from blocks (#1074)."""
+    md = MarkdownIt("js-default")
+    assert md.render(f"# h{char}") == f"<h1>h{char}</h1>\n"
+    assert md.render(f"h{char}\n===") == f"<h1>h{char}</h1>\n"
+    assert md.render(f"{char}x{char}") == f"<p>{char}x{char}</p>\n"
+
+
+def test_non_ascii_trim_matches_upstream_fixture():
+    """The fixture added upstream in markdown-it #1074 (issue #1067)."""
+    md = MarkdownIt("js-default")
+    src = (
+        "# \u3000U+3000\u3000  \n"
+        "\n"
+        "  \u3000U+3000\u3000  \n"
+        "=\n"
+        "\n"
+        "  \u3000U+3000\u3000  \n"
+    )
+    assert md.render(src) == (
+        "<h1>\u3000U+3000\u3000</h1>\n"
+        "<h1>\u3000U+3000\u3000</h1>\n"
+        "<p>\u3000U+3000\u3000</p>\n"
+    )
 
 
 def test_fence_info_is_not_split_on_it():

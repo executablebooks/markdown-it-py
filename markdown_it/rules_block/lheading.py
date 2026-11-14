@@ -1,7 +1,7 @@
 # lheading (---, ==)
 import logging
 
-from ..common.utils import mdTrim
+from ..common.utils import asciiTrim
 from .state_block import StateBlock
 
 LOGGER = logging.getLogger(__name__)
@@ -66,7 +66,7 @@ def lheading(state: StateBlock, startLine: int, endLine: int, silent: bool) -> b
         # Didn't find valid underline
         return False
 
-    content = mdTrim(state.getLines(startLine, nextLine, state.blkIndent, False))
+    content = asciiTrim(state.getLines(startLine, nextLine, state.blkIndent, False))
 
     state.line = nextLine + 1
 
