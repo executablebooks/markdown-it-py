@@ -15,7 +15,7 @@ attribute = "(?:\\s+" + attr_name + "(?:\\s*=\\s*" + attr_value + ")?)"
 open_tag = "<[A-Za-z][A-Za-z0-9\\-]*" + attribute + "*\\s*\\/?>"
 
 close_tag = "<\\/[A-Za-z][A-Za-z0-9\\-]*\\s*>"
-comment = "<!---?>|<!--(?:[^-]|-[^-]|--[^>])*-->"
+comment = "<!---?>|<!--[\\s\\S]*?-->"
 processing = "<[?][\\s\\S]*?[?]>"
 declaration = "<![A-Za-z][^>]*>"
 cdata = "<!\\[CDATA\\[[\\s\\S]*?\\]\\]>"
