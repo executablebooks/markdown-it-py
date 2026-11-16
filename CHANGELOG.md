@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### 🐛 Fixed
+
+* 🐛 Prevent linkification in link or image labels from stalling or raising a parser progress error, restoring the missing markdown-it 14.1.0 progress check ([#470](https://github.com/executablebooks/markdown-it-py/issues/470)).
+
 ## 4.3.0 - 2026-11-10
 
 This release fixes two quadratic-time parsing paths that let crafted input stall rendering for minutes (security),

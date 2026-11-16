@@ -36,6 +36,10 @@ def linkify(state: StateInline, silent: bool) -> bool:
         return False
     url: str = link.url
 
+    # An invalid match must not leave the parser at the same position or earlier.
+    if len(url) <= len(proto):
+        return False
+
     # disallow '*' at the end of the link (conflicts with emphasis)
     url = url.rstrip("*")
 
