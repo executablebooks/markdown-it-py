@@ -1,5 +1,9 @@
 # Parse backticks
+import re
+
 from .state_inline import StateInline
+
+_NEWLINE_INDENT_RE = re.compile(r"\n[ \t]*")
 
 
 def _build_last_runs(src: str) -> dict[int, int]:
@@ -56,7 +60,10 @@ def backtick(state: StateInline, silent: bool) -> bool:
                 if not silent:
                     token = state.push("code_inline", "code", 0)
                     token.markup = marker
-                    content = state.src[pos:match_start].replace("\n", " ")
+                    # Line endings become spaces. The leading spaces or tabs of
+                    # each continuation line are not part of the paragraph's raw
+                    # content (CommonMark 4.8), so they are dropped too.
+                    content = _NEWLINE_INDENT_RE.sub(" ", state.src[pos:match_start])
                     # Strip one space from each side, unless the content is all spaces
                     if (
                         content.startswith(" ")
