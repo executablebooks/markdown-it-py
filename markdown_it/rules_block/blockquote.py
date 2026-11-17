@@ -147,7 +147,13 @@ def blockquote(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
             # Case 1: line is not inside the blockquote, and this line is empty.
             break
 
-        evaluatesTrue = state.src[pos] == ">" and not isOutdented
+        # A `>` indented by 4+ spaces is not a block quote marker
+        # (it is lazy paragraph continuation text instead).
+        evaluatesTrue = (
+            state.src[pos] == ">"
+            and not isOutdented
+            and not state.is_code_block(nextLine)
+        )
         pos += 1
         if evaluatesTrue:
             # This line is inside the blockquote.

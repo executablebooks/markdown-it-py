@@ -244,3 +244,53 @@ para
 *a*
 </pre>
 .
+
+#473 a `>` indented by 4+ spaces on a continuation line is not a block quote marker
+.
+> a
+    > b
+.
+<blockquote>
+<p>a
+&gt; b</p>
+</blockquote>
+.
+
+#473 same inside a list item
+.
+- > a
+      > b
+.
+<ul>
+<li>
+<blockquote>
+<p>a
+&gt; b</p>
+</blockquote>
+</li>
+</ul>
+.
+
+#473 same inside a nested block quote
+.
+> > a
+>     > b
+.
+<blockquote>
+<blockquote>
+<p>a
+&gt; b</p>
+</blockquote>
+</blockquote>
+.
+
+#473 a `>` indented by 3 spaces still continues the block quote
+.
+> a
+   > b
+.
+<blockquote>
+<p>a
+b</p>
+</blockquote>
+.
