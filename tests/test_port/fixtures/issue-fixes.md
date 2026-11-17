@@ -244,3 +244,37 @@ para
 *a*
 </pre>
 .
+
+#475 a code span drops the indentation of a continuation line
+.
+`a
+    b`
+.
+<p><code>a b</code></p>
+.
+
+#475 same with a tab
+.
+x `a
+	b`
+.
+<p>x <code>a b</code></p>
+.
+
+#475 same inside a list item with extra indentation
+.
+1. x `a
+      b`
+.
+<ol>
+<li>x <code>a b</code></li>
+</ol>
+.
+
+#475 trailing spaces before the line ending are kept
+.
+`a  
+  b`
+.
+<p><code>a   b</code></p>
+.
