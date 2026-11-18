@@ -50,3 +50,16 @@ def test_inline_definitions(data_regression):
     src = '[a]: url "title"\n- [a]: url "title"'
     tokens = md.parse(src)
     data_regression.check([token.as_dict() for token in tokens])
+
+
+def test_multiline_reference_title_requires_whitespace() -> None:
+    """A title glued to its destination leaves both lines in the paragraph."""
+    md = MarkdownIt()
+    src = '[guide]\n\n[guide]: <guide.md>"First line\nsecond line"\n'
+    env: dict[str, object] = {}
+    tokens = md.parse(src, env)
+    assert [token.map for token in tokens if token.type == "paragraph_open"] == [
+        [0, 1],
+        [2, 4],
+    ]
+    assert "references" not in env
