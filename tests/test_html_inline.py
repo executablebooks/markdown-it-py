@@ -72,3 +72,20 @@ def test_terminated_constructs_still_reach_the_regex(monkeypatch):
     html = MarkdownIt("commonmark").render(src)
     assert calls, "expected the regex to run for terminated constructs"
     assert html == "<p>" + src + "</p>\n"
+
+
+@pytest.mark.parametrize(
+    "src",
+    [
+        "<!-- note --->",  # the comment text ends with "-"
+        "<!--- note --->",
+        "<!----->",
+        "<!------>",
+        "<!-- note ---->",
+        "<!-- a -- b --->",
+    ],
+)
+def test_comment_text_may_end_with_hyphen(src):
+    """CommonMark 0.31 only forbids ``-->`` inside the text of an HTML comment."""
+    assert MarkdownIt("commonmark").renderInline(src) == src
+    assert MarkdownIt("commonmark").render(f"x {src} y") == f"<p>x {src} y</p>\n"
