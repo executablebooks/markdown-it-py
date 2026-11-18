@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### 🐛 Fixed
+
+* 🐛 Require whitespace between a link reference destination and its multiline title, preserving malformed definitions as paragraph text.
+
 ## 4.3.0 - 2026-11-10
 
 This release fixes two quadratic-time parsing paths that let crafted input stall rendering for minutes (security),

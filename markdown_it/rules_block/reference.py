@@ -91,7 +91,6 @@ def reference(state: StateBlock, startLine: int, _endLine: int, silent: bool) ->
 
     # [label]:   destination   'title'
     #                       ^^^ skipping those spaces
-    start = pos
     while pos < maximum:
         ch = charCodeAt(string, pos)
         if ch == 0x0A:
@@ -107,6 +106,7 @@ def reference(state: StateBlock, startLine: int, _endLine: int, silent: bool) ->
 
     # [label]:   destination   'title'
     #                          ^^^^^^^ parse this
+    titleStart = pos
     titleRes = state.md.helpers.parseLinkTitle(string, pos, maximum, None)
     while titleRes.can_continue:
         if (lineContent := getNextLine(state, nextLine)) is None:
@@ -117,7 +117,7 @@ def reference(state: StateBlock, startLine: int, _endLine: int, silent: bool) ->
         nextLine += 1
         titleRes = state.md.helpers.parseLinkTitle(string, pos, maximum, titleRes)
 
-    if pos < maximum and start != pos and titleRes.ok:
+    if pos < maximum and titleStart != destEndPos and titleRes.ok:
         title = titleRes.str
         pos = titleRes.pos
     else:
