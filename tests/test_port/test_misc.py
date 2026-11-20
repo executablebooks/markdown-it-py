@@ -133,3 +133,17 @@ def test_backtick_closer_ending_at_pos_max():
         ("code_inline", "a", "``")
     ]
     assert state.pos == 5
+
+
+@pytest.mark.parametrize(
+    ("src", "expected"),
+    [
+        ("a\\  \nb", "<p>a\\<br />\nb</p>\n"),
+        ("a\\ b", "<p>a\\ b</p>\n"),
+        ("a\\ \nb", "<p>a\\\nb</p>\n"),
+    ],
+)
+def test_backslash_before_space(src, expected):
+    """A backslash before a space is literal and does not consume the space,
+    so two trailing spaces still form a hard line break (CommonMark 6.1, 6.7)."""
+    assert MarkdownIt("commonmark").render(src) == expected
