@@ -498,6 +498,40 @@ def test_inline_rules_do_not_slice_remaining_source(preset, options, src):
     assert max(counting.slice_lengths, default=0) <= 1
 
 
+def test_smartquotes_does_not_copy_text_per_quote():
+    """`smartquotes` must not copy the text token for every quote.
+
+    It used to search ``text[pos:]`` for the next quote and rebuild the
+    content after each replacement, both O(len) per quote and so O(n^2) over
+    a block.  Replacements are now applied once per token, slicing each
+    character at most once.
+    """
+    from markdown_it.rules_core.smartquotes import process_inlines
+    from markdown_it.rules_core.state_core import StateCore
+
+    md = MarkdownIt("commonmark", {"typographer": True})
+    src = 'a\'b "c" ' * 1_000
+    counting = _SliceCountingStr(src)
+    token = Token("text", "", 0, content=counting)
+    process_inlines([token], StateCore("", md, {}))
+    assert sum(counting.slice_lengths) <= len(src)
+    assert token.content == "a\u2019b \u201cc\u201d " * 1_000
+
+
+def test_smartquotes_unmatched_closers_render_correctly():
+    """A closer with no opener of its kind leaves the other kind's openers
+    open, however many there are.
+
+    Each such closer used to rescan the whole opener stack, which made this
+    input quadratic (seconds for a ~60 kB block).
+    """
+    md = MarkdownIt("commonmark", {"typographer": True}).enable("smartquotes")
+    n = 10_000
+    src = '"a ' * n + "b' " * n + 'c"'
+    expected = "&quot;a " * (n - 1) + "\u201ca " + "b\u2019 " * n + "c\u201d"
+    assert md.renderInline(src) == expected
+
+
 def test_pending_appends_do_not_materialise():
     """`append_pending` must be amortised O(1): it buffers fragments and only
     builds the string when `pending` is read.
