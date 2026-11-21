@@ -79,6 +79,15 @@ class Token:
     def __post_init__(self) -> None:
         self.attrs = convert_attrs(self.attrs)
 
+    def require_map(self) -> list[int]:
+        """Return the source map, raising ``ValueError`` if it is absent.
+
+        The returned list is the token's existing ``map``, not a copy.
+        """
+        if self.map is None:
+            raise ValueError(f"Token of type {self.type!r} has no source map")
+        return self.map
+
     def attrIndex(self, name: str) -> int:
         warnings.warn(  # noqa: B028
             "Token.attrIndex should not be used, since Token.attrs is a dictionary",
