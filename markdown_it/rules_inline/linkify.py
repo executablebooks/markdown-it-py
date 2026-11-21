@@ -1,11 +1,26 @@
 """Process links like https://example.org/"""
 
-import re
-
 from .state_inline import StateInline
 
 # RFC3986: scheme = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
-SCHEME_RE = re.compile(r"(?:^|[^a-z0-9.+-])([a-z][a-z0-9.+-]*)$", re.IGNORECASE)
+#
+# The backscan for the scheme is bounded, so that a long run of scheme
+# characters before each `://` cannot make it quadratic.  No schema linkify-it
+# recognises is this long.
+MAX_SCHEME_LENGTH = 10
+
+
+def isAsciiAlpha(ch: str) -> bool:
+    return ("a" <= ch <= "z") or ("A" <= ch <= "Z")
+
+
+def isSchemeChar(ch: str) -> bool:
+    return (
+        ("a" <= ch <= "z")
+        or ("A" <= ch <= "Z")
+        or ("0" <= ch <= "9")
+        or ch in ("+", "-", ".")
+    )
 
 
 def linkify(state: StateInline, silent: bool) -> bool:
@@ -28,13 +43,28 @@ def linkify(state: StateInline, silent: bool) -> bool:
     ):
         return False
 
-    if not (match := SCHEME_RE.search(state.pending)):
+    # Search backwards for the scheme, but no further than MAX_SCHEME_LENGTH
+    # characters, the start of the pending string, or the start of the source.
+    # `state.src` is scanned rather than `state.pending` because it is cheaper
+    # to index.
+    protoMin = pos - min(MAX_SCHEME_LENGTH, len(state.pending), pos)
+    protoStart = pos
+    while protoStart > protoMin and isSchemeChar(state.src[protoStart - 1]):
+        protoStart -= 1
+
+    if protoStart == pos or not isAsciiAlpha(state.src[protoStart]):
         return False
 
-    proto = match.group(1)
-    if not (link := state.md.linkify.match_at_start(state.src[pos - len(proto) :])):
+    protoLength = pos - protoStart
+
+    if not (link := state.md.linkify.match_at_start(state.src[protoStart:])):
         return False
     url: str = link.url
+
+    # invalid link, but still detected by linkify somehow;
+    # need to check to prevent the position from moving backwards below
+    if len(url) <= protoLength:
+        return False
 
     # disallow '*' at the end of the link (conflicts with emphasis)
     url = url.rstrip("*")
@@ -44,7 +74,7 @@ def linkify(state: StateInline, silent: bool) -> bool:
         return False
 
     if not silent:
-        state.pending = state.pending[: -len(proto)]
+        state.pending = state.pending[:-protoLength]
 
         token = state.push("link_open", "a", 1)
         token.attrs = {"href": full_url}
@@ -58,5 +88,5 @@ def linkify(state: StateInline, silent: bool) -> bool:
         token.markup = "linkify"
         token.info = "auto"
 
-    state.pos += len(url) - len(proto)
+    state.pos += len(url) - protoLength
     return True
