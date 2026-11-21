@@ -230,6 +230,16 @@ token = Token("paragraph_open", "p", 1, block=True, map=[1, 2])
 token == tokens[0]
 ```
 
+For tokens that are expected to have a source map, use `require_map()` to get it as a `list[int]`:
+
+```{jupyter-execute}
+token.require_map()
+```
+
+This returns the existing `map` list without copying it.
+If `map` is `None`, it raises `ValueError` with the token type in the message.
+The `map` attribute remains optional for tokens without source positions.
+
 The `'inline'` type token contain the inline tokens as children:
 
 ```{jupyter-execute}
