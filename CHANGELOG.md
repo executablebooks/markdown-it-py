@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### 🐛 Fixed
+
+* Reject link-reference definition labels longer than 999 Unicode code points, before case and whitespace normalization, matching CommonMark and markdown-it 15.0.3.
+
 ## 4.3.0 - 2026-11-10
 
 This release fixes two quadratic-time parsing paths that let crafted input stall rendering for minutes (security),
