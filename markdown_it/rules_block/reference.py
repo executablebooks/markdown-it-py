@@ -28,7 +28,8 @@ def reference(state: StateBlock, startLine: int, _endLine: int, silent: bool) ->
 
     labelEnd = None
     pos = 1
-    while pos < maximum:
+    # A 999-code-point label can close at offset 1000 after the opening '['.
+    while pos < maximum and pos <= 1000:
         ch = charCodeAt(string, pos)
         if ch == 0x5B:  # /* [ */
             return False
