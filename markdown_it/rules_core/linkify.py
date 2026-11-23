@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from typing import Protocol
 
-from ..common.utils import arrayReplaceAt, isLinkClose, isLinkOpen
+from ..common.utils import isLinkClose, isLinkOpen
 from ..token import Token
 from .state_core import StateCore
 
@@ -28,6 +28,12 @@ def linkify(state: StateCore) -> None:
 
         tokens = inline_token.children
 
+        # Text tokens to replace, as `(index, nodes)` pairs.  They are applied
+        # in a single pass below: splicing each match into the child list as it
+        # is found rebuilds that list every time, which is quadratic in the
+        # number of links.
+        replacements: list[tuple[int, list[Token]]] = []
+
         htmlLinkLevel = 0
 
         # We scan from the end, to keep position when new tags added.
@@ -36,7 +42,6 @@ def linkify(state: StateCore) -> None:
         i = len(tokens)
         while i >= 1:
             i -= 1
-            assert isinstance(tokens, list)
             currentToken = tokens[i]
 
             # Skip content of markdown links
@@ -65,7 +70,7 @@ def linkify(state: StateCore) -> None:
                 links: list[_LinkType] = state.md.linkify.match(text) or []
 
                 # Now split string to nodes
-                nodes = []
+                nodes: list[Token] = []
                 level = currentToken.level
                 lastPos = 0
 
@@ -138,7 +143,17 @@ def linkify(state: StateCore) -> None:
                     token.level = level
                     nodes.append(token)
 
-                inline_token.children = tokens = arrayReplaceAt(tokens, i, nodes)
+                replacements.append((i, nodes))
+
+        if replacements:
+            new_tokens: list[Token] = []
+            last = 0
+            for index, new_nodes in reversed(replacements):
+                new_tokens.extend(tokens[last:index])
+                new_tokens.extend(new_nodes)
+                last = index + 1
+            new_tokens.extend(tokens[last:])
+            inline_token.children = new_tokens
 
 
 class _LinkType(Protocol):
