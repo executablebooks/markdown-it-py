@@ -1,6 +1,7 @@
 from collections.abc import Iterator
 from importlib.util import find_spec
 from typing import TYPE_CHECKING
+from xml.etree import ElementTree as ET
 
 import pytest
 
@@ -111,7 +112,7 @@ def test_gfm_like2_tasklists_editable():
     md_default = MarkdownIt("gfm-like2", GFM_LIKE2_OPTIONS)
     assert md_default.options["tasklists_editable"] is False
     assert (
-        '<input class="task-list-item-checkbox" disabled="" type="checkbox" checked="">'
+        '<input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" />'
         in md_default.render("- [x] done")
     )
 
@@ -120,9 +121,38 @@ def test_gfm_like2_tasklists_editable():
     )
     assert md_editable.options["tasklists_editable"] is True
     assert (
-        '<input class="task-list-item-checkbox" type="checkbox" checked="">'
+        '<input class="task-list-item-checkbox" type="checkbox" checked="" />'
         in md_editable.render("- [x] done")
     )
+
+
+@pytest.mark.parametrize("xhtml_out", [False, True])
+@pytest.mark.parametrize("editable", [False, True])
+@pytest.mark.parametrize("marker", [" ", "x", "X"])
+def test_gfm_like2_tasklist_xhtml(xhtml_out, editable, marker):
+    """Task checkboxes must follow the output mode and keep their attributes."""
+    md = MarkdownIt(
+        "gfm-like2",
+        {
+            **GFM_LIKE2_OPTIONS,
+            "xhtmlOut": xhtml_out,
+            "tasklists_editable": editable,
+        },
+    )
+    result = md.render(f"- [{marker}] task")
+    start = result.index("<input")
+    end = result.index(">", start) + 1
+    checkbox_html = result[start:end]
+    assert checkbox_html.endswith(" />" if xhtml_out else '">')
+    if xhtml_out:
+        # An unclosed HTML input element makes the surrounding XML malformed.
+        root = ET.fromstring(result)
+        checkbox = root.find("li/input")
+        assert checkbox is not None
+        assert checkbox.attrib["type"] == "checkbox"
+        assert ("checked" in checkbox.attrib) is (marker != " ")
+        assert ("disabled" in checkbox.attrib) is (not editable)
+        assert checkbox.tail == " task"
 
 
 def test_gfm_like2_alert_token_map():
