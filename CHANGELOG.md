@@ -1,5 +1,12 @@
 # Change Log
 
+## Unreleased
+
+### 🐛 Fixed
+
+* Respect `xhtmlOut` when rendering task-list checkboxes, so the default
+  `gfm-like2` output uses self-closing input tags.
+
 ## 4.3.0 - 2026-11-10
 
 This release fixes two quadratic-time parsing paths that let crafted input stall rendering for minutes (security),

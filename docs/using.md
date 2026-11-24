@@ -62,6 +62,10 @@ You can define this configuration *via* directly supplying a dictionary or a pre
   GitHub-style alerts (`> [!NOTE]`), and single-tilde strikethrough (`~text~`).
   **Important**, to use this configuration you must have `linkify-it-py` installed.
 
+The `xhtmlOut` option controls self-closing tags, including task-list checkbox inputs.
+It defaults to `True` in `commonmark`, `gfm-like`, and `gfm-like2`.
+Set it to `False` to render HTML-style void tags such as `<input>` instead of `<input />`.
+
 ```{jupyter-execute}
 from markdown_it.presets import zero
 zero.make()

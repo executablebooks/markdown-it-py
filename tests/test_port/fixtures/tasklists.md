@@ -5,9 +5,9 @@ Bullet unchecked and checked
 - [x] checked item 3
 .
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> unchecked item 1</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> unchecked item 2</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> checked item 3</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" /> unchecked item 1</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" /> unchecked item 2</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> checked item 3</li>
 </ul>
 .
 
@@ -17,8 +17,8 @@ Uppercase X
 - [x] checked lowercase
 .
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> checked uppercase</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> checked lowercase</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> checked uppercase</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> checked lowercase</li>
 </ul>
 .
 
@@ -28,8 +28,8 @@ Ordered list with tasks
 2. [ ] unchecked ordered 2
 .
 <ol class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> checked ordered 1</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> unchecked ordered 2</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> checked ordered 1</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" /> unchecked ordered 2</li>
 </ol>
 .
 
@@ -55,9 +55,9 @@ Mixed task and non-task items
 .
 <ul class="contains-task-list">
 <li>normal item</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> unchecked</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" /> unchecked</li>
 <li>another normal</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> checked</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> checked</li>
 </ul>
 .
 
@@ -81,8 +81,8 @@ Nested list with tasks
 <ul>
 <li>foo
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> nested unchecked</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> nested checked</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" /> nested unchecked</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> nested checked</li>
 </ul>
 </li>
 </ul>
@@ -95,9 +95,9 @@ Task with inline formatting
 - [x] `code` task
 .
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> <strong>bold</strong> task</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> <em>italic</em> task</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> <code>code</code> task</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> <strong>bold</strong> task</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" /> <em>italic</em> task</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> <code>code</code> task</li>
 </ul>
 .
 
@@ -106,7 +106,7 @@ Single task item
 - [x] only item
 .
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> only item</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> only item</li>
 </ul>
 .
 
@@ -116,8 +116,8 @@ Different bullet markers
 + [ ] plus unchecked
 .
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> plus checked</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> plus unchecked</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> plus checked</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" /> plus unchecked</li>
 </ul>
 .
 
@@ -127,8 +127,8 @@ Ordered list starting from non-1
 4. [ ] task four
 .
 <ol start="3" class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> task three</li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> task four</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> task three</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" /> task four</li>
 </ol>
 .
 
@@ -223,7 +223,7 @@ Indented code item between task items
 <pre><code>[x] literal
 </code></pre>
 </li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox"> b</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" /> b</li>
 </ul>
 .
 
@@ -232,7 +232,7 @@ Four spaces after the marker is still a task
 -    [x] task
 .
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> task</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> task</li>
 </ul>
 .
 
@@ -241,6 +241,6 @@ A tab after the marker is still a task
 -	[x] task
 .
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked=""> task</li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" checked="" /> task</li>
 </ul>
 .

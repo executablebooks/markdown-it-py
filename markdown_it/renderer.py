@@ -240,9 +240,10 @@ class RendererHTML(RendererProtocol):
             disabled_attr = (
                 "" if options.get("tasklists_editable", False) else ' disabled=""'
             )
+            checkbox_end = " />" if options.xhtmlOut else ">"
             result += (
                 '<input class="task-list-item-checkbox"'
-                f'{disabled_attr} type="checkbox"{checked_attr}> '
+                f'{disabled_attr} type="checkbox"{checked_attr}{checkbox_end} '
             )
         return result
 
