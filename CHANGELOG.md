@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### 🐛 Fixed
+
+* Reject backslash-prefixed line endings in angle-wrapped link destinations and ASCII controls in bare destinations.
+
 ## 4.3.0 - 2026-11-10
 
 This release fixes two quadratic-time parsing paths that let crafted input stall rendering for minutes (security),

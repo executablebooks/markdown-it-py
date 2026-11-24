@@ -33,6 +33,8 @@ def parseLinkDestination(string: str, pos: int, maximum: int) -> _Result:
                 return result
 
             if code == 0x5C and pos + 1 < maximum:  # \
+                if charCodeAt(string, pos + 1) == 0x0A:
+                    return result
                 pos += 2
                 continue
 
@@ -55,8 +57,14 @@ def parseLinkDestination(string: str, pos: int, maximum: int) -> _Result:
             break
 
         if code == 0x5C and pos + 1 < maximum:
-            if charCodeAt(string, pos + 1) == 0x20:
+            next_code = charCodeAt(string, pos + 1)
+            if next_code == 0x20:
                 break
+            if next_code is not None and (next_code < 0x20 or next_code == 0x7F):
+                # A control character cannot be escaped into a destination.
+                # Keep the literal backslash, then let the control end it.
+                pos += 1
+                continue
             pos += 2
             continue
 
