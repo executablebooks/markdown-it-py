@@ -296,9 +296,10 @@ class RendererHTML(RendererProtocol):
                 langAttrs = arr[1]
 
         if options.highlight:
-            highlighted = options.highlight(
-                token.content, langName, langAttrs
-            ) or escapeHtml(token.content)
+            highlighted = options.highlight(token.content, langName, langAttrs)
+            if highlighted and options.get("highlight_verbatim", False):
+                return highlighted
+            highlighted = highlighted or escapeHtml(token.content)
         else:
             highlighted = escapeHtml(token.content)
 
