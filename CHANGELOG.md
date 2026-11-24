@@ -1,5 +1,9 @@
 # Change Log
 
+## Unreleased
+
+- ✨ Add `highlight_verbatim` to preserve complete syntax-highlighter HTML without an extra code wrapper ([#256](https://github.com/executablebooks/markdown-it-py/issues/256)).
+
 ## 4.3.0 - 2026-11-10
 
 This release fixes two quadratic-time parsing paths that let crafted input stall rendering for minutes (security),

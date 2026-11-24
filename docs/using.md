@@ -116,6 +116,39 @@ Additionally `renderInline` runs the parser with all block syntax rules disabled
 md.renderInline("__*emphasise this*__")
 ```
 
+### Syntax highlighting
+
+The `highlight` option accepts a callback `(code, language, attrs) -> str` for
+fenced code blocks. Its HTML is normally wrapped in `<pre><code>`, unless it
+starts with `<pre`. Returning an empty string uses the default escaped code.
+
+When a highlighter supplies a complete HTML block, such as Pygments' default
+`<div class="highlight">` wrapper, set `highlight_verbatim=True`:
+
+```python
+from pygments import highlight
+from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_by_name
+from pygments.util import ClassNotFound
+
+
+def highlight_code(code: str, language: str, attrs: str) -> str:
+    try:
+        lexer = get_lexer_by_name(language)
+    except ClassNotFound:
+        return ""
+    return highlight(code, lexer, HtmlFormatter())
+
+
+md = MarkdownIt("commonmark", {"highlight": highlight_code, "highlight_verbatim": True})
+```
+
+This Python only option defaults to `False`. When enabled, a nonempty callback
+result is returned exactly as supplied, including its line endings; no wrapper,
+language class or newline is added. The callback is responsible for escaping
+code in its HTML. An empty result, or no callback, still uses the usual escaped
+`<pre><code>` output.
+
 ### Typographic components
 
 The `smartquotes` and `replacements` components are intended to improve typography:

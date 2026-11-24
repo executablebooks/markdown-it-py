@@ -36,6 +36,11 @@ class OptionsType(TypedDict):
     """CSS language prefix for fenced blocks."""
     highlight: Callable[[str, str, str], str] | None
     """Highlighter function: (content, lang, attrs) -> str."""
+    highlight_verbatim: NotRequired[bool]
+    """Return nonempty highlighter output unchanged, without a code wrapper.
+
+    This Python only option defaults to False.
+    """
     store_labels: NotRequired[bool]
     """Store link label in link/image token's metadata (under Token.meta['label']).
 
