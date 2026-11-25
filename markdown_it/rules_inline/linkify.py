@@ -5,7 +5,9 @@ import re
 from .state_inline import StateInline
 
 # RFC3986: scheme = ALPHA *( ALPHA / DIGIT / "+" / "-" / "." )
-SCHEME_RE = re.compile(r"(?:^|[^a-z0-9.+-])([a-z][a-z0-9.+-]*)$", re.IGNORECASE)
+SCHEME_RE = re.compile(
+    r"(?:^|[^a-z0-9.+-])([a-z][a-z0-9.+-]*)$", re.IGNORECASE | re.ASCII
+)
 
 
 def linkify(state: StateInline, silent: bool) -> bool:

@@ -22,3 +22,12 @@ def test_token_levels():
     assert link_open.level == 0
     assert link_text.level == 1
     assert link_close.level == 0
+
+
+@pytest.mark.parametrize("prefix", ["\N{LATIN SMALL LETTER LONG S}", "\N{KELVIN SIGN}"])
+def test_linkify_scheme_is_ascii_only(prefix):
+    """Letters that case-fold to ASCII are not scheme characters."""
+    mdit = MarkdownIt(options_update={"linkify": True}).enable("linkify")
+    assert mdit.render(f"{prefix}http://example.com") == (
+        f'<p>{prefix}<a href="http://example.com">http://example.com</a></p>\n'
+    )
