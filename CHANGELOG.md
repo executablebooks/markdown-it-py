@@ -1,5 +1,11 @@
 # Change Log
 
+## Unreleased
+
+### 🐛 Fixed
+
+* Keep block-like text after a task-list checkbox inside its original paragraph.
+
 ## 4.3.0 - 2026-11-10
 
 This release fixes two quadratic-time parsing paths that let crafted input stall rendering for minutes (security),

@@ -229,6 +229,7 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
         indent = initial + indentAfterMarker
 
         # Run subparser & write tokens
+        itemTokIdx = len(state.tokens)
         token = state.push("list_item_open", "li", 1)
         token.markup = markerChar
         token.map = itemLines = [startLine, 0]
@@ -237,7 +238,6 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
         # change current state, then restore it after parser subcall
         oldTight = state.tight
-        oldBMark = state.bMarks[startLine]
         oldTShift = state.tShift[startLine]
         oldSCount = state.sCount[startLine]
 
@@ -253,27 +253,11 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
         state.tShift[startLine] = contentStart - state.bMarks[startLine]
         state.sCount[startLine] = offset
 
-        # Detect GFM task checkboxes only after setting the item's indentation,
-        # so literal markers in indented code blocks are left untouched.
-        checkboxLen = 0
-        if (
-            state.md.options.get("tasklists", False)
-            and contentStart < maximum
-            and not state.is_code_block(startLine)
-        ):
-            checked = _detect_task_checkbox(state.src, contentStart, maximum)
-            if checked is not None:
-                token.meta = {"checked": checked}
-                # Advance content past the checkbox: `[x]` (3 chars) + whitespace.
-                # `_detect_task_checkbox` already guarantees a whitespace char at
-                # pos+3, so we always consume 4 characters.
-                checkboxLen = 4
-
-        # If we detected a checkbox, advance bMarks past it so that
-        # getLines() doesn't include the checkbox text in the content.
-        if checkboxLen:
-            state.bMarks[startLine] = contentStart + checkboxLen
-            state.tShift[startLine] = 0
+        checked = (
+            _detect_task_checkbox(state.src, contentStart, maximum)
+            if state.md.options.get("tasklists", False)
+            else None
+        )
 
         if contentStart >= maximum and state.isEmpty(startLine + 1):
             # workaround for this case
@@ -290,6 +274,18 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
             # but  tokeniz does not take the final parameter
             state.md.block.tokenize(state, startLine, endLine)
 
+        # A task marker belongs to the first paragraph. Removing it before
+        # block parsing turns text such as "[x] # title" into a heading.
+        firstBlock = state.tokens[itemTokIdx + 1 : itemTokIdx + 3]
+        if (
+            checked is not None
+            and len(firstBlock) == 2
+            and firstBlock[0].type == "paragraph_open"
+            and firstBlock[1].type == "inline"
+        ):
+            state.tokens[itemTokIdx].meta["checked"] = checked
+            firstBlock[1].content = firstBlock[1].content[4:]
+
         # If any of list item is tight, mark list as tight
         if (not state.tight) or prevEmptyEnd:
             tight = False
@@ -300,8 +296,6 @@ def list_block(state: StateBlock, startLine: int, endLine: int, silent: bool) ->
 
         state.blkIndent = state.listIndent
         state.listIndent = oldListIndent
-        if checkboxLen:
-            state.bMarks[startLine] = oldBMark
         state.tShift[startLine] = oldTShift
         state.sCount[startLine] = oldSCount
         state.tight = oldTight
