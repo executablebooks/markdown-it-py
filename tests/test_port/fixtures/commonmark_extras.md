@@ -880,3 +880,26 @@ foo
 <p>foo</p>
 <!bar baz>
 .
+
+Backslash before a space inside a link destination (CommonMark 0.31.2 6.3) is a literal backslash, and the space ends the destination.
+.
+[a](/url\ )
+.
+<p><a href="/url%5C">a</a></p>
+.
+
+Backslash before a space in a link destination, followed by a title.
+.
+[a](/url\ "title")
+.
+<p><a href="/url%5C" title="title">a</a></p>
+.
+
+Backslash before a space in a reference destination.
+.
+[a]: /url\ "title"
+
+[a]
+.
+<p><a href="/url%5C" title="title">a</a></p>
+.

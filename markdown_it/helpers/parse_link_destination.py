@@ -56,7 +56,8 @@ def parseLinkDestination(string: str, pos: int, maximum: int) -> _Result:
 
         if code == 0x5C and pos + 1 < maximum:
             if charCodeAt(string, pos + 1) == 0x20:
-                break
+                pos += 1
+                continue
             pos += 2
             continue
 
