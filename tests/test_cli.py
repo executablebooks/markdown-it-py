@@ -104,6 +104,58 @@ def test_stdin():
         assert string_io.getvalue() == "<h1>a b c</h1>\n"
 
 
+def _redirected(encoding: str, data: bytes = b"") -> io.TextIOWrapper:
+    """A standard stream redirected to a file or pipe, e.g. cp1252 on Windows."""
+    return io.TextIOWrapper(
+        io.BytesIO(data), encoding=encoding, newline="\n", write_through=True
+    )
+
+
+def _written(stream: io.TextIOWrapper) -> bytes:
+    """The bytes written to a stream made by `_redirected`."""
+    buffer = stream.buffer
+    assert isinstance(buffer, io.BytesIO)
+    return buffer.getvalue()
+
+
+def test_redirected_stdout_gets_utf8(tmp_path, monkeypatch):
+    monkeypatch.delenv("PYTHONIOENCODING", raising=False)
+    path = tmp_path / "test.md"
+    path.write_text("# ʤ ✓", encoding="utf8")
+    stdout = _redirected("cp1252")
+    monkeypatch.setattr(sys, "stdout", stdout)
+    assert parse.main([str(path)]) == 0
+    assert _written(stdout).decode("utf8") == "<h1>ʤ ✓</h1>\n"
+
+
+def test_redirected_stdin_is_read_as_utf8(monkeypatch):
+    monkeypatch.delenv("PYTHONIOENCODING", raising=False)
+    monkeypatch.setattr(sys, "stdin", _redirected("cp1252", "# Łódź".encode()))
+    stdout = _redirected("cp1252")
+    monkeypatch.setattr(sys, "stdout", stdout)
+    assert parse.main(["--stdin"]) == 0
+    assert _written(stdout).decode("utf8") == "<h1>Łódź</h1>\n"
+
+
+def test_redirected_stdin_ignores_undecodable_bytes(monkeypatch):
+    monkeypatch.delenv("PYTHONIOENCODING", raising=False)
+    monkeypatch.setattr(sys, "stdin", _redirected("cp1252", b"\x80abc"))
+    stdout = _redirected("cp1252")
+    monkeypatch.setattr(sys, "stdout", stdout)
+    assert parse.main(["--stdin"]) == 0
+    assert _written(stdout) == b"<p>abc</p>\n"
+
+
+def test_redirected_stdout_keeps_pythonioencoding(tmp_path, monkeypatch):
+    monkeypatch.setenv("PYTHONIOENCODING", "utf-16")
+    path = tmp_path / "test.md"
+    path.write_text("# a", encoding="utf8")
+    stdout = _redirected("utf-16")
+    monkeypatch.setattr(sys, "stdout", stdout)
+    assert parse.main([str(path)]) == 0
+    assert _written(stdout).decode("utf-16") == "<h1>a</h1>\n"
+
+
 def test_multiple_files():
     with tempfile.TemporaryDirectory() as tempdir:
         path1 = pathlib.Path(tempdir).joinpath("test1.md")

@@ -8,7 +8,10 @@ from __future__ import annotations
 
 import argparse
 from collections.abc import Iterable, Sequence
+import io
+import os
 import sys
+from typing import TextIO
 
 from markdown_it import __version__
 from markdown_it.main import MarkdownIt
@@ -27,12 +30,34 @@ def main(args: Sequence[str] | None = None) -> int:
     if namespace.enable_tables:
         md.enable("table")
     if namespace.filenames:
+        _use_utf8(sys.stdout)
         convert(namespace.filenames, md)
     elif namespace.stdin:
+        # Read standard input like a file: UTF-8, ignoring undecodable bytes.
+        _use_utf8(sys.stdin, errors="ignore")
+        _use_utf8(sys.stdout)
         convert_stdin(md)
     else:
         interactive(md)
     return 0
+
+
+def _use_utf8(stream: TextIO, errors: str | None = None) -> None:
+    """Use UTF-8 for a redirected or piped standard stream.
+
+    Files are read as UTF-8, but Python uses the locale encoding (e.g. cp1252 on
+    Windows) for standard streams that are not a terminal, so
+    ``markdown-it doc.md > doc.html`` raised UnicodeEncodeError for characters
+    outside it, and ``--stdin`` misread UTF-8 input.
+    An encoding set with PYTHONIOENCODING is kept, and a terminal is left as is.
+    """
+    if (
+        os.environ.get("PYTHONIOENCODING")
+        or not isinstance(stream, io.TextIOWrapper)
+        or stream.isatty()
+    ):
+        return
+    stream.reconfigure(encoding="utf-8", errors=errors or stream.errors)
 
 
 def convert(filenames: Iterable[str], md: MarkdownIt | None = None) -> None:
